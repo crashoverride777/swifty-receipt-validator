@@ -2,14 +2,39 @@
 
 A swift protocol extension to handle app store receipt validation.
 
-NOTE: 
+I am by no means an expert, as receipt validation was causing me headaches for months. I however believe I am on the right track with this helper. 
 
-The recommned way by apple is to use your own server and than communicate to apples server to validate receipt.
+The most important part for me is feedback of any kind, especially by people that have a better knowledge about it than me. So please dont hestitate to open an issue or email me, this way we can make sure this helper is as solid as it can be.
+
+
+There are some helpers on gitHub that I got inspired by, but I didnt like how the code was either outdated, didnt follow all of apples guidlines, were not very swift like or unsafe due things such as force unwrapping. 
+I tried to follow apples guidless as well as I can, I am by no means an expert on this.
+
+e.g 
+
+1) When fetching the app store receipt stored in your apps main bundle you should request a new receipt incase getting it the 1st time failes, if it than fails again validation should also fail.
+
+2) You should compare your bundle ID with the purchase Bundle ID etc.
+
+At the moment I am doing the follwing validation checks, if the json response returns a valid receipt status code.
+
+This includes:
+
+1) Check receipt send for verification exists in json response
+2) Check receipt contains correct bundle id for app
+2) Check receipt contains product id for app
+
+# Before you start 
+
+The recommned way by apple is to use your own server and than communicate to apples server to validate the receipt.
 However for obvious reason this is a hassle for alot of people, e.g me, because I dont have a webserver and dont understand languages like PHP to make it work.
 
-So if you dont want to use your own server that you can communcate directly with apples servers. Apple even has made their own in app receipt validator to show this (tutorials on ray wenderlich, in objC tho). Doing this is apparently not very secure and therefore you should use your own server before sending stuff to apple. 
+In those cases where you dont want to use your own server you can communcate directly with apples. 
+Apple even has made their own in app receipt validator to show this (tutorials on ray wenderlich, in objC tho). Doing this is apparently not very secure and therefore you should use your own server before sending stuff to apple. 
 
 Nevertheless its still better than not doing any validation at all and simply unlocking the product directly.
+
+I will eventually try to update this helper to include guidlines/sample code to make it work with your own server. My knowledge about server code is very basic at the moment.
 
 
 # Set-Up
@@ -51,8 +76,7 @@ for transaction in transactions {
 ```
 
 
-To use the receipt validator go the the class that has your in app purchase code. Go to where you added the sk payment transaction observer and
-confirm to the AppStoreReceiptValidator protocol 
+To use the receipt validator go the the class that has your in app purchase code. Go to where you added the sk payment transaction observer and confirm to the AppStoreReceiptValidator protocol as well
 
 class SomeClass: ... , SKPaymentTransactionObserver, AppStoreReceiptValidator {....
 
@@ -101,11 +125,6 @@ The way this is done, (all automatically with this helper) is that if connection
 If you use your own servers than instead of directly connecting to apples server enter your server url in the enum at the top of the .swift file and than adjust the validation methods accordingly. I dont know how to than handle the above case where your should validate with product server first and than with sandbox if correct error, on your server. I also dont know if any other changes are required.
 
 I will try to update this in the future if I have a better grasp if what is needed for your own server.
-
-
-# Final Info
-
-I welcome as as much feedback as possible, so please dont hestitate to open a issue or email me. This way we can make sure this helper is as solid as it can be.
 
 # Release notes
 
