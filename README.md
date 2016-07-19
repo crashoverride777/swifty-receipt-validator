@@ -23,11 +23,13 @@ This includes:
 
 3) Check receipt contains product id for app
 
-# Before you start 
+# Before you start
+
+- Test, Test, Test
 
 Please test this properly, including production mode using apples product server URL, to make sure everything is working. This is not something you want take lightly, check the print statements in your consoles to see whats happening and where it might get stuck.
 
-# Your own webserver
+- Your own webserver
 
 The recommned way by apple is to use your own server and than communicate to apples server to validate the receipt.
 However for obvious reason this is a hassle for alot of people like me, because I dont have a webserver and dont understand languages like PHP to make it work.
