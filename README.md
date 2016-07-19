@@ -8,12 +8,12 @@ The most important part for me is feedback of any kind, especially by people tha
 
 
 There are some helpers on gitHub that I got inspired by, but I didnt like how the code was either outdated, didnt follow all of apples guidlines, were not very swift like or unsafe due things such as force unwrapping. 
-I tried to follow apples guidlines as well as I can, I am by no means an expert on this.
+
+I tried to follow apples guidlines as well as I can 
 
 e.g When fetching the app store receipt stored in your apps main bundle you should request a new receipt incase getting it the 1st time failes, if it than fails again validation should also fail. 
 
-
-At the moment I am doing the follwing validation checks, if the json response returns a valid receipt status code.
+I am doing the follwing validation checks, if the json response returns a valid receipt status code.
 
 This includes:
 
@@ -23,7 +23,7 @@ This includes:
 
 # Before you start 
 
-Please test this properly, including production mode, to make sure everything is working. This is not something you want take lightly.
+Please test this properly, including production mode using apples product server URL, to make sure everything is working. This is not something you want take lightly, check the print statements in your consoles to see whats happening and where it might get stuck.
 
 # Your own webserver
 
