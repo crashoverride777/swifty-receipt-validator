@@ -6,12 +6,9 @@ I am by no means an expert, as receipt validation was causing me headaches for m
 
 The most important part for me is feedback of any kind, especially by people that have a better knowledge about it than me. So please dont hestitate to open an issue or email me, this way we can make sure this helper is as solid as it can be.
 
-
 There are some helpers on gitHub that I got inspired by, but I didnt like how the code was either outdated, didnt follow all of apples guidlines, were not very swift like or unsafe due things such as force unwrapping. 
 
-I tried to follow apples guidlines as well as I can 
-
-e.g When fetching the app store receipt stored in your apps main bundle you should request a new receipt incase getting it the 1st time failes, if it than fails again validation should also fail. 
+I tried to follow apples guidlines as well as I can, e.g when fetching the app store receipt stored in your apps main bundle you should request a new receipt incase getting it the 1st time failes, if it than fails again validation should also fail. 
 
 I am doing the follwing validation checks, if the json response returns a valid receipt status code.
 
@@ -45,6 +42,7 @@ Nevertheless its still better than not doing any validation at all. I will event
 - Add the folliwng files to your prohect
 
 1) AppStoreReceipValidator.swift
+
 2) AppStoreReceiptObtainer.swift
 
 # How to use
@@ -130,9 +128,9 @@ case .Restored:
 Note:
 
 As per apples guidlines you should alway first connect to apples production servers and than fall back on apples sandbox servers.
-The way this is done, (all automatically with this helper) is that if connection to production servers fails you will receip some error codes. There is a error code that tells you if your have a sandbox receipt but are using production. The helper uses this error code to than do the receipt validation again with the sandbox servers.
+The way this is done, (all automatically with this helper) is that if connection to production servers fails you will get some error codes. There is an error code that tells you if your have a sandbox receipt but are using production url. The helper uses this error code to than do the receipt validation again with the sandbox server url.
 
-If you use your own servers than instead of directly connecting to apples server enter your server url in the enum at the top of the .swift file and than adjust the validation methods accordingly. I dont know how to than handle the above case where your should validate with product server first and than with sandbox if correct error, on your server. I also dont know if any other changes are required.
+If you use your own servers than instead of directly connecting to apples server enter your server url in the enum at the top of the .swift file and than adjust the validation methods accordingly to use that enum. I dont know how to than handle the above case where your should validate with product server first and than with sandbox on your server. I also dont know if any other changes to the helper are required.
 
 I will try to update this in the future if I have a better grasp if what is needed for your own server.
 
