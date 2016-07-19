@@ -64,7 +64,7 @@ for transaction in transactions {
           // Transaction is in queue, user has been charged.  Client should complete the transaction.
                 
           /// Your code to unlock product for "transaction.payment.productIdentifier"
-          /// I usually use delegation here, passing in the productID, to unlock the correct product.
+          /// I usually use delegation here
           
           queue.finishTransaction(transaction)
               
@@ -73,7 +73,7 @@ for transaction in transactions {
                 
           if let originalTransaction = transaction.originalTransaction {
                /// Your code to restore product for "originalTransaction.payment.productIdentifier"
-               /// I usually use delegation here, passing in the originalTransactionId, to unlock the correct
+               /// I usually use delegation here
           }
          
           queue.finishTransaction(transaction)
@@ -103,7 +103,7 @@ case .Purchased:
               // `StoreKit` event handlers may be called on a background queue. Ensure unlocking products gets called on main queue.
               dispatch_async(dispatch_get_main_queue()) { [unowned self] in
                    /// Your code to unlock product for "transaction.payment.productIdentifier"
-                  /// I usually use delegation here, passing in the productID, to unlock the correct product.
+                  /// I usually use delegation here
               }
           }
                     
@@ -119,7 +119,7 @@ case .Restored:
                   dispatch_async(dispatch_get_main_queue()) { [unowned self] in
                        if let originalTransaction = transaction.originalTransaction {
                              /// Your code to restore product for "originalTransaction.payment.productIdentifier"
-                             /// I usually use delegation here, passing in the originalTransactionId, to unlock the correct product.
+                             /// I usually use delegation here
                        }
                   }
              }
