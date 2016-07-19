@@ -39,7 +39,7 @@ Nevertheless its still better than not doing any validation at all. I will event
 
 # Set-Up
 
-- Add the folliwng files to your prohect
+- Add the folliwng files to your project
 
 1) AppStoreReceipValidator.swift
 
@@ -63,8 +63,8 @@ for transaction in transactions {
      case .Purchased:
           // Transaction is in queue, user has been charged.  Client should complete the transaction.
                 
-          /// Your code to unlock product for payment id
-          /// I usually use delegation here, passing in the prodcutID, to unlock the correct product.
+          /// Your code to unlock product for "transaction.payment.productIdentifier"
+          /// I usually use delegation here, passing in the productID, to unlock the correct product.
           
           queue.finishTransaction(transaction)
               
@@ -72,23 +72,27 @@ for transaction in transactions {
           // Transaction was restored from user's purchase history.  Client should complete the transaction.
                 
           if let originalTransaction = transaction.originalTransaction {
-               /// Your code to unlock product for "originalTransactionID"
-               /// I usually use delegation here, passing in the originalTransactionID, to unlock the correct product.
-         }
+               /// Your code to restore product for "originalTransaction.payment.productIdentifier"
+               /// I usually use delegation here, passing in the originalTransactionId, to unlock the correct
+          }
          
-         queue.finishTransaction(transaction)
+          queue.finishTransaction(transaction)
          
     case .Failed:
          ....
-} 
+    }
+    
+    ....
+}
 ```
 
+To use the receipt validator go the the class that has your in app purchase code with the above method. Go to where you added the SKPaymentTransactionObserver and confirm to the AppStoreReceiptValidator protocol as well
 
-To use the receipt validator go the the class that has your in app purchase code. Go to where you added the sk payment transaction observer and confirm to the AppStoreReceiptValidator protocol as well
-
+```swift
 class SomeClass: ... , SKPaymentTransactionObserver, AppStoreReceiptValidator {....
+```
 
-and than change your purchase code to look like this
+Than change your purchase code to look like this
 
 ```swift
 case .Purchased:
@@ -104,7 +108,7 @@ case .Purchased:
           }
                     
          queue.finishTransaction(transaction) // Must be in completion closure
-}
+     }
   
 case .Restored:
         // Transaction was restored from user's purchase history.  Client should complete the transaction.
@@ -121,13 +125,13 @@ case .Restored:
              }
                     
              queue.finishTransaction(transaction) // Must be in completion closure
-}
+       }
                 
 ```
 
 Note:
 
-As per apples guidlines you should alway first connect to apples production servers and than fall back on apples sandbox servers.
+As per apples guidlines you should alway first connect to apples production servers and than fall back on apples sandbox servers if needed.
 The way this is done, (all automatically with this helper) is that if connection to production servers fails you will get some error codes. There is an error code that tells you if your have a sandbox receipt but are using production url. The helper uses this error code to than do the receipt validation again with the sandbox server url.
 
 If you use your own servers than instead of directly connecting to apples server enter your server url in the enum at the top of the .swift file and than adjust the validation methods accordingly to use that enum. I dont know how to than handle the above case where your should validate with product server first and than with sandbox on your server. I also dont know if any other changes to the helper are required.
