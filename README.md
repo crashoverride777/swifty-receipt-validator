@@ -10,7 +10,7 @@ There are some helpers on gitHub that I got inspired by, but I didnt like how th
 
 I tried to follow apples guidlines as well as I can, e.g when fetching the app store receipt stored in your apps main bundle you should request a new receipt incase getting it the 1st time failes, if it than fails again validation should also fail. 
 
-I am doing the follwing validation checks, if the json response returns a valid receipt status code.
+I am doing the following validation checks, if the JSON response returns a valid receipt status code.
 
 This includes:
 
