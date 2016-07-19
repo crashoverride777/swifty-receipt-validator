@@ -8,13 +8,10 @@ The most important part for me is feedback of any kind, especially by people tha
 
 
 There are some helpers on gitHub that I got inspired by, but I didnt like how the code was either outdated, didnt follow all of apples guidlines, were not very swift like or unsafe due things such as force unwrapping. 
-I tried to follow apples guidless as well as I can, I am by no means an expert on this.
+I tried to follow apples guidlines as well as I can, I am by no means an expert on this.
 
-e.g 
+e.g When fetching the app store receipt stored in your apps main bundle you should request a new receipt incase getting it the 1st time failes, if it than fails again validation should also fail. 
 
-1) When fetching the app store receipt stored in your apps main bundle you should request a new receipt incase getting it the 1st time failes, if it than fails again validation should also fail.
-
-2) You should compare your bundle ID with the purchase Bundle ID etc.
 
 At the moment I am doing the follwing validation checks, if the json response returns a valid receipt status code.
 
@@ -26,20 +23,25 @@ This includes:
 
 # Before you start 
 
+Please test this properly, including production mode, to make sure everything is working. This is not something you want take lightly.
+
+# Your own webserver
+
 The recommned way by apple is to use your own server and than communicate to apples server to validate the receipt.
-However for obvious reason this is a hassle for alot of people, e.g me, because I dont have a webserver and dont understand languages like PHP to make it work.
+However for obvious reason this is a hassle for alot of people like me, because I dont have a webserver and dont understand languages like PHP to make it work.
 
 In those cases where you dont want to use your own server you can communcate directly with apples. 
-Apple even has made their own in app receipt validator to show this (tutorials on ray wenderlich, in objC tho). Doing this is apparently not very secure and therefore you should use your own server before sending stuff to apple. 
+Apple even has made their own in app receipt validator to show this (tutorials on ray wenderlich, in objC tho). Doing this is apparently not very secure and therefore you should use your own server before sending stuff to apples. 
 
-Nevertheless its still better than not doing any validation at all and simply unlocking the product directly.
-
-I will eventually try to update this helper to include guidlines/sample code to make it work with your own server. My knowledge about server code is very basic at the moment.
+Nevertheless its still better than not doing any validation at all. I will eventually try to update this helper to include guidlines/sample code to make it work with your own server. My knowledge about server code is very basic at the moment.
 
 
 # Set-Up
 
-- Add the AppStoreReceipValidator.swift and AppStoreReceiptObtainer.swift file to your project.
+- Add the folliwng files to your prohect
+
+1) AppStoreReceipValidator.swift
+2) AppStoreReceiptObtainer.swift
 
 # How to use
 
@@ -49,7 +51,7 @@ In your in app purchase code go the method
 func paymentQueue(queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) { ....
 ```
 
-where you should have these to enums to handle app purchases and restores. The code there should look more or less like this
+where you should have these to enums to handle app purchases and restores. The code should look more or less like this
 
 ```swift
 for transaction in transactions {
@@ -60,14 +62,18 @@ for transaction in transactions {
           // Transaction is in queue, user has been charged.  Client should complete the transaction.
                 
           /// Your code to unlock product for payment id
+          /// I usually use delegation here, passing in the prodcutID, to unlock the correct product.
+          
           queue.finishTransaction(transaction)
               
      case .Restored:
           // Transaction was restored from user's purchase history.  Client should complete the transaction.
                 
           if let originalTransaction = transaction.originalTransaction {
-               /// Your code to unlock product for transaction ID
+               /// Your code to unlock product for "originalTransactionID"
+               /// I usually use delegation here, passing in the originalTransactionID, to unlock the correct product.
          }
+         
          queue.finishTransaction(transaction)
          
     case .Failed:
@@ -91,7 +97,7 @@ case .Purchased:
               // `StoreKit` event handlers may be called on a background queue. Ensure unlocking products gets called on main queue.
               dispatch_async(dispatch_get_main_queue()) { [unowned self] in
                    /// Your code to unlock product for "transaction.payment.productIdentifier"
-                  /// I usually use delegation here, passing in the prodcutID, to unlock the correct product.
+                  /// I usually use delegation here, passing in the productID, to unlock the correct product.
               }
           }
                     
