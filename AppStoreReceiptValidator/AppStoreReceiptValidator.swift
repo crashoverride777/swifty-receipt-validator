@@ -176,7 +176,7 @@ private extension AppStoreReceiptValidator {
         /// This handles validation directily with apple. This is not the recommended way by apple as it is not secure.
         /// It is still better than not doing any validation at all.
         /// If you will use your own server than just will have to adjust this last bit of code to only send to your server and than connect to
-        /// apple production/sandbox for there.
+        /// apple production/sandbox for there as far as I believe. I have limited knowledge about this
         handleReceiptRequest(forURL: RequestURL.appleProduction.rawValue, data: payloadData) { [unowned self] (success, status) in
             if success {
                 print("Receipt validation passed in production mode, unlocking product(s)")
@@ -278,7 +278,7 @@ private extension AppStoreReceiptValidator {
             
             print("Valid receipt status in json reponse: \(status)")
             
-            /// Handle additional security checks
+            /// Handle additional checks
             
             /// Check receipt send for verification exists in json response
             guard let receipt = parseJSON[JSONResponseKey.receipt.rawValue] else {
@@ -290,7 +290,7 @@ private extension AppStoreReceiptValidator {
             print(urlRequestString + "Valid receipt in json reponse = \(receipt)")
             
             /// Check receipt contains correct bundle and product id for app
-            guard self.appBundleIDIsMatching(forReceipt: receipt) && self.transactionProductIDIsMatching(forReceipt: receipt) else {
+            guard self.appBundleIDIsMatching(withReceipt: receipt) && self.transactionProductIDIsMatching(withReceipt: receipt) else {
                 completionHandler(success: false, status: nil)
                 return
             }
@@ -309,7 +309,7 @@ private extension AppStoreReceiptValidator {
 private extension AppStoreReceiptValidator {
     
     /// Bundle id check
-    func appBundleIDIsMatching(forReceipt receipt: AnyObject) -> Bool {
+    func appBundleIDIsMatching(withReceipt receipt: AnyObject) -> Bool {
         let receiptBundleID = receipt[ReceiptInfoField.bundle_id.rawValue] as? String ?? "NoReceiptBundleID"
         let appBundleID = NSBundle.mainBundle().bundleIdentifier ?? "NoAppBundleID"
         
@@ -322,7 +322,7 @@ private extension AppStoreReceiptValidator {
     }
     
     /// Product ids check
-    func transactionProductIDIsMatching(forReceipt receipt: AnyObject) -> Bool {
+    func transactionProductIDIsMatching(withReceipt receipt: AnyObject) -> Bool {
         guard let inApp = receipt[ReceiptInfoField.in_app.rawValue] as? NSArray else {
             print(validationErrorString + urlRequestString + "Could not find receipt in app array in json response")
             return false
