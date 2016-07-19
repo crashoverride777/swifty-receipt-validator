@@ -14,6 +14,8 @@
 		B41997041D3E3C7400592CDC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B41997021D3E3C7400592CDC /* Main.storyboard */; };
 		B41997061D3E3C7400592CDC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B41997051D3E3C7400592CDC /* Assets.xcassets */; };
 		B41997091D3E3C7400592CDC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B41997071D3E3C7400592CDC /* LaunchScreen.storyboard */; };
+		B41997121D3E3C8F00592CDC /* AppStoreReceiptObtainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B41997101D3E3C8F00592CDC /* AppStoreReceiptObtainer.swift */; };
+		B41997131D3E3C8F00592CDC /* AppStoreReceiptValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B41997111D3E3C8F00592CDC /* AppStoreReceiptValidator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +28,8 @@
 		B41997051D3E3C7400592CDC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B41997081D3E3C7400592CDC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B419970A1D3E3C7400592CDC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B41997101D3E3C8F00592CDC /* AppStoreReceiptObtainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppStoreReceiptObtainer.swift; path = AppStoreReceiptValidator/AppStoreReceiptObtainer.swift; sourceTree = "<group>"; };
+		B41997111D3E3C8F00592CDC /* AppStoreReceiptValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppStoreReceiptValidator.swift; path = AppStoreReceiptValidator/AppStoreReceiptValidator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,6 +46,8 @@
 		B41996EE1D3E3C7400592CDC = {
 			isa = PBXGroup;
 			children = (
+				B41997111D3E3C8F00592CDC /* AppStoreReceiptValidator.swift */,
+				B41997101D3E3C8F00592CDC /* AppStoreReceiptObtainer.swift */,
 				B41996F91D3E3C7400592CDC /* AppStoreReceiptValidator */,
 				B41996F81D3E3C7400592CDC /* Products */,
 			);
@@ -144,7 +150,9 @@
 			files = (
 				B41996FF1D3E3C7400592CDC /* GameScene.swift in Sources */,
 				B41997011D3E3C7400592CDC /* GameViewController.swift in Sources */,
+				B41997121D3E3C8F00592CDC /* AppStoreReceiptObtainer.swift in Sources */,
 				B41996FB1D3E3C7400592CDC /* AppDelegate.swift in Sources */,
+				B41997131D3E3C8F00592CDC /* AppStoreReceiptValidator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -261,7 +269,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = AppStoreReceiptValidator/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = AppStoreReceiptValidator.AppStoreReceiptValidator;
+				PRODUCT_BUNDLE_IDENTIFIER = AppStoreReceiptValidator;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -272,7 +280,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = AppStoreReceiptValidator/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = AppStoreReceiptValidator.AppStoreReceiptValidator;
+				PRODUCT_BUNDLE_IDENTIFIER = AppStoreReceiptValidator;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
