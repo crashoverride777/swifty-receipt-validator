@@ -18,8 +18,10 @@ I am doing the follwing validation checks, if the json response returns a valid 
 This includes:
 
 1) Check receipt send for verification exists in json response
+
 2) Check receipt contains correct bundle id for app
-2) Check receipt contains product id for app
+
+3) Check receipt contains product id for app
 
 # Before you start 
 
