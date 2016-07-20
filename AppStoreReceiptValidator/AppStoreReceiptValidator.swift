@@ -226,7 +226,7 @@ private extension AppStoreReceiptValidator {
         request.HTTPMethod = "POST"
         request.HTTPBody = data
         
-        let task = NSURLSession.sharedSession().dataTaskWithRequest(request) { (data, response, error) in
+        let task = NSURLSession.sharedSession().dataTaskWithRequest(request) { [unowned self] (data, response, error) in
             
             /// URL request error
             if let error = error {
