@@ -193,12 +193,15 @@ private extension AppStoreReceiptValidator {
             print(validationErrorString + "Production url used in sandbox mode, trying sandbox url...")
             
             /// Handle request to sandbox server
-            self.handleReceiptRequest(forURL: RequestURL.appleSandbox.rawValue, data: payloadData) { (success, _) in
+            self.handleReceiptRequest(forURL: RequestURL.appleSandbox.rawValue, data: payloadData) { (success, status) in
                 if success {
                     print("Receipt validation passed in sandbox mode, unlocking product(s)")
                     completionHandler(true)
                 } else {
                     completionHandler(false)
+                    if let status = status {
+                        print(validationErrorString + "Status = \(status)")
+                    }
                 }
             }
         }
