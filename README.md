@@ -39,7 +39,7 @@ Nevertheless its still better than not doing any validation at all. I will event
 
 # Set-Up
 
-- Add the folliwng files to your project
+- Add the following files to your project
 
 1) AppStoreReceipValidator.swift
 
