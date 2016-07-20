@@ -24,7 +24,7 @@ This includes:
 
 - Test, Test, Test
 
-Please test this properly, including production mode using apples product server URL, to make sure everything is working. This is not something you want take lightly, check the print statements in your consoles to see whats happening and where it might get stuck.
+Please test this properly, including production mode which will use apples production server URL, to make sure everything is working. This is not something you want take lightly, check the print statements in your consoles to see whats happening and where it might get stuck.
 
 - Your own webserver
 
