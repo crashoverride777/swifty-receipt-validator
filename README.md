@@ -20,7 +20,7 @@ This includes:
 
 3) Check receipt contains product id for app
 
-# Before you start
+# Before you go live
 
 - Test, Test, Test
 
@@ -135,7 +135,7 @@ case .Restored:
                 
 ```
 
-# Final Note:
+# Final Note
 
 As per apples guidlines you should alway first connect to apples production servers and than fall back on apples sandbox servers if needed. So bear this in mind when testing this in sandbox mode, validation will take a bit longer due to this.
 
