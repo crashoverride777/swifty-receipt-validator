@@ -187,6 +187,9 @@ private extension AppStoreReceiptValidator {
             /// Check if failed production request was due to a test receipt
             guard status == ReceiptStatusCode.testReceipt.rawValue else {
                 completionHandler(false)
+                if let status = status {
+                    print(validationErrorString + "Status = \(status)")
+                }
                 return
             }
             
