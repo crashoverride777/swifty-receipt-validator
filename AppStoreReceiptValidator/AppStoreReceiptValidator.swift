@@ -178,7 +178,7 @@ private extension AppStoreReceiptValidator {
         /// If you will use your own server than just will have to adjust this last bit of code to only send to your server and than connect to
         /// apple production/sandbox for there as far as I believe. I have limited knowledge about this
         handleReceiptRequest(forURL: RequestURL.appleProduction.rawValue, data: payloadData) { [unowned self] (success, status) in
-            if success {
+            guard !success else {
                 print("Receipt validation passed in production mode, unlocking product(s)")
                 completionHandler(true)
                 return
