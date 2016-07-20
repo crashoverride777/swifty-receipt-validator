@@ -181,25 +181,24 @@ private extension AppStoreReceiptValidator {
             if success {
                 print("Receipt validation passed in production mode, unlocking product(s)")
                 completionHandler(true)
+                return
             }
-            else {
-                
-                /// Check if failed production request was due to a test receipt
-                guard status == ReceiptStatusCode.testReceipt.rawValue else {
+         
+            /// Check if failed production request was due to a test receipt
+            guard status == ReceiptStatusCode.testReceipt.rawValue else {
+                completionHandler(false)
+                return
+            }
+            
+            print(validationErrorString + "Production url used in sandbox mode, trying sandbox url...")
+            
+            /// Handle request to sandbox server
+            self.handleReceiptRequest(forURL: RequestURL.appleSandbox.rawValue, data: payloadData) { (success, _) in
+                if success {
+                    print("Receipt validation passed in sandbox mode, unlocking product(s)")
+                    completionHandler(true)
+                } else {
                     completionHandler(false)
-                    return
-                }
-                
-                print(validationErrorString + "Production url used in sandbox mode, trying sandbox url...")
-                
-                /// Handle request to sandbox server
-                self.handleReceiptRequest(forURL: RequestURL.appleSandbox.rawValue, data: payloadData) { (success, _) in
-                    if success {
-                        print("Receipt validation passed in sandbox mode, unlocking product(s)")
-                        completionHandler(true)
-                    } else {
-                        completionHandler(false)
-                    }
                 }
             }
         }
