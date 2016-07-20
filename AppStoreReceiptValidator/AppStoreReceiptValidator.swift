@@ -25,7 +25,7 @@
 
 /*
     Abstract:
-    A protocol extension to manage in app purchase app store receipt validation.
+    A protocol extension to manage app store in app purchase receipt validation.
 */
 
 import StoreKit
@@ -304,6 +304,8 @@ private extension AppStoreReceiptValidator {
 }
 
 // MARK: - Receipt Validation Additional Checks
+
+// TODO: - Check for duplicate transactions?
 
 private extension AppStoreReceiptValidator {
     
