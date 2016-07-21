@@ -12,8 +12,6 @@ I tried to follow apples guidlines as well as I can, e.g when fetching the app s
 
 I am doing the following validation checks, if the JSON response returns a valid receipt status code.
 
-This includes:
-
 1) Check receipt send for verification exists in json response
 
 2) Check receipt contains correct bundle id for app
@@ -32,10 +30,11 @@ The recommned way by apple is to use your own server and than communicate to app
 However for obvious reason this is a hassle for alot of people like me, because I dont have a webserver and dont understand languages like PHP to make it work.
 
 In those cases where you dont want to use your own server you can communcate directly with apples. 
-Apple even has made their own in app receipt validator to show this (tutorials on ray wenderlich, in objC tho). Doing this is apparently not very secure and therefore you should use your own server before sending stuff to apples. 
+Apple even has made their own in app receipt validator to show this (tutorials on ray wenderlich, in objC and a bit outdated). Doing this is apparently not very secure and therefore you should use your own server before sending stuff to apples. 
 
 Nevertheless its still better than not doing any validation at all. I will eventually try to update this helper to include guidlines/sample code to make it work with your own server. My knowledge about server code is very basic at the moment.
 
+https://www.raywenderlich.com/23266/in-app-purchases-in-ios-6-tutorial-consumables-and-receipt-validation
 
 # Set-Up
 
