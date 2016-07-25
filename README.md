@@ -22,7 +22,7 @@ I am doing the following validation checks, if the JSON response returns a valid
 
 - Test, Test, Test
 
-Please test this properly, including production mode which will use apples production server URL, to make sure everything is working. This is not something you want take lightly, check the print statements in your consoles to see whats happening and where it might get stuck.
+Please test this properly, including production mode which will use apples production server URL. Use xcode release mode to test this to make sure everything is working. This is not something you want take lightly, triple check purchases are working where your app is in release mode.
 
 - Your own webserver
 
