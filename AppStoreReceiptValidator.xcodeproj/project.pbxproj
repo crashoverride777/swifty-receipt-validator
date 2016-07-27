@@ -304,6 +304,7 @@
 				B419970F1D3E3C7400592CDC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

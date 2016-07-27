@@ -21,7 +21,7 @@
 //    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //    SOFTWARE.
 
-//    v1.0
+//    v1.0.1
 
 /*
     Abstract:
@@ -110,13 +110,13 @@ private enum ReceiptInfoField: String {
 // MARK: - Receipt Validator
 
 private let validationErrorString = "Receipt validation failed: "
-private var currentTransaction: SKPaymentTransaction?
+private var currentTransactionID = ""
 
 protocol AppStoreReceiptValidator: class { }
 extension AppStoreReceiptValidator {
     
-    func validateReceipt(forTransaction transaction: SKPaymentTransaction, withCompletionHandler completionHandler: Bool -> ()) {
-        currentTransaction = transaction
+    func validateReceipt(forTransactionID transactionID: String, withCompletionHandler completionHandler: Bool -> ()) {
+        currentTransactionID = transactionID
         
         AppStoreReceiptObtainer.sharedInstance.fetch() { [unowned self] receiptURL in
             guard let validReceiptURL = receiptURL else {
@@ -336,16 +336,15 @@ private extension AppStoreReceiptValidator {
         }
         
         var receiptProductID = ""
-        let transactionProductID = currentTransaction?.payment.productIdentifier ?? "NoTransactionProductID"
         
         for receiptInApp in inApp {
             receiptProductID = receiptInApp[ReceiptInfoField.InApp.product_id.rawValue] as? String ?? "NoReceiptProductID"
-            if receiptProductID == transactionProductID {
+            if receiptProductID == currentTransactionID {
                 return true
             }
         }
         
-        print(validationErrorString + urlRequestString + "Transaction product ID \(transactionProductID) not matching with receipt product id = \(receiptProductID)")
+        print(validationErrorString + urlRequestString + "Transaction product ID \(currentTransactionID) not matching with receipt product id = \(receiptProductID)")
         return false
     }
 }
