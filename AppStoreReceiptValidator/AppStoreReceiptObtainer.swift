@@ -46,8 +46,9 @@ class AppStoreReceiptObtainer: NSObject {
         return true
     }
     
-    // MARK: - Fetch
+    // MARK: - Methods
     
+    /// Fetch app store receipt
     func fetch(withCompletionHandler completionHandler: NSURL? -> ()) {
         self.completionHandler = completionHandler
         
@@ -64,8 +65,7 @@ class AppStoreReceiptObtainer: NSObject {
     }
 }
 
-// MARK: - Delegates
-
+// SKRequestDelegate
 extension AppStoreReceiptObtainer: SKRequestDelegate {
     
     func requestDidFinish(request: SKRequest) {

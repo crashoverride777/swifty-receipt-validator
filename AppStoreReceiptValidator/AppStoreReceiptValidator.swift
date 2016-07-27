@@ -112,6 +112,7 @@ private enum ReceiptInfoField: String {
 private let validationErrorString = "Receipt validation failed: "
 private var currentTransactionID = ""
 
+/// App store receipt validator
 protocol AppStoreReceiptValidator: class { }
 extension AppStoreReceiptValidator {
     
