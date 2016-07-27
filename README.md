@@ -9,7 +9,6 @@ The most important part for me is feedback of any kind, especially by people tha
 There are some helpers on gitHub that I got inspired by, but I didnt like how the code was either outdated, didnt follow all of apples guidlines, were not very swift like or unsafe due things such as force unwrapping. 
 
 I tried to follow apples guidlines as well as I can, e.g when fetching the app store receipt stored in your apps main bundle you should request a new receipt incase getting it the 1st time failes, if it than fails again validation should also fail. 
-
 I am doing the following validation checks, if the JSON response returns a valid receipt status code.
 
 1) Check receipt send for verification exists in json response
