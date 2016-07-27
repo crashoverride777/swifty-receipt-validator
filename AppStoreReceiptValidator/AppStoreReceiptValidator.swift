@@ -110,14 +110,14 @@ private enum ReceiptInfoField: String {
 // MARK: - Receipt Validator
 
 private let validationErrorString = "Receipt validation failed: "
-private var currentTransactionID = ""
+private var transactionProductID = ""
 
 /// App store receipt validator
 protocol AppStoreReceiptValidator: class { }
 extension AppStoreReceiptValidator {
     
-    func validateReceipt(forTransactionID transactionID: String, withCompletionHandler completionHandler: Bool -> ()) {
-        currentTransactionID = transactionID
+    func validateReceipt(forProductID productID: String, withCompletionHandler completionHandler: Bool -> ()) {
+        transactionProductID = productID
         
         AppStoreReceiptObtainer.sharedInstance.fetch() { [unowned self] receiptURL in
             guard let validReceiptURL = receiptURL else {
@@ -340,12 +340,12 @@ private extension AppStoreReceiptValidator {
         
         for receiptInApp in inApp {
             receiptProductID = receiptInApp[ReceiptInfoField.InApp.product_id.rawValue] as? String ?? "NoReceiptProductID"
-            if receiptProductID == currentTransactionID {
+            if receiptProductID == transactionProductID {
                 return true
             }
         }
         
-        print(validationErrorString + urlRequestString + "Transaction product ID \(currentTransactionID) not matching with receipt product id = \(receiptProductID)")
+        print(validationErrorString + urlRequestString + "Transaction product ID \(transactionProductID) not matching with receipt product id = \(receiptProductID)")
         return false
     }
 }
