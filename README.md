@@ -144,5 +144,9 @@ I will try to update this in the future if I have a better grasp of what is need
 
 # Release notes
 
-- v 1.0
+- v1.1
+
+Small changes to validation method. You now pass in the transactionID instead of the transaction itself. Pleas read the instructions again.
+
+- v1.0
 
