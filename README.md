@@ -62,17 +62,16 @@ for transaction in transactions {
      case .Purchased:
           // Transaction is in queue, user has been charged.  Client should complete the transaction.
                 
-          /// Your code to unlock product for "transaction.payment.productIdentifier"
-          /// I usually use delegation here
+          let transactionID = transaction.payment.productIdentifier
+          /// Your code to unlock product for transactionID, I usually use delegation here
           
           queue.finishTransaction(transaction)
               
      case .Restored:
           // Transaction was restored from user's purchase history.  Client should complete the transaction.
                 
-          if let originalTransaction = transaction.originalTransaction {
-               /// Your code to restore product for "originalTransaction.payment.productIdentifier"
-               /// I usually use delegation here
+          if let originalTransactionID = transaction.originalTransaction?.payment.productIdentifier {
+               /// Your code to restore product for originalTransactionID, I usually use delegation here
           }
          
           queue.finishTransaction(transaction)
@@ -102,13 +101,13 @@ Than change your purchase code to look like this
 ```swift
 case .Purchased:
     // Transaction is in queue, user has been charged.  Client should complete the transaction.
-                
-    validateReceipt(forTransaction: transaction) { success in
+      
+    let transactionID = transaction.payment.productIdentifier
+    validateReceipt(forTransactionID: transactionID) { success in
           if success {
               // `StoreKit` event handlers may be called on a background queue. Ensure unlocking products gets called on main queue.
               dispatch_async(dispatch_get_main_queue()) { [unowned self] in
-                   /// Your code to unlock product for "transaction.payment.productIdentifier"
-                  /// I usually use delegation here
+                   /// Your code to unlock product for transactionID, I usually use delegation here
               }
           }
                     
@@ -117,20 +116,19 @@ case .Purchased:
   
 case .Restored:
         // Transaction was restored from user's purchase history.  Client should complete the transaction.
-                
-        validateReceipt(forTransaction: transaction) { success in
-             if success {
-                   // `StoreKit` event handlers may be called on a background queue. Ensure unlocking products gets called on main queue.
-                  dispatch_async(dispatch_get_main_queue()) { [unowned self] in
-                       if let originalTransaction = transaction.originalTransaction {
-                             /// Your code to restore product for "originalTransaction.payment.productIdentifier"
-                             /// I usually use delegation here
-                       }
-                  }
-             }
+          
+        if let originalTransactionID = transaction.originalTransaction?.payment.productIdentifier {      
+              validateReceipt(forTransactionID: originalTransactionID) { success in
+                    if success {
+                         // `StoreKit` event handlers may be called on a background queue. Ensure unlocking products gets called on main queue.
+                         dispatch_async(dispatch_get_main_queue()) { [unowned self] in
+                              /// Your code to restore product for "originalTransactionID, I usually use delegation here
+                         }
+                    }
                     
-             queue.finishTransaction(transaction) // Must be in completion closure
-       }
+                    queue.finishTransaction(transaction) // Must be in completion closure
+              }
+        }
                 
 ```
 
