@@ -145,7 +145,7 @@ I will try to update this in the future if I have a better grasp of what is need
 
 - v1.0.1
 
-Small change to the validation method. You now pass in the transaction identifier instead of the transaction itself. Please read the instructions again.
+Small change to the validation method. You now pass in the product identifier instead of the transaction. Please read the instructions again.
 
 - v1.0
 
