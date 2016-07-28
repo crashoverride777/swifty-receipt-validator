@@ -103,11 +103,14 @@ case .Purchased:
       
     let productID = transaction.payment.productIdentifier
     validateReceipt(forProductID: productID) { success in
-          if success {
-              // `StoreKit` event handlers may be called on a background queue. Ensure unlocking products gets called on main queue.
-              dispatch_async(dispatch_get_main_queue()) { [unowned self] in
+          // `StoreKit` event handlers may be called on a background queue. Ensure unlocking products gets called on main queue.
+          dispatch_async(dispatch_get_main_queue()) { [unowned self] in
+                if success {
+              
                    /// Your code to unlock product for productID, I usually use delegation here
-              }
+                } else {
+                   /// maybe show alert here
+                }
           }
                     
          queue.finishTransaction(transaction) // Must be in completion closure
@@ -118,10 +121,12 @@ case .Restored:
           
         if let productID = transaction.originalTransaction?.payment.productIdentifier {      
               validateReceipt(forProductID: productID) { success in
-                    if success {
-                         // `StoreKit` event handlers may be called on a background queue. Ensure unlocking products gets called on main queue.
-                         dispatch_async(dispatch_get_main_queue()) { [unowned self] in
+                    // `StoreKit` event handlers may be called on a background queue. Ensure unlocking products gets called on main queue.
+                   dispatch_async(dispatch_get_main_queue()) { [unowned self] in
+                         if success {
                               /// Your code to restore product for productID, I usually use delegation here
+                         } else {
+                              /// maybe show alert 
                          }
                     }
                     
