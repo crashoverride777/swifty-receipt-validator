@@ -149,7 +149,7 @@ I will try to update this in the future if I have a better grasp of what is need
 
 - v1.0.2
 
-Cleanup
+Cleanup (e.g replaced NSArrays/Dictionaries with Swift counterpart)
 
 - v1.0.1
 
