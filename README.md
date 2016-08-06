@@ -147,6 +147,10 @@ I will try to update this in the future if I have a better grasp of what is need
 
 # Release notes
 
+- v1.0.2
+
+Cleanup
+
 - v1.0.1
 
 Small change to the validation method. You now pass in the product identifier instead of the transaction. Please read the instructions again.
