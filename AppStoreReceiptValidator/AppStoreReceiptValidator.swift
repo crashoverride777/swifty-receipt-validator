@@ -21,7 +21,7 @@
 //    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //    SOFTWARE.
 
-//    v1.0.1
+//    v1.0.2
 
 /*
     Abstract:
@@ -116,6 +116,9 @@ private var transactionProductID = ""
 protocol AppStoreReceiptValidator: class { }
 extension AppStoreReceiptValidator {
     
+    /// Validate receipt
+    ///
+    /// - parameter forProductID: The product ID String for the product to validate.
     func validateReceipt(forProductID productID: String, withCompletionHandler completionHandler: Bool -> ()) {
         transactionProductID = productID
         
@@ -126,13 +129,7 @@ extension AppStoreReceiptValidator {
                 return
             }
             
-            self.startReceiptValidation(forURL: validReceiptURL) { success in
-                if success {
-                    completionHandler(true)
-                } else {
-                    completionHandler(false)
-                }
-            }
+            self.startReceiptValidation(forURL: validReceiptURL, withCompletionHandler: completionHandler)
         }
     }
 }
@@ -141,6 +138,9 @@ extension AppStoreReceiptValidator {
 
 private extension AppStoreReceiptValidator {
 
+    /// Start receipt validation
+    ///
+    /// - parameter forURL: The NSURL of the receipt to validate.
     func startReceiptValidation(forURL receiptURL: NSURL, withCompletionHandler completionHandler: Bool -> ()) {
         print("Starting receipt validation")
         
@@ -178,6 +178,9 @@ private extension AppStoreReceiptValidator {
         /// It is still better than not doing any validation at all.
         /// If you will use your own server than just will have to adjust this last bit of code to only send to your server and than connect to
         /// apple production/sandbox for there as far as I believe. I have limited knowledge about this
+        ///
+        /// - parameter forURL: The url to handle the receipt request.
+        /// - parameter data: The playload data for the request.
         handleReceiptRequest(forURL: RequestURL.appleProduction.rawValue, data: payloadData) { [unowned self] (success, status) in
             guard !success else {
                 print("Receipt validation passed in production mode, unlocking product(s)")
@@ -220,6 +223,9 @@ private let urlRequestString = "URL request - "
 private extension AppStoreReceiptValidator {
     
     /// Handle receipt request
+    ///
+    /// - parameter forURL: The url string for the receipt request.
+    /// - parameter data: The NSData object for the request.
     func handleReceiptRequest(forURL url: String, data: NSData, withCompletionHandler completionHandler: (success: Bool, status: Int?) -> ()) {
         
         // Request url
@@ -250,10 +256,10 @@ private extension AppStoreReceiptValidator {
             }
             
             /// JSON
-            var json: NSDictionary?
+            var json: [String: AnyObject]?
             
             do {
-                json = try NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves) as? NSDictionary
+                json = try NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves) as? [String: AnyObject]
             }
             catch let error as NSError {
                 print(validationErrorString + urlRequestString + error.localizedDescription)
@@ -316,7 +322,9 @@ private extension AppStoreReceiptValidator {
 
 private extension AppStoreReceiptValidator {
     
-    /// Bundle id check
+    /// Check if app bundle ID is matching with receipt bundle ID
+    ///
+    /// - parameter withReceipt: The receipt object to check the bundle ID with.
     func appBundleIDIsMatching(withReceipt receipt: AnyObject) -> Bool {
         let receiptBundleID = receipt[ReceiptInfoField.bundle_id.rawValue] as? String ?? "NoReceiptBundleID"
         let appBundleID = NSBundle.mainBundle().bundleIdentifier ?? "NoAppBundleID"
@@ -329,9 +337,11 @@ private extension AppStoreReceiptValidator {
         return true
     }
     
-    /// Product ids check
+    /// Check if transaction product ID is matching with receipt product ID
+    ///
+    /// - parameter withReceipt: The receipt object to check the product ID with.
     func transactionProductIDIsMatching(withReceipt receipt: AnyObject) -> Bool {
-        guard let inApp = receipt[ReceiptInfoField.in_app.rawValue] as? NSArray else {
+        guard let inApp = receipt[ReceiptInfoField.in_app.rawValue] as? [AnyObject] else {
             print(validationErrorString + urlRequestString + "Could not find receipt in app array in json response")
             return false
         }

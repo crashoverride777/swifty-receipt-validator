@@ -21,7 +21,7 @@
 //    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //    SOFTWARE.
 
-//    v1.0.1
+//    v1.0.2
 
 /*
     Abstract:
@@ -34,6 +34,7 @@ class AppStoreReceiptObtainer: NSObject {
     
     // MARK: - Static Properties
     
+    /// Shared instance
     static let sharedInstance = AppStoreReceiptObtainer()
     
     // MARK: - Properties
@@ -44,6 +45,12 @@ class AppStoreReceiptObtainer: NSObject {
     private var receiptExistsAtPath: Bool {
         guard let path = receiptURL?.path where NSFileManager.defaultManager().fileExistsAtPath(path) else { return false }
         return true
+    }
+    
+    // MARK: - Init
+    
+    private override init () {
+        super.init()
     }
     
     // MARK: - Methods
