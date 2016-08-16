@@ -30,7 +30,7 @@
 
 import StoreKit
 
-class AppStoreReceiptObtainer: NSObject {
+final class AppStoreReceiptObtainer: NSObject {
     
     // MARK: - Static Properties
     
