@@ -51,7 +51,7 @@ In your in app purchase code go the method
 func paymentQueue(queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) { ....
 ```
 
-where you should have these to enums to handle app purchases and restores. The code should look more or less like this
+where the code should look more or less like this
 
 ```swift
 for transaction in transactions {
@@ -95,7 +95,7 @@ or
 extension SomeClass: SKPaymentTransactionObserver, AppStoreReceiptValidator {....
 ```
 
-Than change your purchase code to look like this
+Than change the purchase and restore code to look like this
 
 ```swift
 case .Purchased:
@@ -137,7 +137,7 @@ case .Restored:
 
 # Final Note
 
-As per apples guidlines you should alway first connect to apples production servers and than fall back on apples sandbox servers if needed. So bear this in mind when testing this in sandbox mode, validation will take a bit longer due to this.
+As per apples guidlines you should alway first connect to apples production servers and than fall back on apples sandbox servers if needed. So keep this in mind when testing in sandbox mode, validation will take a bit longer due to this.
 
 The way this is actually done, all automatically with this helper, is that if connection to production servers fails you will get some error codes. There is an error code that tells you if your have a sandbox receipt but are using production url. The helper uses this error code to than do the receipt validation again with the sandbox server url.
 
@@ -149,7 +149,7 @@ I will try to update this in the future if I have a better grasp of what is need
 
 - v1.0.2
 
-Cleanup (e.g replaced NSArrays/Dictionaries with Swift counterpart)
+Cleanup
 
 - v1.0.1
 
