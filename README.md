@@ -148,7 +148,7 @@ If anyone knows the correct way to handle this, could you please let me know.
 
 As per apples guidlines you should alway first connect to apples production servers and than fall back on apples sandbox servers if needed. So keep this in mind when testing in sandbox mode, validation will take a bit longer due to this.
 
-The way this is actually done, all automatically with this helper, is that if connection to production servers fails you will get some error codes. There is an error code that tells you if your have a sandbox receipt but are using production url. The helper uses this error code to than do the receipt validation again with the sandbox server url.
+The way this is actually done, all automatically with this helper, is that if connection to production servers fails you will get some error codes. There is an error code that tells you if you have a sandbox receipt but are using a production url. The helper uses this error code to than do the receipt validation again with the sandbox server url.
 
 If you use your own servers than instead of directly connecting to apples server enter your server url in the enum at the top of the .swift file and than adjust the validation methods accordingly to use that enum. I dont know how to than handle the above case where your should validate with product server first and than with sandbox on your server. I also dont know if any other changes to the helper are required.
 
