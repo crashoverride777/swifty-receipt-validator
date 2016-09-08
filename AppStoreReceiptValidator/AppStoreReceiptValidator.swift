@@ -21,7 +21,7 @@
 //    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //    SOFTWARE.
 
-//    v1.0.2
+//    v1.1
 
 /*
     Abstract:
@@ -32,7 +32,7 @@ import StoreKit
 
 // MARK: - Request URLs
 
-private enum RequestURL : String {
+fileprivate enum RequestURL : String {
     
     case appleSandbox = "https://sandbox.itunes.apple.com/verifyReceipt"
     case appleProduction = "https://buy.itunes.apple.com/verifyReceipt"
@@ -41,7 +41,7 @@ private enum RequestURL : String {
 
 // MARK: - JSON Object Keys
 
-private enum JSONObjectKey: String {
+fileprivate enum JSONObjectKey: String {
     
     case receiptData = "receipt-data" // The base64 encoded receipt data.
     case password // Only used for receipts that contain auto-renewable subscriptions. Your app’s shared secret (a hexadecimal string).
@@ -49,7 +49,7 @@ private enum JSONObjectKey: String {
 
 // MARK: - JSON Response Keys
 
-private enum JSONResponseKey: String {
+fileprivate enum JSONResponseKey: String {
     
     case status // See ReceiptStatusCode
     // For iOS 6 style transaction receipts, the status code reflects the status of the specific transaction’s receipt.
@@ -61,7 +61,7 @@ private enum JSONResponseKey: String {
 
 // MARK: - Receipt Status Code
 
-private enum ReceiptStatusCode: Int {
+fileprivate enum ReceiptStatusCode: Int {
     
     case unknown = -2 // No decodable status
     case none = -1 // No status returned
@@ -80,8 +80,8 @@ private enum ReceiptStatusCode: Int {
 
 // MARK: - Receipt Info Field
 
-private enum ReceiptInfoField: String {
-
+fileprivate enum ReceiptInfoField: String {
+    
     case bundle_id // This corresponds to the value of CFBundleIdentifier in the Info.plist file.
     case application_version // This corresponds to the value of CFBundleVersion (in iOS) or CFBundleShortVersionString (in OS X) in the Info.plist.
     case original_application_version // The version of the app that was originally purchased. This corresponds to the value of CFBundleVersion (in iOS) or CFBundleShortVersionString (in OS X) in the Info.plist file when the purchase was originally made.
@@ -109,8 +109,8 @@ private enum ReceiptInfoField: String {
 
 // MARK: - Receipt Validator
 
-private let validationErrorString = "Receipt validation failed: "
-private var transactionProductID = ""
+fileprivate let validationErrorString = "Receipt validation failed: "
+fileprivate var transactionProductID = ""
 
 /// App store receipt validator
 protocol AppStoreReceiptValidator: class { }
@@ -119,7 +119,7 @@ extension AppStoreReceiptValidator {
     /// Validate receipt
     ///
     /// - parameter forProductID: The product ID String for the product to validate.
-    func validateReceipt(forProductID productID: String, withCompletionHandler completionHandler: Bool -> ()) {
+    func validateReceipt(forProductID productID: String, withCompletionHandler completionHandler: @escaping (Bool) -> ()) {
         transactionProductID = productID
         
         AppStoreReceiptObtainer.sharedInstance.fetch() { [unowned self] receiptURL in
@@ -129,38 +129,38 @@ extension AppStoreReceiptValidator {
                 return
             }
             
-            self.startReceiptValidation(forURL: validReceiptURL, withCompletionHandler: completionHandler)
+            self.startReceiptValidation(forURL: validReceiptURL as URL, withCompletionHandler: completionHandler)
         }
     }
 }
 
 // MARK: - Start Receipt Validation
 
-private extension AppStoreReceiptValidator {
-
+fileprivate extension AppStoreReceiptValidator {
+    
     /// Start receipt validation
     ///
     /// - parameter forURL: The NSURL of the receipt to validate.
-    func startReceiptValidation(forURL receiptURL: NSURL, withCompletionHandler completionHandler: Bool -> ()) {
+    func startReceiptValidation(forURL receiptURL: URL, withCompletionHandler completionHandler: @escaping (Bool) -> ()) {
         print("Starting receipt validation")
         
         // Check for valid receipt content for url
-        guard let receipt = NSData(contentsOfURL: receiptURL) else {
+        guard let receipt = try? Data(contentsOf: receiptURL) else {
             print(validationErrorString + "Could not set with contents for url")
             completionHandler(false)
             return
         }
         
         // Prepare payload
-        let receiptData = receipt.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
+        let receiptData = receipt.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
         let payload = [JSONObjectKey.receiptData.rawValue: receiptData]
         
-        var receiptPayloadData: NSData?
+        var receiptPayloadData: Data?
         
         do {
-            receiptPayloadData = try NSJSONSerialization.dataWithJSONObject(payload, options: NSJSONWritingOptions(rawValue: 0))
+            receiptPayloadData = try JSONSerialization.data(withJSONObject: payload, options: JSONSerialization.WritingOptions(rawValue: 0))
         }
-        
+            
         catch let error as NSError {
             print(error.localizedDescription)
             completionHandler(false)
@@ -172,12 +172,12 @@ private extension AppStoreReceiptValidator {
             completionHandler(false)
             return
         }
-     
+        
         /// URL request to production server first, if it fails because in test environment try sandbox
         /// This handles validation directily with apple. This is not the recommended way by apple as it is not secure.
         /// It is still better than not doing any validation at all.
         /// If you will use your own server than just will have to adjust this last bit of code to only send to your server and than connect to
-        /// apple production/sandbox for there as far as I believe. I have limited knowledge about this
+        /// apple production/sandbox for there.
         ///
         /// - parameter forURL: The url to handle the receipt request.
         /// - parameter data: The playload data for the request.
@@ -187,7 +187,7 @@ private extension AppStoreReceiptValidator {
                 completionHandler(true)
                 return
             }
-         
+            
             /// Check if failed production request was due to a test receipt
             guard status == ReceiptStatusCode.testReceipt.rawValue else {
                 completionHandler(false)
@@ -218,40 +218,40 @@ private extension AppStoreReceiptValidator {
 
 // MARK: - Handle URL Request
 
-private let urlRequestString = "URL request - "
+fileprivate let urlRequestString = "URL request - "
 
-private extension AppStoreReceiptValidator {
+fileprivate extension AppStoreReceiptValidator {
     
     /// Handle receipt request
     ///
     /// - parameter forURL: The url string for the receipt request.
     /// - parameter data: The NSData object for the request.
-    func handleReceiptRequest(forURL url: String, data: NSData, withCompletionHandler completionHandler: (success: Bool, status: Int?) -> ()) {
+    func handleReceiptRequest(forURL url: String, data: Data, withCompletionHandler completionHandler: @escaping (_ success: Bool, _ status: Int?) -> ()) {
         
         // Request url
-        guard let requestURL = NSURL(string: url) else {
+        guard let requestURL = URL(string: url) else {
             print(validationErrorString + "Request url not found")
-            completionHandler(success: false, status: nil)
+            completionHandler(false, nil)
             return
         }
         // Request
-        let request = NSMutableURLRequest(URL: requestURL)
-        request.HTTPMethod = "POST"
-        request.HTTPBody = data
+        var request = URLRequest(url: requestURL) // swift 2 NSMutableURLRequest(url: requestURL)
+        request.httpMethod = "POST"
+        request.httpBody = data
         
-        let task = NSURLSession.sharedSession().dataTaskWithRequest(request) { [unowned self] (data, response, error) in
+        let task = URLSession.shared.dataTask(with: request, completionHandler: { (data, response, error) in
             
             /// URL request error
             if let error = error {
                 print(validationErrorString + urlRequestString + error.localizedDescription)
-                completionHandler(success: false, status: nil)
+                completionHandler(false, nil)
                 return
             }
             
             /// URL request data error
             guard let data = data else {
                 print(validationErrorString + urlRequestString + "Data error")
-                completionHandler(success: false, status: nil)
+                completionHandler(false, nil)
                 return
             }
             
@@ -259,43 +259,43 @@ private extension AppStoreReceiptValidator {
             var json: [String: AnyObject]?
             
             do {
-                json = try NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves) as? [String: AnyObject]
+                json = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves) as? [String : AnyObject]
             }
             catch let error as NSError {
                 print(validationErrorString + urlRequestString + error.localizedDescription)
-                completionHandler(success: false, status: nil)
+                completionHandler(false, nil)
                 return
             }
             
             /// Parse json
             guard let parseJSON = json else {
                 print(validationErrorString + urlRequestString + "JSON parse error")
-                completionHandler(success: false, status: nil)
+                completionHandler(false, nil)
                 return
             }
             
             /// Check for receipt status in json
             guard let status = parseJSON[JSONResponseKey.status.rawValue] as? Int else {
                 print(validationErrorString + urlRequestString + "Receipt status not found in json response")
-                completionHandler(success: false, status: nil)
+                completionHandler(false, nil)
                 return
             }
             
             /// Check receipt status is valid
             guard status == ReceiptStatusCode.valid.rawValue else {
                 print(validationErrorString + urlRequestString + "Invalid receipt status in json response = \(status)")
-                completionHandler(success: false, status: status)
+                completionHandler(false, status)
                 return
             }
             
             print("Valid receipt status in json reponse: \(status)")
             
-            /// Handle additional checks
+            /// Handle additional security checks
             
             /// Check receipt send for verification exists in json response
             guard let receipt = parseJSON[JSONResponseKey.receipt.rawValue] else {
                 print(validationErrorString + urlRequestString + "Could not find receipt send for validation in json reponse")
-                completionHandler(success: false, status: nil)
+                completionHandler(false, nil)
                 return
             }
             
@@ -303,14 +303,14 @@ private extension AppStoreReceiptValidator {
             
             /// Check receipt contains correct bundle and product id for app
             guard self.appBundleIDIsMatching(withReceipt: receipt) && self.transactionProductIDIsMatching(withReceipt: receipt) else {
-                completionHandler(success: false, status: nil)
+                completionHandler(false, nil)
                 return
             }
             
             // Validation successfull, unlock content
             print(urlRequestString + "Receipt verification successful")
-            completionHandler(success: true, status: nil)
-        }
+            completionHandler(true, nil)
+        })
         
         task.resume()
     }
@@ -318,16 +318,14 @@ private extension AppStoreReceiptValidator {
 
 // MARK: - Receipt Validation Additional Checks
 
-// TODO: - Check for duplicate transactions?
-
-private extension AppStoreReceiptValidator {
+fileprivate extension AppStoreReceiptValidator {
     
     /// Check if app bundle ID is matching with receipt bundle ID
     ///
     /// - parameter withReceipt: The receipt object to check the bundle ID with.
     func appBundleIDIsMatching(withReceipt receipt: AnyObject) -> Bool {
         let receiptBundleID = receipt[ReceiptInfoField.bundle_id.rawValue] as? String ?? "NoReceiptBundleID"
-        let appBundleID = NSBundle.mainBundle().bundleIdentifier ?? "NoAppBundleID"
+        let appBundleID = Bundle.main.bundleIdentifier ?? "NoAppBundleID"
         
         guard receiptBundleID == appBundleID else {
             print(validationErrorString + urlRequestString + "App bundle id: \(appBundleID) not matching with receipt bundle id: \(receiptBundleID)")

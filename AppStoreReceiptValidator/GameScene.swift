@@ -9,21 +9,21 @@
 import SpriteKit
 
 class GameScene: SKScene {
-    override func didMoveToView(view: SKView) {
+    override func didMove(to view: SKView) {
         /* Setup your scene here */
         let myLabel = SKLabelNode(fontNamed:"Chalkduster")
         myLabel.text = "Hello, World!"
         myLabel.fontSize = 45
-        myLabel.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame))
+        myLabel.position = CGPoint(x:self.frame.midX, y:self.frame.midY)
         
         self.addChild(myLabel)
     }
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
        /* Called when a touch begins */
         
         for touch in touches {
-            let location = touch.locationInNode(self)
+            let location = touch.location(in: self)
             
             let sprite = SKSpriteNode(imageNamed:"Spaceship")
             
@@ -31,15 +31,15 @@ class GameScene: SKScene {
             sprite.yScale = 0.5
             sprite.position = location
             
-            let action = SKAction.rotateByAngle(CGFloat(M_PI), duration:1)
+            let action = SKAction.rotate(byAngle: CGFloat(M_PI), duration:1)
             
-            sprite.runAction(SKAction.repeatActionForever(action))
+            sprite.run(SKAction.repeatForever(action))
             
             self.addChild(sprite)
         }
     }
    
-    override func update(currentTime: CFTimeInterval) {
+    override func update(_ currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
     }
 }

@@ -21,7 +21,7 @@
 //    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //    SOFTWARE.
 
-//    v1.0.2
+//    v1.1
 
 /*
     Abstract:
@@ -39,24 +39,24 @@ final class AppStoreReceiptObtainer: NSObject {
     
     // MARK: - Properties
     
-    private let receiptURL = NSBundle.mainBundle().appStoreReceiptURL
-    private var completionHandler: (NSURL? -> ())?
+    fileprivate let receiptURL = Bundle.main.appStoreReceiptURL
+    fileprivate var completionHandler: ((NSURL?) -> ())?
     
-    private var receiptExistsAtPath: Bool {
-        guard let path = receiptURL?.path where NSFileManager.defaultManager().fileExistsAtPath(path) else { return false }
+    fileprivate var receiptExistsAtPath: Bool {
+        guard let path = receiptURL?.path, FileManager.default.fileExists(atPath: path) else { return false }
         return true
     }
     
     // MARK: - Init
     
-    private override init () {
+    fileprivate override init () {
         super.init()
     }
     
     // MARK: - Methods
     
     /// Fetch app store receipt
-    func fetch(withCompletionHandler completionHandler: NSURL? -> ()) {
+    func fetch(withCompletionHandler completionHandler: @escaping (NSURL?) -> ()) {
         self.completionHandler = completionHandler
         
         guard receiptExistsAtPath else {
@@ -68,14 +68,14 @@ final class AppStoreReceiptObtainer: NSObject {
         }
         
         print("Receipt found")
-        self.completionHandler?(receiptURL)
+        self.completionHandler?(receiptURL as NSURL?)
     }
 }
 
 // SKRequestDelegate
 extension AppStoreReceiptObtainer: SKRequestDelegate {
     
-    func requestDidFinish(request: SKRequest) {
+    func requestDidFinish(_ request: SKRequest) {
         print("Receipt request did finish")
         
         guard receiptExistsAtPath else {
@@ -85,10 +85,10 @@ extension AppStoreReceiptObtainer: SKRequestDelegate {
         }
         
         print("Newly created receipt found")
-        completionHandler?(receiptURL)
+        completionHandler?(receiptURL as NSURL?)
     }
     
-    func request(request: SKRequest, didFailWithError error: NSError) {
+    func request(_ request: SKRequest, didFailWithError error: Error) {
         print(error.localizedDescription)
         completionHandler?(nil)
     }
