@@ -122,7 +122,7 @@ extension AppStoreReceiptValidator {
     func validateReceipt(forProductID productID: String, withCompletionHandler completionHandler: @escaping (Bool) -> ()) {
         transactionProductID = productID
         
-        AppStoreReceiptObtainer.sharedInstance.fetch() { [unowned self] receiptURL in
+        AppStoreReceiptObtainer.shared.fetch() { [unowned self] receiptURL in
             guard let validReceiptURL = receiptURL else {
                 print("Receipt fetch error")
                 completionHandler(false)
@@ -136,7 +136,7 @@ extension AppStoreReceiptValidator {
 
 // MARK: - Start Receipt Validation
 
-fileprivate extension AppStoreReceiptValidator {
+private extension AppStoreReceiptValidator {
     
     /// Start receipt validation
     ///
@@ -218,9 +218,9 @@ fileprivate extension AppStoreReceiptValidator {
 
 // MARK: - Handle URL Request
 
-fileprivate let urlRequestString = "URL request - "
+private let urlRequestString = "URL request - "
 
-fileprivate extension AppStoreReceiptValidator {
+private extension AppStoreReceiptValidator {
     
     /// Handle receipt request
     ///
@@ -318,7 +318,7 @@ fileprivate extension AppStoreReceiptValidator {
 
 // MARK: - Receipt Validation Additional Checks
 
-fileprivate extension AppStoreReceiptValidator {
+private extension AppStoreReceiptValidator {
     
     /// Check if app bundle ID is matching with receipt bundle ID
     ///

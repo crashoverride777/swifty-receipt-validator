@@ -35,7 +35,7 @@ final class AppStoreReceiptObtainer: NSObject {
     // MARK: - Static Properties
     
     /// Shared instance
-    static let sharedInstance = AppStoreReceiptObtainer()
+    static let shared = AppStoreReceiptObtainer()
     
     // MARK: - Properties
     
@@ -49,7 +49,7 @@ final class AppStoreReceiptObtainer: NSObject {
     
     // MARK: - Init
     
-    fileprivate override init () {
+    private override init () {
         super.init()
     }
     
