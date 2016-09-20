@@ -152,7 +152,7 @@ private extension AppStoreReceiptValidator {
         }
         
         // Prepare payload
-        let receiptData = receipt.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
+        let receiptData = receipt.base64EncodedString(options: Data.Base64EncodingOptions(rawValue: 0))
         let payload = [JSONObjectKey.receiptData.rawValue: receiptData]
         
         var receiptPayloadData: Data?
@@ -225,7 +225,7 @@ private extension AppStoreReceiptValidator {
     /// Handle receipt request
     ///
     /// - parameter forURL: The url string for the receipt request.
-    /// - parameter data: The NSData object for the request.
+    /// - parameter data: The Data object for the request.
     func handleReceiptRequest(forURL url: String, data: Data, withCompletionHandler completionHandler: @escaping (_ success: Bool, _ status: Int?) -> ()) {
         
         // Request url
