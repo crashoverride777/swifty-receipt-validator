@@ -21,15 +21,15 @@
 //    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //    SOFTWARE.
 
-//    v1.1
-
-/*
-    Abstract:
-    A Singleton class to manage in app purchase receipt fetching.
-*/
+//    v1.1.1
 
 import StoreKit
 
+/*
+ App Store Receipt Obtainer
+ 
+ A Singleton class to manage in app purchase receipt fetching.
+ */
 final class AppStoreReceiptObtainer: NSObject {
     
     // MARK: - Static Properties
@@ -39,9 +39,13 @@ final class AppStoreReceiptObtainer: NSObject {
     
     // MARK: - Properties
     
+    /// Receipt url
     fileprivate let receiptURL = Bundle.main.appStoreReceiptURL
-    fileprivate var completionHandler: ((NSURL?) -> ())?
     
+    /// Completion handler
+    fileprivate var completionHandler: ((URL?) -> ())?
+    
+    /// Check if receipt exists at patch
     fileprivate var receiptExistsAtPath: Bool {
         guard let path = receiptURL?.path, FileManager.default.fileExists(atPath: path) else { return false }
         return true
@@ -49,14 +53,13 @@ final class AppStoreReceiptObtainer: NSObject {
     
     // MARK: - Init
     
-    private override init () {
-        super.init()
-    }
+    /// Private singleton init
+    private override init () { }
     
     // MARK: - Methods
     
     /// Fetch app store receipt
-    func fetch(withCompletionHandler completionHandler: @escaping (NSURL?) -> ()) {
+    func fetch(withCompletionHandler completionHandler: @escaping (URL?) -> ()) {
         self.completionHandler = completionHandler
         
         guard receiptExistsAtPath else {
@@ -68,13 +71,16 @@ final class AppStoreReceiptObtainer: NSObject {
         }
         
         print("Receipt found")
-        self.completionHandler?(receiptURL as NSURL?)
+        self.completionHandler?(receiptURL)
     }
 }
+
+// MARK: - Delegates
 
 // SKRequestDelegate
 extension AppStoreReceiptObtainer: SKRequestDelegate {
     
+    /// Request did finish
     func requestDidFinish(_ request: SKRequest) {
         print("Receipt request did finish")
         
@@ -85,9 +91,10 @@ extension AppStoreReceiptObtainer: SKRequestDelegate {
         }
         
         print("Newly created receipt found")
-        completionHandler?(receiptURL as NSURL?)
+        completionHandler?(receiptURL)
     }
     
+    /// Request did fail with error
     func request(_ request: SKRequest, didFailWithError error: Error) {
         print(error.localizedDescription)
         completionHandler?(nil)

@@ -21,12 +21,7 @@
 //    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //    SOFTWARE.
 
-//    v1.1
-
-/*
-    Abstract:
-    A protocol extension to manage app store in app purchase receipt validation.
-*/
+//    v1.1.1
 
 import StoreKit
 
@@ -112,7 +107,11 @@ fileprivate enum ReceiptInfoField: String {
 fileprivate let validationErrorString = "Receipt validation failed: "
 fileprivate var transactionProductID = ""
 
-/// App store receipt validator
+/*
+ App Store Receipt Validator
+ 
+ A protocol extension to manage in app purchase receipt validation.
+ */
 protocol AppStoreReceiptValidator: class { }
 extension AppStoreReceiptValidator {
     
@@ -129,7 +128,7 @@ extension AppStoreReceiptValidator {
                 return
             }
             
-            self.startReceiptValidation(forURL: validReceiptURL as URL, withCompletionHandler: completionHandler)
+            self.startReceiptValidation(forURL: validReceiptURL, withCompletionHandler: completionHandler)
         }
     }
 }
@@ -140,19 +139,27 @@ private extension AppStoreReceiptValidator {
     
     /// Start receipt validation
     ///
-    /// - parameter forURL: The NSURL of the receipt to validate.
+    /// - parameter forURL: The URL of the receipt to validate.
     func startReceiptValidation(forURL receiptURL: URL, withCompletionHandler completionHandler: @escaping (Bool) -> ()) {
         print("Starting receipt validation")
         
         // Check for valid receipt content for url
-        guard let receipt = try? Data(contentsOf: receiptURL) else {
-            print(validationErrorString + "Could not set with contents for url")
+        
+        // Receipt data
+        var receipt: Data?
+        
+        do {
+            receipt = try Data(contentsOf: receiptURL)
+        }
+        
+        catch let error as NSError {
+            print(error.localizedDescription)
             completionHandler(false)
             return
         }
         
         // Prepare payload
-        let receiptData = receipt.base64EncodedString(options: Data.Base64EncodingOptions(rawValue: 0))
+        let receiptData = receipt?.base64EncodedString(options: Data.Base64EncodingOptions(rawValue: 0))
         let payload = [JSONObjectKey.receiptData.rawValue: receiptData]
         
         var receiptPayloadData: Data?
