@@ -156,6 +156,10 @@ I will try to update this in the future if I have a better grasp of what is need
 
 # Release notes
 
+- v1.1.1
+
+Cleanup
+
 - v1.1
 
 Updated to Swift 3
