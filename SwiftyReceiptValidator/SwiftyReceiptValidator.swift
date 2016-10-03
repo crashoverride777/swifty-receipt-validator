@@ -115,7 +115,7 @@ private let validationErrorString = "Receipt validation failed: "
 private var transactionProductID = ""
 
 /*
- SwiftyReceiptValidator
+ Swifty Receipt Validator
  
  A protocol extension to manage in app purchase receipt validation.
  */
@@ -128,7 +128,7 @@ public extension SwiftyReceiptValidator {
     func validateReceipt(forProductID productID: String, withCompletionHandler completionHandler: @escaping (Bool) -> ()) {
         transactionProductID = productID
         
-        AppStoreReceiptObtainer.shared.fetch() { [unowned self] receiptURL in
+        SwiftyReceiptObtainer.shared.fetch { [unowned self] receiptURL in
             guard let validReceiptURL = receiptURL else {
                 print("Receipt fetch error")
                 completionHandler(false)

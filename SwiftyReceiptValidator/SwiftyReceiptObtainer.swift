@@ -26,16 +26,16 @@
 import StoreKit
 
 /*
- App Store Receipt Obtainer
+ Swifty Receipt Obtainer
  
  A Singleton class to manage in app purchase receipt fetching.
  */
-final class AppStoreReceiptObtainer: NSObject {
+final class SwiftyReceiptObtainer: NSObject {
     
     // MARK: - Static Properties
     
     /// Shared instance
-    static let shared = AppStoreReceiptObtainer()
+    static let shared = SwiftyReceiptObtainer()
     
     // MARK: - Properties
     
@@ -78,7 +78,7 @@ final class AppStoreReceiptObtainer: NSObject {
 // MARK: - Delegates
 
 // SKRequestDelegate
-extension AppStoreReceiptObtainer: SKRequestDelegate {
+extension SwiftyReceiptObtainer: SKRequestDelegate {
     
     /// Request did finish
     func requestDidFinish(_ request: SKRequest) {
