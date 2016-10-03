@@ -21,7 +21,7 @@
 //    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //    SOFTWARE.
 
-//    v1.1.1
+//    v2.0
 
 import StoreKit
 
@@ -46,7 +46,7 @@ final class AppStoreReceiptObtainer: NSObject {
     fileprivate var completionHandler: ((URL?) -> ())?
     
     /// Check if receipt exists at patch
-    fileprivate var receiptExistsAtPath: Bool {
+    fileprivate var isReceiptExistsAtPath: Bool {
         guard let path = receiptURL?.path, FileManager.default.fileExists(atPath: path) else { return false }
         return true
     }
@@ -62,7 +62,7 @@ final class AppStoreReceiptObtainer: NSObject {
     func fetch(withCompletionHandler completionHandler: @escaping (URL?) -> ()) {
         self.completionHandler = completionHandler
         
-        guard receiptExistsAtPath else {
+        guard isReceiptExistsAtPath else {
             print("Requesting a new receipt")
             let request = SKReceiptRefreshRequest(receiptProperties: nil)
             request.delegate = self
@@ -84,7 +84,7 @@ extension AppStoreReceiptObtainer: SKRequestDelegate {
     func requestDidFinish(_ request: SKRequest) {
         print("Receipt request did finish")
         
-        guard receiptExistsAtPath else {
+        guard isReceiptExistsAtPath else {
             print("Could not obtainin the receipt from the receipt request, maybe the user did not successfully enter it's credentials")
             completionHandler?(nil)
             return

@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B41996F61D3E3C7400592CDC"
-               BuildableName = "AppStoreReceiptValidator.app"
-               BlueprintName = "AppStoreReceiptValidator"
-               ReferencedContainer = "container:AppStoreReceiptValidator.xcodeproj">
+               BlueprintIdentifier = "B4533F301DA2BD8900440CC0"
+               BuildableName = "SwiftyReceiptValidator.framework"
+               BlueprintName = "SwiftyReceiptValidator"
+               ReferencedContainer = "container:SwiftyReceiptValidator.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -29,15 +29,6 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "B41996F61D3E3C7400592CDC"
-            BuildableName = "AppStoreReceiptValidator.app"
-            BlueprintName = "AppStoreReceiptValidator"
-            ReferencedContainer = "container:AppStoreReceiptValidator.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
@@ -51,16 +42,15 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "B41996F61D3E3C7400592CDC"
-            BuildableName = "AppStoreReceiptValidator.app"
-            BlueprintName = "AppStoreReceiptValidator"
-            ReferencedContainer = "container:AppStoreReceiptValidator.xcodeproj">
+            BlueprintIdentifier = "B4533F301DA2BD8900440CC0"
+            BuildableName = "SwiftyReceiptValidator.framework"
+            BlueprintName = "SwiftyReceiptValidator"
+            ReferencedContainer = "container:SwiftyReceiptValidator.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -70,16 +60,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "B41996F61D3E3C7400592CDC"
-            BuildableName = "AppStoreReceiptValidator.app"
-            BlueprintName = "AppStoreReceiptValidator"
-            ReferencedContainer = "container:AppStoreReceiptValidator.xcodeproj">
+            BlueprintIdentifier = "B4533F301DA2BD8900440CC0"
+            BuildableName = "SwiftyReceiptValidator.framework"
+            BlueprintName = "SwiftyReceiptValidator"
+            ReferencedContainer = "container:SwiftyReceiptValidator.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
