@@ -85,13 +85,13 @@ for transaction in transactions {
 To use the receipt validator go the the class or class extension that has your in app purchase code with the above method. Go to where you added the SKPaymentTransactionObserver and confirm to the AppStoreReceiptValidator protocol as well
 
 ```swift
-class SomeClass: ... , SKPaymentTransactionObserver, AppStoreReceiptValidator {....
+class SomeClass: ... , SKPaymentTransactionObserver, SwiftyReceiptValidator {....
 ```
 
 or 
 
 ```swift
-extension SomeClass: SKPaymentTransactionObserver, AppStoreReceiptValidator {....
+extension SomeClass: SKPaymentTransactionObserver, SwiftyReceiptValidator {....
 ```
 
 Than change the purchase and restore code to look like this
