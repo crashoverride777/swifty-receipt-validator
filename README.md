@@ -1,9 +1,10 @@
 # Swift App Store Receipt Validator
 
+Note: I will lock down this project withing the next 1-2 updates. This means there will be no more source breaking changes which I am sure is frustrating some. All future changes will be handled via deprecated warnings.
+
 A swift protocol extension to handle app store receipt validation.
 
 I am by no means an expert, as receipt validation was causing me headaches for months. I however believe I am on the right track with this helper. 
-
 The most important part for me is feedback of any kind, especially by people that have a better knowledge about it than me. So please dont hestitate to open an issue or email me, this way we can make sure this helper is as solid as it can be.
 
 There are some helpers on gitHub that I got inspired by, but I didnt like how the code was either outdated, didnt follow all of apples guidlines, were not very swift like or unsafe due things such as force unwrapping. 
