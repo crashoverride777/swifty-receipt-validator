@@ -28,7 +28,7 @@ import StoreKit
 /*
  Swifty Receipt Obtainer
  
- A Singleton class to manage in app purchase receipt fetching.
+ Singleton class to manage in app purchase receipt fetching.
  */
 final class SwiftyReceiptObtainer: NSObject {
     

@@ -124,7 +124,7 @@ public extension SwiftyReceiptValidator {
     
     /// Validate receipt
     ///
-    /// - parameter forProductID: The product ID String for the product to validate.
+    /// - parameter productID: The product ID String for the product to validate.
     func validateReceipt(forProductID productID: String, withCompletionHandler completionHandler: @escaping (Bool) -> ()) {
         transactionProductID = productID
         
@@ -146,8 +146,8 @@ private extension SwiftyReceiptValidator {
     
     /// Start receipt validation
     ///
-    /// - parameter forURL: The URL of the receipt to validate.
-    func startReceiptValidation(forURL receiptURL: URL, withCompletionHandler completionHandler: @escaping (Bool) -> ()) {
+    /// - parameter url: The URL of the receipt to validate.
+    func startReceiptValidation(forURL url: URL, withCompletionHandler completionHandler: @escaping (Bool) -> ()) {
         print("Starting receipt validation")
         
         // Check for valid receipt content for url
@@ -156,7 +156,7 @@ private extension SwiftyReceiptValidator {
         var receipt: Data?
         
         do {
-            receipt = try Data(contentsOf: receiptURL)
+            receipt = try Data(contentsOf: url)
         }
         
         catch let error as NSError {
@@ -235,7 +235,7 @@ private extension SwiftyReceiptValidator {
     
     /// Handle receipt request
     ///
-    /// - parameter forURL: The url string for the receipt request.
+    /// - parameter url: The url string for the receipt request.
     /// - parameter data: The Data object for the request.
     func handleReceiptRequest(forURL url: String, data: Data, withCompletionHandler completionHandler: @escaping (_ isSuccess: Bool, _ status: Int?) -> ()) {
         
@@ -333,7 +333,7 @@ private extension SwiftyReceiptValidator {
     
     /// Check if app bundle ID is matching with receipt bundle ID
     ///
-    /// - parameter withReceipt: The receipt object to check the bundle ID with.
+    /// - parameter receipt: The receipt object to check the bundle ID with.
     func isAppBundleIDMatching(withReceipt receipt: AnyObject) -> Bool {
         let receiptBundleID = receipt[ReceiptInfoField.bundle_id.rawValue] as? String ?? "NoReceiptBundleID"
         let appBundleID = Bundle.main.bundleIdentifier ?? "NoAppBundleID"
@@ -348,7 +348,7 @@ private extension SwiftyReceiptValidator {
     
     /// Check if transaction product ID is matching with receipt product ID
     ///
-    /// - parameter withReceipt: The receipt object to check the product ID with.
+    /// - parameter receipt: The receipt object to check the product ID with.
     func isTransactionProductIDMatching(withReceipt receipt: AnyObject) -> Bool {
         guard let inApp = receipt[ReceiptInfoField.in_app.rawValue] as? [AnyObject] else {
             print(validationErrorString + urlRequestString + "Could not find receipt in app array in json response")
