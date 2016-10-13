@@ -16,6 +16,10 @@ I am doing the following validation checks, if the JSON response returns a valid
 
 3) Check receipt contains product id for app
 
+# Cocoa Pods
+
+I know that the current way of copying the .swift file(s) into your project sucks and is bad practice, so I am working hard to finally support CocoaPods very soon. Stay tuned.
+
 # Before you go live
 
 - Test, Test, Test
