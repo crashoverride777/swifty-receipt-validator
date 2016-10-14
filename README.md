@@ -24,7 +24,7 @@ I know that the current way of copying the .swift file(s) into your project suck
 
 - Test, Test, Test
 
-Please test this properly, including production mode which will use apples production server URL. Use xcode release mode to test this to make sure everything is working. This is not something you want take lightly, triple check purchases are working where your app is in release mode.
+Please test this properly, including production mode which will use apples production server URL. Use xcode release mode to test this to make sure everything is working. This is not something you want take lightly, triple check purchases are working when your app is in release mode.
 
 - Your own webserver
 
