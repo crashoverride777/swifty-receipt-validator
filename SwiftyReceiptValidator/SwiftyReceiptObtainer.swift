@@ -21,7 +21,7 @@
 //    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //    SOFTWARE.
 
-//    v2.0
+//    v2.0.1
 
 import StoreKit
 
@@ -43,7 +43,7 @@ final class SwiftyReceiptObtainer: NSObject {
     fileprivate let receiptURL = Bundle.main.appStoreReceiptURL
     
     /// Completion handler
-    fileprivate var completionHandler: ((URL?) -> ())?
+    fileprivate var handler: ((URL?) -> ())?
     
     /// Check if receipt exists at patch
     fileprivate var isReceiptExistsAtPath: Bool {
@@ -59,8 +59,8 @@ final class SwiftyReceiptObtainer: NSObject {
     // MARK: - Methods
     
     /// Fetch app store receipt
-    func fetch(withCompletionHandler completionHandler: @escaping (URL?) -> ()) {
-        self.completionHandler = completionHandler
+    func fetch(handler: @escaping (URL?) -> ()) {
+        self.handler = handler
         
         guard isReceiptExistsAtPath else {
             print("Requesting a new receipt")
@@ -71,7 +71,7 @@ final class SwiftyReceiptObtainer: NSObject {
         }
         
         print("Receipt found")
-        self.completionHandler?(receiptURL)
+        self.handler?(receiptURL)
     }
 }
 
@@ -86,17 +86,17 @@ extension SwiftyReceiptObtainer: SKRequestDelegate {
         
         guard isReceiptExistsAtPath else {
             print("Could not obtainin the receipt from the receipt request, maybe the user did not successfully enter it's credentials")
-            completionHandler?(nil)
+            handler?(nil)
             return
         }
         
         print("Newly created receipt found")
-        completionHandler?(receiptURL)
+        handler?(receiptURL)
     }
     
     /// Request did fail with error
     func request(_ request: SKRequest, didFailWithError error: Error) {
         print(error.localizedDescription)
-        completionHandler?(nil)
+        handler?(nil)
     }
 }

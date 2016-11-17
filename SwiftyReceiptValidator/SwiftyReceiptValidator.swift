@@ -21,7 +21,7 @@
 //    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //    SOFTWARE.
 
-//    v2.0
+//    v2.0.1
 
 import StoreKit
 
@@ -125,17 +125,17 @@ public extension SwiftyReceiptValidator {
     /// Validate receipt
     ///
     /// - parameter productID: The product ID String for the product to validate.
-    func validateReceipt(forProductID productID: String, withCompletionHandler completionHandler: @escaping (Bool) -> ()) {
+    func validateReceipt(forProductID productID: String, handler: @escaping (Bool) -> ()) {
         transactionProductID = productID
         
         SwiftyReceiptObtainer.shared.fetch { [unowned self] receiptURL in
             guard let validReceiptURL = receiptURL else {
                 print("Receipt fetch error")
-                completionHandler(false)
+                handler(false)
                 return
             }
             
-            self.startReceiptValidation(forURL: validReceiptURL, withCompletionHandler: completionHandler)
+            self.startReceiptValidation(forURL: validReceiptURL, handler: handler)
         }
     }
 }
@@ -147,7 +147,7 @@ private extension SwiftyReceiptValidator {
     /// Start receipt validation
     ///
     /// - parameter url: The URL of the receipt to validate.
-    func startReceiptValidation(forURL url: URL, withCompletionHandler completionHandler: @escaping (Bool) -> ()) {
+    func startReceiptValidation(forURL url: URL, handler: @escaping (Bool) -> ()) {
         print("Starting receipt validation")
         
         // Check for valid receipt content for url
@@ -161,7 +161,7 @@ private extension SwiftyReceiptValidator {
         
         catch let error as NSError {
             print(error.localizedDescription)
-            completionHandler(false)
+            handler(false)
             return
         }
         
@@ -177,13 +177,13 @@ private extension SwiftyReceiptValidator {
             
         catch let error as NSError {
             print(error.localizedDescription)
-            completionHandler(false)
+            handler(false)
             return
         }
         
         guard let payloadData = receiptPayloadData else {
             print(validationErrorString + "Payload data error")
-            completionHandler(false)
+            handler(false)
             return
         }
         
@@ -198,13 +198,13 @@ private extension SwiftyReceiptValidator {
         handleReceiptRequest(forURL: RequestURL.appleProduction.rawValue, data: payloadData) { [unowned self] (isSuccess, status) in
             guard !isSuccess else {
                 print("Receipt validation passed in production mode, unlocking product(s)")
-                completionHandler(true)
+                handler(true)
                 return
             }
             
             /// Check if failed production request was due to a test receipt
             guard status == ReceiptStatusCode.testReceipt.rawValue else {
-                completionHandler(false)
+                handler(false)
                 print(validationErrorString + "Status = \(status ?? ReceiptStatusCode.unknown.rawValue)")
                 return
             }
@@ -214,13 +214,13 @@ private extension SwiftyReceiptValidator {
             /// Handle request to sandbox server
             self.handleReceiptRequest(forURL: RequestURL.appleSandbox.rawValue, data: payloadData) { (isSuccess, status) in
                 guard isSuccess else {
-                    completionHandler(false)
+                    handler(false)
                     print(validationErrorString + "Status = \(status ?? ReceiptStatusCode.unknown.rawValue)")
                     return
                 }
                     
                 print("Receipt validation passed in sandbox mode, unlocking product(s)")
-                completionHandler(true)
+                handler(true)
             }
         }
     }
@@ -237,12 +237,12 @@ private extension SwiftyReceiptValidator {
     ///
     /// - parameter url: The url string for the receipt request.
     /// - parameter data: The Data object for the request.
-    func handleReceiptRequest(forURL url: String, data: Data, withCompletionHandler completionHandler: @escaping (_ isSuccess: Bool, _ status: Int?) -> ()) {
+    func handleReceiptRequest(forURL url: String, data: Data, handler: @escaping (_ isSuccess: Bool, _ status: Int?) -> ()) {
         
         // Request url
         guard let requestURL = URL(string: url) else {
             print(validationErrorString + "Request url not found")
-            completionHandler(false, nil)
+            handler(false, nil)
             return
         }
         // Request
@@ -255,14 +255,14 @@ private extension SwiftyReceiptValidator {
             /// URL request error
             if let error = error {
                 print(validationErrorString + urlRequestString + error.localizedDescription)
-                completionHandler(false, nil)
+                handler(false, nil)
                 return
             }
             
             /// URL request data error
             guard let data = data else {
                 print(validationErrorString + urlRequestString + "Data error")
-                completionHandler(false, nil)
+                handler(false, nil)
                 return
             }
             
@@ -274,28 +274,28 @@ private extension SwiftyReceiptValidator {
             }
             catch let error as NSError {
                 print(validationErrorString + urlRequestString + error.localizedDescription)
-                completionHandler(false, nil)
+                handler(false, nil)
                 return
             }
             
             /// Parse json
             guard let parseJSON = json else {
                 print(validationErrorString + urlRequestString + "JSON parse error")
-                completionHandler(false, nil)
+                handler(false, nil)
                 return
             }
             
             /// Check for receipt status in json
             guard let status = parseJSON[JSONResponseKey.status.rawValue] as? Int else {
                 print(validationErrorString + urlRequestString + "Receipt status not found in json response")
-                completionHandler(false, nil)
+                handler(false, nil)
                 return
             }
             
             /// Check receipt status is valid
             guard status == ReceiptStatusCode.valid.rawValue else {
                 print(validationErrorString + urlRequestString + "Invalid receipt status in json response = \(status)")
-                completionHandler(false, status)
+                handler(false, status)
                 return
             }
             
@@ -306,7 +306,7 @@ private extension SwiftyReceiptValidator {
             /// Check receipt send for verification exists in json response
             guard let receipt = parseJSON[JSONResponseKey.receipt.rawValue] else {
                 print(validationErrorString + urlRequestString + "Could not find receipt send for validation in json reponse")
-                completionHandler(false, nil)
+                handler(false, nil)
                 return
             }
             
@@ -314,13 +314,13 @@ private extension SwiftyReceiptValidator {
             
             /// Check receipt contains correct bundle and product id for app
             guard self.isAppBundleIDMatching(withReceipt: receipt) && self.isTransactionProductIDMatching(withReceipt: receipt) else {
-                completionHandler(false, nil)
+                handler(false, nil)
                 return
             }
             
             // Validation successfull, unlock content
             print(urlRequestString + "Receipt verification successful")
-            completionHandler(true, nil)
+            handler(true, nil)
         })
         
         task.resume()
