@@ -159,6 +159,10 @@ I will try to update this in the future if I have a better grasp of what is need
 
 # Release notes
 
+- v2.0.1
+
+Cleanup
+
 - v2.0
 
 Project has been renamed to SwiftyReceiptValidator
