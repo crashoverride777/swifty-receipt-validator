@@ -163,6 +163,7 @@ I will try to update this in the future if I have a better grasp of what is need
 
 - v2.0.1
 
+Completion handler now always returns on main queue
 Cleanup
 
 - v2.0
