@@ -128,7 +128,7 @@ case .Restored:
                        /// maybe show alert 
                     }
                     
-                    queue.finishTransaction(transaction) // Must be in completion closure
+                    queue.finishTransaction(transaction)
               }
         }
                 
