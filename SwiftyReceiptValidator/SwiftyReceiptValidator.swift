@@ -135,7 +135,9 @@ public extension SwiftyReceiptValidator {
                 return
             }
             
-            self.startReceiptValidation(forURL: validReceiptURL, handler: handler)
+            self.startReceiptValidation(forURL: validReceiptURL) { success in
+                DispatchQueue.main.async { handler(success) }
+            }
         }
     }
 }
