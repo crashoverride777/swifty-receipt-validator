@@ -157,8 +157,7 @@ I will try to update this in the future if I have a better grasp of what is need
 
 - v2.0.1
 
-Completion handler returns on main queue
-Cleanup
+Completion handler now returns on main queue so you dont have to do it your self in the closure.
 
 - v2.0
 
