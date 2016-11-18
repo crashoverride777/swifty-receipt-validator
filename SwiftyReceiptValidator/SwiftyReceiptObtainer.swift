@@ -58,7 +58,7 @@ final class SwiftyReceiptObtainer: NSObject {
     
     // MARK: - Methods
     
-    /// Fetch app store receipt
+    /// Fetch app store in app purchase receipt
     func fetch(handler: @escaping (URL?) -> ()) {
         self.handler = handler
         
