@@ -77,7 +77,7 @@ public enum SwiftyReceiptValidator {
     }
     
     /// Receipt Info Field
-    public enum InfoField: String {
+    public enum InfoKey: String {
         case bundle_id // This corresponds to the value of CFBundleIdentifier in the Info.plist file.
         case application_version // This corresponds to the value of CFBundleVersion (in iOS) or CFBundleShortVersionString (in OS X) in the Info.plist.
         case original_application_version // The version of the app that was originally purchased. This corresponds to the value of CFBundleVersion (in iOS) or CFBundleShortVersionString (in OS X) in the Info.plist file when the purchase was originally made.
@@ -327,7 +327,7 @@ private extension SwiftyReceiptValidator {
     ///
     /// - parameter receipt: The receipt object to check the bundle ID with.
     static func isAppBundleIDMatching(withReceipt receipt: AnyObject) -> Bool {
-        let receiptBundleID = receipt[InfoField.bundle_id.rawValue] as? String ?? "NoReceiptBundleID"
+        let receiptBundleID = receipt[InfoKey.bundle_id.rawValue] as? String ?? "NoReceiptBundleID"
         let appBundleID = Bundle.main.bundleIdentifier ?? "NoAppBundleID"
         
         guard receiptBundleID == appBundleID else {
@@ -342,7 +342,7 @@ private extension SwiftyReceiptValidator {
     ///
     /// - parameter receipt: The receipt object to check the product ID with.
     static func isTransactionProductIDMatching(withReceipt receipt: AnyObject) -> Bool {
-        guard let inApp = receipt[InfoField.in_app.rawValue] as? [AnyObject] else {
+        guard let inApp = receipt[InfoKey.in_app.rawValue] as? [AnyObject] else {
             print(validationErrorString + urlRequestString + "Could not find receipt in app array in json response")
             return false
         }
@@ -350,7 +350,7 @@ private extension SwiftyReceiptValidator {
         var receiptProductID = ""
         
         for receiptInApp in inApp {
-            receiptProductID = receiptInApp[InfoField.InApp.product_id.rawValue] as? String ?? "NoReceiptProductID"
+            receiptProductID = receiptInApp[InfoKey.InApp.product_id.rawValue] as? String ?? "NoReceiptProductID"
             if receiptProductID == transactionProductID {
                 return true
             }
