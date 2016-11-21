@@ -48,6 +48,16 @@ https://www.raywenderlich.com/23266/in-app-purchases-in-ios-6-tutorial-consumabl
 
 2) AppStoreReceiptObtainer.swift
 
+# Validation Checks
+
+By default this helper will validate a receipt based on these checks
+
+1) If receipt status code exists and is valid
+2) If app bundle id is matching with the receipt
+3) If the transaction id is matching with the receipt
+
+See below how to handle additional checks
+
 # How to use
 
 In your in app purchase code go the method
@@ -88,26 +98,14 @@ for transaction in transactions {
 }
 ```
 
-To use the receipt validator go the the class or class extension that has your in app purchase code with the above method. Go to where you added the SKPaymentTransactionObserver and confirm to the AppStoreReceiptValidator protocol as well
-
-```swift
-class SomeClass: ... , SKPaymentTransactionObserver, SwiftyReceiptValidator {....
-```
-
-or 
-
-```swift
-extension SomeClass: SKPaymentTransactionObserver, SwiftyReceiptValidator {....
-```
-
-Than change the purchase and restore code to look like this
+Change the purchase and restore code to look something like this
 
 ```swift
 case .Purchased:
     // Transaction is in queue, user has been charged.  Client should complete the transaction.
       
     let productID = transaction.payment.productIdentifier
-    validateReceipt(forProductID: productID) { success in
+    SwiftyReceipValidator.validate(forProductID: productID, sharedSecret: nil) { (success, response) in
           if success {
               /// Your code to unlock product for productID, I usually use delegation here
           } else {
@@ -121,7 +119,7 @@ case .Restored:
         // Transaction was restored from user's purchase history.  Client should complete the transaction.
           
         if let productID = transaction.originalTransaction?.payment.productIdentifier {      
-              validateReceipt(forProductID: productID) { success in
+              SwiftyReceipValidator.validate(forProductID: productID, sharedSecret: nil) { (success, response) in
                     if success {
                        /// Your code to restore product for productID, I usually use delegation here
                     } else {
@@ -134,6 +132,41 @@ case .Restored:
                 
 ```
 
+In this example sharedSecret is only set to nil because I am only validating regular in app purchases. To validate a auto renewable subscriptions you can enter your shared secret(s) that you have set up in itunes.
+
+# Additional Validation Checks
+
+If you would like to handle additional security checks you can use the response (optional dictionary) that is returned in the completion handler. Use the 4 keys in the ResponseKey enum to access the individual parts of the reponse. You can than use the InfoField enum keys to get specific values. 
+
+e.g
+
+```swift
+SwiftyReceipValidator.validate(forProductID: productID, sharedSecret: "") { (success, response) in
+         if success {
+         
+              // example 1
+              let receiptKey = SwiftyReceipValidator.ResponseKey.receipt.rawValue
+              if let receipt = response[receiptKey] {
+                     // do something
+                 
+              }
+              
+              // example 2
+              let receiptInfoFieldKey = SwiftyReceipValidator.ResponseKey.receipt_info_field.rawValue
+              if let receipt = response[receiptInfoFieldKey] {
+                     // do something for auto renewable receipts 
+              }
+              
+              
+              /// unlock products if all your additional checks passed
+              
+        } else {
+           ....        
+        }
+        
+        queue.finishTransaction(transaction)
+}
+```
 # StoreKit Alert Controllers and Connectivity Issues
 
 One thing I do not know about receipt validation is if there is a way to stop the default StoreKit alert controller to show. When you get to the purchase code and to the .Purchased switch statement, storeKit automatically shows an AlertController ("Thank you, purchase was succesfull"). This however is the point where receipt validation is actually starting so it takes another few seconds for the products to unlock. I guess this must be normal, although it would be nicer to show that alert once receipt validation is finished.
@@ -155,6 +188,14 @@ I will try to update this in the future if I have a better grasp of what is need
 
 # Release notes
 
+- v2.1
+
+Added support for auto-renewable subscriptions
+
+Validation method now returns the response so you can do additional validation checks if needed
+
+Change the API to make it more readable and due to changes above. Please check the instructions again. 
+
 - v2.0.1
 
 Completion handler now returns on main queue so you dont have to do it your self in the closure.
@@ -163,4 +204,4 @@ Completion handler now returns on main queue so you dont have to do it your self
 
 Project has been renamed to SwiftyReceiptValidator
 
-No more source breaking changes after this update. All future changes will be handled with deprecated messages.
+No more source breaking changes unless after this update. All future changes will be handled with deprecated messages.
