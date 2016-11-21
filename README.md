@@ -134,9 +134,9 @@ In this example sharedSecret is only set to nil because I am only validating reg
 
 # Additional Validation Checks
 
-If you would like to handle additional security checks you can use the response (optional dictionary) that is returned in the completion handler. Use the 4 keys in the ResponseKey enum to access the individual parts of the reponse. You can than use the InfoField enum keys to get specific values. 
+If you would like to handle additional validation checks you can use the response (optional dictionary) that is returned in the completion handler. Use the 4 keys in the ResponseKey enum to access the inital parts of the reponse. 
 
-e.g
+e.g 
 
 ```swift
 SwiftyReceipValidator.validate(forProductID: productID, sharedSecret: "") { (success, response) in
@@ -165,6 +165,33 @@ SwiftyReceipValidator.validate(forProductID: productID, sharedSecret: "") { (suc
         queue.finishTransaction(transaction)
 }
 ```
+
+You than can use the InfoKey enum keys to get specific values e.g expiry date, app bundle ID etc. 
+
+e.g 
+
+```swift
+....
+if let receipt = response[receiptKey] {
+     // example 1
+     let creationDateKey = SwiftyReceiptValidator.InfoKey.creation_date.rawValue
+     if let creationDate = receipt[creationDateKey] as? ... {
+          ...
+     }
+     
+     // example 2
+     let inAppKey = SwiftyReceiptValidator.InfoKey.in_app.rawValue
+     if let inApp = receipt[inAppKey] as? [AnyObject] {
+         
+         for receiptInApp in inApp {
+            let expiryDateKey = SwiftyReceiptValidator.InfoKey.InApp.expires_date.rawValue
+            let expiryDate = receiptInApp[expiryDateKey] as? String ?? "NoDateFound"
+              ...
+        }
+     }
+}
+```
+
 # StoreKit Alert Controllers and Connectivity Issues
 
 One thing I do not know about receipt validation is if there is a way to stop the default StoreKit alert controller to show. When you get to the purchase code and to the .Purchased switch statement, storeKit automatically shows an AlertController ("Thank you, purchase was succesfull"). This however is the point where receipt validation is actually starting so it takes another few seconds for the products to unlock. I guess this must be normal, although it would be nicer to show that alert once receipt validation is finished.
