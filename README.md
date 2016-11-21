@@ -8,13 +8,21 @@ The most important part for me is feedback of any kind, especially by people tha
 There are some helpers on gitHub that I got inspired by, but I didnt like how the code was either outdated, didnt follow all of apples guidlines, were not very swift like or unsafe due things such as force unwrapping. 
 
 I tried to follow apples guidlines as well as I can, e.g when fetching the app store receipt stored in your apps main bundle you should request a new receipt incase getting it the 1st time failes, if it than fails again validation should also fail. 
-I am doing the following validation checks, if the JSON response returns a valid receipt status code.
 
-1) Check receipt send for verification exists in json response
 
-2) Check receipt contains correct bundle id for app
+# Validation Checks
 
-3) Check receipt contains product id for app
+By default this helper will validate a receipt based on these checks
+
+1) Check for valid receipt status code
+
+2) Check receipt send for verification exists in json response
+
+3) Check receipt contains correct bundle id for app
+
+4) Check receipt contains product id for app
+
+You can also handle additional checks, see below
 
 # Cocoa Pods
 
@@ -47,16 +55,6 @@ https://www.raywenderlich.com/23266/in-app-purchases-in-ios-6-tutorial-consumabl
 1) AppStoreReceipValidator.swift
 
 2) AppStoreReceiptObtainer.swift
-
-# Validation Checks
-
-By default this helper will validate a receipt based on these checks
-
-1) If receipt status code exists and is valid
-2) If app bundle id is matching with the receipt
-3) If the transaction id is matching with the receipt
-
-See below how to handle additional checks
 
 # How to use
 
@@ -132,7 +130,7 @@ case .Restored:
                 
 ```
 
-In this example sharedSecret is only set to nil because I am only validating regular in app purchases. To validate a auto renewable subscriptions you can enter your shared secret(s) that you have set up in itunes.
+In this example sharedSecret is only set to nil because I am only validating regular in app purchases. To validate a auto renewable subscriptions you can enter your shared secret that you have set up in itunes.
 
 # Additional Validation Checks
 
