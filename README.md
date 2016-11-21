@@ -204,4 +204,4 @@ Completion handler now returns on main queue so you dont have to do it your self
 
 Project has been renamed to SwiftyReceiptValidator
 
-No more source breaking changes unless after this update. All future changes will be handled with deprecated messages.
+No more source breaking changes unless after this update. All future changes will be handled with deprecated messages unless the whole API changes.
