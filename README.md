@@ -130,7 +130,7 @@ case .Restored:
                 
 ```
 
-In this example sharedSecret is only set to nil because I am only validating regular in app purchases. To validate a auto renewable subscriptions you can enter your shared secret that you have set up in itunes.
+In this example sharedSecret is set to nil because I am only validating regular in app purchases. To validate a auto renewable subscriptions you can enter your shared secret that you have set up in itunes and optionally handle additional checks (see below).
 
 # Additional Validation Checks
 
@@ -149,14 +149,13 @@ SwiftyReceipValidator.validate(forProductID: productID, sharedSecret: "") { (suc
                  
               }
               
-              // example 2
+              // example 2 (auto-renewable subscriptions)
               let receiptInfoFieldKey = SwiftyReceipValidator.ResponseKey.receipt_info_field.rawValue
               if let receipt = response[receiptInfoFieldKey] {
-                     // do something for auto renewable receipts 
+                     // do something
               }
               
-              
-              /// unlock products if all your additional checks passed
+ 
               
         } else {
            ....        
@@ -185,11 +184,13 @@ if let receipt = response[receiptKey] {
          
          for receiptInApp in inApp {
             let expiryDateKey = SwiftyReceiptValidator.InfoKey.InApp.expires_date.rawValue
-            let expiryDate = receiptInApp[expiryDateKey] as? String ?? "NoDateFound"
+            if let expiryDate = receiptInApp[expiryDateKey] as? ... {
               ...
         }
-     }
+    }
 }
+
+/// Unlock your products when abo 
 ```
 
 # StoreKit Alert Controllers and Connectivity Issues
