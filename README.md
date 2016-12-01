@@ -52,9 +52,9 @@ https://www.raywenderlich.com/23266/in-app-purchases-in-ios-6-tutorial-consumabl
 
 - Add the following files to your project
 
-1) AppStoreReceipValidator.swift
+1) SwiftyReceipValidator.swift
 
-2) AppStoreReceiptObtainer.swift
+2) SwiftyReceiptObtainer.swift
 
 # How to use
 
