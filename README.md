@@ -1,6 +1,6 @@
 # SwiftyReceiptValidator
 
-A swift protocol extension to handle app store receipt validation.
+A swift handler to handle app store receipt validation.
 
 I am by no means an expert, as receipt validation was causing me headaches for months. I however believe I am on the right track with this helper. 
 The most important part for me is feedback of any kind, especially by people that have a better knowledge about it than me. So please dont hestitate to open an issue or email me, this way we can make sure this helper is as solid as it can be.
