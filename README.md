@@ -220,7 +220,7 @@ Added support for auto-renewable subscriptions
 
 Validation method now returns the response so you can do additional validation checks if needed
 
-Change the API to make it more readable. Please read the instructions again. 
+Changed the API to make it more readable. Please read the instructions again. 
 
 - v2.0.1
 
