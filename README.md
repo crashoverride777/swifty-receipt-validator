@@ -1,26 +1,26 @@
 # SwiftyReceiptValidator
 
-A swift handler to handle app store receipt validation.
+A swift helper to handle app store receipt validation.
 
 I am by no means an expert, as receipt validation was causing me headaches for months. I however believe I am on the right track with this helper. 
 The most important part for me is feedback of any kind, especially by people that have a better knowledge about it than me. So please dont hestitate to open an issue or email me, this way we can make sure this helper is as solid as it can be.
 
 There are some helpers on gitHub that I got inspired by, but I didnt like how the code was either outdated, didnt follow all of apples guidlines, were not very swift like or unsafe due things such as force unwrapping. 
 
-I tried to follow apples guidlines as well as I can, e.g when fetching the app store receipt stored in your apps main bundle you should request a new receipt incase getting it the 1st time failes, if it than fails again validation should also fail. 
-
 
 # Validation Checks
 
 By default this helper will validate a receipt based on these checks
 
-1) Check for valid receipt status code
+1) Fetching the app store receipt stored in the apps main bundle. If it fails 1st time it will try to request a new receipt, if it fails again receipt validation will fail.
 
-2) Check receipt send for verification exists in json response
+2) Check for valid receipt status code
 
-3) Check receipt contains correct bundle id for app
+3) Check receipt send for verification exists in json response
 
-4) Check receipt contains product id for app
+4) Check receipt contains correct bundle id for app
+
+5) Check receipt contains product id for app
 
 You can also handle additional checks, see below
 
