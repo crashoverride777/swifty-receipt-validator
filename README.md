@@ -197,14 +197,14 @@ if let receipt = response[receiptKey] {
 
 One thing I do not know about receipt validation is if there is a way to stop the default StoreKit alert controller to show. When you get to the purchase code and to the .Purchased switch statement, storeKit automatically shows an AlertController ("Thank you, purchase was succesfull"). This however is the point where receipt validation is actually starting so it takes another few seconds for the products to unlock. I guess this must be normal, although it would be nicer to show that alert once receipt validation is finished.
 
-I also wonder what happens where there is server issues and receipt validation fails, because customers see the purchase succesfull alert but receipt validation has failed and therefore the products have not unlocked, yet they paid.
+I also wonder what happens when there is server issues and receipt validation fails, because customers see the purchase succesfull alert but receipt validation has failed and therefore the products have not unlocked, yet they paid.
 I assume this is a very rare case, yet I still wonder what to do in this situation. 
 
 If anyone knows the correct way to handle this, could you please let me know.
 
 # Final Note
 
-As per apples guidlines you should alway first connect to apples production servers and than fall back on apples sandbox servers if needed. So keep this in mind when testing in sandbox mode, validation will take a bit longer due to this.
+As per apples guidlines you should always first connect to apples production servers and than fall back on apples sandbox servers if needed. So keep this in mind when testing in sandbox mode, validation will take a bit longer due to this.
 
 The way this is actually done, all automatically with this helper, is that if connection to production servers fails you will get some error codes. There is an error code that tells you if you have a sandbox receipt but are using a production url. The helper uses this error code to than do the receipt validation again with the sandbox server url.
 
