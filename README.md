@@ -58,7 +58,7 @@ https://www.raywenderlich.com/23266/in-app-purchases-in-ios-6-tutorial-consumabl
 
 # How to use
 
-In your in app purchase code go the method
+In your in app purchase code go to the method
 
 ```swift
 func paymentQueue(queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) { ....
