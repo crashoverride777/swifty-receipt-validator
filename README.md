@@ -1,4 +1,4 @@
-# SwiftyReceiptValidator
+# Swifty Receipt Validator
 
 A swift helper to handle app store receipt validation.
 
