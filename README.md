@@ -71,7 +71,7 @@ for transaction in transactions {
       switch transaction.transactionState {
 
 
-     case .Purchased:
+     case .purchased:
           // Transaction is in queue, user has been charged.  Client should complete the transaction.
                 
           let productID = transaction.payment.productIdentifier
@@ -79,7 +79,7 @@ for transaction in transactions {
           
           queue.finishTransaction(transaction)
               
-     case .Restored:
+     case .restored:
           // Transaction was restored from user's purchase history.  Client should complete the transaction.
                 
           if let productID = transaction.originalTransaction?.payment.productIdentifier {
@@ -88,7 +88,7 @@ for transaction in transactions {
          
           queue.finishTransaction(transaction)
          
-    case .Failed:
+    case .failed:
          ....
     }
     
@@ -99,7 +99,7 @@ for transaction in transactions {
 Change the purchase and restore code to look something like this
 
 ```swift
-case .Purchased:
+case .purchased:
     // Transaction is in queue, user has been charged.  Client should complete the transaction.
       
     let productID = transaction.payment.productIdentifier
@@ -113,7 +113,7 @@ case .Purchased:
           queue.finishTransaction(transaction)
      }
   
-case .Restored:
+case .restored:
         // Transaction was restored from user's purchase history.  Client should complete the transaction.
           
         if let productID = transaction.originalTransaction?.payment.productIdentifier {      
