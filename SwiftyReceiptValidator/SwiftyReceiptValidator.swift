@@ -238,7 +238,7 @@ private extension SwiftyReceiptValidator {
         request.httpMethod = "POST"
         request.httpBody = data
         
-        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+        URLSession.shared.dataTask(with: request) { (data, response, error) in
             
             /// URL request error
             if let error = error {
@@ -313,7 +313,7 @@ private extension SwiftyReceiptValidator {
             }
         }
         
-        task.resume()
+        .resume()
     }
 }
 
