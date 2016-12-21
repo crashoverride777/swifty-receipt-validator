@@ -21,8 +21,6 @@
 //    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //    SOFTWARE.
 
-//    v2.1
-
 import StoreKit
 
 /// Request URLs
@@ -240,7 +238,7 @@ private extension SwiftyReceiptValidator {
         request.httpMethod = "POST"
         request.httpBody = data
         
-        let task = URLSession.shared.dataTask(with: request, completionHandler: { (data, response, error) in
+        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
             
             /// URL request error
             if let error = error {
@@ -313,7 +311,7 @@ private extension SwiftyReceiptValidator {
             DispatchQueue.main.async {
                 handler(true, nil, parseJSON)
             }
-        })
+        }
         
         task.resume()
     }
