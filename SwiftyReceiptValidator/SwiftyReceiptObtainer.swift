@@ -51,7 +51,7 @@ final class SwiftyReceiptObtainer: NSObject {
     
     // MARK: - Init
     
-    /// Private singleton init
+    /// Init
     private override init () { }
     
     // MARK: - Methods
@@ -73,7 +73,7 @@ final class SwiftyReceiptObtainer: NSObject {
     }
 }
 
-// MARK: - Delegates
+// MARK: - SKRequestDelegate
 
 // SKRequestDelegate
 extension SwiftyReceiptObtainer: SKRequestDelegate {
