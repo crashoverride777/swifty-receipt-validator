@@ -143,14 +143,14 @@ SwiftyReceipValidator.validate(forProductID: productID, sharedSecret: "") { (suc
          if success {
          
               // example 1
-              let receiptKey = SwiftyReceipValidator.ResponseKey.receipt.rawValue
+              let receiptKey = SwiftyReceipValidatorResponseKey.receipt.rawValue
               if let receipt = response[receiptKey] {
                      // do something
                  
               }
               
               // example 2 (auto-renewable subscriptions)
-              let receiptInfoFieldKey = SwiftyReceipValidator.ResponseKey.receipt_info_field.rawValue
+              let receiptInfoFieldKey = SwiftyReceipValidatorResponseKey.receipt_info_field.rawValue
               if let receipt = response[receiptInfoFieldKey] {
                      // do something
               }
@@ -173,17 +173,17 @@ e.g
 ....
 if let receipt = response[receiptKey] {
      // example 1
-     let creationDateKey = SwiftyReceiptValidator.InfoKey.creation_date.rawValue
+     let creationDateKey = SwiftyReceiptValidatorInfoKey.creation_date.rawValue
      if let creationDate = receipt[creationDateKey] as? ... {
           ...
      }
      
      // example 2
-     let inAppKey = SwiftyReceiptValidator.InfoKey.in_app.rawValue
+     let inAppKey = SwiftyReceiptValidatorInfoKey.in_app.rawValue
      if let inApp = receipt[inAppKey] as? [AnyObject] {
          
          for receiptInApp in inApp {
-            let expiryDateKey = SwiftyReceiptValidator.InfoKey.InApp.expires_date.rawValue
+            let expiryDateKey = SwiftyReceiptValidatorInfoKey.InApp.expires_date.rawValue
             if let expiryDate = receiptInApp[expiryDateKey] as? ... {
               ...
         }
@@ -213,6 +213,10 @@ If you use your own servers than instead of directly connecting to apples server
 I will try to update this in the future if I have a better grasp of what is needed for your own server.
 
 # Release notes
+
+- v2.1.2
+
+Cleanup
 
 - v2.1.1
 
