@@ -103,6 +103,7 @@ public enum SwiftyReceiptValidator {
     ///
     /// - parameter productID: The product ID String for the product to validate.
     /// - parameter sharedSecret: The shared secret when using auto-subscriptions.
+    /// - result handler: Called when the validation has completed. Will return the success state of the validation and an optional dictionary for further receipt validation if successfull.
     public static func validate(forIdentifier productIdentifier: String, sharedSecret: String?, handler: @escaping (Bool, [String: AnyObject]?) -> ()) {
         transactionProductIdentifier = productIdentifier
         
@@ -130,9 +131,6 @@ public enum SwiftyReceiptValidator {
 private extension SwiftyReceiptValidator {
     
     /// Start receipt validation
-    ///
-    /// - parameter url: The URL of the receipt to validate.
-    /// - result handler: Called when the validation has completed. Will return the success state of the validation and an optional dictionary for further receipt validation if needed.
     static func startValidation(forURL url: URL, sharedSecret: String?, handler: @escaping (Bool, [String: AnyObject]?) -> ()) {
         print("Starting receipt validation")
         
@@ -188,9 +186,6 @@ private extension SwiftyReceiptValidator {
         /// It is still better than not doing any validation at all.
         /// If you will use your own server than just will have to adjust this last bit of code to only send to your server and than connect to
         /// apple production/sandbox for there.
-        ///
-        /// - parameter forURL: The url to handle the receipt request.
-        /// - parameter data: The playload data for the request.
         handleRequest(forURL: RequestURL.appleProduction.rawValue, data: payloadData) { (isSuccess, status, response) in
             guard !isSuccess else {
                 print("Receipt validation passed in production mode, unlocking product(s)")
@@ -241,9 +236,6 @@ private let urlRequestString = "URL request - "
 private extension SwiftyReceiptValidator {
     
     /// Handle receipt request
-    ///
-    /// - parameter url: The url string for the receipt request.
-    /// - parameter data: The Data object for the request.
     static func handleRequest(forURL url: String, data: Data, handler: @escaping (_ isSuccess: Bool, _ status: Int?, _ response: [String: AnyObject]?) -> ()) {
         
         // Request url
@@ -368,8 +360,6 @@ private extension SwiftyReceiptValidator {
 private extension SwiftyReceiptValidator {
     
     /// Check if app bundle ID is matching with receipt bundle ID
-    ///
-    /// - parameter receipt: The receipt object to check the bundle ID with.
     static func isAppBundleIDMatching(withReceipt receipt: AnyObject) -> Bool {
         let receiptBundleID = receipt[SwiftyReceiptValidatorInfoKey.bundle_id.rawValue] as? String ?? "NoReceiptBundleID"
         let appBundleID = Bundle.main.bundleIdentifier ?? "NoAppBundleID"
@@ -383,8 +373,6 @@ private extension SwiftyReceiptValidator {
     }
     
     /// Check if transaction product ID is matching with receipt product ID
-    ///
-    /// - parameter receipt: The receipt object to check the product ID with.
     static func isTransactionProductIDMatching(withReceipt receipt: AnyObject) -> Bool {
         guard let inApp = receipt[SwiftyReceiptValidatorInfoKey.in_app.rawValue] as? [AnyObject] else {
             print(validationErrorString + urlRequestString + "Could not find receipt in app array in json response")
