@@ -132,6 +132,7 @@ private extension SwiftyReceiptValidator {
     /// Start receipt validation
     ///
     /// - parameter url: The URL of the receipt to validate.
+    /// - result handler: Called when the validation has completed. Will return the success state of the validation and an optional dictionary for further receipt validation if needed.
     static func startValidation(forURL url: URL, sharedSecret: String?, handler: @escaping (Bool, [String: AnyObject]?) -> ()) {
         print("Starting receipt validation")
         

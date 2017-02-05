@@ -57,6 +57,8 @@ final class SwiftyReceiptObtainer: NSObject {
     // MARK: - Methods
     
     /// Fetch app store in app purchase receipt
+    ///
+    /// - result: Called when the fetching is finished. Will return an optional URL depending on success of fetching.
     func fetch(handler: @escaping (URL?) -> ()) {
         self.handler = handler
         
