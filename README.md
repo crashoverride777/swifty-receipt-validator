@@ -139,7 +139,7 @@ If you would like to handle additional validation checks you can use the respons
 e.g 
 
 ```swift
-SwiftyReceipValidator.validate(forProductID: productID, sharedSecret: "") { (success, response) in
+SwiftyReceipValidator.validate(forIdentifier: productIdentifier, sharedSecret: "") { (success, response) in
          if success {
          
               // example 1
