@@ -214,6 +214,10 @@ I will try to update this in the future if I have a better grasp of what is need
 
 # Release notes
 
+- v2.1.3
+
+Cleanup
+
 - v2.1.2
 
 Cleanup
