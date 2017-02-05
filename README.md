@@ -74,16 +74,16 @@ for transaction in transactions {
      case .purchased:
           // Transaction is in queue, user has been charged.  Client should complete the transaction.
                 
-          let productID = transaction.payment.productIdentifier
-          /// Your code to unlock product for productID, I usually use delegation here
+          let productIdentifier = transaction.payment.productIdentifier
+          /// Your code to unlock product for productIdentifier, I usually use delegation here
           
           queue.finishTransaction(transaction)
               
      case .restored:
           // Transaction was restored from user's purchase history.  Client should complete the transaction.
                 
-          if let productID = transaction.originalTransaction?.payment.productIdentifier {
-               /// Your code to restore product for productID, I usually use delegation here
+          if let productIdentifier = transaction.originalTransaction?.payment.productIdentifier {
+               /// Your code to restore product for productIdentifier, I usually use delegation here
           }
          
           queue.finishTransaction(transaction)
@@ -102,10 +102,10 @@ Change the purchase and restore code to look something like this
 case .purchased:
     // Transaction is in queue, user has been charged.  Client should complete the transaction.
       
-    let productID = transaction.payment.productIdentifier
-    SwiftyReceipValidator.validate(forProductID: productID, sharedSecret: nil) { (success, response) in
+    let productIdentifier = transaction.payment.productIdentifier
+    SwiftyReceipValidator.validate(forIdentifier: productIdentifier, sharedSecret: nil) { (success, response) in
           if success {
-              /// Your code to unlock product for productID, I usually use delegation here
+              /// Your code to unlock product for productIdentifier, I usually use delegation here
           } else {
               /// maybe show alert here
           }          
@@ -116,10 +116,10 @@ case .purchased:
 case .restored:
         // Transaction was restored from user's purchase history.  Client should complete the transaction.
           
-        if let productID = transaction.originalTransaction?.payment.productIdentifier {      
-              SwiftyReceipValidator.validate(forProductID: productID, sharedSecret: nil) { (success, response) in
+        if let productIdentifier = transaction.originalTransaction?.payment.productIdentifier {      
+              SwiftyReceipValidator.validate(forIdentifier: productIdentifier, sharedSecret: nil) { (success, response) in
                     if success {
-                       /// Your code to restore product for productID, I usually use delegation here
+                       /// Your code to restore product for productIdentifier, I usually use delegation here
                     } else {
                        /// maybe show alert 
                     }
