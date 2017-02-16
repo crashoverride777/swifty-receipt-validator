@@ -68,8 +68,8 @@ where the code should look more or less like this
 
 ```swift
 for transaction in transactions {
-      switch transaction.transactionState {
-
+      
+     switch transaction.transactionState {
 
      case .purchased:
           // Transaction is in queue, user has been charged.  Client should complete the transaction.
@@ -103,6 +103,7 @@ case .purchased:
     // Transaction is in queue, user has been charged.  Client should complete the transaction.
       
     let productIdentifier = transaction.payment.productIdentifier
+    
     SwiftyReceipValidator.validate(forIdentifier: productIdentifier, sharedSecret: nil) { (success, response) in
           if success {
               /// Your code to unlock product for productIdentifier, I usually use delegation here
@@ -117,6 +118,7 @@ case .restored:
         // Transaction was restored from user's purchase history.  Client should complete the transaction.
           
         if let productIdentifier = transaction.originalTransaction?.payment.productIdentifier {      
+              
               SwiftyReceipValidator.validate(forIdentifier: productIdentifier, sharedSecret: nil) { (success, response) in
                     if success {
                        /// Your code to restore product for productIdentifier, I usually use delegation here
