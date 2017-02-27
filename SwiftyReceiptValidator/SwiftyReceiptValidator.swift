@@ -28,6 +28,11 @@ private enum RequestURL: String {
     case appleProduction = "https://buy.itunes.apple.com/verifyReceipt"
 }
 
+/// HTTP Methid
+private enum HTTPMethod: String {
+    case post = "POST"
+}
+
 /// JSON Object Keys
 private enum JSONObjectKey: String {
     case receiptData = "receipt-data" // The base64 encoded receipt data.
@@ -94,9 +99,14 @@ public enum SwiftyReceiptValidatorInfoKey: String {
  An enum to manage in app purchase receipt validation.
  */
 private let validationErrorString = "Receipt validation failed: "
-private var transactionProductIdentifier = ""
 
 public enum SwiftyReceiptValidator {
+    
+    // MARK: - Properties
+    
+    fileprivate static var productIdentifier = ""
+    
+    // MARK: - Methods
     
     /// Validate receipt
     ///
@@ -104,7 +114,7 @@ public enum SwiftyReceiptValidator {
     /// - parameter sharedSecret: The shared secret when using auto-subscriptions.
     /// - result handler: Called when the validation has completed. Will return the success state of the validation and an optional dictionary for further receipt validation if successfull.
     public static func validate(forIdentifier productIdentifier: String, sharedSecret: String?, handler: @escaping (Bool, [String: AnyObject]?) -> ()) {
-        transactionProductIdentifier = productIdentifier
+        self.productIdentifier = productIdentifier
         
         SwiftyReceiptObtainer.shared.fetch { receiptURL in
             guard let validReceiptURL = receiptURL else {
@@ -231,11 +241,12 @@ private extension SwiftyReceiptValidator {
 // MARK: - Handle URL Request
 
 private let urlRequestString = "URL request - "
+private typealias RequestHandler = (_ isSuccess: Bool, _ status: Int?, _ response: [String: AnyObject]?) -> ()
 
 private extension SwiftyReceiptValidator {
     
     /// Handle receipt request
-    static func handleRequest(forURL url: String, data: Data, handler: @escaping (_ isSuccess: Bool, _ status: Int?, _ response: [String: AnyObject]?) -> ()) {
+    static func handleRequest(forURL url: String, data: Data, handler: @escaping RequestHandler) {
         
         // Request url
         guard let requestURL = URL(string: url) else {
@@ -248,7 +259,7 @@ private extension SwiftyReceiptValidator {
         }
         // Request
         var request = URLRequest(url: requestURL)
-        request.httpMethod = "POST"
+        request.httpMethod = HTTPMethod.post.rawValue
         request.httpBody = data
         
         URLSession.shared.dataTask(with: request) { (data, response, error) in
@@ -382,12 +393,85 @@ private extension SwiftyReceiptValidator {
         
         for receiptInApp in inApp {
             receiptProductID = receiptInApp[SwiftyReceiptValidatorInfoKey.InApp.product_id.rawValue] as? String ?? "NoReceiptProductID"
-            if receiptProductID == transactionProductIdentifier {
+            if receiptProductID == productIdentifier {
                 return true
             }
         }
         
-        print(validationErrorString + urlRequestString + "Transaction product ID \(transactionProductIdentifier) not matching with receipt product id = \(receiptProductID)")
+        print(validationErrorString + urlRequestString + "Transaction product ID \(productIdentifier) not matching with receipt product id = \(receiptProductID)")
         return false
+    }
+}
+
+// MARK: - Receipt Obtainer
+
+private final class SwiftyReceiptObtainer: NSObject {
+    
+    // MARK: - Static Properties
+    
+    /// Shared instance
+    static let shared = SwiftyReceiptObtainer()
+    
+    // MARK: - Properties
+    
+    /// Receipt url
+    fileprivate let receiptURL = Bundle.main.appStoreReceiptURL
+    
+    /// Completion handler
+    fileprivate var handler: ((URL?) -> ())?
+    
+    /// Check if receipt exists at patch
+    fileprivate var isReceiptExistsAtPath: Bool {
+        guard let path = receiptURL?.path, FileManager.default.fileExists(atPath: path) else { return false }
+        return true
+    }
+    
+    // MARK: - Init
+    
+    /// Init
+    private override init () { }
+    
+    // MARK: - Methods
+    
+    /// Fetch app store in app purchase receipt
+    ///
+    /// - result: Called when the fetching is finished. Will return an optional URL depending on success of fetching.
+    func fetch(handler: @escaping (URL?) -> ()) {
+        self.handler = handler
+        
+        guard isReceiptExistsAtPath else {
+            print("Requesting a new receipt")
+            let request = SKReceiptRefreshRequest(receiptProperties: nil)
+            request.delegate = self
+            request.start()
+            return
+        }
+        
+        print("Receipt found")
+        self.handler?(receiptURL)
+    }
+}
+
+// SKRequestDelegate
+extension SwiftyReceiptObtainer: SKRequestDelegate {
+    
+    /// Request did finish
+    func requestDidFinish(_ request: SKRequest) {
+        print("Receipt request did finish")
+        
+        guard isReceiptExistsAtPath else {
+            print("Could not obtainin the receipt from the receipt request, maybe the user did not successfully enter it's credentials")
+            handler?(nil)
+            return
+        }
+        
+        print("Newly created receipt found")
+        handler?(receiptURL)
+    }
+    
+    /// Request did fail with error
+    func request(_ request: SKRequest, didFailWithError error: Error) {
+        print(error.localizedDescription)
+        handler?(nil)
     }
 }

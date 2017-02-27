@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		B4533F361DA2BD8900440CC0 /* SwiftyReceiptValidator.h in Headers */ = {isa = PBXBuildFile; fileRef = B4533F341DA2BD8900440CC0 /* SwiftyReceiptValidator.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		B4533F3E1DA2BDA700440CC0 /* SwiftyReceiptObtainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4533F3C1DA2BDA700440CC0 /* SwiftyReceiptObtainer.swift */; };
 		B4533F3F1DA2BDA700440CC0 /* SwiftyReceiptValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4533F3D1DA2BDA700440CC0 /* SwiftyReceiptValidator.swift */; };
 /* End PBXBuildFile section */
 
@@ -16,7 +15,6 @@
 		B4533F311DA2BD8900440CC0 /* SwiftyReceiptValidator.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftyReceiptValidator.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B4533F341DA2BD8900440CC0 /* SwiftyReceiptValidator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftyReceiptValidator.h; sourceTree = "<group>"; };
 		B4533F351DA2BD8900440CC0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B4533F3C1DA2BDA700440CC0 /* SwiftyReceiptObtainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyReceiptObtainer.swift; sourceTree = "<group>"; };
 		B4533F3D1DA2BDA700440CC0 /* SwiftyReceiptValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyReceiptValidator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -51,7 +49,6 @@
 			isa = PBXGroup;
 			children = (
 				B4533F3D1DA2BDA700440CC0 /* SwiftyReceiptValidator.swift */,
-				B4533F3C1DA2BDA700440CC0 /* SwiftyReceiptObtainer.swift */,
 				B4533F341DA2BD8900440CC0 /* SwiftyReceiptValidator.h */,
 				B4533F351DA2BD8900440CC0 /* Info.plist */,
 			);
@@ -139,7 +136,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B4533F3E1DA2BDA700440CC0 /* SwiftyReceiptObtainer.swift in Sources */,
 				B4533F3F1DA2BDA700440CC0 /* SwiftyReceiptValidator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
