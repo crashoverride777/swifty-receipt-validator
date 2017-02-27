@@ -50,11 +50,11 @@ https://www.raywenderlich.com/23266/in-app-purchases-in-ios-6-tutorial-consumabl
 
 # Set-Up
 
-- Add the following files to your project
+- Add the following file into your project
 
-1) SwiftyReceipValidator.swift
-
-2) SwiftyReceiptObtainer.swift
+```swift
+SwiftyReceipValidator.swift
+```
 
 # How to use
 
@@ -215,6 +215,12 @@ If you use your own servers than instead of directly connecting to apples server
 I will try to update this in the future if I have a better grasp of what is needed for your own server.
 
 # Release notes
+
+- v2.1.4
+
+Merged into 1 file
+
+Cleanup
 
 - v2.1.3
 
