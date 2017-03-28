@@ -104,7 +104,7 @@ case .purchased:
       
     let productIdentifier = transaction.payment.productIdentifier
     
-    SwiftyReceipValidator.validate(forIdentifier: productIdentifier, sharedSecret: nil) { (success, response) in
+    SwiftyReceiptValidator.validate(forIdentifier: productIdentifier, sharedSecret: nil) { (success, response) in
           if success {
               /// Your code to unlock product for productIdentifier, I usually use delegation here
           } else {
@@ -119,7 +119,7 @@ case .restored:
           
         if let productIdentifier = transaction.originalTransaction?.payment.productIdentifier {      
               
-              SwiftyReceipValidator.validate(forIdentifier: productIdentifier, sharedSecret: nil) { (success, response) in
+              SwiftyReceiptValidator.validate(forIdentifier: productIdentifier, sharedSecret: nil) { (success, response) in
                     if success {
                        /// Your code to restore product for productIdentifier, I usually use delegation here
                     } else {
@@ -141,18 +141,18 @@ If you would like to handle additional validation checks you can use the respons
 e.g 
 
 ```swift
-SwiftyReceipValidator.validate(forIdentifier: productIdentifier, sharedSecret: "") { (success, response) in
+SwiftyReceiptValidator.validate(forIdentifier: productIdentifier, sharedSecret: "") { (success, response) in
          if success {
          
               // example 1
-              let receiptKey = SwiftyReceipValidatorResponseKey.receipt.rawValue
+              let receiptKey = SwiftyReceiptValidatorResponseKey.receipt.rawValue
               if let receipt = response[receiptKey] {
                      // do something
                  
               }
               
               // example 2 (auto-renewable subscriptions)
-              let receiptInfoFieldKey = SwiftyReceipValidatorResponseKey.receipt_info_field.rawValue
+              let receiptInfoFieldKey = SwiftyReceiptValidatorResponseKey.receipt_info_field.rawValue
               if let receipt = response[receiptInfoFieldKey] {
                      // do something
               }
