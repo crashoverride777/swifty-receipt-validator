@@ -7,10 +7,10 @@ The most important part for me is feedback of any kind, especially by people tha
 
 There are some helpers on gitHub that I got inspired by, but I didnt like how the code was either outdated, didnt follow all of apples guidlines, were not very swift like or unsafe due things such as force unwrapping. 
 
-# Swift 4
+# Swift 4 and Beta version 3
 
-I will release the Swift update for this repository very soon (all my other repositories are already updated). It is taking me slightly longer on this project because I am also working on brand new error handling which I want to roll into the Swift 4 update.
-In the meantime you should still be able to use this repository in a Swift 3 project as there has been very little changes syntax wise between Swift 3 to 4.
+I will release the final Swift 4 update for this repository very soon (all my other repositories are already updated). It is taking me slightly longer on this project because I am also working on brand new error handling which I want to roll into the Swift 4 update.
+In the meantime you should still be able to use this repository in a Swift 3 project as there has been very little changes syntax wise between Swift 3 to 4. You can also check out the version3Beta branch with all the current changes.
 
 # Validation Checks
 
