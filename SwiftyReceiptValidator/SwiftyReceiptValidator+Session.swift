@@ -71,9 +71,15 @@ extension SwiftyReceiptValidator {
                     return
                 }
                 
-                // Check receipt contains correct bundle and product id for app
-                guard self.isAppBundleIDMatching(withReceipt: receipt) && self.isTransactionProductIDMatching(withReceipt: receipt) else {
-                    handler(.failure(code: status, error: .appBundleIDNotMatching))
+                // Check receipt contains correct bundle id
+                guard self.isBundleIDMatching(with: receipt) else {
+                    handler(.failure(code: status, error: .bundleIdNotMatching))
+                    return
+                }
+                
+                // Check receipt contains correct product id
+                guard self.isProductIDMatching(with: receipt) else {
+                    handler(.failure(code: status, error: .productIdNotMatching))
                     return
                 }
                 
@@ -93,7 +99,7 @@ extension SwiftyReceiptValidator {
 
 private extension SwiftyReceiptValidator {
     
-    static func isAppBundleIDMatching(withReceipt receipt: AnyObject) -> Bool {
+    static func isBundleIDMatching(with receipt: AnyObject) -> Bool {
         guard
             let receiptBundleID = receipt[InfoKey.bundle_id.rawValue] as? String,
             let appBundleID = Bundle.main.bundleIdentifier else {
@@ -102,7 +108,7 @@ private extension SwiftyReceiptValidator {
         return receiptBundleID == appBundleID
     }
     
-    static func isTransactionProductIDMatching(withReceipt receipt: AnyObject) -> Bool {
+    static func isProductIDMatching(with receipt: AnyObject) -> Bool {
         guard let inApp = receipt[InfoKey.in_app.rawValue] as? [AnyObject] else { return false }
         
         for receiptInApp in inApp where (receiptInApp[InfoKey.InApp.product_id.rawValue] as? String) == productIdentifier {

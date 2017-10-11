@@ -19,31 +19,36 @@ extension SwiftyReceiptValidator {
         case invalidStatusCode
         case noReceiptFound
         case noReceiptInJSON
-        case appBundleIDNotMatching
+        case bundleIdNotMatching
+        case productIdNotMatching
         case other(Error)
         
         var localizedDescription: String {
+            let prefix = "SwiftyReceiptValidator "
+            
             switch self {
             case .unknown:
-                return "SwiftyReceiptValidator unknown error"
+                return prefix + "unknown error"
             case .url:
-                return "SwiftyReceiptValidator URL error"
+                return prefix + "URL error"
             case .data:
-                return "SwiftyReceiptValidator data error"
+                return prefix + "data error"
             case .json:
-                return "SwiftyReceiptValidator json error"
+                return prefix + "json error"
             case .noStatusCodeFound:
-                return "SwiftyReceiptValidator no status code found"
+                return prefix + "no status code found"
             case .invalidStatusCode:
-                return "SwiftyReceiptValidator invalid status code"
+                return prefix + "invalid status code"
             case .noReceiptFound:
-                return "SwiftyReceiptValidator no receipt found on device"
+                return prefix + "no receipt found on device"
             case .noReceiptInJSON:
-                return "SwiftyReceiptValidator no receipt found in json response"
-            case .appBundleIDNotMatching:
-                return "SwiftyReceiptValidator app bundle id is not matching"
+                return prefix + "no receipt found in json response"
+            case .bundleIdNotMatching:
+                return prefix + "bundle id is not matching receipt"
+            case .productIdNotMatching:
+                return prefix + "product id is not matching with receipt"
             case .other(let error):
-                return error.localizedDescription
+                return prefix + error.localizedDescription
             }
         }
     }

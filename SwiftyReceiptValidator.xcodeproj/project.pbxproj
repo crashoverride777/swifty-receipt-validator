@@ -58,8 +58,8 @@
 			children = (
 				B4533F3D1DA2BDA700440CC0 /* SwiftyReceiptValidator.swift */,
 				B4DB5C641F3B995B00749D39 /* SwiftyReceiptValidator+Session.swift */,
-				B4DB5C5E1F3B98A900749D39 /* SwiftyReceiptValidator+Error.swift */,
 				B4DB5C601F3B98D100749D39 /* SwiftyReceiptValidator+Codes.swift */,
+				B4DB5C5E1F3B98A900749D39 /* SwiftyReceiptValidator+Error.swift */,
 				B4DB5C621F3B98FD00749D39 /* SwiftyReceiptObtainer.swift */,
 				B4533F341DA2BD8900440CC0 /* SwiftyReceiptValidator.h */,
 				B4533F351DA2BD8900440CC0 /* Info.plist */,
