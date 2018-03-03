@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
 
 s.name = 'SwiftyReceiptValidator'
-s.version = '2.1.5'
+s.version = '3.0'
 s.license = 'MIT'
 s.summary = 'A swift helper for in app purchase receipt validation.'
 
@@ -19,7 +19,6 @@ s.authors = { 'DominikRingler' => 'dominikringler@icloud.com' }
 
 s.requires_arc = true
 s.pod_target_xcconfig = { 'SWIFT_VERSION' => '4' }
-
 s.ios.deployment_target = '9.3'
 
 s.source = {
