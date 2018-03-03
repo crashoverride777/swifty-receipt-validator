@@ -14,7 +14,7 @@ private enum HTTPMethod: String {
 
 extension SwiftyReceiptValidator {
     
-    static func startURLSession(with urlString: URLString, parameters: [AnyHashable: Any], handler: @escaping SwiftyReceiptValidatorResult) {
+    static func startURLSession(with urlString: URLString, parameters: [AnyHashable: Any], productId: String, handler: @escaping SwiftyReceiptValidatorResult) {
         
         // Create url
         guard let url = URL(string: urlString.rawValue) else {
@@ -73,13 +73,13 @@ extension SwiftyReceiptValidator {
                 }
                 
                 // Check receipt contains correct bundle id
-                guard self.isBundleIDMatching(with: receipt) else {
+                guard self.isBundleIdentifierMatching(with: receipt) else {
                     handler(.failure(code: status, error: .bundleIdNotMatching))
                     return
                 }
                 
                 // Check receipt contains correct product id
-                guard self.isProductIDMatching(with: receipt) else {
+                guard self.isProductIdentifier(productId, matchingWith: receipt) else {
                     handler(.failure(code: status, error: .productIdNotMatching))
                     return
                 }
@@ -100,19 +100,12 @@ extension SwiftyReceiptValidator {
 
 private extension SwiftyReceiptValidator {
     
-    static func isBundleIDMatching(with receipt: AnyObject) -> Bool {
-        guard let receiptBundleID = receipt[InfoKey.bundle_id.rawValue] as? String, let appBundleID = Bundle.main.bundleIdentifier else {
-            return false
-        }
-        return receiptBundleID == appBundleID
+    static func isBundleIdentifierMatching(with receipt: AnyObject) -> Bool {
+        return (receipt[InfoKey.bundle_id.rawValue] as? String) == Bundle.main.bundleIdentifier
     }
     
-    static func isProductIDMatching(with receipt: AnyObject) -> Bool {
+    static func isProductIdentifier(_ productIdentifier: String, matchingWith receipt: AnyObject) -> Bool {
         guard let inApp = receipt[InfoKey.in_app.rawValue] as? [AnyObject] else { return false }
-        
-        for receiptInApp in inApp where (receiptInApp[InfoKey.InApp.product_id.rawValue] as? String) == productIdentifier {
-            return true
-        }
-        return false
+        return inApp.first(where: { ($0[InfoKey.InApp.product_id.rawValue] as? String) == productIdentifier }) != nil
     }
 }

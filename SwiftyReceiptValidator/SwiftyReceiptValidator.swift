@@ -38,8 +38,8 @@ public enum SwiftyReceiptValidator {
     // MARK: - Properties
     
     enum URLString: String {
-        case appleSandbox    = "https://sandbox.itunes.apple.com/verifyReceipt"
-        case appleProduction = "https://buy.itunes.apple.com/verifyReceipt"
+        case sandbox    = "https://sandbox.itunes.apple.com/verifyReceipt"
+        case production = "https://buy.itunes.apple.com/verifyReceipt"
     }
     
     public enum Result<T> {
@@ -47,11 +47,7 @@ public enum SwiftyReceiptValidator {
         case failure(code: Int?, error: ValidationError)
     }
     
-    static var productIdentifier = ""
-    
-    private static let receiptObtainer = SwiftyReceiptObtainer()
-    
-    // MARK: - Methods
+    // MARK: - Start
     
     /// Validate receipt
     ///
@@ -59,9 +55,7 @@ public enum SwiftyReceiptValidator {
     /// - parameter sharedSecret: The shared secret when using auto-subscriptions.
     /// - result handler: Called when the validation has completed. Will return the success state of the validation and an optional dictionary for further receipt validation if successfull.
     public static func start(withProductId productIdentifier: String, sharedSecret: String?, handler: @escaping SwiftyReceiptValidatorResult) {
-        
-        self.productIdentifier = productIdentifier
-        
+        let receiptObtainer = SwiftyReceiptObtainer()
         receiptObtainer.fetch { receiptURL in
             guard let receiptURL = receiptURL else {
                 handler(.failure(code: nil, error: .noReceiptFound))
@@ -70,8 +64,7 @@ public enum SwiftyReceiptValidator {
             
             do {
                 let receiptData = try Data(contentsOf: receiptURL)
-                
-                self.startValidation(withReceiptData: receiptData, sharedSecret: sharedSecret) { result in
+                self.startValidation(with: receiptData, secret: sharedSecret, productId: productIdentifier) { result in
                     DispatchQueue.main.async {
                         handler(result)
                     }
@@ -89,17 +82,15 @@ public enum SwiftyReceiptValidator {
 
 private extension SwiftyReceiptValidator {
     
-    static func startValidation(withReceiptData receiptData: Data, sharedSecret: String?, handler: @escaping SwiftyReceiptValidatorResult) {
+    static func startValidation(with receiptData: Data, secret: String?, productId: String, handler: @escaping SwiftyReceiptValidatorResult) {
         
         // Prepare receipt
         let receipt = receiptData.base64EncodedString(options: Data.Base64EncodingOptions(rawValue: 0))
         
         // Prepare parameters
-        var parameters = [
-            JSONObjectKey.receiptData.rawValue: receipt
-        ]
+        var parameters = [JSONObjectKey.receiptData.rawValue: receipt]
         
-        if let sharedSecret = sharedSecret {
+        if let sharedSecret = secret {
             parameters[JSONObjectKey.password.rawValue] = sharedSecret
         }
       
@@ -108,8 +99,7 @@ private extension SwiftyReceiptValidator {
         // It is still better than not doing any validation at all.
         // If you will use your own server than just will have to adjust this last bit of code to only send to your server and than connect to
         // apple production/sandbox for there.
-        startURLSession(with: .appleProduction, parameters: parameters) { result in
-           
+        startURLSession(with: .production, parameters: parameters, productId: productId) { result in
             switch result {
                 
             case .success(let data):
@@ -123,7 +113,7 @@ private extension SwiftyReceiptValidator {
                 }
                 
                 // Handle sandbox request
-                self.startURLSession(with: .appleSandbox, parameters: parameters) { result in
+                self.startURLSession(with: .sandbox, parameters: parameters, productId: productId) { result in
                     
                     switch result {
                     case .success(let data):
