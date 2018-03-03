@@ -7,12 +7,7 @@ The most important part for me is feedback of any kind, especially by people tha
 
 There are some helpers on gitHub that I got inspired by, but I didnt like how the code was either outdated, didnt follow all of apples guidlines, were not very swift like or unsafe due things such as force unwrapping. 
 
-# Swift 4 and Beta version 3
-
-I will release the final Swift 4 update for this repository very soon (all my other repositories are already updated). It is taking me slightly longer on this project because I am also working on brand new error handling which I want to roll into the Swift 4 update.
-In the meantime you should still be able to use this repository in a Swift 3 project as there has been very little changes syntax wise between Swift 3 to 4. You can also check out the version3Beta branch with all the current changes.
-
-# Validation Checks
+## Validation Checks
 
 By default this helper will validate a receipt based on these checks
 
@@ -28,13 +23,7 @@ By default this helper will validate a receipt based on these checks
 
 You can also handle additional checks, see below
 
-# Cocoa Pods
-
-I know that the current way of copying the .swift file(s) into your project sucks and is bad practice, so I am working hard to finally support CocoaPods very soon. Stay tuned.
-
-In the meantime I would create a folder on your Mac, called something like SharedFiles, and drag the swift file(s) into this folder. Than drag the files from this folder into your project, making sure that "copy if needed" is not selected. This way its easier to update the files and to share them between projects.
-
-# Before you go live
+## Before you go live
 
 - Test, Test, Test
 
@@ -52,15 +41,30 @@ Nevertheless its still better than not doing any validation at all. I will event
 
 https://www.raywenderlich.com/23266/in-app-purchases-in-ios-6-tutorial-consumables-and-receipt-validation
 
-# Usage
+## Requirements
 
-- Add the following file into your project
+- iOS 9.3+
+- Swift 4.0+
+
+## Installation
+
+CocoaPods is a dependency manager for Cocoa projects. Simply install the pod by adding the following line to your pod file
 
 ```swift
-SwiftyReceipValidator.swift
+pod 'SwiftyReceiptValidator'
 ```
 
-In your in app purchase code go to the method
+Altenatively you can drag the swift file(s) manually into your project.
+
+# Usage
+
+- Add the import statement to your swift file(s) when you installed via cocoa pods
+
+```swift
+import SwiftyReceipValidator
+```
+
+- In your in app purchase code go to the method
 
 ```swift
 func paymentQueue(queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) { ....
@@ -98,7 +102,7 @@ for transaction in transactions {
 }
 ```
 
-Change the purchase and restore code to look something like this
+- Change the purchase and restore code to look something like this
 
 ```swift
 case .purchased:
@@ -136,7 +140,7 @@ case .restored:
 
 In this example sharedSecret is set to nil because I am only validating regular in app purchases. To validate a auto renewable subscriptions you can enter your shared secret that you have set up in itunes and optionally handle additional checks (see below).
 
-# Additional Validation Checks
+## Additional Validation Checks
 
 If you would like to handle additional validation checks you can use the response (optional dictionary) that is returned in the completion handler. Use the 4 keys in the ResponseKey enum to access the inital parts of the reponse. 
 
@@ -197,7 +201,7 @@ if let receipt = response[receiptKey] {
 /// Unlock your products when abo 
 ```
 
-# StoreKit Alert Controllers and Connectivity Issues
+## StoreKit Alert Controllers and Connectivity Issues
 
 One thing I do not know about receipt validation is if there is a way to stop the default StoreKit alert controller to show. When you get to the purchase code and to the .Purchased switch statement, storeKit automatically shows an AlertController ("Thank you, purchase was succesfull"). This however is the point where receipt validation is actually starting so it takes another few seconds for the products to unlock. I guess this must be normal, although it would be nicer to show that alert once receipt validation is finished.
 
@@ -206,7 +210,7 @@ I assume this is a very rare case, yet I still wonder what to do in this situati
 
 If anyone knows the correct way to handle this, could you please let me know.
 
-# Final Note
+## Final Note
 
 As per apples guidlines you should always first connect to apples production servers and than fall back on apples sandbox servers if needed. So keep this in mind when testing in sandbox mode, validation will take a bit longer due to this.
 
