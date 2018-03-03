@@ -52,15 +52,13 @@ Nevertheless its still better than not doing any validation at all. I will event
 
 https://www.raywenderlich.com/23266/in-app-purchases-in-ios-6-tutorial-consumables-and-receipt-validation
 
-# Set-Up
+# Usage
 
 - Add the following file into your project
 
 ```swift
 SwiftyReceipValidator.swift
 ```
-
-# How to use
 
 In your in app purchase code go to the method
 
