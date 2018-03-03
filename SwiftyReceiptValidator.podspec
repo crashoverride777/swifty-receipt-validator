@@ -18,7 +18,6 @@ s.social_media_url = 'http://twitter.com/overrideiactive'
 s.authors = { 'DominikRingler' => 'dominikringler@icloud.com' }
 
 s.requires_arc = true
-s.pod_target_xcconfig = { 'SWIFT_VERSION' => '4' }
 s.ios.deployment_target = '9.3'
 
 s.source = {
