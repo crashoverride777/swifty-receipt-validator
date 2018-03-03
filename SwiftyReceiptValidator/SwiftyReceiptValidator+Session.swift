@@ -13,9 +13,8 @@ private enum HTTPMethod: String {
 }
 
 extension SwiftyReceiptValidator {
-    typealias URLSessionHandler = (Result<[String: AnyObject]>) -> Void
     
-    static func startURLSession(with urlString: URLString, parameters: [AnyHashable: Any], handler: @escaping URLSessionHandler) {
+    static func startURLSession(with urlString: URLString, parameters: [AnyHashable: Any], handler: @escaping SwiftyReceiptValidatorResult) {
         
         // Create url
         guard let url = URL(string: urlString.rawValue) else {
@@ -35,12 +34,14 @@ extension SwiftyReceiptValidator {
         
         // Start url session
         session.dataTask(with: urlRequest) { (data, response, error) in
+           
+            // Check for error
             if let error = error {
                 handler(.failure(code: nil, error: .other(error)))
                 return
             }
             
-            // Data unwrapping error
+            // Unwrap data
             guard let data = data else {
                 handler(.failure(code: nil, error: .data))
                 return
@@ -48,7 +49,7 @@ extension SwiftyReceiptValidator {
             
             // Parse json
             do {
-                guard let jsonData = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves) as? [String : AnyObject] else {
+                guard let jsonData = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves) as? [String: AnyObject] else {
                     handler(.failure(code: nil, error: .json))
                     return
                 }
@@ -100,9 +101,7 @@ extension SwiftyReceiptValidator {
 private extension SwiftyReceiptValidator {
     
     static func isBundleIDMatching(with receipt: AnyObject) -> Bool {
-        guard
-            let receiptBundleID = receipt[InfoKey.bundle_id.rawValue] as? String,
-            let appBundleID = Bundle.main.bundleIdentifier else {
+        guard let receiptBundleID = receipt[InfoKey.bundle_id.rawValue] as? String, let appBundleID = Bundle.main.bundleIdentifier else {
             return false
         }
         return receiptBundleID == appBundleID

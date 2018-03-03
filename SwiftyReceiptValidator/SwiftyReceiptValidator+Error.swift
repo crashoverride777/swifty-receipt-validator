@@ -24,32 +24,33 @@ extension SwiftyReceiptValidator {
         case other(Error)
         
         var localizedDescription: String {
-            let prefix = "SwiftyReceiptValidator "
+            let message: String
             
             switch self {
             case .unknown:
-                return prefix + "unknown error"
+                message = "unknown error"
             case .url:
-                return prefix + "URL error"
+                message = "URL error"
             case .data:
-                return prefix + "data error"
+                message = "data error"
             case .json:
-                return prefix + "json error"
+                message = "json error"
             case .noStatusCodeFound:
-                return prefix + "no status code found"
+                message = "no status code found"
             case .invalidStatusCode:
-                return prefix + "invalid status code"
+                message = "invalid status code"
             case .noReceiptFound:
-                return prefix + "no receipt found on device"
+                message = "no receipt found on device"
             case .noReceiptInJSON:
-                return prefix + "no receipt found in json response"
+                message = "no receipt found in json response"
             case .bundleIdNotMatching:
-                return prefix + "bundle id is not matching receipt"
+                message = "bundle id is not matching receipt"
             case .productIdNotMatching:
-                return prefix + "product id is not matching with receipt"
+                message = "product id is not matching with receipt"
             case .other(let error):
-                return prefix + error.localizedDescription
+                message = error.localizedDescription
             }
+            return "SwiftyReceiptValidator " + message
         }
     }
 }

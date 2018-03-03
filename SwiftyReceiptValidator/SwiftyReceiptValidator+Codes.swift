@@ -8,10 +8,10 @@
 
 import Foundation
 
-// MARK: - Status Code
-
-extension SwiftyReceiptValidator {
+/// Swifty receipt validator codes
+public extension SwiftyReceiptValidator {
     
+    /// Status codes
     public enum StatusCode: Int {
         case unknown = -2
         case none = -1
@@ -53,12 +53,8 @@ extension SwiftyReceiptValidator {
             }
         }
     }
-}
     
-// MARK: - Response Key
-
-extension SwiftyReceiptValidator {
-    
+    /// Response keys
     public enum ResponseKey: String {
         case status
         case receipt
@@ -78,12 +74,8 @@ extension SwiftyReceiptValidator {
             }
         }
     }
-}
-
-// MARK: - Receipt Info Field
-
-extension SwiftyReceiptValidator {
     
+    /// Info keys
     public enum InfoKey: String {
         case bundle_id // This corresponds to the value of CFBundleIdentifier in the Info.plist file.
         case application_version // This corresponds to the value of CFBundleVersion (in iOS) or CFBundleShortVersionString (in OS X) in the Info.plist.

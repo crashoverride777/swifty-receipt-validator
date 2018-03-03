@@ -32,8 +32,8 @@ private enum JSONObjectKey: String {
  
  An enum to manage in app purchase receipt validation.
  */
-
 public enum SwiftyReceiptValidator {
+    public typealias SwiftyReceiptValidatorResult = (Result<[String: AnyObject]>) -> Void
     
     // MARK: - Properties
     
@@ -58,7 +58,7 @@ public enum SwiftyReceiptValidator {
     /// - parameter productIdentifier: The product Identifier String for the product to validate.
     /// - parameter sharedSecret: The shared secret when using auto-subscriptions.
     /// - result handler: Called when the validation has completed. Will return the success state of the validation and an optional dictionary for further receipt validation if successfull.
-    public static func start(withProductId productIdentifier: String, sharedSecret: String?, handler: @escaping (Result<[String: AnyObject]>) -> Void) {
+    public static func start(withProductId productIdentifier: String, sharedSecret: String?, handler: @escaping SwiftyReceiptValidatorResult) {
         
         self.productIdentifier = productIdentifier
         
@@ -89,7 +89,7 @@ public enum SwiftyReceiptValidator {
 
 private extension SwiftyReceiptValidator {
     
-    static func startValidation(withReceiptData receiptData: Data, sharedSecret: String?, handler: @escaping (Result<[String: AnyObject]>) -> Void) {
+    static func startValidation(withReceiptData receiptData: Data, sharedSecret: String?, handler: @escaping SwiftyReceiptValidatorResult) {
         
         // Prepare receipt
         let receipt = receiptData.base64EncodedString(options: Data.Base64EncodingOptions(rawValue: 0))

@@ -20,7 +20,7 @@ final class SwiftyReceiptObtainer: NSObject {
         return true
     }
     
-    // MARK: - Methods
+    // MARK: - Fetch
     
     func fetch(handler: @escaping (URL?) -> Void) {
         self.handler = handler
@@ -36,7 +36,7 @@ final class SwiftyReceiptObtainer: NSObject {
     }
 }
 
-// MARK: - SKRequestDelegate
+// MARK: - SK Request Delegate
 
 extension SwiftyReceiptObtainer: SKRequestDelegate {
     
@@ -52,17 +52,5 @@ extension SwiftyReceiptObtainer: SKRequestDelegate {
     func request(_ request: SKRequest, didFailWithError error: Error) {
         print(error.localizedDescription)
         handler?(nil)
-    }
-}
-
-// MARK: - Print
-
-private extension SwiftyReceiptObtainer {
-    
-    /// Overrides the default print method so it print statements only show when in DEBUG mode
-    func print(_ items: Any...) {
-        #if DEBUG
-            Swift.print(items)
-        #endif
     }
 }
