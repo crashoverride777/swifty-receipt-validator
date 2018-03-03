@@ -122,7 +122,7 @@ private extension SwiftyReceiptValidator {
                     return
                 }
                 
-                // Handle request to sandbox server
+                // Handle sandbox request
                 self.startURLSession(with: .appleSandbox, parameters: parameters) { result in
                     
                     switch result {
