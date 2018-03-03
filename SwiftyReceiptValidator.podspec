@@ -26,5 +26,6 @@ s.source = {
 }
 
 s.source_files = "SwiftyReceiptValidator/**/*.{swift}"
+s.swift_version = '4'
 
 end
