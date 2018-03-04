@@ -19,7 +19,6 @@ s.authors = { 'DominikRingler' => 'dominikringler@icloud.com' }
 
 s.requires_arc = true
 s.ios.deployment_target = '9.3'
-s.swift_version = '4'
 
 s.source = {
     :git => 'https://github.com/crashoverride777/swifty-receipt-validator.git',
