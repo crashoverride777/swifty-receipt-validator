@@ -36,7 +36,7 @@ final class SwiftyReceiptObtainer: NSObject {
     // MARK: - Properties
     
     private let receiptURL = Bundle.main.appStoreReceiptURL
-    private var handler: ResultHandler!
+    private var handler: ResultHandler?
    
     private var hasReceipt: Bool {
         guard let path = receiptURL?.path, FileManager.default.fileExists(atPath: path) else { return false }

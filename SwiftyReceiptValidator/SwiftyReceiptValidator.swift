@@ -40,21 +40,29 @@ private enum JSONObjectKey: String {
  
  An enum to manage in app purchase receipt validation.
  */
-public enum SwiftyReceiptValidator {
+public final class SwiftyReceiptValidator: NSObject {
     public typealias ResultHandler = (Result<[String: AnyObject]>) -> Void
     
     // MARK: - Properties
     
-    // The urls of the sandbox or production apple server.
+    /// The result enum of a validation request. Returns a success of failure case with a corresponding value
+    public enum Result<T> {
+        case success(data: T)
+        case failure(code: Int?, error: ValidationError)
+    }
+    
+    /// The urls of the sandbox or production apple server.
     enum URLString: String {
         case sandbox    = "https://sandbox.itunes.apple.com/verifyReceipt"
         case production = "https://buy.itunes.apple.com/verifyReceipt"
     }
     
-    // The result enum of a validation request. Returns a success of failure case with a corresponding value
-    public enum Result<T> {
-        case success(data: T)
-        case failure(code: Int?, error: ValidationError)
+    /// Private
+    private let receiptObtainer = SwiftyReceiptObtainer()
+    private let receiptURL = Bundle.main.appStoreReceiptURL
+    private var hasReceipt: Bool {
+        guard let path = receiptURL?.path, FileManager.default.fileExists(atPath: path) else { return false }
+        return true
     }
     
     // MARK: - Start
@@ -64,16 +72,14 @@ public enum SwiftyReceiptValidator {
     /// - parameter productIdentifier: The product Identifier String for the product to validate.
     /// - parameter sharedSecret: The shared secret when using auto-subscriptions.
     /// - result handler: Called when the validation has completed. Will return the success state of the validation and an optional dictionary for further receipt validation if successfull.
-    public static func start(withProductId productIdentifier: String, sharedSecret: String?, handler: @escaping ResultHandler) {
+    public func start(withProductId productIdentifier: String, sharedSecret: String?, handler: @escaping ResultHandler) {
         
         // Fetch latest receipt and start validation
-        let receiptObtainer = SwiftyReceiptObtainer()
         receiptObtainer.fetch { result in
            
             switch result {
                 
             case .success(let receiptURL):
-                
                 do {
                     let receiptData = try Data(contentsOf: receiptURL)
                     self.startValidation(with: receiptData, secret: sharedSecret, productId: productIdentifier) { result in
@@ -98,7 +104,7 @@ public enum SwiftyReceiptValidator {
 
 private extension SwiftyReceiptValidator {
     
-    static func startValidation(with receiptData: Data, secret: String?, productId: String, handler: @escaping ResultHandler) {
+    func startValidation(with receiptData: Data, secret: String?, productId: String, handler: @escaping ResultHandler) {
         
         // Prepare receipt base 64 string
         let receiptBase64String = receiptData.base64EncodedString(options: Data.Base64EncodingOptions(rawValue: 0))

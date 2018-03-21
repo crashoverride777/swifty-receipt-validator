@@ -36,7 +36,7 @@ private enum HTTPMethod: String {
 
 extension SwiftyReceiptValidator {
     
-    static func startURLSession(with urlString: URLString, parameters: [AnyHashable: Any], productId: String, handler: @escaping ResultHandler) {
+    func startURLSession(with urlString: URLString, parameters: [AnyHashable: Any], productId: String, handler: @escaping ResultHandler) {
         
         // Create url
         guard let url = URL(string: urlString.rawValue) else {
@@ -55,7 +55,8 @@ extension SwiftyReceiptValidator {
         let session = URLSession(configuration: sessionConfiguration)
         
         // Start url session
-        session.dataTask(with: urlRequest) { (data, response, error) in
+        session.dataTask(with: urlRequest) { [weak self] (data, response, error) in
+            guard let strongSelf = self else { return }
             // Check for error
             if let error = error {
                 handler(.failure(code: nil, error: .other(error)))
@@ -71,7 +72,7 @@ extension SwiftyReceiptValidator {
             // Parse json
             do {
                 let jsonData = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves) as? [String: AnyObject]
-                validate(jsonData, productId: productId, handler: handler)
+                strongSelf.validate(jsonData, productId: productId, handler: handler)
             }
             
             catch let error {
@@ -86,40 +87,41 @@ extension SwiftyReceiptValidator {
 
 private extension SwiftyReceiptValidator {
     
-    static func validate(_ jsonData: [String: AnyObject]?, productId: String, handler: @escaping ResultHandler) {
+    func validate(_ jsonData: [String: AnyObject]?, productId: String, handler: @escaping ResultHandler) {
         
         // Check that we actually have data
         guard let jsonData = jsonData else {
             handler(.failure(code: nil, error: .json))
             return
         }
-        // Check for receipt status in json
-        guard let status = jsonData[ResponseKey.status.rawValue] as? Int else {
+        
+        // Check for receipt status code in json
+        guard let statusCode = jsonData[ResponseKey.status.rawValue] as? Int else {
             handler(.failure(code: nil, error: .noStatusCodeFound))
             return
         }
         
         // Check receipt status is valid
-        guard status == StatusCode.valid.rawValue else {
-            handler(.failure(code: status, error: .invalidStatusCode))
+        guard statusCode == StatusCode.valid.rawValue else {
+            handler(.failure(code: statusCode, error: .invalidStatusCode))
             return
         }
         
         // Check receipt send for verification exists in json response
         guard let receipt = jsonData[ResponseKey.receipt.rawValue] else {
-            handler(.failure(code: nil, error: .noReceiptInJSON))
+            handler(.failure(code: statusCode, error: .noReceiptInJSON))
             return
         }
         
         // Check receipt contains correct bundle id
         guard self.isBundleIdentifierMatching(with: receipt) else {
-            handler(.failure(code: status, error: .bundleIdNotMatching))
+            handler(.failure(code: statusCode, error: .bundleIdNotMatching))
             return
         }
         
         // Check receipt contains correct product id
         guard self.isProductIdentifier(productId, matchingWith: receipt) else {
-            handler(.failure(code: status, error: .productIdNotMatching))
+            handler(.failure(code: statusCode, error: .productIdNotMatching))
             return
         }
         
@@ -127,11 +129,11 @@ private extension SwiftyReceiptValidator {
         handler(.success(data: jsonData))
     }
     
-    static func isBundleIdentifierMatching(with receipt: AnyObject) -> Bool {
+    func isBundleIdentifierMatching(with receipt: AnyObject) -> Bool {
         return (receipt[InfoKey.bundle_id.rawValue] as? String) == Bundle.main.bundleIdentifier
     }
     
-    static func isProductIdentifier(_ productIdentifier: String, matchingWith receipt: AnyObject) -> Bool {
+    func isProductIdentifier(_ productIdentifier: String, matchingWith receipt: AnyObject) -> Bool {
         guard let inApp = receipt[InfoKey.in_app.rawValue] as? [AnyObject] else { return false }
         return inApp.first(where: { ($0[InfoKey.InApp.product_id.rawValue] as? String) == productIdentifier }) != nil
     }
