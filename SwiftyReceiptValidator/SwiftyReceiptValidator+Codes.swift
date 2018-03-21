@@ -47,7 +47,6 @@ public extension SwiftyReceiptValidator {
         case testReceipt = 21007
         case productionEnvironment = 21008
         
-        
         var description: String {
             switch self {
             case .unknown:

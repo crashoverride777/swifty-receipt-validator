@@ -68,23 +68,27 @@ public enum SwiftyReceiptValidator {
         
         // Fetch latest receipt and start validation
         let receiptObtainer = SwiftyReceiptObtainer()
-        receiptObtainer.fetch { receiptURL in
-            guard let receiptURL = receiptURL else {
-                handler(.failure(code: nil, error: .noReceiptFound))
-                return
-            }
-            
-            do {
-                let receiptData = try Data(contentsOf: receiptURL)
-                self.startValidation(with: receiptData, secret: sharedSecret, productId: productIdentifier) { result in
-                    DispatchQueue.main.async {
-                        handler(result)
+        receiptObtainer.fetch { result in
+           
+            switch result {
+                
+            case .success(let receiptURL):
+                
+                do {
+                    let receiptData = try Data(contentsOf: receiptURL)
+                    self.startValidation(with: receiptData, secret: sharedSecret, productId: productIdentifier) { result in
+                        DispatchQueue.main.async {
+                            handler(result)
+                        }
                     }
                 }
-            }
+                    
+                catch let error {
+                    handler(.failure(code: nil, error: .other(error)))
+                }
                 
-            catch let error {
-                handler(.failure(code: nil, error: .other(error)))
+            case .failure(let error):
+                handler(.failure(code: nil, error: .other(error.error)))
             }
         }
     }

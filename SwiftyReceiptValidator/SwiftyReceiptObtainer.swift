@@ -31,12 +31,13 @@
 import StoreKit
 
 final class SwiftyReceiptObtainer: NSObject {
+    typealias ResultHandler = (SwiftyReceiptValidator.Result<URL>) -> Void
     
     // MARK: - Properties
     
     private let receiptURL = Bundle.main.appStoreReceiptURL
-    private var handler: ((URL?) -> Void)?
-    
+    private var handler: ResultHandler!
+   
     private var hasReceipt: Bool {
         guard let path = receiptURL?.path, FileManager.default.fileExists(atPath: path) else { return false }
         return true
@@ -44,17 +45,17 @@ final class SwiftyReceiptObtainer: NSObject {
     
     // MARK: - Fetch
     
-    func fetch(handler: @escaping (URL?) -> Void) {
+    func fetch(handler: @escaping ResultHandler) {
         self.handler = handler
         
-        guard hasReceipt else {
+        guard hasReceipt, let receiptURL = receiptURL else {
             let request = SKReceiptRefreshRequest(receiptProperties: nil)
             request.delegate = self
             request.start()
             return
         }
         
-        self.handler?(receiptURL)
+        handler(.success(data: receiptURL))
     }
 }
 
@@ -63,16 +64,16 @@ final class SwiftyReceiptObtainer: NSObject {
 extension SwiftyReceiptObtainer: SKRequestDelegate {
     
     func requestDidFinish(_ request: SKRequest) {
-        guard hasReceipt else {
-            handler?(nil)
+        guard hasReceipt, let receiptURL = receiptURL else {
+            handler?(.failure(code: nil, error: .noReceiptFound))
             return
         }
         
-        handler?(receiptURL)
+        handler?(.success(data: receiptURL))
     }
     
     func request(_ request: SKRequest, didFailWithError error: Error) {
         print(error.localizedDescription)
-        handler?(nil)
+        handler?(.failure(code: nil, error: .other(error)))
     }
 }
