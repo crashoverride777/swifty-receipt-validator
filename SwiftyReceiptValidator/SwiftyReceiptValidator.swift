@@ -1,6 +1,14 @@
+//
+//  SwiftyReceiptValidator.swift
+//  SwiftyReceiptValidator
+//
+//  Created by Dominik on 09/08/2017.
+//  Copyright © 2017 Dominik. All rights reserved.
+//
+
 //    The MIT License (MIT)
 //
-//    Copyright (c) 2016-2017 Dominik Ringler
+//    Copyright (c) 2016-2018 Dominik Ringler
 //
 //    Permission is hereby granted, free of charge, to any person obtaining a copy
 //    of this software and associated documentation files (the "Software"), to deal
@@ -33,15 +41,17 @@ private enum JSONObjectKey: String {
  An enum to manage in app purchase receipt validation.
  */
 public enum SwiftyReceiptValidator {
-    public typealias SwiftyReceiptValidatorResult = (Result<[String: AnyObject]>) -> Void
+    public typealias ResultHandler = (Result<[String: AnyObject]>) -> Void
     
     // MARK: - Properties
     
+    // The urls of the sandbox or production apple server.
     enum URLString: String {
         case sandbox    = "https://sandbox.itunes.apple.com/verifyReceipt"
         case production = "https://buy.itunes.apple.com/verifyReceipt"
     }
     
+    // The result enum of a validation request. Returns a success of failure case with a corresponding value
     public enum Result<T> {
         case success(data: T)
         case failure(code: Int?, error: ValidationError)
@@ -54,7 +64,9 @@ public enum SwiftyReceiptValidator {
     /// - parameter productIdentifier: The product Identifier String for the product to validate.
     /// - parameter sharedSecret: The shared secret when using auto-subscriptions.
     /// - result handler: Called when the validation has completed. Will return the success state of the validation and an optional dictionary for further receipt validation if successfull.
-    public static func start(withProductId productIdentifier: String, sharedSecret: String?, handler: @escaping SwiftyReceiptValidatorResult) {
+    public static func start(withProductId productIdentifier: String, sharedSecret: String?, handler: @escaping ResultHandler) {
+        
+        // Fetch latest receipt and start validation
         let receiptObtainer = SwiftyReceiptObtainer()
         receiptObtainer.fetch { receiptURL in
             guard let receiptURL = receiptURL else {
@@ -82,23 +94,22 @@ public enum SwiftyReceiptValidator {
 
 private extension SwiftyReceiptValidator {
     
-    static func startValidation(with receiptData: Data, secret: String?, productId: String, handler: @escaping SwiftyReceiptValidatorResult) {
+    static func startValidation(with receiptData: Data, secret: String?, productId: String, handler: @escaping ResultHandler) {
         
-        // Prepare receipt
-        let receipt = receiptData.base64EncodedString(options: Data.Base64EncodingOptions(rawValue: 0))
+        // Prepare receipt base 64 string
+        let receiptBase64String = receiptData.base64EncodedString(options: Data.Base64EncodingOptions(rawValue: 0))
         
-        // Prepare parameters
-        var parameters = [JSONObjectKey.receiptData.rawValue: receipt]
+        // Prepare url session parameters
+        var parameters = [JSONObjectKey.receiptData.rawValue: receiptBase64String]
         
+        // Add shared secret to url session parameters if needed
         if let sharedSecret = secret {
             parameters[JSONObjectKey.password.rawValue] = sharedSecret
         }
       
-        // Start URL request to production server first, if it fails because in test environment try sandbox
+        // Start URL request to production server first, if it fails because in test environment try sandbox other fail completely.
         // This handles validation directily with apple. This is not the recommended way by apple as it is not secure.
         // It is still better than not doing any validation at all.
-        // If you will use your own server than just will have to adjust this last bit of code to only send to your server and than connect to
-        // apple production/sandbox for there.
         startURLSession(with: .production, parameters: parameters, productId: productId) { result in
             switch result {
                 
@@ -114,7 +125,6 @@ private extension SwiftyReceiptValidator {
                 
                 // Handle sandbox request
                 self.startURLSession(with: .sandbox, parameters: parameters, productId: productId) { result in
-                    
                     switch result {
                     case .success(let data):
                         handler(.success(data: data))
