@@ -1,7 +1,7 @@
 # Swifty Receipt Validator
 
-[![Platform](https://img.shields.io/cocoapods/p/Alamofire.svg?style=flat)](https://alamofire.github.io/SwiftyReceiptValidator)
-[![CocoaPods Compatible](https://img.shields.io/cocoapods/v/Alamofire.svg)](https://img.shields.io/cocoapods/v/SwiftyReceiptValidator.svg)
+[![Platform](https://img.shields.io/cocoapods/p/SwiftyReceiptValidator.svg?style=flat)](https://alamofire.github.io/SwiftyReceiptValidator)
+[![CocoaPods Compatible](https://img.shields.io/cocoapods/v/SwiftyReceiptValidator.svg)](https://img.shields.io/cocoapods/v/SwiftyReceiptValidator.svg)
 
 A swift helper to handle app store receipt validation.
 
