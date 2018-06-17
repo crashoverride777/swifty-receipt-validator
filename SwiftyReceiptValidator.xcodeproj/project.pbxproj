@@ -16,6 +16,11 @@
 		B4D6599720D6EBB800CE60F6 /* ExampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4D6599620D6EBB800CE60F6 /* ExampleUITests.swift */; };
 		B4D659A820D6EC6100CE60F6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4D659A720D6EC6100CE60F6 /* ViewController.swift */; };
 		B4D659AB20D6EC7900CE60F6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B4D659A920D6EC7900CE60F6 /* Main.storyboard */; };
+		B4D659B120D6ED4A00CE60F6 /* SwiftyReceiptValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4D659AC20D6ED4A00CE60F6 /* SwiftyReceiptValidator.swift */; };
+		B4D659B220D6ED4A00CE60F6 /* SwiftyReceiptValidator+Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4D659AD20D6ED4A00CE60F6 /* SwiftyReceiptValidator+Session.swift */; };
+		B4D659B320D6ED4A00CE60F6 /* SwiftyReceiptObtainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4D659AE20D6ED4A00CE60F6 /* SwiftyReceiptObtainer.swift */; };
+		B4D659B420D6ED4A00CE60F6 /* SwiftyReceiptValidator+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4D659AF20D6ED4A00CE60F6 /* SwiftyReceiptValidator+Error.swift */; };
+		B4D659B520D6ED4A00CE60F6 /* SwiftyReceiptValidator+Codes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4D659B020D6ED4A00CE60F6 /* SwiftyReceiptValidator+Codes.swift */; };
 		B4DB5C5F1F3B98A900749D39 /* SwiftyReceiptValidator+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DB5C5E1F3B98A900749D39 /* SwiftyReceiptValidator+Error.swift */; };
 		B4DB5C611F3B98D100749D39 /* SwiftyReceiptValidator+Codes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DB5C601F3B98D100749D39 /* SwiftyReceiptValidator+Codes.swift */; };
 		B4DB5C631F3B98FD00749D39 /* SwiftyReceiptObtainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DB5C621F3B98FD00749D39 /* SwiftyReceiptObtainer.swift */; };
@@ -57,6 +62,11 @@
 		B4D6599820D6EBB800CE60F6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B4D659A720D6EC6100CE60F6 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		B4D659AA20D6EC7900CE60F6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		B4D659AC20D6ED4A00CE60F6 /* SwiftyReceiptValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftyReceiptValidator.swift; path = SwiftyReceiptValidator/SwiftyReceiptValidator.swift; sourceTree = SOURCE_ROOT; };
+		B4D659AD20D6ED4A00CE60F6 /* SwiftyReceiptValidator+Session.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "SwiftyReceiptValidator+Session.swift"; path = "SwiftyReceiptValidator/SwiftyReceiptValidator+Session.swift"; sourceTree = SOURCE_ROOT; };
+		B4D659AE20D6ED4A00CE60F6 /* SwiftyReceiptObtainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftyReceiptObtainer.swift; path = SwiftyReceiptValidator/SwiftyReceiptObtainer.swift; sourceTree = SOURCE_ROOT; };
+		B4D659AF20D6ED4A00CE60F6 /* SwiftyReceiptValidator+Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "SwiftyReceiptValidator+Error.swift"; path = "SwiftyReceiptValidator/SwiftyReceiptValidator+Error.swift"; sourceTree = SOURCE_ROOT; };
+		B4D659B020D6ED4A00CE60F6 /* SwiftyReceiptValidator+Codes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "SwiftyReceiptValidator+Codes.swift"; path = "SwiftyReceiptValidator/SwiftyReceiptValidator+Codes.swift"; sourceTree = SOURCE_ROOT; };
 		B4DB5C5E1F3B98A900749D39 /* SwiftyReceiptValidator+Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SwiftyReceiptValidator+Error.swift"; sourceTree = "<group>"; };
 		B4DB5C601F3B98D100749D39 /* SwiftyReceiptValidator+Codes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SwiftyReceiptValidator+Codes.swift"; sourceTree = "<group>"; };
 		B4DB5C621F3B98FD00749D39 /* SwiftyReceiptObtainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyReceiptObtainer.swift; sourceTree = "<group>"; };
@@ -134,6 +144,7 @@
 		B4D6597520D6EBB700CE60F6 /* Example */ = {
 			isa = PBXGroup;
 			children = (
+				B4D659B620D6ED5200CE60F6 /* Validator */,
 				B4D6597620D6EBB700CE60F6 /* AppDelegate.swift */,
 				B4D659A720D6EC6100CE60F6 /* ViewController.swift */,
 				B4D659A920D6EC7900CE60F6 /* Main.storyboard */,
@@ -160,6 +171,18 @@
 				B4D6599820D6EBB800CE60F6 /* Info.plist */,
 			);
 			path = ExampleUITests;
+			sourceTree = "<group>";
+		};
+		B4D659B620D6ED5200CE60F6 /* Validator */ = {
+			isa = PBXGroup;
+			children = (
+				B4D659AE20D6ED4A00CE60F6 /* SwiftyReceiptObtainer.swift */,
+				B4D659AC20D6ED4A00CE60F6 /* SwiftyReceiptValidator.swift */,
+				B4D659B020D6ED4A00CE60F6 /* SwiftyReceiptValidator+Codes.swift */,
+				B4D659AF20D6ED4A00CE60F6 /* SwiftyReceiptValidator+Error.swift */,
+				B4D659AD20D6ED4A00CE60F6 /* SwiftyReceiptValidator+Session.swift */,
+			);
+			name = Validator;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -254,7 +277,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0940;
-				LastUpgradeCheck = 0900;
+				LastUpgradeCheck = 0940;
 				ORGANIZATIONNAME = Dominik;
 				TargetAttributes = {
 					B4533F301DA2BD8900440CC0 = {
@@ -351,7 +374,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				B4D659A820D6EC6100CE60F6 /* ViewController.swift in Sources */,
+				B4D659B120D6ED4A00CE60F6 /* SwiftyReceiptValidator.swift in Sources */,
+				B4D659B420D6ED4A00CE60F6 /* SwiftyReceiptValidator+Error.swift in Sources */,
+				B4D659B520D6ED4A00CE60F6 /* SwiftyReceiptValidator+Codes.swift in Sources */,
+				B4D659B220D6ED4A00CE60F6 /* SwiftyReceiptValidator+Session.swift in Sources */,
 				B4D6597720D6EBB700CE60F6 /* AppDelegate.swift in Sources */,
+				B4D659B320D6ED4A00CE60F6 /* SwiftyReceiptObtainer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -419,6 +447,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -426,6 +455,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -479,6 +509,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -486,6 +517,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;

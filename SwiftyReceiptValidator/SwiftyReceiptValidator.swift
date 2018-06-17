@@ -82,9 +82,7 @@ public final class SwiftyReceiptValidator: NSObject {
             case .success(let receiptURL):
                 do {
                     let receiptData = try Data(contentsOf: receiptURL)
-                    self.startValidation(with: receiptData, secret: sharedSecret, productId: productIdentifier) { result in
-                        handler(result)
-                    }
+                    self.startValidation(with: receiptData, secret: sharedSecret, productId: productIdentifier, handler: handler)
                 }
                     
                 catch let error {

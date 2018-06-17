@@ -1,6 +1,6 @@
 //
 //  ViewController.swift
-//  SwiftyReceiptValidatorExample
+//  Example
 //
 //  Created by Dominik on 17/06/2018.
 //  Copyright © 2018 Dominik. All rights reserved.
@@ -16,20 +16,21 @@ class ViewController: UIViewController {
     
     @IBOutlet private weak var textField: UITextField! {
         didSet {
-            textField.text = productIdentifier
+            textField.placeholder = "Enter a valid iTunes product identifier"
         }
     }
     
-    // MARK: - Properties
-    
-    private let productIdentifier = "com.dominikringler.twinplanes.removeads"
-    
+     let receiptValidator = SwiftyReceiptValidator()
+ 
     // MARK: - View Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(viewTapped))
+        view.addGestureRecognizer(tapGestureRecognizer)
+        
+        textField.text = "com.dominikringler.twinplanes.removeads"
     }
 }
 
@@ -57,13 +58,13 @@ private extension ViewController {
     @IBAction func validateButtonPressed(_ sender: UIButton) {
         guard let productId = textField.text else { return }
       
-        let receiptValidator = SwiftyReceiptValidator()
+    
         receiptValidator.start(withProductId: productId, sharedSecret: nil) { result in
             switch result {
             case .success(let data):
                 print("Validation successfull with data \(data)")
             case .failure(let code, let error):
-                print("Validation failed, code: \(code), error \(error)")
+                print("Validation failed, code: \(code), error \(error.localizedDescription)")
             }
         }
     }
