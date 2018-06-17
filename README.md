@@ -59,7 +59,7 @@ There is now an [app](https://cocoapods.org/app) which makes handling pods much 
 
 Altenatively you can drag the swift file(s) manually into your project.
 
-# Usage
+## Usage
 
 - Add the import statement to your swift file(s) when you installed via cocoa pods
 
