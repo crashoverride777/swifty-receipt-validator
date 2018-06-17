@@ -1,8 +1,8 @@
 # Swifty Receipt Validator
 
-[Swift 4.1](https://img.shields.io/badge/swift-4.1-ED523F.svg?style=flat)](https://swift.org/download/)
-[CocoaPods Compatible](https://img.shields.io/cocoapods/v/SwiftyReceiptValidator.svg)
-
+[![Swift 4.1](https://img.shields.io/badge/swift-4.1-ED523F.svg?style=flat)](https://swift.org/download/)
+[![CocoaPods Compatible](https://img.shields.io/cocoapods/v/SwiftyReceiptValidator.svg)
+[![iOS/macOS CI](https://img.shields.io/circleci/project/github/pointfreeco/swift-tagged/master.svg?label=ios/macos)](https://circleci.com/gh/pointfreeco/swift-tagged)
 
 A swift helper to handle app store receipt validation.
 
