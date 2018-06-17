@@ -94,7 +94,7 @@ func paymentQueue(queue: SKPaymentQueue, updatedTransactions transactions: [SKPa
 
 ```
 
-Change the purchase and restore code to look something like this
+Change the purchase and restore code to look like this
 
 ```swift
 case .purchased:
@@ -104,9 +104,11 @@ case .purchased:
     
     receiptValidator.validate(productIdentifier, sharedSecret: nil) { result in
           switch result {
+          
           case .success(let data):
               print("Receipt validation was successfull with data \(data)")
               // Unlock products and/or do additional checks
+          
           case .failure(let code, let error):
               print("Receipt validation failed with code \(code), error \(error.localizedDescription)")    
               // Maybe show alert
@@ -138,11 +140,11 @@ case .restored:
                 
 ```
 
-In this example sharedSecret is set to nil because I am only validating regular in app purchases. To validate a auto renewable subscriptions you can enter your shared secret that you have set up in itunes and optionally handle additional checks (see below).
+In this example sharedSecret is set to nil because I am only validating regular in app purchases. To validate an auto renewable subscriptions you can enter your shared secret that you have set up in itunes and optionally handle additional checks (see below).
 
 ## Additional Validation Checks
 
-If you would like to handle additional validation checks you can use the response (optional dictionary) that is returned in the completion handler. Use the 4 keys in the ResponseKey enum to access the inital parts of the reponse. 
+If you would like to handle additional validation checks you can use the response (optional dictionary) that is returned in the success case of the result enum. Use the 4 keys in the ResponseKey enum to access the inital parts of the reponse. 
 
 e.g 
 
@@ -174,7 +176,7 @@ e.g
 
 ```swift
 ....
-if let receipt = response[receiptKey] {
+if let receipt = data[receiptKey] {
      // example 1
      let creationDateKey = SwiftyReceiptValidator.InfoKey.creation_date.rawValue
      if let creationDate = receipt[creationDateKey] as? ... {
