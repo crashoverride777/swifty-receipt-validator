@@ -33,7 +33,7 @@ import StoreKit
 /*
  SwiftyReceiptValidator
  
- An class to manage in app purchase receipt validation.
+ A class to manage in app purchase receipt validation.
  */
 public final class SwiftyReceiptValidator: NSObject {
     public typealias ResultHandler = (Result<[String: AnyObject]>) -> Void
