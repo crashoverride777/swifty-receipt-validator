@@ -47,7 +47,7 @@ public extension SwiftyReceiptValidator {
         case testReceipt = 21007
         case productionEnvironment = 21008
         
-        var description: String {
+        public var description: String {
             switch self {
             case .unknown:
                 return "No decodable status"
@@ -86,7 +86,7 @@ public extension SwiftyReceiptValidator {
         // Only returned for iOS 6 style transaction receipts for auto-renewable subscriptions. The JSON representation of the receipt for the most recent renewal.
         case latest_receipt_info
         
-        var description: String {
+        public var description: String {
             switch self {
             case .status:
                 return "See ReceiptStatusCode. For iOS 6 style transaction receipts, the status code reflects the status of the specific transaction’s receipt. For iOS 7 style app receipts, the status code is reflects the status of the app receipt as a whole. For example, if you send a valid app receipt that contains an expired subscription, the response is 0 because the receipt as a whole is valid."
@@ -115,7 +115,7 @@ public extension SwiftyReceiptValidator {
         // The receipt for an in-app purchase. This will be an array of dictionaries with all your individial receipts. See below
         case in_app
         
-        enum InApp: String {
+        public enum InApp: String {
             // The number of items purchased. This value corresponds to the quantity property of the SKPayment object stored in the transaction’s payment property.
             case quantity
             // The product identifier of the item that was purchased. This value corresponds to the productIdentifier property of the SKPayment object stored in the transaction’s payment property.

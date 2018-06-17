@@ -59,7 +59,7 @@ final class SwiftyReceiptObtainer: NSObject {
     }
 }
 
-// MARK: - SK Request Delegate
+// MARK: - SKRequestDelegate
 
 extension SwiftyReceiptObtainer: SKRequestDelegate {
     

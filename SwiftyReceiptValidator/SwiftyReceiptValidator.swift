@@ -30,11 +30,6 @@
 
 import StoreKit
 
-private enum JSONObjectKey: String {
-    case receiptData = "receipt-data"
-    case password
-}
-
 /*
  SwiftyReceiptValidator
  
@@ -43,7 +38,7 @@ private enum JSONObjectKey: String {
 public final class SwiftyReceiptValidator: NSObject {
     public typealias ResultHandler = (Result<[String: AnyObject]>) -> Void
     
-    // MARK: - Properties
+    // MARK: - Types
     
     /// The result enum of a validation request. Returns a success of failure case with a corresponding value
     public enum Result<T> {
@@ -52,12 +47,19 @@ public final class SwiftyReceiptValidator: NSObject {
     }
     
     /// The urls of the sandbox or production apple server.
-    enum URLString: String {
+    public enum URLString: String {
         case sandbox    = "https://sandbox.itunes.apple.com/verifyReceipt"
         case production = "https://buy.itunes.apple.com/verifyReceipt"
     }
     
-    /// Private
+    /// JSON keys
+    private enum JSONObjectKey: String {
+        case receiptData = "receipt-data"
+        case password
+    }
+    
+    // MARK: - Properties
+    
     private let receiptObtainer = SwiftyReceiptObtainer()
     private let receiptURL = Bundle.main.appStoreReceiptURL
     private var hasReceipt: Bool {
@@ -73,8 +75,6 @@ public final class SwiftyReceiptValidator: NSObject {
     /// - parameter sharedSecret: The shared secret when using auto-subscriptions.
     /// - result handler: Called when the validation has completed. Will return the success state of the validation and an optional dictionary for further receipt validation if successfull.
     public func start(withProductId productIdentifier: String, sharedSecret: String?, handler: @escaping ResultHandler) {
-        
-        // Fetch latest receipt and start validation
         receiptObtainer.fetch { result in
            
             switch result {
@@ -83,9 +83,7 @@ public final class SwiftyReceiptValidator: NSObject {
                 do {
                     let receiptData = try Data(contentsOf: receiptURL)
                     self.startValidation(with: receiptData, secret: sharedSecret, productId: productIdentifier) { result in
-                        DispatchQueue.main.async {
-                            handler(result)
-                        }
+                        handler(result)
                     }
                 }
                     

@@ -37,7 +37,6 @@ private enum HTTPMethod: String {
 extension SwiftyReceiptValidator {
     
     func startURLSession(with urlString: URLString, parameters: [AnyHashable: Any], productId: String, handler: @escaping ResultHandler) {
-        
         // Create url
         guard let url = URL(string: urlString.rawValue) else {
             handler(.failure(code: nil, error: .url))
@@ -57,6 +56,7 @@ extension SwiftyReceiptValidator {
         // Start url session
         session.dataTask(with: urlRequest) { [weak self] (data, response, error) in
             guard let strongSelf = self else { return }
+           
             // Check for error
             if let error = error {
                 handler(.failure(code: nil, error: .other(error)))

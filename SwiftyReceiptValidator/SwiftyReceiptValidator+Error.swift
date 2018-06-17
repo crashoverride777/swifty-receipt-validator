@@ -30,7 +30,6 @@
 
 import Foundation
 
-/// SwiftyReceiptValidator validation errors
 public extension SwiftyReceiptValidator {
     
     public enum ValidationError: Error {
@@ -46,7 +45,7 @@ public extension SwiftyReceiptValidator {
         case productIdNotMatching
         case other(Error)
         
-        var localizedDescription: String {
+        public var localizedDescription: String {
             let message: String
             
             switch self {
