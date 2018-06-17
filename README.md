@@ -73,42 +73,37 @@ import SwiftyReceipValidator
 let receiptValidator = SwiftyReceiptValidator()
 ```
 
-- Go to the following delegate method for the app in purchase code which you must implement for in app purchases
+- Go to the following delegate method for the app in purchase code which you must implement for in app purchases. The method should more or less look like this
 
 ```swift
-func paymentQueue(queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) { ....
-```
-
-where the code should look more or less like this
-
-```swift
-for transaction in transactions {
+func paymentQueue(queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
+      for transaction in transactions {
       
-     switch transaction.transactionState {
+          switch transaction.transactionState {
 
-     case .purchased:
-          // Transaction is in queue, user has been charged.  Client should complete the transaction.
+          case .purchased:
+               // Transaction is in queue, user has been charged.  Client should complete the transaction.
                 
-          let productIdentifier = transaction.payment.productIdentifier
-          /// Your code to unlock product for productIdentifier, I usually use delegation here
+               let productIdentifier = transaction.payment.productIdentifier
+               // Your code to unlock product for productIdentifier, I usually use delegation here
           
-          queue.finishTransaction(transaction)
+               queue.finishTransaction(transaction)
               
-     case .restored:
-          // Transaction was restored from user's purchase history.  Client should complete the transaction.
+          case .restored:
+               // Transaction was restored from user's purchase history.  Client should complete the transaction.
                 
-          if let productIdentifier = transaction.originalTransaction?.payment.productIdentifier {
-               /// Your code to restore product for productIdentifier, I usually use delegation here
-          }
+               if let productIdentifier = transaction.originalTransaction?.payment.productIdentifier {
+                    // Your code to restore product for productIdentifier, I usually use delegation here
+               }
          
-          queue.finishTransaction(transaction)
+               queue.finishTransaction(transaction)
          
-    case .failed:
-         ....
-    }
-    
-    ....
+         case .failed:
+               ....
+         }
+     }
 }
+
 ```
 
 Change the purchase and restore code to look something like this
