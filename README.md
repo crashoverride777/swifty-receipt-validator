@@ -122,9 +122,11 @@ case .purchased:
     receiptValidator.validate(productIdentifier, sharedSecret: nil) { result in
           switch result {
           case .success(let data):
-              print("Receipt validation was successfull with data \(data), unlock products and/or do additional checks")
+              print("Receipt validation was successfull with data \(data)")
+              // Unlock products and/or do additional checks
           case .failure(let code, let error):
               print("Receipt validation failed with code \(code), error \(error.localizedDescription)")    
+              // Maybe show alert
           }
           
           queue.finishTransaction(transaction) // make sure this is in the validation closure
