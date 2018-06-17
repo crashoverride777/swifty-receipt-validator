@@ -1,6 +1,6 @@
 # Swifty Receipt Validator
 
-[![Swift 4.1](https://img.shields.io/badge/swift-4.1-ED523F.svg?style=flat)
+[![Swift 4.1](https://img.shields.io/badge/swift-4.1-ED523F.svg?style=flat)]
 [![Platform](https://img.shields.io/cocoapods/p/SwiftyReceiptValidator.svg?style=flat)](https://alamofire.github.io/SwiftyReceiptValidator)
 [![CocoaPods Compatible](https://img.shields.io/cocoapods/v/SwiftyReceiptValidator.svg)](https://img.shields.io/cocoapods/v/SwiftyReceiptValidator.svg)
 
