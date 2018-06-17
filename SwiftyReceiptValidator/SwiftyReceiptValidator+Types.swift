@@ -1,5 +1,5 @@
 //
-//  SwiftyReceiptValidator+Codes.swift
+//  SwiftyReceiptValidator+Types.swift
 //  SwiftyReceiptValidator
 //
 //  Created by Dominik on 09/08/2017.
