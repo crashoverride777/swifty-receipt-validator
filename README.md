@@ -48,11 +48,14 @@ https://www.raywenderlich.com/23266/in-app-purchases-in-ios-6-tutorial-consumabl
 
 ## Installation
 
-CocoaPods is a dependency manager for Cocoa projects. Simply install the pod by adding the following line to your pod file
+[CocoaPods](https://developers.google.com/admob/ios/quick-start#streamlined_using_cocoapods) is a dependency manager for Cocoa projects. Simply install the pod by adding the following line to your pod file
+
 
 ```swift
 pod 'SwiftyReceiptValidator'
 ```
+
+There is now an [app](https://cocoapods.org/app) which makes handling pods much easier
 
 Altenatively you can drag the swift file(s) manually into your project.
 
@@ -64,7 +67,13 @@ Altenatively you can drag the swift file(s) manually into your project.
 import SwiftyReceipValidator
 ```
 
-- In your in app purchase code go to the method
+- In your class with your in app purchase code create a class/strong property to SwiftyReceiptValidator
+
+```swift
+let receiptValidator = SwiftyReceiptValidator()
+```
+
+- Go to the following delegate method for the app in purchase code which you must implement for in app purchases
 
 ```swift
 func paymentQueue(queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) { ....
@@ -102,7 +111,7 @@ for transaction in transactions {
 }
 ```
 
-- Change the purchase and restore code to look something like this
+Change the purchase and restore code to look something like this
 
 ```swift
 case .purchased:
@@ -110,14 +119,15 @@ case .purchased:
       
     let productIdentifier = transaction.payment.productIdentifier
     
-    SwiftyReceiptValidator.validate(forIdentifier: productIdentifier, sharedSecret: nil) { (success, response) in
-          if success {
-              /// Your code to unlock product for productIdentifier, I usually use delegation here
-          } else {
-              /// maybe show alert here
-          }          
+    receiptValidator.validate(productIdentifier, sharedSecret: nil) { result in
+          switch result {
+          case .success(let data):
+              print("Receipt validation was successfull with data \(data), unlock products and/or do additional checks")
+          case .failure(let code, let error):
+              print("Receipt validation failed with code \(code), error \(error.localizedDescription)")    
+          }
           
-          queue.finishTransaction(transaction)
+          queue.finishTransaction(transaction) // make sure this is in the validation closure
      }
   
 case .restored:
@@ -125,15 +135,20 @@ case .restored:
           
         if let productIdentifier = transaction.originalTransaction?.payment.productIdentifier {      
               
-              SwiftyReceiptValidator.validate(forIdentifier: productIdentifier, sharedSecret: nil) { (success, response) in
-                    if success {
-                       /// Your code to restore product for productIdentifier, I usually use delegation here
-                    } else {
-                       /// maybe show alert 
-                    }
-                    
-                    queue.finishTransaction(transaction)
-              }
+              receiptValidator.validate(productIdentifier, sharedSecret: nil) { result in
+                  switch result {
+                 
+                  case .success(let data):
+                        print("Receipt validation was successfull with data \(data)")
+                        // Unlock products and/or do additional checks
+                        
+                  case .failure(let code, let error):
+                        print("Receipt validation failed with code \(code), error \(error.localizedDescription)")  
+                        // Maybe show alert
+                  }
+      
+                  queue.finishTransaction(transaction) // make sure this is in the validation closure
+             }
         }
                 
 ```
@@ -147,29 +162,24 @@ If you would like to handle additional validation checks you can use the respons
 e.g 
 
 ```swift
-SwiftyReceiptValidator.validate(forIdentifier: productIdentifier, sharedSecret: "") { (success, response) in
-         if success {
+receiptValidator.validate(productIdentifier, sharedSecret: "") { result in
+         case .success(let data):
          
               // example 1
               let receiptKey = SwiftyReceiptValidator.ResponseKey.receipt.rawValue
-              if let receipt = response[receiptKey] {
+              if let receipt = data[receiptKey] {
                      // do something
                  
               }
               
               // example 2 (auto-renewable subscriptions)
               let receiptInfoFieldKey = SwiftyReceiptValidator.ResponseKey.receipt_info_field.rawValue
-              if let receipt = response[receiptInfoFieldKey] {
+              if let receipt = data[receiptInfoFieldKey] {
                      // do something
               }
-              
- 
-              
-        } else {
+             
            ....        
-        }
-        
-        queue.finishTransaction(transaction)
+    
 }
 ```
 
