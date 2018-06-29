@@ -79,17 +79,29 @@ public final class SwiftyReceiptValidator: NSObject {
             case .success(let receiptURL):
                 do {
                     let receiptData = try Data(contentsOf: receiptURL)
-                    self.startValidation(with: receiptData, secret: sharedSecret, productId: productIdentifier, handler: handler)
+                    self.startValidation(with: receiptData, sharedSecret: sharedSecret, productId: productIdentifier, handler: handler)
                 }
-                    
-                catch let error {
+                catch {
                     handler(.failure(code: nil, error: .other(error)))
                 }
                 
-            case .failure(let error):
-                handler(.failure(code: nil, error: .other(error.error)))
+            case .failure(let code, let error):
+                handler(.failure(code: code, error: .other(error)))
             }
         }
+    }
+    
+    private func fetchReceipt(handler: @escaping (SwiftyReceiptValidator.Result<URL>) -> Void) {
+        self.receiptHandler = handler
+        
+        guard hasReceipt, let receiptURL = receiptURL else {
+            let request = SKReceiptRefreshRequest(receiptProperties: nil)
+            request.delegate = self
+            request.start()
+            return
+        }
+        
+        handler(.success(data: receiptURL))
     }
 }
 
@@ -111,29 +123,11 @@ extension SwiftyReceiptValidator: SKRequestDelegate {
     }
 }
 
-// MARK: - Fetch Receipt
-
-private extension SwiftyReceiptValidator {
-    
-    func fetchReceipt(handler: @escaping (SwiftyReceiptValidator.Result<URL>) -> Void) {
-        self.receiptHandler = handler
-        
-        guard hasReceipt, let receiptURL = receiptURL else {
-            let request = SKReceiptRefreshRequest(receiptProperties: nil)
-            request.delegate = self
-            request.start()
-            return
-        }
-        
-        handler(.success(data: receiptURL))
-    }
-}
-
 // MARK: - Start Receipt Validation
 
 private extension SwiftyReceiptValidator {
     
-    func startValidation(with receiptData: Data, secret: String?, productId: String, handler: @escaping ResultHandler) {
+    func startValidation(with receiptData: Data, sharedSecret: String?, productId: String, handler: @escaping ResultHandler) {
         print("SwiftyReceiptValidator started validation")
         
         // Prepare receipt base 64 string
@@ -141,13 +135,11 @@ private extension SwiftyReceiptValidator {
         
         // Prepare url session parameters
         var parameters = [JSONObjectKey.receiptData.rawValue: receiptBase64String]
-        
-        // Add shared secret to url session parameters if needed
-        if let sharedSecret = secret {
+        if let sharedSecret = sharedSecret {
             parameters[JSONObjectKey.password.rawValue] = sharedSecret
         }
       
-        // Start URL request to production server first, if it fails because in test environment try sandbox other fail completely.
+        // Start URL request to production server first, if it fails because in test environment try sandbox otherwise fail completely.
         // This handles validation directily with apple. This is not the recommended way by apple as it is not secure.
         // It is still better than not doing any validation at all.
         startURLSession(with: .production, parameters: parameters, productId: productId) { result in
@@ -164,7 +156,7 @@ private extension SwiftyReceiptValidator {
                     return
                 }
                 
-                print("SwiftyReceiptValidator validation failed because we are in SANDBOX mode, trying sandbox...")
+                print("SwiftyReceiptValidator validation failed because we are in SANDBOX mode, trying sandbox mode...")
                 
                 // Handle sandbox request
                 self.startURLSession(with: .sandbox, parameters: parameters, productId: productId) { result in
@@ -203,8 +195,8 @@ private extension SwiftyReceiptValidator {
         let session = URLSession(configuration: sessionConfiguration)
         
         // Start url session
-        session.dataTask(with: urlRequest) { (data, response, error) in
-            let strongSelf = self// else { return }
+        session.dataTask(with: urlRequest) { [weak self] (data, response, error) in
+            guard let strongSelf = self else { return }
             
             // Check for error
             if let error = error {
@@ -224,7 +216,7 @@ private extension SwiftyReceiptValidator {
                 strongSelf.validate(jsonData, productId: productId, handler: handler)
             }
                 
-            catch let error {
+            catch {
                 handler(.failure(code: nil, error: .other(error)))
                 return
             }
@@ -262,7 +254,7 @@ private extension SwiftyReceiptValidator {
         }
         
         // Check receipt contains correct bundle id
-        guard isBundleIdentifierMatching(with: receipt) else {
+        guard (receipt[InfoKey.bundleId.rawValue] as? String) == Bundle.main.bundleIdentifier else {
             handler(.failure(code: statusCode, error: .bundleIdNotMatching))
             return
         }
@@ -277,12 +269,8 @@ private extension SwiftyReceiptValidator {
         handler(.success(data: jsonData))
     }
     
-    func isBundleIdentifierMatching(with receipt: AnyObject) -> Bool {
-        return (receipt[InfoKey.bundle_id.rawValue] as? String) == Bundle.main.bundleIdentifier
-    }
-    
     func isProductIdentifier(_ productIdentifier: String, matchingWith receipt: AnyObject) -> Bool {
-        guard let inApp = receipt[InfoKey.in_app.rawValue] as? [AnyObject] else { return false }
-        return inApp.first(where: { ($0[InfoKey.InApp.product_id.rawValue] as? String) == productIdentifier }) != nil
+        guard let inApp = receipt[InfoKey.inApp.rawValue] as? [AnyObject] else { return false }
+        return inApp.first(where: { ($0[InfoKey.InApp.productId.rawValue] as? String) == productIdentifier }) != nil
     }
 }
