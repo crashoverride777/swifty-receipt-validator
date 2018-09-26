@@ -164,7 +164,7 @@ receiptValidator.validate(productIdentifier, sharedSecret: "") { result in
               }
               
               // example 2 (auto-renewable subscriptions)
-              let receiptInfoFieldKey = SwiftyReceiptValidator.ResponseKey.receipt_info_field.rawValue
+              let receiptInfoFieldKey = SwiftyReceiptValidator.ResponseKey.receiptInfoField.rawValue
               if let receipt = data[receiptInfoFieldKey] {
                      // do something
               }
@@ -182,17 +182,17 @@ e.g
 ....
 if let receipt = data[receiptKey] {
      // example 1
-     let creationDateKey = SwiftyReceiptValidator.InfoKey.creation_date.rawValue
+     let creationDateKey = SwiftyReceiptValidator.InfoKey.creationDate.rawValue
      if let creationDate = receipt[creationDateKey] as? ... {
           ...
      }
      
      // example 2
-     let inAppKey = SwiftyReceiptValidator.InfoKey.in_app.rawValue
+     let inAppKey = SwiftyReceiptValidator.InfoKey.inApp.rawValue
      if let inApp = receipt[inAppKey] as? [AnyObject] {
          
          for receiptInApp in inApp {
-            let expiryDateKey = SwiftyReceiptValidator.InfoKey.InApp.expires_date.rawValue
+            let expiryDateKey = SwiftyReceiptValidator.InfoKey.InApp.expiresDate.rawValue
             if let expiryDate = receiptInApp[expiryDateKey] as? ... {
               ...
         }
