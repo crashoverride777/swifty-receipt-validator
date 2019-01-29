@@ -108,7 +108,7 @@ public final class SwiftyReceiptValidator: NSObject {
                     handler(.failure(.other(error.localizedDescription), code: nil))
                 }
             case .failure(let error, let code):
-                handler(.failure(.other(error.localizedDescription), code: code))
+                handler(.failure(error, code: code))
             }
         }
     }
@@ -180,7 +180,7 @@ private extension SwiftyReceiptValidator {
             case .failure(let error, let code):
                 // Check if failed production request was due to a test receipt
                 guard code == .testReceipt else {
-                    handler(.failure(.other(error.localizedDescription), code: code))
+                    handler(.failure(error, code: code))
                     return
                 }
                 
@@ -193,7 +193,7 @@ private extension SwiftyReceiptValidator {
                         print("SwiftyReceiptValidator success (SANDBOX)")
                         handler(.success(data))
                     case .failure(let error, let code):
-                        handler(.failure(.other(error.localizedDescription), code: code))
+                        handler(.failure(error, code: code))
                     }
                 }
             }
