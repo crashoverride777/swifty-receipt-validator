@@ -57,40 +57,8 @@ let receiptValidator = SwiftyReceiptValidator()
 
 ### Validate purchases
 
-- Go to the following delegate method for the app in purchase code which you must implement for in app purchases. The method should more or less look like this
+- Go to the following delegate method for the app in purchase code which you must implement. Modify it so it looks more or less like below.
 
-```swift
-func paymentQueue(queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
-      for transaction in transactions {
-      
-          switch transaction.transactionState {
-
-          case .purchased:
-               // Transaction is in queue, user has been charged.  Client should complete the transaction.
-                
-               let productIdentifier = transaction.payment.productIdentifier
-               // Your code to unlock product for productIdentifier, I usually use delegation here
-          
-               queue.finishTransaction(transaction)
-              
-          case .restored:
-               // Transaction was restored from user's purchase history.  Client should complete the transaction.
-                
-               if let productIdentifier = transaction.originalTransaction?.payment.productIdentifier {
-                    // Your code to restore product for productIdentifier, I usually use delegation here
-               }
-         
-               queue.finishTransaction(transaction)
-         
-         case .failed:
-               ....
-         }
-     }
-}
-
-```
-
-Change the purchase and restore code to look like this
 
 ```swift
 case .purchased:
