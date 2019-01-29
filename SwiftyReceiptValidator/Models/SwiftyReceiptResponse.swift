@@ -15,9 +15,8 @@ public struct SwiftyReceiptResponse: Codable {
     let status: Int
     // The current environment, Sandbox or Production
     let environment: String
-    
-    // Only returned for iOS 6 style transaction receipts for auto-renewable subscriptions. The base-64 encoded transaction receipt for the most recent renewal.
+    // Only returned for iOS 6+ style transaction receipts for auto-renewable subscriptions. The base-64 encoded transaction receipt for the most recent renewal.
     let latestReceipt: SwiftyReceipt? // iOS 6 only
-    // Only returned for iOS 6 style transaction receipts for auto-renewable subscriptions. The JSON representation of the receipt for the most recent renewal.
+    // Only returned for iOS 6+ style transaction receipts for auto-renewable subscriptions. The JSON representation of the receipt for the most recent renewal.
     let latestReceiptInfo: String? // iOS 6 only
 }

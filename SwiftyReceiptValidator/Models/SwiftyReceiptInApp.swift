@@ -25,6 +25,8 @@ public struct SwiftyReceiptInApp: Codable {
     let originalPurchaseDate: Date
     let originalPurchaseDateMs: String
     let originalPurchaseDatePst: Date
+    // The expiration date for the subscription, expressed as the number of milliseconds since January 1, 1970, 00:00:00 GMT. This key is only present for auto-renewable subscription receipts.
+    let expiresDate: Date?
     // Check if we are in trial period.
     let isTrialPeriod: Bool
 }

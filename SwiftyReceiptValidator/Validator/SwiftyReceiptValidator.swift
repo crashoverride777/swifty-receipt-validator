@@ -273,9 +273,13 @@ private extension SwiftyReceiptValidator {
             }
             
         case .subscription:
-//            var receipts = response.receipt.inApp
-//            receipts.removeAll {  < Date() }
-            guard response.latestReceipt != nil else {
+            var receipts = response.latestReceipt?.inApp ?? response.receipt.inApp
+            receipts.removeAll {
+                guard let expiresDate = $0.expiresDate else { return true }
+                return expiresDate < Date()
+            }
+            
+            guard !receipts.isEmpty else {
                 handler(.failure(.noValidSubscription, code: response.status))
                 return
             }
