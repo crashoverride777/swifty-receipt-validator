@@ -44,49 +44,13 @@ public final class SwiftyReceiptValidator: NSObject {
     /// The result enum of a validation request. Returns a success or failure case with a corresponding value
     public enum Result<T> {
         case success(T)
-        case failure(ValidationError, code: SwiftyReceiptResponse.StatusCode?)
+        case failure(SwiftyReceiptError, code: SwiftyReceiptResponse.StatusCode?)
     }
     
     /// The validation mode of the receipt request
     public enum ValidationMode {
         case purchase(productId: String)
         case subscription
-    }
-    
-    /// Error
-    public enum ValidationError: Error {
-        case url
-        case data
-        case json
-        case invalidStatusCode
-        case noReceiptFound
-        case bundleIdNotMatching
-        case productIdNotMatching
-        case noValidSubscription
-        case other(Error)
-        
-        public var localizedDescription: String {
-            switch self {
-            case .url:
-               return "SwiftyReceiptValidator URL error"
-            case .data:
-                return "SwiftyReceiptValidator Data error"
-            case .json:
-                return "SwiftyReceiptValidator JSON error"
-            case .invalidStatusCode:
-               return "SwiftyReceiptValidator Invalid status code"
-            case .noReceiptFound:
-                return "SwiftyReceiptValidator No receipt found on device"
-            case .bundleIdNotMatching:
-                return "SwiftyReceiptValidator Bundle id is not matching receipt"
-            case .productIdNotMatching:
-                return "SwiftyReceiptValidator Product id is not matching with receipt"
-            case .noValidSubscription:
-                return "SwiftyReceiptValidator No active subscription found"
-            case .other(let error):
-                return error.localizedDescription
-            }
-        }
     }
     
     // MARK: - Properties
@@ -141,10 +105,10 @@ public final class SwiftyReceiptValidator: NSObject {
                                          validationMode: validationMode,
                                          handler: handler)
                 } catch {
-                    handler(.failure(.other(error), code: nil))
+                    handler(.failure(.other(error.localizedDescription), code: nil))
                 }
             case .failure(let error, let code):
-                handler(.failure(.other(error), code: code))
+                handler(.failure(.other(error.localizedDescription), code: code))
             }
         }
     }
@@ -177,7 +141,7 @@ extension SwiftyReceiptValidator: SKRequestDelegate {
     }
     
     public func request(_ request: SKRequest, didFailWithError error: Error) {
-        receiptHandler?(.failure(.other(error), code: nil))
+        receiptHandler?(.failure(.other(error.localizedDescription), code: nil))
     }
 }
 
@@ -216,7 +180,7 @@ private extension SwiftyReceiptValidator {
             case .failure(let error, let code):
                 // Check if failed production request was due to a test receipt
                 guard code == .testReceipt else {
-                    handler(.failure(.other(error), code: code))
+                    handler(.failure(.other(error.localizedDescription), code: code))
                     return
                 }
                 
@@ -229,7 +193,7 @@ private extension SwiftyReceiptValidator {
                         print("SwiftyReceiptValidator success (SANDBOX)")
                         handler(.success(data))
                     case .failure(let error, let code):
-                        handler(.failure(.other(error), code: code))
+                        handler(.failure(.other(error.localizedDescription), code: code))
                     }
                 }
             }
@@ -283,7 +247,7 @@ private extension SwiftyReceiptValidator {
             
             // Check for error
             if let error = error {
-                handler(.failure(.other(error), code: nil))
+                handler(.failure(.other(error.localizedDescription), code: nil))
                 return
             }
             
@@ -298,7 +262,7 @@ private extension SwiftyReceiptValidator {
                 let response = try self.jsonDecoder.decode(SwiftyReceiptResponse.self, from: data)
                 self.finishValidation(validationMode, for: response, handler: handler)
             } catch {
-                handler(.failure(.other(error), code: nil))
+                handler(.failure(.other(error.localizedDescription), code: nil))
                 return
             }
         }.resume()
