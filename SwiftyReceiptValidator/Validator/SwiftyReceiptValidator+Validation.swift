@@ -10,17 +10,21 @@ import Foundation
 
 extension SwiftyReceiptValidator {
     
-    func validate(_ response: SwiftyReceiptResponse,
-                  validationMode: ValidationMode,
-                  handler: @escaping ResultHandler) {
-        // Check receipt status is valid
+    func validate(_ response: SwiftyReceiptResponse, validationMode: ValidationMode, handler: @escaping ResultHandler) {
+        // Check receipt status code is valid
         guard response.status == .valid else {
             handler(.failure(.invalidStatusCode, code: response.status))
             return
         }
         
+        // Unwrap receipt
+        guard let receipt = response.receipt else {
+            handler(.failure(.noReceiptFoundInResponse, code: response.status))
+            return
+        }
+        
         // Check receipt contains correct bundle id
-        guard response.receipt.bundleId == Bundle.main.bundleIdentifier else {
+        guard receipt.bundleId == Bundle.main.bundleIdentifier else {
             handler(.failure(.bundleIdNotMatching, code: response.status))
             return
         }
@@ -33,13 +37,13 @@ extension SwiftyReceiptValidator {
             
         case .purchase(let productId):
             // Check a valid receipt with matching product id was found
-            guard response.receipt.inApp.first(where: { $0.productId == productId }) != nil else {
+            guard receipt.inApp.first(where: { $0.productId == productId }) != nil else {
                 handler(.failure(.productIdNotMatching, code: response.status))
                 return
             }
             
         case .subscription:
-            var receipts = response.latestReceiptInfo ?? response.receipt.inApp
+            var receipts = response.latestReceiptInfo ?? receipt.inApp
             receipts.removeAll {
                 guard let expiresDate = $0.expiresDate else { return true }
                 return expiresDate < Date()

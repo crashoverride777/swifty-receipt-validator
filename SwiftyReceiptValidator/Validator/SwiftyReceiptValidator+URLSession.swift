@@ -8,16 +8,9 @@
 
 import Foundation
 
-enum URLString: String {
-    case sandbox    = "https://sandbox.itunes.apple.com/verifyReceipt"
-    case production = "https://buy.itunes.apple.com/verifyReceipt"
-}
-
-// MARK: - Prepare
-
 extension SwiftyReceiptValidator {
     
-    func prepareURLSession(with receiptData: Data,
+    func startURLSession(with receiptData: Data,
                            sharedSecret: String?,
                            validationMode: ValidationMode,
                            handler: @escaping ResultHandler) {
@@ -30,95 +23,54 @@ extension SwiftyReceiptValidator {
             parameters["password"] = sharedSecret
         }
         
-        // Start URL request to production server first, if it fails because in test environment try sandbox otherwise fail completely.
+        // Start URL request to production server first, if status code returns test environment receipt, try sandbox.
         // This handles validation directily with apple. This is not the recommended way by apple as it is not secure.
         // It is still better than not doing any validation at all.
-        startURLSession(with: .production, parameters: parameters, validationMode: validationMode) { result in
+        sessionManager.start(with: .production, parameters: parameters) { [weak self] result in
+            guard let self = self else { return }
             switch result {
                 
             case .success(let data):
                 print("SwiftyReceiptValidator success (PRODUCTION)")
-                handler(.success(data))
-                
-            case .failure(let error, let code):
-                // Check if failed production request was due to a test receipt
-                guard code == .testReceipt else {
-                    handler(.failure(error, code: code))
-                    return
-                }
-                
-                print("SwiftyReceiptValidator validation failed because we are in Production mode, trying sandbox mode...")
-                
-                // Handle sandbox request
-                self.startURLSession(with: .sandbox, parameters: parameters, validationMode: validationMode) { result in
-                    switch result {
-                    case .success(let data):
-                        print("SwiftyReceiptValidator success (SANDBOX)")
-                        handler(.success(data))
-                    case .failure(let error, let code):
-                        handler(.failure(error, code: code))
+                do {
+                    let response = try self.jsonDecoder.decode(SwiftyReceiptResponse.self, from: data)
+                    if response.status == .testReceipt {
+                        print("SwiftyReceiptValidator production mode with a Sandbox receipt, trying sandbox mode...")
+                        self.startSandboxRequest(parameters: parameters, validationMode: validationMode, handler: handler)
+                    } else {
+                        self.validate(response, validationMode: validationMode, handler: handler)
                     }
+                } catch {
+                    handler(.failure(.other(error.localizedDescription), code: nil))
                 }
+                
+            case .failure(let error):
+                handler(.failure(.other(error.localizedDescription), code: nil))
             }
         }
     }
 }
 
-// MARK: - Start
+// MARK: - Sandbox Request
 
-extension SwiftyReceiptValidator {
+private extension SwiftyReceiptValidator {
     
-    func startURLSession(with urlString: URLString,
-                         parameters: [AnyHashable: Any],
-                         validationMode: ValidationMode,
-                         handler: @escaping ResultHandler) {
-        // Create url
-        #if DEBUG
-        let urlString: URLString = .sandbox
-        #endif
-        guard let url = URL(string: urlString.rawValue) else {
-            handler(.failure(.url, code: nil))
-            return
-        }
-        
-        // Setup url request
-        var urlRequest = URLRequest(url: url)
-        urlRequest.cachePolicy = .reloadIgnoringCacheData
-        urlRequest.httpMethod = "POST"
-        urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: [])
-        
-        // Setup session
-        let sessionConfiguration: URLSessionConfiguration = .default
-        sessionConfiguration.timeoutIntervalForRequest = 20.0
-        urlSession = URLSession(configuration: sessionConfiguration)
-        
-        // Start url session
-        urlSession?.dataTask(with: urlRequest) { [weak self] (data, response, error) in
+    func startSandboxRequest(parameters: [AnyHashable: Any],
+                             validationMode: ValidationMode,
+                             handler: @escaping ResultHandler) {
+        sessionManager.start(with: .sandbox, parameters: parameters) { [weak self] result in
             guard let self = self else { return }
-            defer {
-                self.urlSession = nil
-            }
-            
-            // Check for error
-            if let error = error {
+            switch result {
+            case .success(let data):
+                do {
+                    let response = try self.jsonDecoder.decode(SwiftyReceiptResponse.self, from: data)
+                    self.validate(response, validationMode: validationMode, handler: handler)
+                } catch {
+                    handler(.failure(.other(error.localizedDescription), code: nil))
+                }
+            case .failure(let error):
                 handler(.failure(.other(error.localizedDescription), code: nil))
-                return
             }
-            
-            // Unwrap data
-            guard let data = data else {
-                handler(.failure(.data, code: nil))
-                return
-            }
-            
-            // Parse json
-            do {
-                let response = try self.jsonDecoder.decode(SwiftyReceiptResponse.self, from: data)
-                self.validate(response, validationMode: validationMode, handler: handler)
-            } catch {
-                handler(.failure(.other(error.localizedDescription), code: nil))
-                return
-            }
-        }.resume()
+        }
     }
 }

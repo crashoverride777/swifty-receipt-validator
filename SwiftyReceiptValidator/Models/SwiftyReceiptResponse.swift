@@ -9,11 +9,11 @@
 import Foundation
 
 public struct SwiftyReceiptResponse: Codable {
-    // A JSON representation of the receipt that was sent for verification. For information about keys found in a receipt, see Receipt Fields.
-    public let receipt: SwiftyReceipt
     // For iOS 6 style transaction receipts, the status code reflects the status of the specific transaction’s receipt.
     // For iOS 7 style app receipts, the status code is reflects the status of the app receipt as a whole. For example, if you send a valid app receipt that contains an expired subscription, the response is 0 because the receipt as a whole is valid.
     public let status: StatusCode
+    // A JSON representation of the receipt that was sent for verification. For information about keys found in a receipt, see Receipt Fields.
+    public let receipt: SwiftyReceipt?
     // Only returned for receipts containing auto-renewable subscriptions.
     // For iOS 6 style transaction receipts, this is the base-64 encoded receipt for the most recent renewal.
     // For iOS 7 style app receipts, this is the latest base-64 encoded app receipt.
@@ -25,7 +25,7 @@ public struct SwiftyReceiptResponse: Codable {
     // Only returned for iOS 7 style app receipts containing auto-renewable subscriptions. In the JSON file, the value of this key is an array where each element contains the pending renewal information for each auto-renewable subscription identified by the Product Identifier. A pending renewal may refer to a renewal that is scheduled in the future or a renewal that failed in the past for some reason.
     public let pendingRenewalInfo: Data?
     // The current environment, Sandbox or Production
-    public let environment: String
+    public let environment: String?
 }
 
 // MARK: - Status Codes
