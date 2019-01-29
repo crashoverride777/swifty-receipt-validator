@@ -11,16 +11,21 @@ import Foundation
 public struct SwiftyReceiptResponse: Codable {
     // A JSON representation of the receipt that was sent for verification. For information about keys found in a receipt, see Receipt Fields.
     public let receipt: SwiftyReceipt
-    // For iOS 6 style transaction receipts, the status code reflects the status of the specific transaction’s receipt. For iOS 7 style app receipts, the status code is reflects the status of the app receipt as a whole. For example, if you send a valid app receipt that contains an expired subscription, the response is 0 because the receipt as a whole is valid.
+    // For iOS 6 style transaction receipts, the status code reflects the status of the specific transaction’s receipt.
+    // For iOS 7 style app receipts, the status code is reflects the status of the app receipt as a whole. For example, if you send a valid app receipt that contains an expired subscription, the response is 0 because the receipt as a whole is valid.
     public let status: StatusCode
+    // Only returned for receipts containing auto-renewable subscriptions.
+    // For iOS 6 style transaction receipts, this is the base-64 encoded receipt for the most recent renewal.
+    // For iOS 7 style app receipts, this is the latest base-64 encoded app receipt.
+    public let latestReceipt: Data?
+    // Only returned for receipts containing auto-renewable subscriptions.
+    // For iOS 6 style transaction receipts, this is the JSON representation of the receipt for the most recent renewal.
+    // For iOS 7 style app receipts, the value of this key is an array containing all in-app purchase transactions. This excludes transactions for a consumable product that have been marked as finished by your app.
+    public let latestReceiptInfo: [SwiftyReceiptInApp]?
+    // Only returned for iOS 7 style app receipts containing auto-renewable subscriptions. In the JSON file, the value of this key is an array where each element contains the pending renewal information for each auto-renewable subscription identified by the Product Identifier. A pending renewal may refer to a renewal that is scheduled in the future or a renewal that failed in the past for some reason.
+    public let pendingRenewalInfo: Data?
     // The current environment, Sandbox or Production
     public let environment: String
-    // Only returned for iOS 6+ style transaction receipts for auto-renewable subscriptions. The base-64 encoded transaction receipt for the most recent renewal.
-    public let latestReceipt: Data? // iOS 6 only
-    // Only returned for iOS 6+ style transaction receipts for auto-renewable subscriptions. The JSON representation of the receipt for the most recent renewal.
-    public let latestReceiptInfo: [SwiftyReceiptInApp]? // iOS 6 only
-    // Only returned for iOS 7 style app receipts containing auto-renewable subscriptions. In the JSON file, the value of this key is an array where each element contains the pending renewal information for each auto-renewable subscription identified by the Product Identifier. A pending renewal may refer to a renewal that is scheduled in the future or a renewal that failed in the past for some reason
-    public let pendingRenewalInfo: Data?
 }
 
 // MARK: - Status Codes
