@@ -57,24 +57,23 @@ public extension SwiftyReceiptValidator {
     
     /// The result enum of a validation request. Returns a success or failure case with a corresponding value
     public enum Result<T> {
-        case success(data: T)
-        case failure(code: Int?, error: ErrorType)
+        case success(T)
+        case failure(ValidationError, code: Int?)
     }
     
     // MARK: - Errors
     
     /// Validation errors
-    public enum ErrorType: Error {
+    public enum ValidationError: Error {
         case unknown
         case url
         case data
         case json
-        case noStatusCodeFound
         case invalidStatusCode
         case noReceiptFound
-        case noReceiptInJSON
         case bundleIdNotMatching
         case productIdNotMatching
+        case noValidSubscription
         case other(Error)
         
         public var localizedDescription: String {
@@ -89,18 +88,16 @@ public extension SwiftyReceiptValidator {
                 message = "Data error"
             case .json:
                 message = "JSON error"
-            case .noStatusCodeFound:
-                message = "No status code found"
             case .invalidStatusCode:
                 message = "Invalid status code"
             case .noReceiptFound:
                 message = "No receipt found on device"
-            case .noReceiptInJSON:
-                message = "No receipt found in json response"
             case .bundleIdNotMatching:
                 message = "Bundle id is not matching receipt"
             case .productIdNotMatching:
                 message = "Product id is not matching with receipt"
+            case .noValidSubscription:
+                message = "No active subscription found"
             case .other(let error):
                 message = error.localizedDescription
             }
