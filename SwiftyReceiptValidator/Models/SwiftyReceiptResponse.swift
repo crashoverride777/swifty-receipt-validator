@@ -37,6 +37,9 @@ public extension SwiftyReceiptResponse {
         case subscriptionExpired = 21006
         case testReceipt = 21007
         case productionEnvironment = 21008
+        case receiptCouldNotBeAuthorized = 21010
+        //21100-21199
+        //Internal data access error.
         
         public var description: String {
             switch self {
@@ -62,6 +65,8 @@ public extension SwiftyReceiptResponse {
                 return "This receipt is from the test environment, but it was sent to the production environment for verification. Send it to the test environment instead."
             case .productionEnvironment:
                 return "This receipt is from the production environment, but it was sent to the test environment for verification. Send it to the production environment instead."
+            case .receiptCouldNotBeAuthorized:
+                return "This receipt could not be authorized. Treat this the same as if a purchase was never made."
             }
         }
     }

@@ -24,20 +24,10 @@ Nevertheless its still better than not doing any validation at all. I will event
 
 https://www.raywenderlich.com/23266/in-app-purchases-in-ios-6-tutorial-consumables-and-receipt-validation
 
-## Default validation checks
-
-By default this helper will validate a receipt based on these checks
-
-- Fetching the app store receipt stored in the apps main bundle. If it fails 1st time it will try to request a new receipt, if it fails again receipt validation will fail.
-- Check for valid receipt status code
-- Check receipt send for verification exists in json response
-- Check receipt contains correct bundle id for app
-- Check receipt contains product id for app
-
 ## Requirements
 
-- iOS 9.3+
-- Swift 4.0+
+- iOS 10.3+
+- Swift 4.2+
 
 ## Installation
 
@@ -64,6 +54,8 @@ import SwiftyReceipValidator
 ```swift
 let receiptValidator = SwiftyReceiptValidator()
 ```
+
+### Validate purchases
 
 - Go to the following delegate method for the app in purchase code which you must implement for in app purchases. The method should more or less look like this
 
@@ -106,100 +98,67 @@ case .purchased:
       
     let productIdentifier = transaction.payment.productIdentifier
     
-    receiptValidator.validate(productIdentifier, sharedSecret: nil) { result in
-          switch result {
-          
-          case .success(let data):
-              print("Receipt validation was successfull with data \(data)")
+    receiptValidator.validate(.purchase(productId: productId), sharedSecret: nil) { result in
+            defer {
+                queue.finishTransaction(transaction) // make sure this is in the validation closure
+            }
+            
+            switch result {
+            case .success(let response):
+              print("Receipt validation was successfull with receipt response \(response)")
               // Unlock products and/or do additional checks
-          
-          case .failure(let code, let error):
+            case .failure(let error, let code):
               print("Receipt validation failed with code \(code), error \(error.localizedDescription)")    
               // Maybe show alert
           }
-          
-          queue.finishTransaction(transaction) // make sure this is in the validation closure
      }
   
 case .restored:
         // Transaction was restored from user's purchase history.  Client should complete the transaction.
           
-        if let productIdentifier = transaction.originalTransaction?.payment.productIdentifier {      
-              
-              receiptValidator.validate(productIdentifier, sharedSecret: nil) { result in
-                  switch result {
-                 
-                  case .success(let data):
-                        print("Receipt validation was successfull with data \(data)")
-                        // Unlock products and/or do additional checks
-                        
-                  case .failure(let code, let error):
-                        print("Receipt validation failed with code \(code), error \(error.localizedDescription)")  
-                        // Maybe show alert
-                  }
-      
-                  queue.finishTransaction(transaction) // make sure this is in the validation closure
-             }
+        guard let productId = transaction.originalTransaction?.payment.productIdentifier else {
+              queue.finishTransaction(transaction)
+              return
         }
+              
+        receiptValidator.validate(.purchase(productId: productId), sharedSecret: nil) { result in
+            defer {
+                queue.finishTransaction(transaction) // make sure this is in the validation closure
+            }
+            
+            switch result {
+            case .success(let response):
+                print("Receipt validation was successfull with receipt response \(response)")
+                // Unlock products and/or do additional checks
+            case .failure(let error, let code):
+                print("Receipt validation failed with code \(code), error \(error.localizedDescription)")  
+                // Maybe show alert
+          }
+    }
                 
 ```
 
 In this example sharedSecret is set to nil because I am only validating regular in app purchases. To validate an auto renewable subscriptions you can enter your shared secret that you have set up in itunes and optionally handle additional checks (see below).
 
-## Additional Validation Checks
+### Validate subscriptions
 
-If you would like to handle additional validation checks you can use the response (optional dictionary) that is returned in the success case of the result enum. Use the 4 keys in the ResponseKey enum to access the inital parts of the reponse. 
-
-e.g 
+- To validate your subscriptions simply call this method on app launch
 
 ```swift
-receiptValidator.validate(productIdentifier, sharedSecret: "") { result in
-         case .success(let data):
-         
-              // example 1
-              let receiptKey = SwiftyReceiptValidator.ResponseKey.receipt.rawValue
-              if let receipt = data[receiptKey] {
-                     // do something
-                 
-              }
-              
-              // example 2 (auto-renewable subscriptions)
-              let receiptInfoFieldKey = SwiftyReceiptValidator.ResponseKey.receiptInfoField.rawValue
-              if let receipt = data[receiptInfoFieldKey] {
-                     // do something
-              }
-             
-           ....        
-    
-}
-```
-
-You than can use the InfoKey enum keys to get specific values e.g expiry date, app bundle ID etc. 
-
-e.g 
-
-```swift
-....
-if let receipt = data[receiptKey] {
-     // example 1
-     let creationDateKey = SwiftyReceiptValidator.InfoKey.creationDate.rawValue
-     if let creationDate = receipt[creationDateKey] as? ... {
-          ...
-     }
-     
-     // example 2
-     let inAppKey = SwiftyReceiptValidator.InfoKey.inApp.rawValue
-     if let inApp = receipt[inAppKey] as? [AnyObject] {
-         
-         for receiptInApp in inApp {
-            let expiryDateKey = SwiftyReceiptValidator.InfoKey.InApp.expiresDate.rawValue
-            if let expiryDate = receiptInApp[expiryDateKey] as? ... {
-              ...
+receiptValidator.validate(.subscription, sharedSecret: "enter your secret or set to nil") { result in
+    switch result {
+    case .success(let response):
+    print("Receipt validation was successfull with receipt response \(response)")
+    // Unlock subscription features and/or do additional checks first
+    case .failure(let error, let code):
+        switch error {
+        case .noValidSubscription:
+            // no active subscription, update your cache/app etc
+        default:
+            break // do nothing e.g internet error or other errors
         }
     }
 }
-
-/// Unlock your products when abo 
 ```
 
 ## StoreKit Alert Controllers and Connectivity Issues

@@ -308,7 +308,7 @@ private extension SwiftyReceiptValidator {
                 return expiresDate < Date()
             }
             
-            guard !receipts.isEmpty else {
+            guard response.status != .subscriptionExpired, !receipts.isEmpty else {
                 handler(.failure(.noValidSubscription, code: response.status))
                 return
             }

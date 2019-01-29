@@ -11,7 +11,6 @@ import Foundation
 public enum SwiftyReceiptError: Error {
     case url
     case data
-    case json
     case invalidStatusCode
     case noReceiptFound
     case bundleIdNotMatching
@@ -25,8 +24,6 @@ public enum SwiftyReceiptError: Error {
             return "SwiftyReceiptValidator URL error"
         case .data:
             return "SwiftyReceiptValidator Data error"
-        case .json:
-            return "SwiftyReceiptValidator JSON error"
         case .invalidStatusCode:
             return "SwiftyReceiptValidator Invalid status code"
         case .noReceiptFound:
