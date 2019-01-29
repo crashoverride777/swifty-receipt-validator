@@ -142,7 +142,7 @@ In this example sharedSecret is set to nil because I am only validating regular 
 
 ### Validate subscriptions
 
-- To validate your subscriptions simply call this method on app launch
+- To validate your subscriptions (e.g on app launch), select `.subscription` as the validation method. This will search for all subscription receipts and check if there is at least 1 thats not expired.
 
 ```swift
 receiptValidator.validate(.subscription, sharedSecret: "enter your secret or set to nil") { result in
@@ -150,6 +150,27 @@ receiptValidator.validate(.subscription, sharedSecret: "enter your secret or set
     case .success(let response):
     print("Receipt validation was successfull with receipt response \(response)")
     // Unlock subscription features and/or do additional checks first
+    case .failure(let error, let code):
+        switch error {
+        case .noValidSubscription:
+            // no active subscription, update your cache/app etc
+        default:
+            break // do nothing e.g internet error or other errors
+        }
+    }
+}
+```
+
+### Just fetch receipt
+
+- To only fetch the verified receipt, select `.none` as the validation method.
+
+```swift
+receiptValidator.validate(.none, sharedSecret: "enter your secret or set to nil") { result in
+    switch result {
+    case .success(let response):
+        print("Receipt response \(response)")
+        // Do additional checks first
     case .failure(let error, let code):
         switch error {
         case .noValidSubscription:

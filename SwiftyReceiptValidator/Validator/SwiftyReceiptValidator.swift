@@ -49,6 +49,7 @@ public final class SwiftyReceiptValidator: NSObject {
     
     /// The validation mode of the receipt request
     public enum ValidationMode {
+        case none
         case purchase(productId: String)
         case subscription
     }
@@ -290,6 +291,9 @@ private extension SwiftyReceiptValidator {
         
         // Run the validation for the correct mode
         switch validationMode {
+            
+        case .none:
+            break
             
         case .purchase(let productId):
             // Check a valid receipt with matching product id was found
