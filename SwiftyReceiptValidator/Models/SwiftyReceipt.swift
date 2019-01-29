@@ -27,16 +27,12 @@ public struct SwiftyReceipt: Codable {
     public let versionExternalIdentifier: Int
     // The date when the receipt was created
     public let receiptCreationDate: Date
-    public let receiptCreationDateMs: String
-    public let receiptCreationDatePst: Date
+    // The date when the receipt expires
+    public let expirationDate: Date?
     // The date when the receipt was requested
     public let requestDate: Date
-    public let requestDateMs: String
-    public let requestDatePst: Date
     // The original purchase date
     public let originalPurchaseDate: Date
-    public let originalPurchaseDateMs: String
-    public let originalPurchaseDatePst: Date
     // Collection of in app receipts
     public let inApp: [SwiftyReceiptInApp]
 }

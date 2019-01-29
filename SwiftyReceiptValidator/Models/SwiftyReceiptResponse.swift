@@ -16,9 +16,11 @@ public struct SwiftyReceiptResponse: Codable {
     // The current environment, Sandbox or Production
     public let environment: String
     // Only returned for iOS 6+ style transaction receipts for auto-renewable subscriptions. The base-64 encoded transaction receipt for the most recent renewal.
-    public let latestReceipt: SwiftyReceipt? // iOS 6 only
+    public let latestReceipt: Data? // iOS 6 only
     // Only returned for iOS 6+ style transaction receipts for auto-renewable subscriptions. The JSON representation of the receipt for the most recent renewal.
-    public let latestReceiptInfo: String? // iOS 6 only
+    public let latestReceiptInfo: [SwiftyReceiptInApp]? // iOS 6 only
+    // Only returned for iOS 7 style app receipts containing auto-renewable subscriptions. In the JSON file, the value of this key is an array where each element contains the pending renewal information for each auto-renewable subscription identified by the Product Identifier. A pending renewal may refer to a renewal that is scheduled in the future or a renewal that failed in the past for some reason
+    public let pendingRenewalInfo: Data?
 }
 
 // MARK: - Status Codes

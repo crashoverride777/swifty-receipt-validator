@@ -282,11 +282,8 @@ private extension SwiftyReceiptValidator {
             return
         }
         
-        // Get receipt
-        let receipt = response.latestReceipt ?? response.receipt
-        
         // Check receipt contains correct bundle id
-        guard receipt.bundleId == Bundle.main.bundleIdentifier else {
+        guard response.receipt.bundleId == Bundle.main.bundleIdentifier else {
             handler(.failure(.bundleIdNotMatching, code: response.status))
             return
         }
@@ -296,13 +293,13 @@ private extension SwiftyReceiptValidator {
             
         case .purchase(let productId):
             // Check a valid receipt with matching product id was found
-            guard receipt.inApp.first(where: { $0.productId == productId }) != nil else {
+            guard response.receipt.inApp.first(where: { $0.productId == productId }) != nil else {
                 handler(.failure(.productIdNotMatching, code: response.status))
                 return
             }
             
         case .subscription:
-            var receipts = receipt.inApp
+            var receipts = response.latestReceiptInfo ?? response.receipt.inApp
             receipts.removeAll {
                 guard let expiresDate = $0.expiresDate else { return true }
                 return expiresDate < Date()
