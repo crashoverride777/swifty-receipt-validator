@@ -8,14 +8,14 @@
 
 import Foundation
 
+enum URLString: String {
+    case sandbox    = "https://sandbox.itunes.apple.com/verifyReceipt"
+    case production = "https://buy.itunes.apple.com/verifyReceipt"
+}
+
 // MARK: - Prepare
 
 extension SwiftyReceiptValidator {
-    
-    enum ParameterKey: String {
-        case receiptData = "receipt-data"
-        case password
-    }
     
     func prepareURLSession(with receiptData: Data,
                            sharedSecret: String?,
@@ -25,9 +25,9 @@ extension SwiftyReceiptValidator {
         let receiptBase64String = receiptData.base64EncodedString(options: Data.Base64EncodingOptions(rawValue: 0))
         
         // Prepare url session parameters
-        var parameters = [ParameterKey.receiptData.rawValue: receiptBase64String]
+        var parameters = ["receipt-data": receiptBase64String]
         if let sharedSecret = sharedSecret {
-            parameters[ParameterKey.password.rawValue] = sharedSecret
+            parameters["password"] = sharedSecret
         }
         
         // Start URL request to production server first, if it fails because in test environment try sandbox otherwise fail completely.
@@ -68,15 +68,6 @@ extension SwiftyReceiptValidator {
 
 extension SwiftyReceiptValidator {
     
-    enum URLString: String {
-        case sandbox    = "https://sandbox.itunes.apple.com/verifyReceipt"
-        case production = "https://buy.itunes.apple.com/verifyReceipt"
-    }
-    
-    enum HTTPMethod: String {
-        case post = "POST"
-    }
-    
     func startURLSession(with urlString: URLString,
                          parameters: [AnyHashable: Any],
                          validationMode: ValidationMode,
@@ -93,7 +84,7 @@ extension SwiftyReceiptValidator {
         // Setup url request
         var urlRequest = URLRequest(url: url)
         urlRequest.cachePolicy = .reloadIgnoringCacheData
-        urlRequest.httpMethod = HTTPMethod.post.rawValue
+        urlRequest.httpMethod = "POST"
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: [])
         
         // Setup session
