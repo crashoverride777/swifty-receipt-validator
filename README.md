@@ -52,7 +52,9 @@ import SwiftyReceipValidator
 - In your class with your in app purchase code create a class/strong property to SwiftyReceiptValidator
 
 ```swift
-let receiptValidator = SwiftyReceiptValidator()
+class SomeClass {
+    let receiptValidator = SwiftyReceiptValidator()
+}
 ```
 
 ### Validate purchases
