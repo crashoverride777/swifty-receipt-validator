@@ -10,15 +10,15 @@ import Foundation
 
 public struct SwiftyReceiptResponse: Codable {
     // A JSON representation of the receipt that was sent for verification. For information about keys found in a receipt, see Receipt Fields.
-    let receipt: SwiftyReceipt
+    public let receipt: SwiftyReceipt
     // For iOS 6 style transaction receipts, the status code reflects the status of the specific transaction’s receipt. For iOS 7 style app receipts, the status code is reflects the status of the app receipt as a whole. For example, if you send a valid app receipt that contains an expired subscription, the response is 0 because the receipt as a whole is valid.
-    let status: StatusCode
+    public let status: StatusCode
     // The current environment, Sandbox or Production
-    let environment: String
+    public let environment: String
     // Only returned for iOS 6+ style transaction receipts for auto-renewable subscriptions. The base-64 encoded transaction receipt for the most recent renewal.
-    let latestReceipt: SwiftyReceipt? // iOS 6 only
+    public let latestReceipt: SwiftyReceipt? // iOS 6 only
     // Only returned for iOS 6+ style transaction receipts for auto-renewable subscriptions. The JSON representation of the receipt for the most recent renewal.
-    let latestReceiptInfo: String? // iOS 6 only
+    public let latestReceiptInfo: String? // iOS 6 only
 }
 
 // MARK: - Status Codes
@@ -26,8 +26,7 @@ public struct SwiftyReceiptResponse: Codable {
 public extension SwiftyReceiptResponse {
     
     enum StatusCode: Int, Codable {
-        case unknown = -2
-        case none = -1
+        case unknown = -1
         case valid = 0
         case jsonNotReadable = 21000
         case malformedOrMissingData = 21002
@@ -41,12 +40,14 @@ public extension SwiftyReceiptResponse {
         //21100-21199
         //Internal data access error.
         
+        public init(from decoder: Decoder) throws {
+            self = try StatusCode(rawValue: decoder.singleValueContainer().decode(RawValue.self)) ?? .unknown
+        }
+        
         public var description: String {
             switch self {
             case .unknown:
                 return "No decodable status"
-            case .none:
-                return "No status returned"
             case .valid:
                 return "Valid status"
             case .jsonNotReadable:
