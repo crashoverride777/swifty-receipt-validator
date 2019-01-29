@@ -36,13 +36,13 @@ import StoreKit
  A class to manage in app purchase receipt validation.
  */
 public final class SwiftyReceiptValidator: NSObject {
-    public typealias ResultHandler = (SwiftyReceiptResult<SwiftyReceiptResponse>) -> Void
-    private typealias ReceiptHandler = (SwiftyReceiptResult<URL>) -> Void
+    public typealias ResultHandler = (SwiftyReceiptValidator.Result<SwiftyReceiptResponse>) -> Void
+    private typealias ReceiptHandler = (SwiftyReceiptValidator.Result<URL>) -> Void
     
     // MARK: - Types
     
     /// The result enum of a validation request. Returns a success or failure case with a corresponding value
-    public enum SwiftyReceiptResult<T> {
+    public enum Result<T> {
         case success(T)
         case failure(ValidationError, code: SwiftyReceiptResponse.StatusCode?)
     }
@@ -119,7 +119,7 @@ public final class SwiftyReceiptValidator: NSObject {
         }
     }
     
-    private func fetchReceipt(handler: @escaping (SwiftyReceiptResult<URL>) -> Void) {
+    private func fetchReceipt(handler: @escaping (SwiftyReceiptValidator.Result<URL>) -> Void) {
         self.receiptHandler = handler
         
         guard hasReceipt, let receiptURL = receiptURL else {
