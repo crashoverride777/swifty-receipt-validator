@@ -57,53 +57,63 @@ let receiptValidator = SwiftyReceiptValidator()
 
 ### Validate purchases
 
-- Go to the following delegate method for the app in purchase code which you must implement. Modify it so it looks more or less like below.
+- Go to the following delegate method for your app in purchase code which you must implement. Modify it so it looks more or less like below.
 
 
 ```swift
-case .purchased:
-    // Transaction is in queue, user has been charged.  Client should complete the transaction.
-      
-    let productIdentifier = transaction.payment.productIdentifier
-    
-    receiptValidator.validate(.purchase(productId: productId), sharedSecret: nil) { result in
-            defer {
-                queue.finishTransaction(transaction) // make sure this is in the validation closure
-            }
+extension SomeClass: SKPaymentTransactionObserver {
+
+    func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
+        transactions.forEach {
+            switch $0.transactionState {
+            case .purchased:
+                // Transaction is in queue, user has been charged.  Client should complete the transaction.
             
-            switch result {
-            case .success(let response):
-              print("Receipt validation was successfull with receipt response \(response)")
-              // Unlock products and/or do additional checks
-            case .failure(let error, let code):
-              print("Receipt validation failed with code \(code), error \(error.localizedDescription)")    
-              // Maybe show alert
-          }
-     }
-  
-case .restored:
-        // Transaction was restored from user's purchase history.  Client should complete the transaction.
-          
-        guard let productId = transaction.originalTransaction?.payment.productIdentifier else {
-              queue.finishTransaction(transaction)
-              return
-        }
-              
-        receiptValidator.validate(.purchase(productId: productId), sharedSecret: nil) { result in
-            defer {
-                queue.finishTransaction(transaction) // make sure this is in the validation closure
-            }
+                let productIdentifier = transaction.payment.productIdentifier
             
-            switch result {
-            case .success(let response):
-                print("Receipt validation was successfull with receipt response \(response)")
-                // Unlock products and/or do additional checks
-            case .failure(let error, let code):
-                print("Receipt validation failed with code \(code), error \(error.localizedDescription)")  
-                // Maybe show alert
-          }
-    }
+                receiptValidator.validate(.purchase(productId: productId), sharedSecret: nil) { result in
+                    defer {
+                        queue.finishTransaction(transaction) // make sure this is in the validation closure
+                    }
+            
+                    switch result {
+                    case .success(let response):
+                        print("Receipt validation was successfull with receipt response \(response)")
+                        // Unlock products and/or do additional checks
+                    case .failure(let error, let code):
+                        print("Receipt validation failed with code \(code), error \(error.localizedDescription)")    
+                        // Maybe show alert
+                    }
+                }
+            
+            case .restored:
+                // Transaction was restored from user's purchase history.  Client should complete the transaction.
+            
+                guard let productId = transaction.originalTransaction?.payment.productIdentifier else {
+                    queue.finishTransaction(transaction)
+                    return
+                }
+            
+                receiptValidator.validate(.purchase(productId: productId), sharedSecret: nil) { result in
+                    defer {
+                        queue.finishTransaction(transaction) // make sure this is in the validation closure
+                    }
+            
+                    switch result {
+                    case .success(let response):
+                        print("Receipt validation was successfull with receipt response \(response)")
+                        // Unlock products and/or do additional checks
+                    case .failure(let error, let code):
+                        print("Receipt validation failed with code \(code), error \(error.localizedDescription)")  
+                        // Maybe show alert
+                    }
+                }
                 
+            case ....
+            }
+        }
+    }
+}               
 ```
 
 In this example sharedSecret is set to nil because I am only validating regular in app purchases. To validate an auto renewable subscriptions you can enter your shared secret that you have set up in itunes and optionally handle additional checks (see below).
@@ -116,12 +126,12 @@ In this example sharedSecret is set to nil because I am only validating regular 
 receiptValidator.validate(.subscription, sharedSecret: "enter your secret or set to nil") { result in
     switch result {
     case .success(let response):
-    print("Receipt validation was successfull with receipt response \(response)")
-    // Unlock subscription features and/or do additional checks first
+        print("Receipt validation was successfull with receipt response \(response)")
+        // Unlock subscription features and/or do additional checks first
     case .failure(let error, let code):
         switch error {
         case .noValidSubscription:
-            // no active subscription, update your cache/app etc
+            // no active subscription found, update your cache/app etc
         default:
             break // do nothing e.g internet error or other errors
         }
@@ -138,14 +148,9 @@ receiptValidator.validate(.none, sharedSecret: "enter your secret or set to nil"
     switch result {
     case .success(let response):
         print("Receipt response \(response)")
-        // Do additional checks first
+        // Do additional checks etc
     case .failure(let error, let code):
-        switch error {
-        case .noValidSubscription:
-            // no active subscription, update your cache/app etc
-        default:
-            break // do nothing e.g internet error or other errors
-        }
+        // Handle error e.g no internet
     }
 }
 ```
