@@ -10,7 +10,7 @@ import Foundation
 
 public extension SwiftyReceiptValidator {
     
-    enum ValidationError: Error {
+    public enum ValidationError: Error {
         case invalidStatusCode
         case noReceiptFound
         case noReceiptFoundInResponse
