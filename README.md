@@ -71,7 +71,7 @@ extension SomeClass: SKPaymentTransactionObserver {
             case .purchased:
                 // Transaction is in queue, user has been charged.  Client should complete the transaction.
             
-                let productIdentifier = transaction.payment.productIdentifier
+                let productId = transaction.payment.productIdentifier
             
                 receiptValidator.validate(.purchase(productId: productId), sharedSecret: nil) { result in
                     defer {
