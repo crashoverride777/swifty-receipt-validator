@@ -80,13 +80,13 @@ extension SomeClass: SKPaymentTransactionObserver {
                         // Unlock products and/or do additional checks
                         
                         // Complete the transaction, only call this in success block
-                        // if validation error e.g due to internet, the transaction will stay pendin
-                        // and can than be resumed on next app launch
+                        // if validation error e.g due to internet, the transaction will stay in pending state
+                        // and than can/will be resumed on next app launch
                         queue.finishTransaction(transaction)
                         
                     case .failure(let error, let code):
                         print("Receipt validation failed with code \(code), error \(error.localizedDescription)")    
-                        // Maybe show alert
+                        // Inform user of error, maybe try validation again.
                     }
                 }
             
@@ -111,7 +111,7 @@ extension SomeClass: SKPaymentTransactionObserver {
                         
                     case .failure(let error, let code):
                         print("Receipt validation failed with code \(code), error \(error.localizedDescription)")  
-                        // Maybe show alert
+                        // Inform user of error, maybe try validation again.
                     }
                 }
                 
