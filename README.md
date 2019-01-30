@@ -6,23 +6,23 @@
 
 A swift helper to handle app store receipt validation.
 
+## Your own server
+
+The recommned way by Apple is to use your own server to validate app store receipts.
+However for obvious reason this is a hassle for alot of people like me, because I dont have a webserver and dont understand languages like PHP to make it work.
+
+In those cases where you dont want to use your own server you can communcate directly with Apples server. 
+Doing this is apparently not very secure and therefore you should use your own server when verifying receipts 
+
+Nevertheless its still better than not doing any validation at all. I will eventually try to update this helper to include guidlines/sample code to make it work with your own server. My knowledge about server code is very basic at the moment.
+
+https://www.raywenderlich.com/23266/in-app-purchases-in-ios-6-tutorial-consumables-and-receipt-validation
+
 ## Before you go live
 
 - Test, Test, Test
 
 Please test this properly, including production mode which will use apples production server URL. Use xcode release mode to test this to make sure everything is working. This is not something you want take lightly, triple check purchases are working when your app is in release mode.
-
-- Your own webserver
-
-The recommned way by apple is to use your own server and than communicate to apples server to validate the receipt.
-However for obvious reason this is a hassle for alot of people like me, because I dont have a webserver and dont understand languages like PHP to make it work.
-
-In those cases where you dont want to use your own server you can communcate directly with apples. 
-Apple even has made their own in app receipt validator to show this (tutorials on ray wenderlich, in objC and a bit outdated). Doing this is apparently not very secure and therefore you should use your own server before sending stuff to apples. 
-
-Nevertheless its still better than not doing any validation at all. I will eventually try to update this helper to include guidlines/sample code to make it work with your own server. My knowledge about server code is very basic at the moment.
-
-https://www.raywenderlich.com/23266/in-app-purchases-in-ios-6-tutorial-consumables-and-receipt-validation
 
 ## Requirements
 
@@ -59,8 +59,7 @@ class SomeClass {
 
 ### Validate purchases
 
-- Go to the following delegate method for your app in purchase code which you must implement. Modify it so it looks more or less like below.
-
+- Go to the following delegate method for your app in purchase code which you must implement. 
 
 ```swift
 extension SomeClass: SKPaymentTransactionObserver {
@@ -68,64 +67,72 @@ extension SomeClass: SKPaymentTransactionObserver {
     func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
         transactions.forEach {
             switch $0.transactionState {
-            case .purchased:
-                // Transaction is in queue, user has been charged.  Client should complete the transaction.
-            
-                let productId = transaction.payment.productIdentifier
-            
-                receiptValidator.validate(.purchase(productId: productId), sharedSecret: nil) { result in
-                    switch result {
-                   
-                   case .success(let response):
-                         defer {
-                            // Complete the transaction only after validation was successful
-                            // if validation error e.g due to internet, the transaction will stay in pending state
-                            // and than can/will be resumed on next app launch
-                            queue.finishTransaction(transaction)
-                        }
-                       
-                       print("Receipt validation was successfull with receipt response \(response)")
-                        // Unlock products and/or do additional checks
-                      
-                    case .failure(let error, let code):
-                        print("Receipt validation failed with code \(code), error \(error.localizedDescription)")    
-                        // Inform user of error, maybe try validation again.
-                    }
-                }
-            
-            case .restored:
-                // Transaction was restored from user's purchase history.  Client should complete the transaction.
-            
-                guard let productId = transaction.originalTransaction?.payment.productIdentifier else {
-                    queue.finishTransaction(transaction)
-                    return
-                }
-            
-                receiptValidator.validate(.purchase(productId: productId), sharedSecret: nil) { result in
-                    switch result {
-                    
-                    case .success(let response):
-                        defer {
-                            // Complete the transaction only after validation was successful
-                            // if validation error e.g due to internet, the transaction will stay in pending state
-                            // and than can/will be resumed on next app launch
-                            queue.finishTransaction(transaction)
-                        }
-                        
-                        print("Receipt validation was successfull with receipt response \(response)")
-                        // Unlock products and/or do additional checks
-                   
-                   case .failure(let error, let code):
-                        print("Receipt validation failed with code \(code), error \(error.localizedDescription)")  
-                        // Inform user of error, maybe try validation again.
-                    }
-                }
-                
-            case ....
+                case .purchased:
+                ...
+                case .restored:
+                ...
             }
         }
     }
-}               
+}
+```
+
+Modify the `.purchased` and `.restored` case to look like this
+
+
+```swift
+case .purchased:
+        // Transaction is in queue, user has been charged.  Client should complete the transaction.
+
+        let productId = transaction.payment.productIdentifier
+
+        receiptValidator.validate(.purchase(productId: productId), sharedSecret: nil) { result in
+            switch result {
+
+           case .success(let response):
+                 defer {
+                    // Complete the transaction only after validation was successful
+                    // if validation error e.g due to internet, the transaction will stay in pending state
+                    // and than can/will be resumed on next app launch
+                    queue.finishTransaction(transaction)
+                }
+
+               print("Receipt validation was successfull with receipt response \(response)")
+                // Unlock products and/or do additional checks
+
+            case .failure(let error, let code):
+                print("Receipt validation failed with code \(code), error \(error.localizedDescription)")    
+                // Inform user of error, maybe try validation again.
+            }
+        }
+            
+case .restored:
+    // Transaction was restored from user's purchase history.  Client should complete the transaction.
+
+    guard let productId = transaction.originalTransaction?.payment.productIdentifier else {
+        queue.finishTransaction(transaction)
+        return
+    }
+
+    receiptValidator.validate(.purchase(productId: productId), sharedSecret: nil) { result in
+        switch result {
+
+        case .success(let response):
+            defer {
+                // Complete the transaction only after validation was successful
+                // if validation error e.g due to internet, the transaction will stay in pending state
+                // and than can/will be resumed on next app launch
+                queue.finishTransaction(transaction)
+            }
+
+            print("Receipt validation was successfull with receipt response \(response)")
+            // Unlock products and/or do additional checks
+
+       case .failure(let error, let code):
+            print("Receipt validation failed with code \(code), error \(error.localizedDescription)")  
+            // Inform user of error, maybe try validation again.
+        }
+    }              
 ```
 
 In this example sharedSecret is set to nil because I am only validating regular in app purchases. To validate an auto renewable subscriptions you can enter your shared secret that you have set up in itunes and optionally handle additional checks (see below).
