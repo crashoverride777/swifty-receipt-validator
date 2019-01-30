@@ -46,10 +46,10 @@ Altenatively you can drag the swift file(s) manually into your project.
 - Add the import statement to your swift file(s) when you installed via cocoa pods
 
 ```swift
-import SwiftyReceipValidator
+import SwiftyReceiptValidator
 ```
 
-- In your class with your in app purchase code create a class/strong property to SwiftyReceiptValidator
+- In your class with your in app purchase code create a reference to SwiftyReceiptValidator
 
 ```swift
 class SomeClass {
@@ -77,7 +77,7 @@ extension SomeClass: SKPaymentTransactionObserver {
 }
 ```
 
-and odify the `.purchased` and `.restored` enum cases to look like this
+and modify the `.purchased` and `.restored` enum cases to look like this
 
 
 ```swift
@@ -133,7 +133,7 @@ case .restored:
     }              
 ```
 
-In this example sharedSecret is set to nil because I am only validating regular in app purchases. To validate an auto renewable subscriptions you can enter your shared secret that you have set up in itunes and optionally handle additional checks (see below).
+In this example sharedSecret is set to nil because I am only validating regular in app purchases. To validate an auto renewable subscriptions you can enter your shared secret that you have set up in itunes.
 
 ### Validate subscriptions
 
