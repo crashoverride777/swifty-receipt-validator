@@ -11,12 +11,7 @@ import Foundation
 final class SessionManager {
     
     // MARK: - Types
-    
-    enum URLString: String {
-        case sandbox    = "https://sandbox.itunes.apple.com/verifyReceipt"
-        case production = "https://buy.itunes.apple.com/verifyReceipt"
-    }
-    
+ 
     enum HTTPMethod: String {
         case post = "POST"
     }
@@ -46,14 +41,21 @@ final class SessionManager {
     // MARK: - Properties
     
     private var urlSession: URLSession?
+    private let sessionConfiguration: URLSessionConfiguration
+    
+    // MARK: - Init
+    
+    init(sessionConfiguration: URLSessionConfiguration = .default) {
+        self.sessionConfiguration = sessionConfiguration
+    }
     
     // MARK: - Start
     
-    func start(with urlString: URLString,
+    func start(with urlString: String,
                parameters: [AnyHashable: Any],
                handler: @escaping (Result) -> Void) {
         // Create url
-        guard let url = URL(string: urlString.rawValue) else {
+        guard let url = URL(string: urlString) else {
             handler(.failure(.url))
             return
         }
@@ -65,8 +67,6 @@ final class SessionManager {
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: [])
         
         // Setup session
-        let sessionConfiguration: URLSessionConfiguration = .default
-        sessionConfiguration.timeoutIntervalForRequest = 20.0
         urlSession = URLSession(configuration: sessionConfiguration)
         
         // Start url session

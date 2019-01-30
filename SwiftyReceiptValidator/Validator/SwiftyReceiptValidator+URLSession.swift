@@ -26,7 +26,7 @@ extension SwiftyReceiptValidator {
         // Start URL request to production server first, if status code returns test environment receipt, try sandbox.
         // This handles validation directily with apple. This is not the recommended way by apple as it is not secure.
         // It is still better than not doing any validation at all.
-        sessionManager.start(with: .production, parameters: parameters) { [weak self] result in
+        sessionManager.start(with: configuration.productionURL, parameters: parameters) { [weak self] result in
             guard let self = self else { return }
             switch result {
                 
@@ -58,7 +58,7 @@ private extension SwiftyReceiptValidator {
     func startSandboxRequest(parameters: [AnyHashable: Any],
                              validationMode: ValidationMode,
                              handler: @escaping ResultHandler) {
-        sessionManager.start(with: .sandbox, parameters: parameters) { [weak self] result in
+        sessionManager.start(with: configuration.sandboxURL, parameters: parameters) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let data):

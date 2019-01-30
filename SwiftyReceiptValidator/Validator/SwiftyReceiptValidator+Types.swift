@@ -1,5 +1,5 @@
 //
-//  SwiftyReceiptValidator+Errors.swift
+//  SwiftyReceiptValidator+Types.swift
 //  SwiftyReceiptValidator
 //
 //  Created by Dominik Ringler on 29/01/2019.
@@ -10,6 +10,20 @@ import Foundation
 
 public extension SwiftyReceiptValidator {
     
+    /// The result enum of a validation request. Returns a success or failure case with a corresponding value
+    public enum Result<T> {
+        case success(T)
+        case failure(ValidationError, code: SwiftyReceiptResponse.StatusCode?)
+    }
+    
+    /// The validation mode of the receipt request
+    public enum ValidationMode {
+        case none
+        case purchase(productId: String)
+        case subscription
+    }
+    
+    /// Errors
     public enum ValidationError: Error {
         case invalidStatusCode
         case noReceiptFound

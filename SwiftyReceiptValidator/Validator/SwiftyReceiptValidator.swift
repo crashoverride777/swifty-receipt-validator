@@ -41,22 +41,29 @@ public final class SwiftyReceiptValidator: NSObject {
     
     // MARK: - Types
     
-    /// The result enum of a validation request. Returns a success or failure case with a corresponding value
-    public enum Result<T> {
-        case success(T)
-        case failure(ValidationError, code: SwiftyReceiptResponse.StatusCode?)
-    }
-    
-    /// The validation mode of the receipt request
-    public enum ValidationMode {
-        case none
-        case purchase(productId: String)
-        case subscription
+    /// Configuration
+    public struct Configuration {
+        public let productionURL: String
+        public let sandboxURL: String
+        public let sessionConfiguration: URLSessionConfiguration
+        
+        public init(productionURL: String, sandboxURL: String, sessionConfiguration: URLSessionConfiguration) {
+            self.productionURL = productionURL
+            self.sandboxURL = sandboxURL
+            self.sessionConfiguration = sessionConfiguration
+        }
+        
+        static var standard: Configuration {
+            return Configuration(productionURL: "https://buy.itunes.apple.com/verifyReceipt",
+                                 sandboxURL: "https://sandbox.itunes.apple.com/verifyReceipt",
+                                 sessionConfiguration: .default)
+        }
     }
     
     // MARK: - Properties
 
-    let sessionManager = SessionManager()
+    let sessionManager: SessionManager
+    let configuration: Configuration
     
     private let receiptURL = Bundle.main.appStoreReceiptURL
     private var receiptHandler: ReceiptHandler?
@@ -81,10 +88,13 @@ public final class SwiftyReceiptValidator: NSObject {
   
     // MARK: - Init
     
-    public override init() {
-        super.init()
-        
+    /// Init
+    ///
+    /// - parameter configuration: The configuration struct to customise SwiftyReceiptValidator. Defaults to standard.
+    init(configuration: Configuration = .standard) {
         print("Init SwiftyReceiptValidator")
+        self.configuration = configuration
+        sessionManager = SessionManager(sessionConfiguration: configuration.sessionConfiguration)
     }
     
     // MARK: - Deinit
