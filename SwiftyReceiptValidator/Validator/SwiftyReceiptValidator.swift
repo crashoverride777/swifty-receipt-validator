@@ -2,7 +2,7 @@
 //  SwiftyReceiptValidator.swift
 //  SwiftyReceiptValidator
 //
-//  Created by Dominik on 09/08/2017.
+//  Created by Dominik Ringler on 09/08/2017.
 //  Copyright © 2017 Dominik. All rights reserved.
 //
 
@@ -36,8 +36,8 @@ import StoreKit
  A class to manage in app purchase receipt validation.
  */
 public final class SwiftyReceiptValidator: NSObject {
-    public typealias ResultHandler = (SwiftyReceiptValidator.Result<SwiftyReceiptResponse>) -> Void
-    private typealias ReceiptHandler = (SwiftyReceiptValidator.Result<URL>) -> Void
+    public typealias ResultHandler = (Result<SwiftyReceiptResponse>) -> Void
+    private typealias ReceiptHandler = (Result<URL>) -> Void
     
     // MARK: - Types
     
@@ -98,18 +98,20 @@ public final class SwiftyReceiptValidator: NSObject {
     /// Validate app store receipt
     ///
     /// - parameter validationMode: The validation method of receipt request.
-    /// - parameter sharedSecret: The shared secret when using auto-subscriptions.
-    /// - result handler: Called when the validation has completed. Will return an result enum with success or failure.
+    /// - parameter sharedSecret: The shared secret when using auto-subscriptions, setup in iTunes.
+    /// - parameter handler: Completion handler called when the validation has completed.
     public func validate(_ validationMode: ValidationMode, sharedSecret: String?, handler: @escaping ResultHandler) {
-        fetchReceipt { result in
+        fetchReceipt { [weak self] result in
+            guard let self = self else { return }
+            self.receiptHandler = nil
+            self.receiptRefreshRequest = nil
+            
             switch result {
             case .success(let receiptURL):
                 do {
                     let receiptData = try Data(contentsOf: receiptURL)
-                    self.startURLSession(with: receiptData,
-                                         sharedSecret: sharedSecret,
-                                         validationMode: validationMode,
-                                         handler: handler)
+                    self.startURLSession(with: receiptData, sharedSecret: sharedSecret,
+                                         validationMode: validationMode, handler: handler)
                 } catch {
                     handler(.failure(.other(error.localizedDescription), code: nil))
                 }
@@ -120,7 +122,7 @@ public final class SwiftyReceiptValidator: NSObject {
     }
     
     private func fetchReceipt(handler: @escaping (SwiftyReceiptValidator.Result<URL>) -> Void) {
-        self.receiptHandler = handler
+        receiptHandler = handler
         
         guard hasReceipt, let receiptURL = receiptURL else {
             receiptRefreshRequest = SKReceiptRefreshRequest(receiptProperties: nil)

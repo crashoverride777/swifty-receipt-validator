@@ -34,9 +34,9 @@ final class SessionManager {
         public var localizedDescription: String {
             switch self {
             case .url:
-                return "SwiftyReceiptValidator URL error"
+                return "SwiftyReceiptValidator session URL error"
             case .data:
-                return "SwiftyReceiptValidator Data error"
+                return "SwiftyReceiptValidator session data error"
             case .other(let message):
                 return message
             }
