@@ -75,15 +75,18 @@ extension SomeClass: SKPaymentTransactionObserver {
             
                 receiptValidator.validate(.purchase(productId: productId), sharedSecret: nil) { result in
                     switch result {
-                    case .success(let response):
-                        print("Receipt validation was successfull with receipt response \(response)")
+                   
+                   case .success(let response):
+                         defer {
+                            // Complete the transaction only after validation was successful
+                            // if validation error e.g due to internet, the transaction will stay in pending state
+                            // and than can/will be resumed on next app launch
+                            queue.finishTransaction(transaction)
+                        }
+                       
+                       print("Receipt validation was successfull with receipt response \(response)")
                         // Unlock products and/or do additional checks
-                        
-                        // Complete the transaction, only call this in success block
-                        // if validation error e.g due to internet, the transaction will stay in pending state
-                        // and than can/will be resumed on next app launch
-                        queue.finishTransaction(transaction)
-                        
+                      
                     case .failure(let error, let code):
                         print("Receipt validation failed with code \(code), error \(error.localizedDescription)")    
                         // Inform user of error, maybe try validation again.
@@ -100,16 +103,19 @@ extension SomeClass: SKPaymentTransactionObserver {
             
                 receiptValidator.validate(.purchase(productId: productId), sharedSecret: nil) { result in
                     switch result {
+                    
                     case .success(let response):
+                        defer {
+                            // Complete the transaction only after validation was successful
+                            // if validation error e.g due to internet, the transaction will stay in pending state
+                            // and than can/will be resumed on next app launch
+                            queue.finishTransaction(transaction)
+                        }
+                        
                         print("Receipt validation was successfull with receipt response \(response)")
                         // Unlock products and/or do additional checks
-                        
-                        // Complete the transaction, only call this in success block
-                        // if validation error e.g due to internet, the transaction will stay pendin
-                        // and can than be resumed on next app launch
-                        queue.finishTransaction(transaction)
-                        
-                    case .failure(let error, let code):
+                   
+                   case .failure(let error, let code):
                         print("Receipt validation failed with code \(code), error \(error.localizedDescription)")  
                         // Inform user of error, maybe try validation again.
                     }
