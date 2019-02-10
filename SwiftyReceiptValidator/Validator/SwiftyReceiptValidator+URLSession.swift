@@ -66,6 +66,7 @@ private extension SwiftyReceiptValidator {
                     let response = try self.jsonDecoder.decode(SwiftyReceiptResponse.self, from: data)
                     self.validate(response, validationMode: validationMode, handler: handler)
                 } catch {
+					print("Validation error: \(error)")
                     handler(.failure(.other(error.localizedDescription), code: nil))
                 }
             case .failure(let error):
