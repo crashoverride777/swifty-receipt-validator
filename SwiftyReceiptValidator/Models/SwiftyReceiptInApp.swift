@@ -29,7 +29,7 @@ public struct SwiftyReceiptInApp: Codable {
     // For an expired subscription, whether or not Apple is still attempting to automatically renew the subscription.
     public let isInBillingRetryPeriod: ExpirationRetry?
     // For a subscription, whether or not it is in the free trial period.
-    public let isTrialPeriod: Bool?
+    public let isTrialPeriod: String?
     // For an auto-renewable subscription, whether or not it is in the introductory price period.
     public let isInIntroOfferPeriod: String?
     // The current renewal status for the auto-renewable subscription.
