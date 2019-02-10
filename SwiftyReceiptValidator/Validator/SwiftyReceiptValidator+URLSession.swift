@@ -11,6 +11,7 @@ import Foundation
 extension SwiftyReceiptValidator {
     
     func startURLSession(with receiptData: Data,
+						   excludeOldTransactions: Bool,
                            sharedSecret: String?,
                            validationMode: ValidationMode,
                            handler: @escaping ResultHandler) {
@@ -18,10 +19,12 @@ extension SwiftyReceiptValidator {
         let receiptBase64String = receiptData.base64EncodedString(options: Data.Base64EncodingOptions(rawValue: 0))
         
         // Prepare url session parameters
-        var parameters = ["receipt-data": receiptBase64String]
+		var parameters: [String: Any] = ["receipt-data": receiptBase64String]
+		parameters["exclude-old-transactions"] = excludeOldTransactions
         if let sharedSecret = sharedSecret {
             parameters["password"] = sharedSecret
         }
+		
         
         // Start URL request to production server first, if status code returns test environment receipt, try sandbox.
         // This handles validation directily with apple. This is not the recommended way by apple as it is not secure.
