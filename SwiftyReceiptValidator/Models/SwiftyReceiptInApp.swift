@@ -41,9 +41,9 @@ public struct SwiftyReceiptInApp: Codable {
     public let cancellationReason: CancellationReason?
     
     // Other
-    public let appItemId: String
-    public let versionExternalIdentifier: String
-    public let webOrderLineItemId: String
+    public let appItemId: String?
+    public let versionExternalIdentifier: String?
+    public let webOrderLineItemId: String?
 }
 
 // MARK: - Types
