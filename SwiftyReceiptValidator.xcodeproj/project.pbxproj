@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		6A4384A4222727B1009EF552 /* SwiftyReceiptPendingRenewalInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4384A3222727B1009EF552 /* SwiftyReceiptPendingRenewalInfo.swift */; };
+		6A4384AC222730C1009EF552 /* SwiftyReceiptValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4384AB222730C1009EF552 /* SwiftyReceiptValidatorTests.swift */; };
+		6A4384AE222730C1009EF552 /* SwiftyReceiptValidator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4533F311DA2BD8900440CC0 /* SwiftyReceiptValidator.framework */; };
 		6ADEB8B8220085AC00370C71 /* SwiftyReceiptResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADEB8B7220085AC00370C71 /* SwiftyReceiptResponse.swift */; };
 		6ADEB8BA220085C000370C71 /* SwiftyReceipt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADEB8B9220085C000370C71 /* SwiftyReceipt.swift */; };
 		6ADEB8BC220085D700370C71 /* SwiftyReceiptInApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADEB8BB220085D700370C71 /* SwiftyReceiptInApp.swift */; };
@@ -19,8 +21,21 @@
 		B4533F3F1DA2BDA700440CC0 /* SwiftyReceiptValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4533F3D1DA2BDA700440CC0 /* SwiftyReceiptValidator.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		6A4384AF222730C1009EF552 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B4533F281DA2BD8900440CC0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B4533F301DA2BD8900440CC0;
+			remoteInfo = SwiftyReceiptValidator;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		6A4384A3222727B1009EF552 /* SwiftyReceiptPendingRenewalInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftyReceiptPendingRenewalInfo.swift; sourceTree = "<group>"; };
+		6A4384A9222730C1009EF552 /* SwiftyReceiptValidatorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftyReceiptValidatorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		6A4384AB222730C1009EF552 /* SwiftyReceiptValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftyReceiptValidatorTests.swift; sourceTree = "<group>"; };
+		6A4384AD222730C1009EF552 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6ADEB8B7220085AC00370C71 /* SwiftyReceiptResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftyReceiptResponse.swift; sourceTree = "<group>"; };
 		6ADEB8B9220085C000370C71 /* SwiftyReceipt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftyReceipt.swift; sourceTree = "<group>"; };
 		6ADEB8BB220085D700370C71 /* SwiftyReceiptInApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftyReceiptInApp.swift; sourceTree = "<group>"; };
@@ -35,6 +50,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		6A4384A6222730C1009EF552 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6A4384AE222730C1009EF552 /* SwiftyReceiptValidator.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B4533F2D1DA2BD8900440CC0 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -45,6 +68,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6A4384AA222730C1009EF552 /* SwiftyReceiptValidatorTests */ = {
+			isa = PBXGroup;
+			children = (
+				6A4384AB222730C1009EF552 /* SwiftyReceiptValidatorTests.swift */,
+				6A4384AD222730C1009EF552 /* Info.plist */,
+			);
+			path = SwiftyReceiptValidatorTests;
+			sourceTree = "<group>";
+		};
 		6ADEB8B62200859000370C71 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -79,6 +111,7 @@
 			isa = PBXGroup;
 			children = (
 				B4533F331DA2BD8900440CC0 /* SwiftyReceiptValidator */,
+				6A4384AA222730C1009EF552 /* SwiftyReceiptValidatorTests */,
 				B4533F321DA2BD8900440CC0 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -87,6 +120,7 @@
 			isa = PBXGroup;
 			children = (
 				B4533F311DA2BD8900440CC0 /* SwiftyReceiptValidator.framework */,
+				6A4384A9222730C1009EF552 /* SwiftyReceiptValidatorTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -117,6 +151,24 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		6A4384A8222730C1009EF552 /* SwiftyReceiptValidatorTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6A4384B1222730C1009EF552 /* Build configuration list for PBXNativeTarget "SwiftyReceiptValidatorTests" */;
+			buildPhases = (
+				6A4384A5222730C1009EF552 /* Sources */,
+				6A4384A6222730C1009EF552 /* Frameworks */,
+				6A4384A7222730C1009EF552 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6A4384B0222730C1009EF552 /* PBXTargetDependency */,
+			);
+			name = SwiftyReceiptValidatorTests;
+			productName = SwiftyReceiptValidatorTests;
+			productReference = 6A4384A9222730C1009EF552 /* SwiftyReceiptValidatorTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		B4533F301DA2BD8900440CC0 /* SwiftyReceiptValidator */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = B4533F391DA2BD8900440CC0 /* Build configuration list for PBXNativeTarget "SwiftyReceiptValidator" */;
@@ -141,9 +193,15 @@
 		B4533F281DA2BD8900440CC0 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 1010;
 				LastUpgradeCheck = 0940;
 				ORGANIZATIONNAME = Dominik;
 				TargetAttributes = {
+					6A4384A8222730C1009EF552 = {
+						CreatedOnToolsVersion = 10.1;
+						DevelopmentTeam = DK88YZ475Z;
+						ProvisioningStyle = Automatic;
+					};
 					B4533F301DA2BD8900440CC0 = {
 						CreatedOnToolsVersion = 8.0;
 						LastSwiftMigration = "";
@@ -164,11 +222,19 @@
 			projectRoot = "";
 			targets = (
 				B4533F301DA2BD8900440CC0 /* SwiftyReceiptValidator */,
+				6A4384A8222730C1009EF552 /* SwiftyReceiptValidatorTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		6A4384A7222730C1009EF552 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B4533F2F1DA2BD8900440CC0 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -179,6 +245,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		6A4384A5222730C1009EF552 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6A4384AC222730C1009EF552 /* SwiftyReceiptValidatorTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B4533F2C1DA2BD8900440CC0 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -197,7 +271,60 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		6A4384B0222730C1009EF552 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B4533F301DA2BD8900440CC0 /* SwiftyReceiptValidator */;
+			targetProxy = 6A4384AF222730C1009EF552 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		6A4384B2222730C1009EF552 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = DK88YZ475Z;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = SwiftyReceiptValidatorTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dominikringler.SwiftyReceiptValidatorTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		6A4384B3222730C1009EF552 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = DK88YZ475Z;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = SwiftyReceiptValidatorTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dominikringler.SwiftyReceiptValidatorTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		B4533F371DA2BD8900440CC0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -366,6 +493,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		6A4384B1222730C1009EF552 /* Build configuration list for PBXNativeTarget "SwiftyReceiptValidatorTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6A4384B2222730C1009EF552 /* Debug */,
+				6A4384B3222730C1009EF552 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		B4533F2B1DA2BD8900440CC0 /* Build configuration list for PBXProject "SwiftyReceiptValidator" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
