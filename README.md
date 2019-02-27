@@ -53,7 +53,13 @@ import SwiftyReceiptValidator
 
 ```swift
 class SomeClass {
-    let receiptValidator = SwiftyReceiptValidator()
+    var receiptValidator: SwiftyReceiptValidator!
+    
+    init() {
+        // Standard config communicates with apples server directly, which is not recommended
+        // add your own custom config if required
+        receiptValidator = SwiftyReceiptValidator(configuration: .standard)
+    }
 }
 ```
 
