@@ -67,10 +67,10 @@ final class SessionManager {
         urlRequest.httpMethod = httpMethod.rawValue
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: [])
         
-        // Setup session
+        // Setup url session
         urlSession = URLSession(configuration: sessionConfiguration)
         
-        // Start url session
+        // Start data task
         urlSession?.dataTask(with: urlRequest) { [weak self] (data, response, error) in
             guard let self = self else { return }
             defer {
