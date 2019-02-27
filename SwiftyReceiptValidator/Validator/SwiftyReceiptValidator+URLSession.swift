@@ -8,6 +8,12 @@
 
 import Foundation
 
+private enum ParamsKey: String {
+    case data = "receipt-data"
+    case excludeOldTransactions = "exclude-old-transactions"
+    case password
+}
+
 extension SwiftyReceiptValidator {
     
     func startURLSession(with receiptData: Data,
@@ -20,12 +26,12 @@ extension SwiftyReceiptValidator {
         
         // Prepare url session parameters
         var parameters: [String: Any] = [
-            "receipt-data": receiptBase64String,
-            "exclude-old-transactions": excludeOldTransactions
+            ParamsKey.data.rawValue: receiptBase64String,
+            ParamsKey.excludeOldTransactions.rawValue: excludeOldTransactions
         ]
         
         if let sharedSecret = sharedSecret {
-            parameters["password"] = sharedSecret
+            parameters[ParamsKey.password.rawValue] = sharedSecret
         }
         
         // Start URL request to production server first, if status code returns test environment receipt, try sandbox.
