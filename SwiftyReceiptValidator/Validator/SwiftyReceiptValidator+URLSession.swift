@@ -11,14 +11,19 @@ import Foundation
 extension SwiftyReceiptValidator {
     
     func startURLSession(with receiptData: Data,
-                           sharedSecret: String?,
-                           validationMode: ValidationMode,
-                           handler: @escaping ResultHandler) {
+                         sharedSecret: String?,
+                         validationMode: ValidationMode,
+                         excludeOldTransactions: Bool,
+                         handler: @escaping ResultHandler) {
         // Prepare receipt base 64 string
         let receiptBase64String = receiptData.base64EncodedString(options: Data.Base64EncodingOptions(rawValue: 0))
         
         // Prepare url session parameters
-        var parameters = ["receipt-data": receiptBase64String]
+        var parameters: [String: Any] = [
+            "receipt-data": receiptBase64String,
+            "exclude-old-transactions": excludeOldTransactions
+        ]
+        
         if let sharedSecret = sharedSecret {
             parameters["password"] = sharedSecret
         }

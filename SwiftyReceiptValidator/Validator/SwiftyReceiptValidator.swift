@@ -120,8 +120,11 @@ public final class SwiftyReceiptValidator: NSObject {
             case .success(let receiptURL):
                 do {
                     let receiptData = try Data(contentsOf: receiptURL)
-                    self.startURLSession(with: receiptData, sharedSecret: sharedSecret,
-                                         validationMode: validationMode, handler: handler)
+                    self.startURLSession(with: receiptData,
+                                         sharedSecret: sharedSecret,
+                                         validationMode: validationMode,
+                                         excludeOldTransactions: false, // TODO correct?
+                                         handler: handler)
                 } catch {
                     handler(.failure(.other(error.localizedDescription), code: nil))
                 }
