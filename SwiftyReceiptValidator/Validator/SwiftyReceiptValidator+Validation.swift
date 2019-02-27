@@ -54,7 +54,6 @@ extension SwiftyReceiptValidator {
                  had ever been made.
                  */
                 guard let expiresDate = $0.expiresDate, $0.cancellationDate == nil else { return true }
-                #warning("Maybe improve current date check with locale, start of day etc")
                 return expiresDate < Date()
             }
             
