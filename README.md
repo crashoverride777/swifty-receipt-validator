@@ -91,7 +91,9 @@ case .purchased:
         // Transaction is in queue, user has been charged.  Client should complete the transaction.
         let productId = transaction.payment.productIdentifier
 
-        receiptValidator.validate(.purchase(productId: productId), sharedSecret: nil) { result in
+        receiptValidator.validate(.purchase(productId: productId),
+                                  sharedSecret: nil,
+                                  excludeOldTransactions: true) { result in
             switch result {
 
            case .success(let response):
