@@ -93,7 +93,7 @@ case .purchased:
 
         receiptValidator.validate(.purchase(productId: productId),
                                   sharedSecret: nil,
-                                  excludeOldTransactions: true) { result in
+                                  excludeOldTransactions: false) { result in
             switch result {
 
            case .success(let response):
@@ -122,7 +122,7 @@ case .restored:
 
     receiptValidator.validate(.purchase(productId: productId),
                               sharedSecret: nil,
-                              excludeOldTransactions: true) { result in
+                              excludeOldTransactions: false) { result in
         switch result {
 
         case .success(let response):
@@ -175,7 +175,7 @@ receiptValidator.validate(.subscription,
 ```swift
 receiptValidator.validate(.none, 
                           sharedSecret: "enter your secret or set to nil", 
-                          excludeOldTransactions: true) { result in
+                          excludeOldTransactions: false) { result in
     switch result {
     case .success(let response):
         print("Receipt response \(response)")
