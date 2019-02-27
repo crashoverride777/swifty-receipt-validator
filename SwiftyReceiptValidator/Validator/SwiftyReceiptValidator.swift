@@ -54,7 +54,7 @@ public final class SwiftyReceiptValidator: NSObject {
         }
         
         // Defaults to apple validation only which is not recommended
-        static var standard: Configuration {
+        public static var standard: Configuration {
             return Configuration(productionURL: "https://buy.itunes.apple.com/verifyReceipt",
                                  sandboxURL: "https://sandbox.itunes.apple.com/verifyReceipt",
                                  sessionConfiguration: .default)
@@ -114,7 +114,7 @@ public final class SwiftyReceiptValidator: NSObject {
     /// - parameter handler: Completion handler called when the validation has completed.
     public func validate(_ validationMode: ValidationMode,
                          sharedSecret: String?,
-                         excludeOldSubscriptions: Bool,
+                         excludeOldTransactions: Bool,
                          handler: @escaping ResultHandler) {
         fetchReceipt { [weak self] result in
             guard let self = self else { return }
@@ -128,7 +128,7 @@ public final class SwiftyReceiptValidator: NSObject {
                     self.startURLSession(with: receiptData,
                                          sharedSecret: sharedSecret,
                                          validationMode: validationMode,
-                                         excludeOldTransactions: excludeOldSubscriptions,
+                                         excludeOldTransactions: excludeOldTransactions,
                                          handler: handler)
                 } catch {
                     self.printError(error)
