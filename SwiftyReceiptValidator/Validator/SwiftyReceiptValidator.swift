@@ -53,6 +53,7 @@ public final class SwiftyReceiptValidator: NSObject {
             self.sessionConfiguration = sessionConfiguration
         }
         
+        // Defaults to apple validation only which is not recommended
         static var standard: Configuration {
             return Configuration(productionURL: "https://buy.itunes.apple.com/verifyReceipt",
                                  sandboxURL: "https://sandbox.itunes.apple.com/verifyReceipt",
@@ -90,8 +91,8 @@ public final class SwiftyReceiptValidator: NSObject {
     
     /// Init
     ///
-    /// - parameter configuration: The configuration struct to customise SwiftyReceiptValidator. Defaults to standard.
-    init(configuration: Configuration = .standard) {
+    /// - parameter configuration: The configuration struct to customise SwiftyReceiptValidator.
+    init(configuration: Configuration) {
         print("Init SwiftyReceiptValidator")
         self.configuration = configuration
         sessionManager = SessionManager(sessionConfiguration: configuration.sessionConfiguration)

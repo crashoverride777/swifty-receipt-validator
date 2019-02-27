@@ -33,7 +33,7 @@ public struct SwiftyReceiptInApp: Codable {
     // For an auto-renewable subscription, whether or not it is in the introductory price period.
     public let isInIntroOfferPeriod: String?
     // The current renewal status for the auto-renewable subscription.
-    public let autoRenewStatus: SubscriptionRenewStatus?
+    public let autoRenewStatus: AutoRenewStatus?
     
     // For a transaction that was canceled by Apple customer support, the time and date of the cancellation. For an auto-renewable subscription plan that was upgraded, the time and date of the upgrade transaction
     public let cancellationDate: Date?
@@ -50,11 +50,9 @@ public struct SwiftyReceiptInApp: Codable {
 
 public extension SwiftyReceiptInApp {
     
-    /*
-     If a previous subscription period in the receipt has the value “true”
-     for either the is_trial_period or the is_in_intro_offer_period key,
-     the user is not eligible for a free trial or introductory price within that subscription group.
-    */
+    // If a previous subscription period in the receipt has the value “true”
+    // for either the is_trial_period or the is_in_intro_offer_period key,
+    // the user is not eligible for a free trial or introductory price within that subscription group.
     public var canShowIntroductoryPrice: Bool {
         if isTrialPeriod == "true" || isInIntroOfferPeriod == "true" {
             return false
@@ -94,7 +92,7 @@ public extension SwiftyReceiptInApp {
         case customerCancelledDueToErrorInApp = "1"
     }
     
-    enum SubscriptionRenewStatus: String, Codable {
+    enum AutoRenewStatus: String, Codable {
         // Customer has turned off automatic renewal for their subscription
         case off = "0"
         // Subscription will renew at the end of the current subscription period

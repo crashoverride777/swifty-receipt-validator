@@ -52,10 +52,12 @@ extension SwiftyReceiptValidator {
                         self.validate(response, validationMode: validationMode, handler: handler)
                     }
                 } catch {
+                    self.printError(error)
                     handler(.failure(.other(error.localizedDescription), code: nil))
                 }
                 
             case .failure(let error):
+                self.printError(error)
                 handler(.failure(.other(error.localizedDescription), code: nil))
             }
         }
@@ -77,13 +79,22 @@ private extension SwiftyReceiptValidator {
                     let response = try self.jsonDecoder.decode(SwiftyReceiptResponse.self, from: data)
                     self.validate(response, validationMode: validationMode, handler: handler)
                 } catch {
-                    print("SwiftyReceiptValidator error: \(error)")
+                    self.printError(error)
                     handler(.failure(.other(error.localizedDescription), code: nil))
                 }
             case .failure(let error):
-                print("SwiftyReceiptValidator error: \(error)")
+                self.printError(error)
                 handler(.failure(.other(error.localizedDescription), code: nil))
             }
         }
+    }
+}
+
+// MARK: - Debug
+
+private extension SwiftyReceiptValidator {
+    
+    func printError(_ error: Error) {
+        print("SwiftyReceiptValidator error: \(error)")
     }
 }
