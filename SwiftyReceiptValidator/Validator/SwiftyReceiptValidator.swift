@@ -109,8 +109,12 @@ public final class SwiftyReceiptValidator: NSObject {
     ///
     /// - parameter validationMode: The validation method of receipt request.
     /// - parameter sharedSecret: The shared secret when using auto-subscriptions, setup in iTunes.
+    /// - parameter excludeOldTransactions: If value is true, response includes only the latest renewal transaction for any subscriptions.
     /// - parameter handler: Completion handler called when the validation has completed.
-    public func validate(_ validationMode: ValidationMode, sharedSecret: String?, handler: @escaping ResultHandler) {
+    public func validate(_ validationMode: ValidationMode,
+                         sharedSecret: String?,
+                         excludeOldSubscriptions: Bool,
+                         handler: @escaping ResultHandler) {
         fetchReceipt { [weak self] result in
             guard let self = self else { return }
             self.receiptHandler = nil
@@ -123,7 +127,7 @@ public final class SwiftyReceiptValidator: NSObject {
                     self.startURLSession(with: receiptData,
                                          sharedSecret: sharedSecret,
                                          validationMode: validationMode,
-                                         excludeOldTransactions: false, // TODO correct?
+                                         excludeOldTransactions: excludeOldSubscriptions,
                                          handler: handler)
                 } catch {
                     handler(.failure(.other(error.localizedDescription), code: nil))
