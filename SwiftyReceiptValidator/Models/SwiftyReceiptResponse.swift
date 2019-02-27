@@ -23,7 +23,7 @@ public struct SwiftyReceiptResponse: Codable {
     // For iOS 7 style app receipts, the value of this key is an array containing all in-app purchase transactions. This excludes transactions for a consumable product that have been marked as finished by your app.
     public let latestReceiptInfo: [SwiftyReceiptInApp]?
     // Only returned for iOS 7 style app receipts containing auto-renewable subscriptions. In the JSON file, the value of this key is an array where each element contains the pending renewal information for each auto-renewable subscription identified by the Product Identifier. A pending renewal may refer to a renewal that is scheduled in the future or a renewal that failed in the past for some reason.
-    public let pendingRenewalInfo: Data?
+    public let pendingRenewalInfo: [SwiftyReceiptPendingRenewalInfo]?
     // The current environment, Sandbox or Production
     public let environment: String?
 }

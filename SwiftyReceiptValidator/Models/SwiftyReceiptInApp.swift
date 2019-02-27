@@ -29,7 +29,7 @@ public struct SwiftyReceiptInApp: Codable {
     // For an expired subscription, whether or not Apple is still attempting to automatically renew the subscription.
     public let isInBillingRetryPeriod: ExpirationRetry?
     // For a subscription, whether or not it is in the free trial period.
-    public let isTrialPeriod: Bool?
+    public let isTrialPeriod: String?
     // For an auto-renewable subscription, whether or not it is in the introductory price period.
     public let isInIntroOfferPeriod: String?
     // The current renewal status for the auto-renewable subscription.
@@ -41,9 +41,26 @@ public struct SwiftyReceiptInApp: Codable {
     public let cancellationReason: CancellationReason?
     
     // Other
-    public let appItemId: String
-    public let versionExternalIdentifier: String
-    public let webOrderLineItemId: String
+    public let appItemId: String?
+    public let versionExternalIdentifier: String?
+    public let webOrderLineItemId: String?
+}
+
+// MARK: - Computed
+
+public extension SwiftyReceiptInApp {
+    
+    /*
+     If a previous subscription period in the receipt has the value “true”
+     for either the is_trial_period or the is_in_intro_offer_period key,
+     the user is not eligible for a free trial or introductory price within that subscription group.
+    */
+    public var canShowIntroductoryPrice: Bool {
+        if isTrialPeriod == "true" || isInIntroOfferPeriod == "true" {
+            return false
+        }
+        return true
+    }
 }
 
 // MARK: - Types
