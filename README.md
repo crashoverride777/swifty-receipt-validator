@@ -112,7 +112,9 @@ case .restored:
         return
     }
 
-    receiptValidator.validate(.purchase(productId: productId), sharedSecret: nil) { result in
+    receiptValidator.validate(.purchase(productId: productId),
+                              sharedSecret: nil,
+                              excludeOldTransactions: true) { result in
         switch result {
 
         case .success(let response):
@@ -140,7 +142,9 @@ In this example sharedSecret is set to nil because I am only validating regular 
 - To validate your subscriptions (e.g on app launch), select `.subscription` as the validation method. This will search for all subscription receipts and check if there is at least 1 thats not expired.
 
 ```swift
-receiptValidator.validate(.subscription, sharedSecret: "enter your secret or set to nil") { result in
+receiptValidator.validate(.subscription, 
+                          sharedSecret: "enter your secret or set to nil",
+                          excludeOldTransactions: true) { result in
     switch result {
     case .success(let response):
         print("Receipt validation was successfull with receipt response \(response)")
@@ -161,7 +165,9 @@ receiptValidator.validate(.subscription, sharedSecret: "enter your secret or set
 - To only fetch the verified receipt, select `.none` as the validation method.
 
 ```swift
-receiptValidator.validate(.none, sharedSecret: "enter your secret or set to nil") { result in
+receiptValidator.validate(.none, 
+                          sharedSecret: "enter your secret or set to nil", 
+                          excludeOldTransactions: true) { result in
     switch result {
     case .success(let response):
         print("Receipt response \(response)")
