@@ -92,7 +92,7 @@ public final class SwiftyReceiptValidator: NSObject {
     /// Init
     ///
     /// - parameter configuration: The configuration struct to customise SwiftyReceiptValidator.
-    init(configuration: Configuration) {
+    public init(configuration: Configuration) {
         print("Init SwiftyReceiptValidator")
         self.configuration = configuration
         sessionManager = SessionManager(sessionConfiguration: configuration.sessionConfiguration)
