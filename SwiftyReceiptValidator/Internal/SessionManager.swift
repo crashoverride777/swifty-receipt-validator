@@ -53,6 +53,7 @@ final class SessionManager {
     
     func start(with urlString: String,
                parameters: [AnyHashable: Any],
+               httpMethod: HTTPMethod = .post,
                handler: @escaping (Result) -> Void) {
         // Create url
         guard let url = URL(string: urlString) else {
@@ -63,7 +64,7 @@ final class SessionManager {
         // Setup url request
         var urlRequest = URLRequest(url: url)
         urlRequest.cachePolicy = .reloadIgnoringCacheData
-        urlRequest.httpMethod = HTTPMethod.post.rawValue
+        urlRequest.httpMethod = httpMethod.rawValue
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: [])
         
         // Setup session

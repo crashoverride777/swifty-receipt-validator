@@ -11,20 +11,20 @@ import Foundation
 public extension SwiftyReceiptValidator {
     
     /// The result enum of a validation request. Returns a success or failure case with a corresponding value
-    public enum Result<T> {
+    enum Result<T> {
         case success(T)
         case failure(ValidationError, code: SwiftyReceiptResponse.StatusCode?)
     }
     
     /// The validation mode of the receipt request
-    public enum ValidationMode {
+    enum ValidationMode {
         case none
         case purchase(productId: String)
         case subscription
     }
     
     /// Errors
-    public enum ValidationError: Error {
+    enum ValidationError: Error {
         case invalidStatusCode
         case noReceiptFound
         case noReceiptFoundInResponse
@@ -47,8 +47,8 @@ public extension SwiftyReceiptValidator {
                 return "SwiftyReceiptValidator Product id is not matching with receipt"
             case .noValidSubscription:
                 return "SwiftyReceiptValidator No active subscription found"
-            case .other(let message):
-                return message
+            case .other(let description):
+                return description
             }
         }
     }

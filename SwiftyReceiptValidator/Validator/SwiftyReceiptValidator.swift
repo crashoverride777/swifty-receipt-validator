@@ -43,9 +43,9 @@ public final class SwiftyReceiptValidator: NSObject {
     
     /// Configuration
     public struct Configuration {
-        public let productionURL: String
-        public let sandboxURL: String
-        public let sessionConfiguration: URLSessionConfiguration
+        let productionURL: String
+        let sandboxURL: String
+        let sessionConfiguration: URLSessionConfiguration
         
         public init(productionURL: String, sandboxURL: String, sessionConfiguration: URLSessionConfiguration) {
             self.productionURL = productionURL
@@ -131,9 +131,11 @@ public final class SwiftyReceiptValidator: NSObject {
                                          excludeOldTransactions: excludeOldSubscriptions,
                                          handler: handler)
                 } catch {
+                    self.printError(error)
                     handler(.failure(.other(error.localizedDescription), code: nil))
                 }
             case .failure(let error, let code):
+                self.printError(error)
                 handler(.failure(error, code: code))
             }
         }
@@ -167,6 +169,18 @@ extension SwiftyReceiptValidator: SKRequestDelegate {
     }
     
     public func request(_ request: SKRequest, didFailWithError error: Error) {
+        printError(error)
         receiptHandler?(.failure(.other(error.localizedDescription), code: nil))
+    }
+}
+
+// MARK: - Debug
+
+extension SwiftyReceiptValidator {
+    
+    func printError(_ error: Error) {
+        #if DEBUG
+        print("SwiftyReceiptValidator error: \(error)")
+        #endif
     }
 }

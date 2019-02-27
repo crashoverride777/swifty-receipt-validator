@@ -89,12 +89,3 @@ private extension SwiftyReceiptValidator {
         }
     }
 }
-
-// MARK: - Debug
-
-private extension SwiftyReceiptValidator {
-    
-    func printError(_ error: Error) {
-        print("SwiftyReceiptValidator error: \(error)")
-    }
-}
