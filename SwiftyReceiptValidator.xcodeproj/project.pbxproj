@@ -128,9 +128,9 @@
 		B4533F331DA2BD8900440CC0 /* SwiftyReceiptValidator */ = {
 			isa = PBXGroup;
 			children = (
-				6ADEB8EC2200F8C300370C71 /* Internal */,
 				6ADEB8B62200859000370C71 /* Models */,
 				6ADEB8BF2200883600370C71 /* Validator */,
+				6ADEB8EC2200F8C300370C71 /* Internal */,
 				B4533F341DA2BD8900440CC0 /* SwiftyReceiptValidator.h */,
 				B4533F351DA2BD8900440CC0 /* Info.plist */,
 			);
