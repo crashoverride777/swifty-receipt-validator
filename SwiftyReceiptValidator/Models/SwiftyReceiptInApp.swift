@@ -53,7 +53,7 @@ public extension SwiftyReceiptInApp {
     // If a previous subscription period in the receipt has the value “true”
     // for either the is_trial_period or the is_in_intro_offer_period key,
     // the user is not eligible for a free trial or introductory price within that subscription group.
-    public var canShowIntroductoryPrice: Bool {
+    var canShowIntroductoryPrice: Bool {
         if isTrialPeriod == "true" || isInIntroOfferPeriod == "true" {
             return false
         }
