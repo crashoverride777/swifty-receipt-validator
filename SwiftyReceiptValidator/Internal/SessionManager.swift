@@ -16,11 +16,6 @@ final class SessionManager {
         case post = "POST"
     }
     
-    enum Result {
-        case success(Data)
-        case failure(SessionError)
-    }
-    
     enum SessionError: Error {
         case url
         case data
@@ -54,7 +49,7 @@ final class SessionManager {
     func start(with urlString: String,
                parameters: [AnyHashable: Any],
                httpMethod: HTTPMethod = .post,
-               handler: @escaping (Result) -> Void) {
+               handler: @escaping (Result<Data, SessionError>) -> Void) {
         // Create url
         guard let url = URL(string: urlString) else {
             handler(.failure(.url))
