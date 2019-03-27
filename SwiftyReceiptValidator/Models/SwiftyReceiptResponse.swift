@@ -44,8 +44,7 @@ public extension SwiftyReceiptResponse {
         case testReceipt = 21007
         case productionEnvironment = 21008
         case receiptCouldNotBeAuthorized = 21010
-        //21100-21199
-        //Internal data access error.
+        //21100-21199 = Internal data access error.
         
         public init(from decoder: Decoder) throws {
             self = try StatusCode(rawValue: decoder.singleValueContainer().decode(RawValue.self)) ?? .unknown
