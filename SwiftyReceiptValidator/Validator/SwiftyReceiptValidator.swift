@@ -30,14 +30,14 @@
 
 import StoreKit
 
+public typealias SwiftyReceiptValidatorResultHandler = (SwiftyReceiptValidatorResult<SwiftyReceiptResponse>) -> Void
+
 /*
  SwiftyReceiptValidator
  
  A class to manage in app purchase receipt validation.
  */
 public final class SwiftyReceiptValidator: NSObject {
-    public typealias ResultHandler = (Result<SwiftyReceiptResponse>) -> Void
-    private typealias ReceiptHandler = (Result<URL>) -> Void
     
     // MARK: - Types
     
@@ -65,28 +65,9 @@ public final class SwiftyReceiptValidator: NSObject {
 
     let sessionManager: SessionManager
     let configuration: Configuration
+    let receiptFetcher = SwiftyReceiptFetcher()
+    let validator: SwiftyReceiptValidators = ReceiptValidatorImplementation()
     
-    private let receiptURL = Bundle.main.appStoreReceiptURL
-    private var receiptHandler: ReceiptHandler?
-    private var receiptRefreshRequest: SKReceiptRefreshRequest?
-    
-    private var hasReceipt: Bool {
-        guard let path = receiptURL?.path, FileManager.default.fileExists(atPath: path) else { return false }
-        return true
-    }
-    
-    private(set) lazy var jsonDecoder: JSONDecoder = {
-        let dateFormatter = DateFormatter()
-        dateFormatter.calendar = Calendar(identifier: .iso8601)
-        dateFormatter.locale = .current
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss VV"
-        
-        let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .formatted(dateFormatter)
-        decoder.keyDecodingStrategy = .convertFromSnakeCase
-        return decoder
-    }()
-  
     // MARK: - Init
     
     /// Init
@@ -104,32 +85,70 @@ public final class SwiftyReceiptValidator: NSObject {
         print("Deinit SwiftyReceiptValidator")
     }
     
-    // MARK: - Validate Receipt
+    // MARK: - Validate Purchase
     
-    /// Validate app store receipt
+    /// Validate app store purchase
     ///
-    /// - parameter validationMode: The validation method of receipt request.
-    /// - parameter sharedSecret: The shared secret when using auto-subscriptions, setup in iTunes.
+    /// - parameter productId: The id of the purchase to verify.
+    /// - parameter handler: Completion handler called when the validation has completed.
+    public func validatePurchase(withId productId: String, handler: @escaping SwiftyReceiptValidatorResultHandler) {
+        getDefaultValidatedResponse(sharedSecret: nil, excludeOldTransactions: false) { [weak self] result in
+            switch result {
+            case .success(let response):
+                self?.validator.validatePurchase(forProductId: productId, in: response, handler: handler)
+            case .failure(let error, let code):
+                handler(.failure(error, code: code))
+            }
+        }
+    }
+    
+    // MARK: - Validate Subscription
+    
+    /// Validate app store subscription
+    ///
+    /// - parameter sharedSecret: The shared secret setup in iTunes.
     /// - parameter excludeOldTransactions: If value is true, response includes only the latest renewal transaction for any subscriptions.
     /// - parameter handler: Completion handler called when the validation has completed.
-    public func validate(_ validationMode: ValidationMode,
-                         sharedSecret: String?,
-                         excludeOldTransactions: Bool,
-                         handler: @escaping ResultHandler) {
-        fetchReceipt { [weak self] result in
+    public func validateSubscription(sharedSecret: String?,
+                                     excludeOldTransactions: Bool,
+                                     handler: @escaping SwiftyReceiptValidatorResultHandler) {
+        getDefaultValidatedResponse(sharedSecret: sharedSecret,
+                                    excludeOldTransactions: excludeOldTransactions) { [weak self] result in
+            switch result {
+            case .success(let response):
+                self?.validator.validateSubscription(in: response, handler: handler)
+            case .failure(let error, let code):
+                handler(.failure(error, code: code))
+            }
+        }
+    }
+    
+    // MARK: - Get Default Validated Response
+    
+    /// Validate app store subscription
+    ///
+    /// - parameter sharedSecret: The shared secret setup in iTunes.
+    /// - parameter excludeOldTransactions: If value is true, response includes only the latest renewal transaction for any subscriptions.
+    /// - parameter handler: Completion handler called when the validation has completed.
+    public func getDefaultValidatedResponse(sharedSecret: String?,
+                                            excludeOldTransactions: Bool,
+                                            handler: @escaping SwiftyReceiptValidatorResultHandler) {
+        receiptFetcher.fetch { [weak self] result in
             guard let self = self else { return }
-            self.receiptHandler = nil
-            self.receiptRefreshRequest = nil
-            
             switch result {
             case .success(let receiptURL):
                 do {
                     let receiptData = try Data(contentsOf: receiptURL)
                     self.startURLSession(with: receiptData,
                                          sharedSecret: sharedSecret,
-                                         validationMode: validationMode,
-                                         excludeOldTransactions: excludeOldTransactions,
-                                         handler: handler)
+                                         excludeOldTransactions: excludeOldTransactions) { [weak self] result in
+                        switch result {
+                        case .success(let response):
+                            self?.validator.validate(response, handler: handler)
+                        case .failure(let error, let code):
+                            handler(.failure(error, code: code))
+                        }
+                    }
                 } catch {
                     self.printError(error)
                     handler(.failure(.other(error.localizedDescription), code: nil))
@@ -139,38 +158,6 @@ public final class SwiftyReceiptValidator: NSObject {
                 handler(.failure(error, code: code))
             }
         }
-    }
-    
-    private func fetchReceipt(handler: @escaping (SwiftyReceiptValidator.Result<URL>) -> Void) {
-        receiptHandler = handler
-        
-        guard hasReceipt, let receiptURL = receiptURL else {
-            receiptRefreshRequest = SKReceiptRefreshRequest(receiptProperties: nil)
-            receiptRefreshRequest?.delegate = self
-            receiptRefreshRequest?.start()
-            return
-        }
-        
-        handler(.success(receiptURL))
-    }
-}
-
-// MARK: - SKRequestDelegate
-
-extension SwiftyReceiptValidator: SKRequestDelegate {
-    
-    public func requestDidFinish(_ request: SKRequest) {
-        guard hasReceipt, let receiptURL = receiptURL else {
-            receiptHandler?(.failure(.noReceiptFound, code: nil))
-            return
-        }
-        
-        receiptHandler?(.success(receiptURL))
-    }
-    
-    public func request(_ request: SKRequest, didFailWithError error: Error) {
-        printError(error)
-        receiptHandler?(.failure(.other(error.localizedDescription), code: nil))
     }
 }
 

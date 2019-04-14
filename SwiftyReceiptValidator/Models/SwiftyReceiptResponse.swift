@@ -28,6 +28,34 @@ public struct SwiftyReceiptResponse: Codable {
     public let environment: String?
 }
 
+//// MARK: - Helpers
+//
+//public extension SwiftyReceiptResponse {
+//    
+//    var latestSubscriptionExpiryDate: Date? {
+//        guard var receipts = latestReceiptInfo ?? receipt?.inApp else { return nil }
+//        
+//        receipts.removeAll {
+//            /*
+//             To check whether a purchase has been canceled by Apple Customer Support, look for the
+//             Cancellation Date field in the receipt. If the field contains a date, regardless
+//             of the subscription’s expiration date, the purchase has been canceled. With respect to
+//             providing content or service, treat a canceled transaction the same as if no purchase
+//             had ever been made.
+//             */
+//            guard let expiresDate = $0.expiresDate, $0.cancellationDate == nil else { return true }
+//            return expiresDate < Date()
+//        }
+//        
+//        guard response.status != .subscriptionExpired, !receipts.isEmpty else {
+//            //handler(.failure(.noValidSubscription, code: response.status))
+//            return nil
+//        }
+//        
+//        return receipts.first?.expiresDate
+//    }
+//}
+
 // MARK: - Status Codes
 
 public extension SwiftyReceiptResponse {

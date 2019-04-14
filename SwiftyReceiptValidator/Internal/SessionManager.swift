@@ -38,6 +38,18 @@ final class SessionManager {
     private var urlSession: URLSession?
     private let sessionConfiguration: URLSessionConfiguration
     
+    private(set) lazy var jsonDecoder: JSONDecoder = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.calendar = Calendar(identifier: .iso8601)
+        dateFormatter.locale = .current
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss VV"
+        
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .formatted(dateFormatter)
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        return decoder
+    }()
+    
     // MARK: - Init
     
     init(sessionConfiguration: URLSessionConfiguration = .default) {
@@ -49,7 +61,7 @@ final class SessionManager {
     func start(with urlString: String,
                parameters: [AnyHashable: Any],
                httpMethod: HTTPMethod = .post,
-               handler: @escaping (Result<Data, SessionError>) -> Void) {
+               handler: @escaping (Result<SwiftyReceiptResponse, SessionError>) -> Void) {
         // Create url
         guard let url = URL(string: urlString) else {
             handler(.failure(.url))
@@ -83,9 +95,15 @@ final class SessionManager {
                 handler(.failure(.data))
                 return
             }
-            
-            // Return data
-            handler(.success(data))
+                        
+            // Parse data
+            do {
+                let response = try self.jsonDecoder.decode(SwiftyReceiptResponse.self, from: data)
+                handler(.success(response))
+            } catch {
+                print(error)
+                handler(.failure(.other(error.localizedDescription)))
+            }
         }.resume()
     }
 }
