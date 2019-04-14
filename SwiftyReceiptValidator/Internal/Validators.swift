@@ -8,23 +8,6 @@
 
 import Foundation
 
-typealias SwiftyReceiptValidators = ReceiptDefaultValidator & ReceiptPurchaseValidator & ReceiptSubscriptionValidator
-
-protocol ReceiptDefaultValidator {
-    func validate(_ response: SwiftyReceiptResponse, handler: @escaping SwiftyReceiptValidatorResultHandler)
-}
-
-protocol ReceiptPurchaseValidator {
-    func validatePurchase(forProductId productId: String,
-                          in response: SwiftyReceiptResponse,
-                          handler: @escaping SwiftyReceiptValidatorResultHandler)
-}
-
-protocol ReceiptSubscriptionValidator {
-    func validateSubscription(in response: SwiftyReceiptResponse, handler: @escaping SwiftyReceiptValidatorResultHandler)
-}
-
-/// Implementation
 final class ReceiptValidatorImplementation {
     
 }
@@ -80,7 +63,8 @@ extension ReceiptValidatorImplementation: ReceiptPurchaseValidator {
 
 extension ReceiptValidatorImplementation: ReceiptSubscriptionValidator {
     
-    func validateSubscription(in response: SwiftyReceiptResponse, handler: @escaping SwiftyReceiptValidatorResultHandler) {
+    func validateSubscription(in response: SwiftyReceiptResponse,
+                              handler: @escaping (SwiftyReceiptValidatorResult<(SwiftyReceiptResponse, Date?)>) -> Void) {
         var receipts = response.latestReceiptInfo ?? response.receipt?.inApp ?? []
         
         receipts.removeAll {
@@ -101,6 +85,6 @@ extension ReceiptValidatorImplementation: ReceiptSubscriptionValidator {
         }
         
         // Return success handler
-        handler(.success(response))
+        handler(.success((response, receipts.first?.expiresDate)))
     }
 }

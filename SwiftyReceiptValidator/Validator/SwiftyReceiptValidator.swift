@@ -66,16 +66,18 @@ public final class SwiftyReceiptValidator: NSObject {
     let sessionManager: SessionManager
     let configuration: Configuration
     let receiptFetcher = SwiftyReceiptFetcher()
-    let validator: SwiftyReceiptValidators = ReceiptValidatorImplementation()
+    let validator: SwiftyReceiptValidators
     
     // MARK: - Init
     
     /// Init
     ///
     /// - parameter configuration: The configuration struct to customise SwiftyReceiptValidator.
-    public init(configuration: Configuration) {
+    /// - parameter validator: The validator that validates the receipt response. Defaults to nil (default validator).
+    public init(configuration: Configuration, validator: SwiftyReceiptValidators?) {
         print("Init SwiftyReceiptValidator")
         self.configuration = configuration
+        self.validator = validator ?? ReceiptValidatorImplementation()
         sessionManager = SessionManager(sessionConfiguration: configuration.sessionConfiguration)
     }
     
@@ -111,7 +113,7 @@ public final class SwiftyReceiptValidator: NSObject {
     /// - parameter handler: Completion handler called when the validation has completed.
     public func validateSubscription(sharedSecret: String?,
                                      excludeOldTransactions: Bool,
-                                     handler: @escaping SwiftyReceiptValidatorResultHandler) {
+                                     handler: @escaping (SwiftyReceiptValidatorResult<(SwiftyReceiptResponse, Date?)>) -> Void) {
         getDefaultValidatedResponse(sharedSecret: sharedSecret,
                                     excludeOldTransactions: excludeOldTransactions) { [weak self] result in
             switch result {
