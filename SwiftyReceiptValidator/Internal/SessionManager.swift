@@ -16,12 +16,12 @@ final class SessionManager {
         case post = "POST"
     }
     
-    enum SessionError: Error {
+    enum SessionError: LocalizedError {
         case url
         case data
         case other(String)
         
-        public var localizedDescription: String {
+        var errorDescription: String? {
             switch self {
             case .url:
                 return "SwiftyReceiptValidator session URL error"

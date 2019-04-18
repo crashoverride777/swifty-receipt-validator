@@ -15,7 +15,7 @@ public enum SwiftyReceiptValidatorResult<T> {
 }
 
 /// Errors
-public enum SwiftyReceiptValidatorError: Error {
+public enum SwiftyReceiptValidatorError: LocalizedError {
     case invalidStatusCode
     case noReceiptFound
     case noReceiptFoundInResponse
@@ -24,7 +24,8 @@ public enum SwiftyReceiptValidatorError: Error {
     case noValidSubscription
     case other(String)
     
-    public var localizedDescription: String {
+    #warning("Translate")
+    public var errorDescription: String? {
         switch self {
         case .invalidStatusCode:
             return "SwiftyReceiptValidator Invalid status code"
