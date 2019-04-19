@@ -52,6 +52,9 @@
 		6AFE274A2269D03D0016ED8A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		6AFE274C2269D0480016ED8A /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		6AFE274D2269D0840016ED8A /* LocalizedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizedString.swift; sourceTree = "<group>"; };
+		6AFE274F2269D1AD0016ED8A /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
+		6AFE27502269D1B20016ED8A /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		6AFE27512269D1B90016ED8A /* pt-PT */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-PT"; path = "pt-PT.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		B4533F311DA2BD8900440CC0 /* SwiftyReceiptValidator.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftyReceiptValidator.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B4533F341DA2BD8900440CC0 /* SwiftyReceiptValidator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftyReceiptValidator.h; sourceTree = "<group>"; };
 		B4533F351DA2BD8900440CC0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -231,6 +234,9 @@
 				en,
 				Base,
 				de,
+				es,
+				fr,
+				"pt-PT",
 			);
 			mainGroup = B4533F271DA2BD8900440CC0;
 			productRefGroup = B4533F321DA2BD8900440CC0 /* Products */;
@@ -305,6 +311,9 @@
 			children = (
 				6AFE274A2269D03D0016ED8A /* en */,
 				6AFE274C2269D0480016ED8A /* de */,
+				6AFE274F2269D1AD0016ED8A /* es */,
+				6AFE27502269D1B20016ED8A /* fr */,
+				6AFE27512269D1B90016ED8A /* pt-PT */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";

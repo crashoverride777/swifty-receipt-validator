@@ -1,0 +1,10 @@
+/* 
+  Localizable.strings
+  SwiftyReceiptValidator
+
+  Created by Dominik Ringler on 19/04/2019.
+  Copyright © 2019 Dominik. All rights reserved.
+*/
+
+ErrorURL = "SwiftyReceiptValidator session URL error";
+ErrorData = "SwiftyReceiptValidator session data error";
