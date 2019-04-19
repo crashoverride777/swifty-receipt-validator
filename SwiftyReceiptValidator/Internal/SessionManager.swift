@@ -19,16 +19,16 @@ final class SessionManager {
     enum SessionError: LocalizedError {
         case url
         case data
-        case other(String)
+        case other(Error)
         
         var errorDescription: String? {
             switch self {
             case .url:
-                return "SwiftyReceiptValidator session URL error"
+                return LocalizedString.Error.url
             case .data:
-                return "SwiftyReceiptValidator session data error"
-            case .other(let message):
-                return message
+                return LocalizedString.Error.data
+            case .other(let error):
+                return error.localizedDescription
             }
         }
     }
@@ -86,7 +86,7 @@ final class SessionManager {
             
             // Check for error
             if let error = error {
-                handler(.failure(.other(error.localizedDescription)))
+                handler(.failure(.other(error)))
                 return
             }
             
@@ -102,7 +102,7 @@ final class SessionManager {
                 handler(.success(response))
             } catch {
                 print(error)
-                handler(.failure(.other(error.localizedDescription)))
+                handler(.failure(.other(error)))
             }
         }.resume()
     }

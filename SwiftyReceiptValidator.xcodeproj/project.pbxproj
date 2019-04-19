@@ -19,6 +19,8 @@
 		6ADEB8EB2200EF1300370C71 /* SwiftyReceiptValidator+URLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADEB8EA2200EF1300370C71 /* SwiftyReceiptValidator+URLSession.swift */; };
 		6ADEB8EE2200F8D200370C71 /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADEB8ED2200F8D200370C71 /* SessionManager.swift */; };
 		6ADEB8F22200FD3700370C71 /* SwiftyReceiptValidatorTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADEB8F12200FD3700370C71 /* SwiftyReceiptValidatorTypes.swift */; };
+		6AFE27492269D03D0016ED8A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6AFE274B2269D03D0016ED8A /* Localizable.strings */; };
+		6AFE274E2269D0840016ED8A /* LocalizedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AFE274D2269D0840016ED8A /* LocalizedString.swift */; };
 		B4533F361DA2BD8900440CC0 /* SwiftyReceiptValidator.h in Headers */ = {isa = PBXBuildFile; fileRef = B4533F341DA2BD8900440CC0 /* SwiftyReceiptValidator.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B4533F3F1DA2BDA700440CC0 /* SwiftyReceiptValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4533F3D1DA2BDA700440CC0 /* SwiftyReceiptValidator.swift */; };
 /* End PBXBuildFile section */
@@ -47,6 +49,9 @@
 		6ADEB8EA2200EF1300370C71 /* SwiftyReceiptValidator+URLSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftyReceiptValidator+URLSession.swift"; sourceTree = "<group>"; };
 		6ADEB8ED2200F8D200370C71 /* SessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
 		6ADEB8F12200FD3700370C71 /* SwiftyReceiptValidatorTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftyReceiptValidatorTypes.swift; sourceTree = "<group>"; };
+		6AFE274A2269D03D0016ED8A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		6AFE274C2269D0480016ED8A /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		6AFE274D2269D0840016ED8A /* LocalizedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizedString.swift; sourceTree = "<group>"; };
 		B4533F311DA2BD8900440CC0 /* SwiftyReceiptValidator.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftyReceiptValidator.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B4533F341DA2BD8900440CC0 /* SwiftyReceiptValidator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftyReceiptValidator.h; sourceTree = "<group>"; };
 		B4533F351DA2BD8900440CC0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -109,6 +114,8 @@
 				6ADEB8ED2200F8D200370C71 /* SessionManager.swift */,
 				6A03A5D32263688A00A9D2D1 /* Validators.swift */,
 				6A03A5D522636D9C00A9D2D1 /* ReceiptFetcher.swift */,
+				6AFE274D2269D0840016ED8A /* LocalizedString.swift */,
+				6AFE274B2269D03D0016ED8A /* Localizable.strings */,
 			);
 			path = Internal;
 			sourceTree = "<group>";
@@ -223,6 +230,7 @@
 			knownRegions = (
 				en,
 				Base,
+				de,
 			);
 			mainGroup = B4533F271DA2BD8900440CC0;
 			productRefGroup = B4533F321DA2BD8900440CC0 /* Products */;
@@ -247,6 +255,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6AFE27492269D03D0016ED8A /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -267,6 +276,7 @@
 			files = (
 				6ADEB8BA220085C000370C71 /* SwiftyReceipt.swift in Sources */,
 				6ADEB8EB2200EF1300370C71 /* SwiftyReceiptValidator+URLSession.swift in Sources */,
+				6AFE274E2269D0840016ED8A /* LocalizedString.swift in Sources */,
 				6ADEB8F22200FD3700370C71 /* SwiftyReceiptValidatorTypes.swift in Sources */,
 				B4533F3F1DA2BDA700440CC0 /* SwiftyReceiptValidator.swift in Sources */,
 				6ADEB8BC220085D700370C71 /* SwiftyReceiptInApp.swift in Sources */,
@@ -288,6 +298,18 @@
 			targetProxy = 6A4384AF222730C1009EF552 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		6AFE274B2269D03D0016ED8A /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6AFE274A2269D03D0016ED8A /* en */,
+				6AFE274C2269D0480016ED8A /* de */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		6A4384B2222730C1009EF552 /* Debug */ = {
