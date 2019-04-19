@@ -113,7 +113,7 @@ public final class SwiftyReceiptValidator: NSObject {
     /// - parameter handler: Completion handler called when the validation has completed.
     public func validateSubscription(sharedSecret: String?,
                                      excludeOldTransactions: Bool,
-                                     handler: @escaping (SwiftyReceiptValidatorResult<(SwiftyReceiptResponse, Date?)>) -> Void) {
+                                     handler: @escaping (SwiftyReceiptValidatorResult<(SwiftyReceiptResponse)>) -> Void) {
         getDefaultValidatedResponse(sharedSecret: sharedSecret,
                                     excludeOldTransactions: excludeOldTransactions) { [weak self] result in
             switch result {
