@@ -50,7 +50,7 @@ extension SwiftyReceiptValidator {
                 }                
             case .failure(let error):
                 self.printError(error)
-                handler(.failure(.other(error.localizedDescription), code: nil))
+                handler(.failure(.other(error), code: nil))
             }
         }
     }
@@ -67,7 +67,7 @@ private extension SwiftyReceiptValidator {
                 handler(.success(response))
             case .failure(let error):
                 self.printError(error)
-                handler(.failure(.other(error.localizedDescription), code: nil))
+                handler(.failure(.other(error), code: nil))
             }
         }
     }

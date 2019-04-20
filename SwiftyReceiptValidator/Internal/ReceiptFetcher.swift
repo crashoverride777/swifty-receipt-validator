@@ -63,7 +63,7 @@ extension SwiftyReceiptFetcher: SKRequestDelegate {
     
     public func request(_ request: SKRequest, didFailWithError error: Error) {
         print(error)
-        receiptHandler?(.failure(.other(error.localizedDescription), code: nil))
+        receiptHandler?(.failure(.other(error), code: nil))
         clean()
     }
 }

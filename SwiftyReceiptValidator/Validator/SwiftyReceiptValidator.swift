@@ -153,7 +153,7 @@ public final class SwiftyReceiptValidator: NSObject {
                     }
                 } catch {
                     self.printError(error)
-                    handler(.failure(.other(error.localizedDescription), code: nil))
+                    handler(.failure(.other(error), code: nil))
                 }
             case .failure(let error, let code):
                 self.printError(error)

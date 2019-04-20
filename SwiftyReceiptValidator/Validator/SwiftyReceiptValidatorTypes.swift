@@ -23,7 +23,7 @@ public enum SwiftyReceiptValidatorError: LocalizedError {
     case productIdNotMatching
     case noValidSubscription
     case cancelled
-    case other(String)
+    case other(Error)
     
     public var errorDescription: String? {
         switch self {
@@ -41,8 +41,8 @@ public enum SwiftyReceiptValidatorError: LocalizedError {
             return LocalizedString.Error.noValidSubscription
         case .cancelled:
             return LocalizedString.Error.cancelled
-        case .other(let description):
-            return description
+        case .other(let error):
+            return error.localizedDescription
         }
     }
 }
