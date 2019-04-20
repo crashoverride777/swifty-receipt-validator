@@ -20,19 +20,19 @@ extension ReceiptValidatorImplementation: ReceiptDefaultValidator {
                   handler: @escaping SwiftyReceiptValidatorResultHandler) {
         // Check receipt status code is valid
         guard response.status == .valid else {
-            handler(.failure(.invalidStatusCode, code: response.status))
+            handler(.failure(.invalidStatusCode(response.status)))
             return
         }
         
         // Unwrap receipt
         guard let receipt = response.receipt else {
-            handler(.failure(.noReceiptFoundInResponse, code: response.status))
+            handler(.failure(.noReceiptFoundInResponse(response.status)))
             return
         }
         
         // Check receipt contains correct bundle id
         guard receipt.bundleId == Bundle.main.bundleIdentifier else {
-            handler(.failure(.bundleIdNotMatching, code: response.status))
+            handler(.failure(.bundleIdNotMatching(response.status)))
             return
         }
         
@@ -50,7 +50,7 @@ extension ReceiptValidatorImplementation: ReceiptPurchaseValidator {
                           handler: @escaping SwiftyReceiptValidatorResultHandler) {
         // Check a valid receipt with matching product id was found
         guard let receipt = response.receipt?.inApp.first(where: { $0.productId == productId }) else {
-            handler(.failure(.productIdNotMatching, code: response.status))
+            handler(.failure(.productIdNotMatching(response.status)))
             return
         }
         
@@ -62,7 +62,7 @@ extension ReceiptValidatorImplementation: ReceiptPurchaseValidator {
          had ever been made.
          */
         guard receipt.cancellationDate == nil else {
-            handler(.failure(.cancelled, code: response.status))
+            handler(.failure(.cancelled(response.status)))
             return
         }
         
@@ -76,16 +76,16 @@ extension ReceiptValidatorImplementation: ReceiptPurchaseValidator {
 extension ReceiptValidatorImplementation: ReceiptSubscriptionValidator {
     
     func validateSubscription(in response: SwiftyReceiptResponse,
-                              handler: @escaping (SwiftyReceiptValidatorResult<(SwiftyReceiptResponse)>) -> Void) {
+                              handler: @escaping (Result<SwiftyReceiptResponse, SwiftyReceiptValidatorError>) -> Void) {
         // Make sure response subscription status is not expired
         guard response.status != .subscriptionExpired else {
-            handler(.failure(.noValidSubscription, code: response.status))
+            handler(.failure(.noValidSubscription(response.status)))
             return
         }
     
         // Make sure receipts are not empty
         guard !response.validSubscriptionReceipts.isEmpty else {
-            handler(.failure(.noValidSubscription, code: response.status))
+            handler(.failure(.noValidSubscription(response.status)))
             return
         }
         

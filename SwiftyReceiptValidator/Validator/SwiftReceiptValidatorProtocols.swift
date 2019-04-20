@@ -22,5 +22,5 @@ public protocol ReceiptPurchaseValidator: class {
 
 public protocol ReceiptSubscriptionValidator: class {
     func validateSubscription(in response: SwiftyReceiptResponse,
-                              handler: @escaping (SwiftyReceiptValidatorResult<(SwiftyReceiptResponse)>) -> Void)
+                              handler: @escaping (Result<SwiftyReceiptResponse, SwiftyReceiptValidatorError>) -> Void)
 }

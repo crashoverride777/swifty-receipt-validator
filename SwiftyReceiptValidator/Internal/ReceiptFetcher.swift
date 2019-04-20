@@ -9,7 +9,7 @@
 import StoreKit
 
 final class SwiftyReceiptFetcher: NSObject {    
-    typealias ReceiptHandler = (SwiftyReceiptValidatorResult<URL>) -> Void
+    typealias ReceiptHandler = (Result<URL, SwiftyReceiptValidatorError>) -> Void
     
     // MARK: - Properties
     
@@ -54,7 +54,7 @@ extension SwiftyReceiptFetcher: SKRequestDelegate {
         }
         
         guard hasReceipt, let receiptURL = receiptURL else {
-            receiptHandler?(.failure(.noReceiptFound, code: nil))
+            receiptHandler?(.failure(.noReceiptFound))
             return
         }
         
@@ -63,7 +63,7 @@ extension SwiftyReceiptFetcher: SKRequestDelegate {
     
     public func request(_ request: SKRequest, didFailWithError error: Error) {
         print(error)
-        receiptHandler?(.failure(.other(error), code: nil))
+        receiptHandler?(.failure(.other(error)))
         clean()
     }
 }

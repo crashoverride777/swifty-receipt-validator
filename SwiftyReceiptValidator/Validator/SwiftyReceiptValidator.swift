@@ -30,7 +30,7 @@
 
 import StoreKit
 
-public typealias SwiftyReceiptValidatorResultHandler = (SwiftyReceiptValidatorResult<SwiftyReceiptResponse>) -> Void
+public typealias SwiftyReceiptValidatorResultHandler = (Result<SwiftyReceiptResponse, SwiftyReceiptValidatorError>) -> Void
 
 /*
  SwiftyReceiptValidator
@@ -98,8 +98,8 @@ public final class SwiftyReceiptValidator: NSObject {
             switch result {
             case .success(let response):
                 self?.validator.validatePurchase(forProductId: productId, in: response, handler: handler)
-            case .failure(let error, let code):
-                handler(.failure(error, code: code))
+            case .failure(let error):
+                handler(.failure(error))
             }
         }
     }
@@ -113,14 +113,14 @@ public final class SwiftyReceiptValidator: NSObject {
     /// - parameter handler: Completion handler called when the validation has completed.
     public func validateSubscription(sharedSecret: String?,
                                      excludeOldTransactions: Bool,
-                                     handler: @escaping (SwiftyReceiptValidatorResult<(SwiftyReceiptResponse)>) -> Void) {
+                                     handler: @escaping (Result<SwiftyReceiptResponse, SwiftyReceiptValidatorError>) -> Void) {
         getDefaultValidatedResponse(sharedSecret: sharedSecret,
                                     excludeOldTransactions: excludeOldTransactions) { [weak self] result in
             switch result {
             case .success(let response):
                 self?.validator.validateSubscription(in: response, handler: handler)
-            case .failure(let error, let code):
-                handler(.failure(error, code: code))
+            case .failure(let error):
+                handler(.failure(error))
             }
         }
     }
@@ -147,17 +147,17 @@ public final class SwiftyReceiptValidator: NSObject {
                         switch result {
                         case .success(let response):
                             self?.validator.validate(response, handler: handler)
-                        case .failure(let error, let code):
-                            handler(.failure(error, code: code))
+                        case .failure(let error):
+                            handler(.failure(error))
                         }
                     }
                 } catch {
                     self.printError(error)
-                    handler(.failure(.other(error), code: nil))
+                    handler(.failure(.other(error)))
                 }
-            case .failure(let error, let code):
+            case .failure(let error):
                 self.printError(error)
-                handler(.failure(error, code: code))
+                handler(.failure(error))
             }
         }
     }
