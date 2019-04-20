@@ -25,23 +25,22 @@ public enum SwiftyReceiptValidatorError: LocalizedError {
     case cancelled
     case other(String)
     
-    #warning("Translate")
     public var errorDescription: String? {
         switch self {
         case .invalidStatusCode:
-            return "SwiftyReceiptValidator Invalid status code"
+            return LocalizedString.Error.invalidStatusCode
         case .noReceiptFound:
-            return "SwiftyReceiptValidator No receipt found on device"
+            return LocalizedString.Error.noReceiptFound
         case .noReceiptFoundInResponse:
-            return "SwiftyReceiptValidator No receipt found in server response"
+            return LocalizedString.Error.noReceiptFoundInResponse
         case .bundleIdNotMatching:
-            return "SwiftyReceiptValidator Bundle id is not matching receipt"
+            return LocalizedString.Error.bundleIdNotMatching
         case .productIdNotMatching:
-            return "SwiftyReceiptValidator Product id is not matching with receipt"
+            return LocalizedString.Error.productIdNotMatching
         case .noValidSubscription:
-            return "SwiftyReceiptValidator No active subscription found"
+            return LocalizedString.Error.noValidSubscription
         case .cancelled:
-            return "Cancelled"
+            return LocalizedString.Error.cancelled
         case .other(let description):
             return description
         }

@@ -12,6 +12,14 @@ enum LocalizedString {
     enum Error {
         static let url = localized("ErrorURL", comment: "Invalid URL")
         static let data = localized("ErrorData", comment: "Invalid data")
+        
+        static let invalidStatusCode = localized("ErrorInvalidStatusCode", comment: "Invalid status code")
+        static let noReceiptFound = localized("ErrorNoReceiptFound", comment: "No receipt found on device")
+        static let noReceiptFoundInResponse = localized("ErrorNoReceiptFoundInResponse", comment: "No receipt found in server response")
+        static let bundleIdNotMatching = localized("ErrorBundleIdNotMatching", comment: "Bundle id is not matching receipt")
+        static let productIdNotMatching = localized("ErrorProductIdNotMatching", comment: "Product id is not matching with receipt")
+        static let noValidSubscription = localized("ErrorNoValidSubscription", comment: "No active subscription found")
+        static let cancelled = localized("ErrorCancelled", comment: "Cancelled")
     }
 }
 

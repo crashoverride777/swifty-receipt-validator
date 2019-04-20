@@ -8,3 +8,11 @@
 
 ErrorURL = "SwiftyReceiptValidator session URL error";
 ErrorData = "SwiftyReceiptValidator session data error";
+
+ErrorInvalidStatusCode = "SwiftyReceiptValidator Invalid status code";
+ErrorNoReceiptFound = "SwiftyReceiptValidator No receipt found on device";
+ErrorNoReceiptFoundInResponse = "SwiftyReceiptValidator No receipt found in server response";
+ErrorBundleIdNotMatching = "SwiftyReceiptValidator Bundle id is not matching receipt";
+ErrorProductIdNotMatching = "SwiftyReceiptValidator Product id is not matching with receipt";
+ErrorNoValidSubscription = "SwiftyReceiptValidator No active subscription found";
+ErrorCancelled = "Cancelled";
