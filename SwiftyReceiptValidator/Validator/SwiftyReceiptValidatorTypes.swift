@@ -22,6 +22,7 @@ public enum SwiftyReceiptValidatorError: LocalizedError {
     case bundleIdNotMatching
     case productIdNotMatching
     case noValidSubscription
+    case cancelled
     case other(String)
     
     #warning("Translate")
@@ -39,6 +40,8 @@ public enum SwiftyReceiptValidatorError: LocalizedError {
             return "SwiftyReceiptValidator Product id is not matching with receipt"
         case .noValidSubscription:
             return "SwiftyReceiptValidator No active subscription found"
+        case .cancelled:
+            return "Cancelled"
         case .other(let description):
             return description
         }
