@@ -49,8 +49,20 @@ extension ReceiptValidatorImplementation: ReceiptPurchaseValidator {
                           in response: SwiftyReceiptResponse,
                           handler: @escaping SwiftyReceiptValidatorResultHandler) {
         // Check a valid receipt with matching product id was found
-        guard response.receipt?.inApp.first(where: { $0.productId == productId }) != nil else {
+        guard let receipt = response.receipt?.inApp.first(where: { $0.productId == productId }) else {
             handler(.failure(.productIdNotMatching, code: response.status))
+            return
+        }
+        
+        /*
+         To check whether a purchase has been canceled by Apple Customer Support, look for the
+         Cancellation Date field in the receipt. If the field contains a date, regardless
+         of the subscription’s expiration date, the purchase has been canceled. With respect to
+         providing content or service, treat a canceled transaction the same as if no purchase
+         had ever been made.
+         */
+        guard receipt.cancellationDate == nil else {
+            handler(.failure(.cancelled, code: response.status))
             return
         }
         
