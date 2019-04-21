@@ -6,18 +6,6 @@
 
 A swift helper to handle app store receipt validation.
 
-## Your own server
-
-The recommned way by Apple is to use your own server to validate app store receipts.
-However for obvious reason this is a hassle for alot of people like me, because I dont have a webserver and dont understand languages like PHP to make it work.
-
-In those cases where you dont want to use your own server you can communcate directly with Apples server. 
-Doing this is apparently not very secure and therefore you should use your own server when verifying receipts 
-
-Nevertheless its still better than not doing any validation at all. I will eventually try to update this helper to include guidlines/sample code to make it work with your own server. My knowledge about server code is very basic at the moment.
-
-https://www.raywenderlich.com/23266/in-app-purchases-in-ios-6-tutorial-consumables-and-receipt-validation
-
 ## Before you go live
 
 - Test, Test, Test
@@ -56,12 +44,27 @@ class SomeClass {
     var receiptValidator: SwiftyReceiptValidator!
     
     init() {
-        // Standard config communicates with apples server directly, which is not recommended
-        // add your own custom config if required
+        // Standard configuration communicates with apples server directly, which is not recommended
+        // add your own custom config if required to speak with your own server
         receiptValidator = SwiftyReceiptValidator(configuration: .standard)
     }
 }
 ```
+
+NOTE:
+
+In this example we are using the default configuration which will validate the receipt directly with Apples servers.
+The recommned way by Apple is to use your own server to validate app store receipts.
+However for obvious reason this is a hassle for alot of people like me, because I dont have a webserver and dont understand languages like PHP to make it work.
+
+In those cases where you dont want to use your own server you can communcate directly with Apples server. 
+Doing this is apparently not very secure and therefore you should use your own server when verifying receipts 
+
+Nevertheless its still better than not doing any validation at all. 
+
+If you have your own webserver you can create your own custom configuration with the correct URLs.
+
+https://www.raywenderlich.com/23266/in-app-purchases-in-ios-6-tutorial-consumables-and-receipt-validation
 
 ### Validate purchases
 
