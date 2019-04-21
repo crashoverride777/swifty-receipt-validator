@@ -67,18 +67,16 @@ public final class SwiftyReceiptValidator: NSObject {
     let sessionManager: SessionManager
     let configuration: Configuration
     let receiptFetcher = SwiftyReceiptFetcher()
-    let validator: SwiftyReceiptValidators
+    let validator: SwiftyReceiptValidators = ReceiptValidatorImplementation()
     
     // MARK: - Init
     
     /// Init
     ///
     /// - parameter configuration: The configuration struct to customise SwiftyReceiptValidator.
-    /// - parameter validator: The validator that validates the receipt response. Defaults to nil (default validator).
-    public init(configuration: Configuration, validator: SwiftyReceiptValidators? = nil) {
+    public init(configuration: Configuration) {
         print("Init SwiftyReceiptValidator")
         self.configuration = configuration
-        self.validator = validator ?? ReceiptValidatorImplementation()
         sessionManager = SessionManager(sessionConfiguration: configuration.sessionConfiguration)
     }
     
