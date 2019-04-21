@@ -74,7 +74,7 @@ public final class SwiftyReceiptValidator: NSObject {
     ///
     /// - parameter configuration: The configuration struct to customise SwiftyReceiptValidator.
     /// - parameter validator: The validator that validates the receipt response. Defaults to nil (default validator).
-    public init(configuration: Configuration, validator: SwiftyReceiptValidators?) {
+    public init(configuration: Configuration, validator: SwiftyReceiptValidators? = nil) {
         print("Init SwiftyReceiptValidator")
         self.configuration = configuration
         self.validator = validator ?? ReceiptValidatorImplementation()
@@ -85,6 +85,43 @@ public final class SwiftyReceiptValidator: NSObject {
     
     deinit {
         print("Deinit SwiftyReceiptValidator")
+    }
+    
+    // MARK: - Get Default Validated Response
+    
+    /// Validate app store subscription
+    ///
+    /// - parameter sharedSecret: The shared secret setup in iTunes.
+    /// - parameter excludeOldTransactions: If value is true, response includes only the latest renewal transaction for any subscriptions.
+    /// - parameter handler: Completion handler called when the validation has completed.
+    public func getDefaultValidatedResponse(sharedSecret: String?,
+                                            excludeOldTransactions: Bool,
+                                            handler: @escaping SwiftyReceiptValidatorResultHandler) {
+        receiptFetcher.fetch { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let receiptURL):
+                do {
+                    let receiptData = try Data(contentsOf: receiptURL)
+                    self.startURLSession(with: receiptData,
+                                         sharedSecret: sharedSecret,
+                                         excludeOldTransactions: excludeOldTransactions) { [weak self] result in
+                                            switch result {
+                                            case .success(let response):
+                                                self?.validator.validate(response, handler: handler)
+                                            case .failure(let error):
+                                                handler(.failure(error))
+                                            }
+                    }
+                } catch {
+                    self.printError(error)
+                    handler(.failure(.other(error)))
+                }
+            case .failure(let error):
+                self.printError(error)
+                handler(.failure(error))
+            }
+        }
     }
     
     // MARK: - Validate Purchase
@@ -120,43 +157,6 @@ public final class SwiftyReceiptValidator: NSObject {
             case .success(let response):
                 self?.validator.validateSubscription(in: response, handler: handler)
             case .failure(let error):
-                handler(.failure(error))
-            }
-        }
-    }
-    
-    // MARK: - Get Default Validated Response
-    
-    /// Validate app store subscription
-    ///
-    /// - parameter sharedSecret: The shared secret setup in iTunes.
-    /// - parameter excludeOldTransactions: If value is true, response includes only the latest renewal transaction for any subscriptions.
-    /// - parameter handler: Completion handler called when the validation has completed.
-    public func getDefaultValidatedResponse(sharedSecret: String?,
-                                            excludeOldTransactions: Bool,
-                                            handler: @escaping SwiftyReceiptValidatorResultHandler) {
-        receiptFetcher.fetch { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let receiptURL):
-                do {
-                    let receiptData = try Data(contentsOf: receiptURL)
-                    self.startURLSession(with: receiptData,
-                                         sharedSecret: sharedSecret,
-                                         excludeOldTransactions: excludeOldTransactions) { [weak self] result in
-                        switch result {
-                        case .success(let response):
-                            self?.validator.validate(response, handler: handler)
-                        case .failure(let error):
-                            handler(.failure(error))
-                        }
-                    }
-                } catch {
-                    self.printError(error)
-                    handler(.failure(.other(error)))
-                }
-            case .failure(let error):
-                self.printError(error)
                 handler(.failure(error))
             }
         }

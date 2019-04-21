@@ -35,22 +35,24 @@ public extension SwiftyReceiptResponse {
     /// Computed property that returns all valid subscriptions
     var validSubscriptionReceipts: [SwiftyReceiptInApp] {
         guard let receipts = latestReceiptInfo ?? receipt?.inApp else { return [] }
-        return receipts.filter {
-            /*
-             To check whether a purchase has been canceled by Apple Customer Support, look for the
-             Cancellation Date field in the receipt. If the field contains a date, regardless
-             of the subscription’s expiration date, the purchase has been canceled. With respect to
-             providing content or service, treat a canceled transaction the same as if no purchase
-             had ever been made.
-             */
-            guard $0.cancellationDate == nil else { return false }
-            
-            // Only receipts with an expiry date are subscriptions
-            guard let expiresDate = $0.expiresDate else { return false }
-            
-            // Return subscription receipts with expiry date equal or higher than now date
-            return expiresDate >= Date()
-        }
+        return receipts
+            .filter {
+                /*
+                 To check whether a purchase has been canceled by Apple Customer Support, look for the
+                 Cancellation Date field in the receipt. If the field contains a date, regardless
+                 of the subscription’s expiration date, the purchase has been canceled. With respect to
+                 providing content or service, treat a canceled transaction the same as if no purchase
+                 had ever been made.
+                 */
+                guard $0.cancellationDate == nil else { return false }
+                
+                // Only receipts with an expiry date are subscriptions
+                guard let expiresDate = $0.expiresDate else { return false }
+                
+                // Return subscription receipts with expiry date equal or higher than now date
+                return expiresDate >= Date()
+            }
+            .sorted(by:  { $0.expiresDate! > $1.expiresDate! } )
     }
 }
 
