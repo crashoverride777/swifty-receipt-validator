@@ -94,9 +94,7 @@ case .purchased:
         // Transaction is in queue, user has been charged.  Client should complete the transaction.
         let productId = transaction.payment.productIdentifier
 
-        receiptValidator.validate(.purchase(productId: productId),
-                                  sharedSecret: nil,
-                                  excludeOldTransactions: false) { result in
+        receiptValidator.validatePurchase(withId: productId) { result in
             switch result {
 
            case .success(let response):
@@ -123,9 +121,7 @@ case .restored:
         return
     }
 
-    receiptValidator.validate(.purchase(productId: productId),
-                              sharedSecret: nil,
-                              excludeOldTransactions: false) { result in
+    receiptValidator.validatePurchase(withId: productId) { result in
         switch result {
 
         case .success(let response):
@@ -153,15 +149,14 @@ In this example sharedSecret is set to nil because I am only validating regular 
 - To validate your subscriptions (e.g on app launch), select `.subscription` as the validation method. This will search for all subscription receipts and check if there is at least 1 thats not expired.
 
 ```swift
-receiptValidator.validate(.subscription, 
-                          sharedSecret: "enter your secret or set to nil",
-                          excludeOldTransactions: true) { result in
+receiptValidator.validateSubscription(sharedSecret: "your secret", excludeOldTransactions: true) { result in
     switch result {
     case .success(let response):
         print("Receipt validation was successfull with receipt response \(response)")
         // Unlock subscription features and/or do additional checks first
     case .failure(let error, let code):
         switch error {
+        print(error.statusCode)
         case .noValidSubscription:
             // no active subscription found, update your cache/app etc
         default:
@@ -173,17 +168,16 @@ receiptValidator.validate(.subscription,
 
 ### Just fetch receipt
 
-- To only fetch the verified receipt, select `.none` as the validation method.
+- To only fetch the default verified receipt, select `.none` as the validation method.
 
 ```swift
-receiptValidator.validate(.none, 
-                          sharedSecret: "enter your secret or set to nil", 
-                          excludeOldTransactions: false) { result in
+receiptValidator.getDefaultValidatedResponse(sharedSecret: "your secret or nil", excludeOldTransactions: false) { result in
     switch result {
     case .success(let response):
         print("Receipt response \(response)")
         // Do additional checks etc
-    case .failure(let error, let code):
+    case .failure(let error):
+        print(error.statusCode)
         // Handle error e.g no internet
     }
 }
