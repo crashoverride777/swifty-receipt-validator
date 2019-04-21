@@ -6,18 +6,41 @@
 //  Copyright © 2019 Dominik. All rights reserved.
 //
 
+/*
+ The MIT License (MIT)
+ 
+ Copyright (c) 2016-2019 Dominik Ringler
+ 
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+ 
+ The above copyright notice and this permission notice shall be included in all
+ copies or substantial portions of the Software.
+ 
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE.
+ */
+
 import Foundation
 
 final class ReceiptValidatorImplementation {
-    
+    typealias ResultHandler = (Result<SwiftyReceiptResponse, SwiftyReceiptValidatorError>) -> Void
 }
 
-// MARK: - ReceiptDefaultValidator
+// MARK: - SwiftyReceiptDefaultValidator
 
-extension ReceiptValidatorImplementation: ReceiptDefaultValidator {
+extension ReceiptValidatorImplementation: SwiftyReceiptDefaultValidator {
    
-    func validate(_ response: SwiftyReceiptResponse,
-                  handler: @escaping SwiftyReceiptValidatorResultHandler) {
+    func validate(_ response: SwiftyReceiptResponse, handler: @escaping ResultHandler) {
         // Check receipt status code is valid
         guard response.status == .valid else {
             handler(.failure(.invalidStatusCode(response.status)))
@@ -41,13 +64,13 @@ extension ReceiptValidatorImplementation: ReceiptDefaultValidator {
     }
 }
 
-// MARK: - ReceiptPurchaseValidator
+// MARK: - SwiftyReceiptPurchaseValidator
 
-extension ReceiptValidatorImplementation: ReceiptPurchaseValidator {
+extension ReceiptValidatorImplementation: SwiftyReceiptPurchaseValidator {
     
     func validatePurchase(forProductId productId: String,
                           in response: SwiftyReceiptResponse,
-                          handler: @escaping SwiftyReceiptValidatorResultHandler) {
+                          handler: @escaping ResultHandler) {
         // Check a valid receipt with matching product id was found
         guard let receipt = response.receipt?.inApp.first(where: { $0.productId == productId }) else {
             handler(.failure(.productIdNotMatching(response.status)))
@@ -71,12 +94,11 @@ extension ReceiptValidatorImplementation: ReceiptPurchaseValidator {
     }
 }
 
-// MARK: - ReceiptSubscriptionValidator
+// MARK: - SwiftyReceiptSubscriptionValidator
 
-extension ReceiptValidatorImplementation: ReceiptSubscriptionValidator {
+extension ReceiptValidatorImplementation: SwiftyReceiptSubscriptionValidator {
     
-    func validateSubscription(in response: SwiftyReceiptResponse,
-                              handler: @escaping (Result<SwiftyReceiptResponse, SwiftyReceiptValidatorError>) -> Void) {
+    func validateSubscription(in response: SwiftyReceiptResponse, handler: @escaping ResultHandler) {
         // Make sure response subscription status is not expired
         guard response.status != .subscriptionExpired else {
             handler(.failure(.noValidSubscription(response.status)))
