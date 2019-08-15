@@ -63,7 +63,6 @@ extension SwiftyReceiptValidator {
         sessionManager.start(with: configuration.productionURL, parameters: parameters) { [weak self] result in
             guard let self = self else { return }
             switch result {
-                
             case .success(let response):
                 print("SwiftyReceiptValidator success (PRODUCTION)")
                 if response.status == .testReceipt {

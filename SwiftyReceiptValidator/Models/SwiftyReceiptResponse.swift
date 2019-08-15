@@ -59,7 +59,10 @@ public extension SwiftyReceiptResponse {
     /// Computed property that returns all subscriptions that are currently active
     /// sorted by latest expiry date first
     var validSubscriptionReceipts: [SwiftyReceiptInApp] {
-        guard let receipts = latestReceiptInfo ?? receipt?.inApp else { return [] }
+        guard let receipts = latestReceiptInfo ?? receipt?.inApp else {
+            return []
+        }
+        
         return receipts
             .filter {
                 /*
@@ -69,10 +72,14 @@ public extension SwiftyReceiptResponse {
                  providing content or service, treat a canceled transaction the same as if no purchase
                  had ever been made.
                  */
-                guard $0.cancellationDate == nil else { return false }
+                guard $0.cancellationDate == nil else {
+                    return false
+                }
                 
                 // Only receipts with an expiry date are subscriptions
-                guard let expiresDate = $0.expiresDate else { return false }
+                guard let expiresDate = $0.expiresDate else {
+                    return false
+                }
                 
                 // Return subscription receipts with expiry date equal or higher than now date
                 return expiresDate >= Date()

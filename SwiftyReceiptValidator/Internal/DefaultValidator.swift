@@ -32,41 +32,41 @@
 
 import Foundation
 
-final class ReceiptValidatorImplementation {
+final class DefaultValidator {
     typealias ResultHandler = (Result<SwiftyReceiptResponse, SwiftyReceiptValidatorError>) -> Void
 }
 
 // MARK: - SwiftyReceiptDefaultValidator
 
-extension ReceiptValidatorImplementation: SwiftyReceiptDefaultValidator {
+//extension ReceiptValidatorImplementation: SwiftyReceiptDefaultValidator {
    
-    func validate(_ response: SwiftyReceiptResponse, handler: @escaping ResultHandler) {
-        // Check receipt status code is valid
-        guard response.status == .valid else {
-            handler(.failure(.invalidStatusCode(response.status)))
-            return
-        }
-        
-        // Unwrap receipt
-        guard let receipt = response.receipt else {
-            handler(.failure(.noReceiptFoundInResponse(response.status)))
-            return
-        }
-        
-        // Check receipt contains correct bundle id
-        guard receipt.bundleId == Bundle.main.bundleIdentifier else {
-            handler(.failure(.bundleIdNotMatching(response.status)))
-            return
-        }
-        
-        // Return success
-        handler(.success(response))
-    }
-}
+//    func validate(_ response: SwiftyReceiptResponse, handler: @escaping ResultHandler) {
+//        // Check receipt status code is valid
+//        guard response.status == .valid else {
+//            handler(.failure(.invalidStatusCode(response.status)))
+//            return
+//        }
+//
+//        // Unwrap receipt
+//        guard let receipt = response.receipt else {
+//            handler(.failure(.noReceiptFoundInResponse(response.status)))
+//            return
+//        }
+//
+//        // Check receipt contains correct bundle id
+//        guard receipt.bundleId == Bundle.main.bundleIdentifier else {
+//            handler(.failure(.bundleIdNotMatching(response.status)))
+//            return
+//        }
+//
+//        // Return success
+//        handler(.success(response))
+//    }
+//}
 
-// MARK: - SwiftyReceiptPurchaseValidator
+// MARK: - SwiftyReceiptValidatorType
 
-extension ReceiptValidatorImplementation: SwiftyReceiptPurchaseValidator {
+extension DefaultValidator: SwiftyReceiptValidatorType {
     
     func validatePurchase(forProductId productId: String,
                           in response: SwiftyReceiptResponse,
@@ -92,11 +92,6 @@ extension ReceiptValidatorImplementation: SwiftyReceiptPurchaseValidator {
         // Return success handler
         handler(.success(response))
     }
-}
-
-// MARK: - SwiftyReceiptSubscriptionValidator
-
-extension ReceiptValidatorImplementation: SwiftyReceiptSubscriptionValidator {
     
     func validateSubscription(in response: SwiftyReceiptResponse, handler: @escaping ResultHandler) {
         // Make sure response subscription status is not expired

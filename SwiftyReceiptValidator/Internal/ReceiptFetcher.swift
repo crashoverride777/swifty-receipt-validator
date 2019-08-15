@@ -32,6 +32,7 @@
 
 import StoreKit
 
+#warning("This triggers login prompt if it refreshes, how can we avoid this?")
 final class SwiftyReceiptFetcher: NSObject {    
     typealias ResultHandler = (Result<URL, SwiftyReceiptValidatorError>) -> Void
     
@@ -42,8 +43,11 @@ final class SwiftyReceiptFetcher: NSObject {
     private var receiptRefreshRequest: SKReceiptRefreshRequest?
     
     private var hasReceipt: Bool {
-        guard let path = receiptURL?.path, FileManager.default.fileExists(atPath: path) else { return false }
-        return true
+        guard let path = receiptURL?.path else {
+            return false
+        }
+        
+        return FileManager.default.fileExists(atPath: path)
     }
     
     // MARK: - Methods

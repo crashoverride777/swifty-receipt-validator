@@ -32,18 +32,19 @@
 
 import Foundation
 
-final class SessionManager {
+public protocol URLSessionManagerType: AnyObject {
+    func start(with urlString: String,
+               parameters: [AnyHashable: Any],
+               handler: @escaping (Result<SwiftyReceiptResponse, Error>) -> Void)
+}
+
+final class URLSessionManager {
     
     // MARK: - Types
- 
-    enum HTTPMethod: String {
-        case post = "POST"
-    }
     
     enum SessionError: LocalizedError {
         case url
         case data
-        case other(Error)
         
         var errorDescription: String? {
             switch self {
@@ -51,12 +52,10 @@ final class SessionManager {
                 return LocalizedString.Error.url
             case .data:
                 return LocalizedString.Error.data
-            case .other(let error):
-                return error.localizedDescription
             }
         }
     }
-    
+
     // MARK: - Properties
     
     private var urlSession: URLSession?
@@ -79,23 +78,25 @@ final class SessionManager {
     init(sessionConfiguration: URLSessionConfiguration = .default) {
         self.sessionConfiguration = sessionConfiguration
     }
+}
     
-    // MARK: - Start
+// MARK: - URLSessionManagerType
+
+extension URLSessionManager: URLSessionManagerType {
     
     func start(with urlString: String,
                parameters: [AnyHashable: Any],
-               httpMethod: HTTPMethod = .post,
-               handler: @escaping (Result<SwiftyReceiptResponse, SessionError>) -> Void) {
+               handler: @escaping (Result<SwiftyReceiptResponse, Error>) -> Void) {
         // Create url
         guard let url = URL(string: urlString) else {
-            handler(.failure(.url))
+            handler(.failure(SessionError.url))
             return
         }
         
         // Setup url request
         var urlRequest = URLRequest(url: url)
         urlRequest.cachePolicy = .reloadIgnoringCacheData
-        urlRequest.httpMethod = httpMethod.rawValue
+        urlRequest.httpMethod = "POST"
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: [])
         
         // Setup url session
@@ -110,13 +111,13 @@ final class SessionManager {
             
             // Check for error
             if let error = error {
-                handler(.failure(.other(error)))
+                handler(.failure(error))
                 return
             }
             
             // Unwrap data
             guard let data = data else {
-                handler(.failure(.data))
+                handler(.failure(SessionError.data))
                 return
             }
                         
@@ -126,7 +127,7 @@ final class SessionManager {
                 handler(.success(response))
             } catch {
                 print(error)
-                handler(.failure(.other(error)))
+                handler(.failure(error))
             }
         }.resume()
     }
