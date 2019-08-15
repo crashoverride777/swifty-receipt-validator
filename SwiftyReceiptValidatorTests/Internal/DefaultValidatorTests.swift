@@ -1,5 +1,5 @@
 //
-//  SwiftyReceiptInAppTests.swift
+//  DefaultValidatorTests.swift
 //  SwiftyReceiptValidatorTests
 //
 //  Created by Dominik Ringler on 15/08/2019.
@@ -9,17 +9,17 @@
 import XCTest
 @testable import SwiftyReceiptValidator
 
-class SwiftyReceiptInAppTests: XCTestCase {
+class DefaultValidatorTests: XCTestCase {
     
     // MARK: - Properties
     
-    private var sut: SwiftyReceiptInApp!
+    private var sut: SwiftyReceiptValidatorType!
     
     // MARK: - Life Cycle
     
     override func setUp() {
         super.setUp()
-        //sut = .fake()
+        sut = DefaultValidator()
     }
     
     override func tearDown() {
@@ -28,14 +28,6 @@ class SwiftyReceiptInAppTests: XCTestCase {
     }
 
     // MARK: - Tests
-    
+
     #warning("add tests")
-    
-    func test_receiptInApp_canShowIntroductoryPrice() {
-        
-    }
-    
-    func test_receiptInApp_cannotShowIntroductoryPrice() {
-        
-    }
 }

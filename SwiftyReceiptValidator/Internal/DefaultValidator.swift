@@ -36,34 +36,6 @@ final class DefaultValidator {
     typealias ResultHandler = (Result<SwiftyReceiptResponse, SwiftyReceiptValidatorError>) -> Void
 }
 
-// MARK: - SwiftyReceiptDefaultValidator
-
-//extension ReceiptValidatorImplementation: SwiftyReceiptDefaultValidator {
-   
-//    func validate(_ response: SwiftyReceiptResponse, handler: @escaping ResultHandler) {
-//        // Check receipt status code is valid
-//        guard response.status == .valid else {
-//            handler(.failure(.invalidStatusCode(response.status)))
-//            return
-//        }
-//
-//        // Unwrap receipt
-//        guard let receipt = response.receipt else {
-//            handler(.failure(.noReceiptFoundInResponse(response.status)))
-//            return
-//        }
-//
-//        // Check receipt contains correct bundle id
-//        guard receipt.bundleId == Bundle.main.bundleIdentifier else {
-//            handler(.failure(.bundleIdNotMatching(response.status)))
-//            return
-//        }
-//
-//        // Return success
-//        handler(.success(response))
-//    }
-//}
-
 // MARK: - SwiftyReceiptValidatorType
 
 extension DefaultValidator: SwiftyReceiptValidatorType {

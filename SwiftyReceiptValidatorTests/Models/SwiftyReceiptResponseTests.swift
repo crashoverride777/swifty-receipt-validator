@@ -19,7 +19,7 @@ class SwiftyReceiptResponseTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        sut = .fake()
+        sut = .fake(.subscription)
     }
     
     override func tearDown() {

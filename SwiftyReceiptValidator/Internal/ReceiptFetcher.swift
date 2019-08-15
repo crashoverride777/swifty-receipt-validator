@@ -32,7 +32,6 @@
 
 import StoreKit
 
-#warning("This triggers login prompt if it refreshes, how can we avoid this?")
 final class SwiftyReceiptFetcher: NSObject {    
     typealias ResultHandler = (Result<URL, SwiftyReceiptValidatorError>) -> Void
     
@@ -65,11 +64,6 @@ final class SwiftyReceiptFetcher: NSObject {
         clean()
         handler(.success(receiptURL))
     }
-    
-    private func clean() {
-        receiptHandler = nil
-        receiptRefreshRequest = nil
-    }
 }
 
 // MARK: - SKRequestDelegate
@@ -93,5 +87,15 @@ extension SwiftyReceiptFetcher: SKRequestDelegate {
         print(error)
         receiptHandler?(.failure(.other(error)))
         clean()
+    }
+}
+
+// MARK: - Private Methods
+
+private extension SwiftyReceiptFetcher {
+    
+    func clean() {
+        receiptHandler = nil
+        receiptRefreshRequest = nil
     }
 }

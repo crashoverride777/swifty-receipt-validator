@@ -14,15 +14,18 @@ class SwiftyReceiptValidatorTests: XCTestCase {
     // MARK: - Properties
     
     private var sut: SwiftyReceiptValidator!
-
+    private var sessionManager: MockSessionManager!
+    
     // MARK: - Life Cycle
     
     override func setUp() {
         super.setUp()
+        sessionManager = MockSessionManager()
     }
 
     override func tearDown() {
         sut = nil
+        sessionManager = nil
         super.tearDown()
     }
     
@@ -31,10 +34,24 @@ class SwiftyReceiptValidatorTests: XCTestCase {
     // MARK: Config
     
     func test_config() {
-        sut = SwiftyReceiptValidator(configuration: .standard)
+        makeSUT(configuration: .standard)
         let productionURL = "https://buy.itunes.apple.com/verifyReceipt"
         let sandboxURL = "https://sandbox.itunes.apple.com/verifyReceipt"
         XCTAssertTrue(sut.configuration.productionURL == productionURL)
         XCTAssertTrue(sut.configuration.sandboxURL == sandboxURL)
+        XCTAssertTrue(sut.configuration.sessionConfiguration == .default)
+    }
+}
+
+// MARK: - Private Methods
+
+private extension SwiftyReceiptValidatorTests {
+    
+    func makeSUT(configuration: SwiftyReceiptValidator.Configuration) {
+        sut = SwiftyReceiptValidator(
+            configuration: configuration,
+            sessionManager: sessionManager,
+            validator: DefaultValidator()
+        )
     }
 }
