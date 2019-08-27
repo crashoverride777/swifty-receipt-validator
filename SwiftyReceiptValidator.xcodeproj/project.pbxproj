@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		6A03A5D42263688A00A9D2D1 /* DefaultValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A03A5D32263688A00A9D2D1 /* DefaultValidator.swift */; };
 		6A03A5D622636D9C00A9D2D1 /* ReceiptFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A03A5D522636D9C00A9D2D1 /* ReceiptFetcher.swift */; };
+		6A2755932315D0EB00F131C1 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 6A2755922315D0EA00F131C1 /* README.md */; };
+		6A2755982315D60800F131C1 /* SwiftyReceiptPendingRenewalInfo+Fake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2755972315D60800F131C1 /* SwiftyReceiptPendingRenewalInfo+Fake.swift */; };
+		6A27559A2315D84200F131C1 /* SwiftyReceiptInApp+Fake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2755992315D84200F131C1 /* SwiftyReceiptInApp+Fake.swift */; };
 		6A4384A4222727B1009EF552 /* SwiftyReceiptPendingRenewalInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4384A3222727B1009EF552 /* SwiftyReceiptPendingRenewalInfo.swift */; };
 		6A4384AC222730C1009EF552 /* SwiftyReceiptValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4384AB222730C1009EF552 /* SwiftyReceiptValidatorTests.swift */; };
 		6A4384AE222730C1009EF552 /* SwiftyReceiptValidator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4533F311DA2BD8900440CC0 /* SwiftyReceiptValidator.framework */; };
@@ -46,6 +49,9 @@
 /* Begin PBXFileReference section */
 		6A03A5D32263688A00A9D2D1 /* DefaultValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultValidator.swift; sourceTree = "<group>"; };
 		6A03A5D522636D9C00A9D2D1 /* ReceiptFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptFetcher.swift; sourceTree = "<group>"; };
+		6A2755922315D0EA00F131C1 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		6A2755972315D60800F131C1 /* SwiftyReceiptPendingRenewalInfo+Fake.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftyReceiptPendingRenewalInfo+Fake.swift"; sourceTree = "<group>"; };
+		6A2755992315D84200F131C1 /* SwiftyReceiptInApp+Fake.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftyReceiptInApp+Fake.swift"; sourceTree = "<group>"; };
 		6A4384A3222727B1009EF552 /* SwiftyReceiptPendingRenewalInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftyReceiptPendingRenewalInfo.swift; sourceTree = "<group>"; };
 		6A4384A9222730C1009EF552 /* SwiftyReceiptValidatorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftyReceiptValidatorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A4384AB222730C1009EF552 /* SwiftyReceiptValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftyReceiptValidatorTests.swift; sourceTree = "<group>"; };
@@ -96,6 +102,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6A2755962315D5F200F131C1 /* Fakes */ = {
+			isa = PBXGroup;
+			children = (
+				6A7DF2832305E42F001CAEEF /* SwiftyReceiptResponse+Fake.swift */,
+				6A2755992315D84200F131C1 /* SwiftyReceiptInApp+Fake.swift */,
+				6A2755972315D60800F131C1 /* SwiftyReceiptPendingRenewalInfo+Fake.swift */,
+			);
+			path = Fakes;
+			sourceTree = "<group>";
+		};
 		6A4384AA222730C1009EF552 /* SwiftyReceiptValidatorTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -122,8 +138,8 @@
 			isa = PBXGroup;
 			children = (
 				6A7DF29A230607AE001CAEEF /* JSONs */,
-				6A7DF2832305E42F001CAEEF /* SwiftyReceiptResponse+Fake.swift */,
-				6A7DF298230602C4001CAEEF /* MockSessionManager.swift */,
+				6A2755962315D5F200F131C1 /* Fakes */,
+				6AE5FDD52315DABA007DD4AC /* Other */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -187,9 +203,18 @@
 			path = Internal;
 			sourceTree = "<group>";
 		};
+		6AE5FDD52315DABA007DD4AC /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				6A7DF298230602C4001CAEEF /* MockSessionManager.swift */,
+			);
+			path = Other;
+			sourceTree = "<group>";
+		};
 		B4533F271DA2BD8900440CC0 = {
 			isa = PBXGroup;
 			children = (
+				6A2755922315D0EA00F131C1 /* README.md */,
 				B4533F331DA2BD8900440CC0 /* SwiftyReceiptValidator */,
 				6A4384AA222730C1009EF552 /* SwiftyReceiptValidatorTests */,
 				B4533F321DA2BD8900440CC0 /* Products */,
@@ -328,6 +353,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6A2755932315D0EB00F131C1 /* README.md in Resources */,
 				6AFE27492269D03D0016ED8A /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -339,12 +365,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6A2755982315D60800F131C1 /* SwiftyReceiptPendingRenewalInfo+Fake.swift in Sources */,
 				6A7DF2802305E33D001CAEEF /* SwiftyReceiptResponseTests.swift in Sources */,
 				6A7DF2862305E4E8001CAEEF /* SwiftyReceiptInAppTests.swift in Sources */,
 				6A7DF29E230609BB001CAEEF /* DefaultValidatorTests.swift in Sources */,
 				6A7DF2842305E42F001CAEEF /* SwiftyReceiptResponse+Fake.swift in Sources */,
 				6A7DF2882305E4F4001CAEEF /* SwiftyReceiptPendingRenewalInfoTests.swift in Sources */,
 				6A7DF299230602C4001CAEEF /* MockSessionManager.swift in Sources */,
+				6A27559A2315D84200F131C1 /* SwiftyReceiptInApp+Fake.swift in Sources */,
 				6A4384AC222730C1009EF552 /* SwiftyReceiptValidatorTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

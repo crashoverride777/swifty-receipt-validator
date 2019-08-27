@@ -34,6 +34,11 @@ import Foundation
 
 final class DefaultValidator {
     typealias ResultHandler = (Result<SwiftyReceiptResponse, SwiftyReceiptValidatorError>) -> Void
+    
+    fileprivate enum ValidationType {
+        case purchase(String)
+        case subscription
+    }
 }
 
 // MARK: - SwiftyReceiptValidatorType
@@ -43,42 +48,73 @@ extension DefaultValidator: SwiftyReceiptValidatorType {
     func validatePurchase(forProductId productId: String,
                           in response: SwiftyReceiptResponse,
                           handler: @escaping ResultHandler) {
-        // Check a valid receipt with matching product id was found
-        guard let receipt = response.receipt?.inApp.first(where: { $0.productId == productId }) else {
-            handler(.failure(.productIdNotMatching(response.status)))
-            return
-        }
-        
-        /*
-         To check whether a purchase has been canceled by Apple Customer Support, look for the
-         Cancellation Date field in the receipt. If the field contains a date, regardless
-         of the subscription’s expiration date, the purchase has been canceled. With respect to
-         providing content or service, treat a canceled transaction the same as if no purchase
-         had ever been made.
-         */
-        guard receipt.cancellationDate == nil else {
-            handler(.failure(.cancelled(response.status)))
-            return
-        }
-        
-        // Return success handler
-        handler(.success(response))
+        validate(.purchase(productId), in: response, handler: handler)
+       
     }
     
     func validateSubscription(in response: SwiftyReceiptResponse, handler: @escaping ResultHandler) {
-        // Make sure response subscription status is not expired
-        guard response.status != .subscriptionExpired else {
-            handler(.failure(.noValidSubscription(response.status)))
-            return
-        }
+        validate(.subscription, in: response, handler: handler)
+    }
+}
+
+// MARK: - Private Methods
+
+private extension DefaultValidator {
     
-        // Make sure receipts are not empty
-        guard !response.validSubscriptionReceipts.isEmpty else {
-            handler(.failure(.noValidSubscription(response.status)))
+    func validate(_ type: ValidationType, in response: SwiftyReceiptResponse, handler: @escaping ResultHandler) {
+        // Check receipt status code is valid
+        guard response.status == .valid else {
+            handler(.failure(.invalidStatusCode(response.status)))
             return
         }
         
-        // Return success handler
-        handler(.success((response)))
+        // Unwrap receipt
+        guard let receipt = response.receipt else {
+            handler(.failure(.noReceiptFoundInResponse(response.status)))
+            return
+        }
+        
+        // Check receipt contains correct bundle id
+        guard receipt.bundleId == Bundle.main.bundleIdentifier else {
+            handler(.failure(.bundleIdNotMatching(response.status)))
+            return
+        }
+        
+        // Run validation for selected type
+        switch type {
+            
+        case .purchase(let productId):
+            guard let receipt = response.receipt?.inApp.first(where: { $0.productId == productId }) else {
+                handler(.failure(.productIdNotMatching(response.status)))
+                return
+            }
+            
+            /*
+             To check whether a purchase has been canceled by Apple Customer Support, look for the
+             Cancellation Date field in the receipt. If the field contains a date, regardless
+             of the subscription’s expiration date, the purchase has been canceled. With respect to
+             providing content or service, treat a canceled transaction the same as if no purchase
+             had ever been made.
+             */
+            guard receipt.cancellationDate == nil else {
+                handler(.failure(.cancelled(response.status)))
+                return
+            }
+            
+            handler(.success(response))
+            
+        case .subscription:
+            guard response.status != .subscriptionExpired else {
+                handler(.failure(.noValidSubscription(response.status)))
+                return
+            }
+            
+            guard !response.validSubscriptionReceipts.isEmpty else {
+                handler(.failure(.noValidSubscription(response.status)))
+                return
+            }
+    
+            handler(.success((response)))
+        }
     }
 }

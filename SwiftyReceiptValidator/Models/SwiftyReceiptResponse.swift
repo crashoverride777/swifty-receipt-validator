@@ -54,21 +54,21 @@ public struct SwiftyReceiptResponse: Codable {
 
 // MARK: - Computed
 
-public extension SwiftyReceiptResponse {
+extension SwiftyReceiptResponse {
     
-    /// Computed property that returns all subscriptions that are currently active
-    /// sorted by latest expiry date first
+    /// All subscriptions that are currently active, sorted by expiry dates
     var validSubscriptionReceipts: [SwiftyReceiptInApp] {
         guard let receipts = latestReceiptInfo ?? receipt?.inApp else {
             return []
         }
         
         return receipts
+            // Filter receipts for subsriptions
             .filter {
                 /*
-                 To check whether a purchase has been canceled by Apple Customer Support, look for the
+                 To check whether a purchase has been cancelled by Apple Customer Support, look for the
                  Cancellation Date field in the receipt. If the field contains a date, regardless
-                 of the subscription’s expiration date, the purchase has been canceled. With respect to
+                 of the subscription’s expiration date, the purchase has been cancelled. With respect to
                  providing content or service, treat a canceled transaction the same as if no purchase
                  had ever been made.
                  */
@@ -81,10 +81,12 @@ public extension SwiftyReceiptResponse {
                     return false
                 }
                 
-                // Return subscription receipts with expiry date equal or higher than now date
+                // Return active subscription receipts
                 return expiresDate >= Date()
             }
-            .sorted(by:  { $0.expiresDate! > $1.expiresDate! } )
+            // Sort subscription receipts by expiry date
+            // We can force unwrap as nil expiry dates get filtered
+            .sorted(by: { $0.expiresDate! > $1.expiresDate! })
     }
 }
 

@@ -50,7 +50,6 @@ public final class SwiftyReceiptValidator: NSObject {
     
     // MARK: - Types
     
-    /// Configuration
     public struct Configuration {
         let productionURL: String
         let sandboxURL: String
@@ -62,7 +61,7 @@ public final class SwiftyReceiptValidator: NSObject {
             self.sessionConfiguration = sessionConfiguration
         }
         
-        // Defaults to apple validation only which is not recommended
+        /// Defaults to apple validation only which is not recommended
         public static var standard: Configuration {
             return Configuration(productionURL: "https://buy.itunes.apple.com/verifyReceipt",
                                  sandboxURL: "https://sandbox.itunes.apple.com/verifyReceipt",
@@ -87,7 +86,6 @@ public final class SwiftyReceiptValidator: NSObject {
     public init(configuration: Configuration,
                 sessionManager: URLSessionManagerType? = nil,
                 validator: SwiftyReceiptValidatorType? = nil) {
-        print("Init SwiftyReceiptValidator")
         self.configuration = configuration
         self.sessionManager = sessionManager ?? URLSessionManager(sessionConfiguration: configuration.sessionConfiguration)
         self.validator = validator ?? DefaultValidator()
@@ -150,14 +148,7 @@ private extension SwiftyReceiptValidator {
                         with: receiptData,
                         sharedSecret: sharedSecret,
                         excludeOldTransactions: excludeOldTransactions,
-                        handler: ({ [weak self] result in
-                            switch result {
-                            case .success(let response):
-                                self?.validate(response, handler: handler)
-                            case .failure(let error):
-                                handler(.failure(error))
-                            }
-                        })
+                        handler: handler
                     )
                 } catch {
                     self.printError(error)
@@ -168,29 +159,6 @@ private extension SwiftyReceiptValidator {
                 handler(.failure(error))
             }
         }
-    }
-    
-    func validate(_ response: SwiftyReceiptResponse, handler: @escaping ResultHandler) {
-        // Check receipt status code is valid
-        guard response.status == .valid else {
-            handler(.failure(.invalidStatusCode(response.status)))
-            return
-        }
-
-        // Unwrap receipt
-        guard let receipt = response.receipt else {
-            handler(.failure(.noReceiptFoundInResponse(response.status)))
-            return
-        }
-
-        // Check receipt contains correct bundle id
-        guard receipt.bundleId == Bundle.main.bundleIdentifier else {
-            handler(.failure(.bundleIdNotMatching(response.status)))
-            return
-        }
-
-        // Return success
-        handler(.success(response))
     }
 }
 

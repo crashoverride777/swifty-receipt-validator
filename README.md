@@ -41,7 +41,7 @@ import SwiftyReceiptValidator
 
 ```swift
 class SomeClass {
-    var receiptValidator: SwiftyReceiptValidator!
+    let receiptValidator: SwiftyReceiptValidator
     
     init() {
         // Standard config communicates with apples server directly, which is not recommended
@@ -54,7 +54,7 @@ class SomeClass {
 NOTE:
 
 In this example we are using the default configuration which will validate the receipt directly with Apples servers.
-The recommned way by Apple is to use your own server to validate app store receipts.
+The recommended way by Apple is to use your own server to validate app store receipts.
 However for obvious reason this is a hassle for alot of people like me, because I dont have a webserver and dont understand languages like PHP to make it work.
 
 In those cases where you dont want to use your own server you can communcate directly with Apples server. 
@@ -68,7 +68,7 @@ https://www.raywenderlich.com/23266/in-app-purchases-in-ios-6-tutorial-consumabl
 
 ### Validate purchases
 
-- Go to the following delegate method which you must implement for in app purchases
+- Go to the following delegate method in your code, which you must implement for in app purchases
 
 ```swift
 extension SomeClass: SKPaymentTransactionObserver {
@@ -142,11 +142,9 @@ case .restored:
     }              
 ```
 
-In this example sharedSecret is set to nil because I am only validating regular in app purchases. To validate an auto renewable subscriptions you can enter your shared secret that you have set up in itunes.
-
 ### Validate subscriptions
 
-- To validate your subscriptions (e.g on app launch), select `.subscription` as the validation method. This will search for all subscription receipts and check if there is at least 1 thats not expired.
+- To validate your subscriptions (e.g on app launch), call `func validateSubscription(...` with your shared secret. This will search for all subscription receipts and check if there is at least 1 thats not expired.
 
 ```swift
 receiptValidator.validateSubscription(sharedSecret: "your secret", excludeOldTransactions: true) { result in
@@ -162,23 +160,6 @@ receiptValidator.validateSubscription(sharedSecret: "your secret", excludeOldTra
         default:
             break // do nothing e.g internet error or other errors
         }
-    }
-}
-```
-
-### Just fetch receipt
-
-- To only fetch the default verified receipt, select `.none` as the validation method.
-
-```swift
-receiptValidator.getDefaultValidatedResponse(sharedSecret: "your secret or nil", excludeOldTransactions: false) { result in
-    switch result {
-    case .success(let response):
-        print("Receipt response \(response)")
-        // Do additional checks etc
-    case .failure(let error):
-        print(error.statusCode)
-        // Handle error e.g no internet
     }
 }
 ```

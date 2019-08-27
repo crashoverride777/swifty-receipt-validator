@@ -11,23 +11,8 @@ import XCTest
 
 class SwiftyReceiptPendingRenewalInfoTests: XCTestCase {
     
-    // MARK: - Properties
-    
-    private var sut: SwiftyReceiptPendingRenewalInfo!
-    
-    // MARK: - Life Cycle
-    
-    override func setUp() {
-        super.setUp()
-        //sut = .fake()
+    func test_pendingRenewalInfo_autoRenewStatus() {
+        XCTAssertEqual(SwiftyReceiptPendingRenewalInfo.AutoRenewStatus.off.rawValue, "0")
+        XCTAssertEqual(SwiftyReceiptPendingRenewalInfo.AutoRenewStatus.on.rawValue, "1")
     }
-    
-    override func tearDown() {
-        sut = nil
-        super.tearDown()
-    }
-    
-    // MARK: - Tests
-    
-    #warning("add tests")
 }
