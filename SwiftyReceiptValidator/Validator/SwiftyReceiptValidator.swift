@@ -30,24 +30,14 @@
  SOFTWARE.
  */
 
+import Combine
 import StoreKit
-
-public protocol SwiftyReceiptValidatorType: class {
-    func validatePurchase(forProductId productId: String,
-                          in response: SwiftyReceiptResponse,
-                          handler: @escaping SwiftyReceiptValidator.ResultHandler)
-    func validateSubscription(in response: SwiftyReceiptResponse, handler: @escaping SwiftyReceiptValidator.ResultHandler)
-}
-
 
 /*
  SwiftyReceiptValidator
- 
- A class to manage in app purchase receipt validation.
  */
 public final class SwiftyReceiptValidator: NSObject {
-    public typealias ResultHandler = (Result<SwiftyReceiptResponse, SwiftyReceiptValidatorError>) -> Void
-    
+   
     // MARK: - Types
     
     public struct Configuration {
@@ -71,104 +61,37 @@ public final class SwiftyReceiptValidator: NSObject {
     
     // MARK: - Properties
 
-    let sessionManager: URLSessionManagerType
     let configuration: Configuration
-    let receiptFetcher = SwiftyReceiptFetcher()
-    let validator: SwiftyReceiptValidatorType
-    
+    let receiptFetcher: SRVBundleReceiptFetcherType
+    let sessionManager: SRVURLSessionManagerType
+    let validator: SRVResponseValidatorType
+
     // MARK: - Init
     
     /// Init
     ///
     /// - parameter configuration: The configuration struct to customise SwiftyReceiptValidator.
-    /// - parameter sessionManager: The URL session manager. Defaults to nil (default).
-    /// - parameter validator: The validator handles purchase/subscription validation. Defaults to nil (default).
-    public init(configuration: Configuration,
-                sessionManager: URLSessionManagerType? = nil,
-                validator: SwiftyReceiptValidatorType? = nil) {
+    public init(configuration: Configuration) {
         self.configuration = configuration
-        self.sessionManager = sessionManager ?? URLSessionManager(sessionConfiguration: configuration.sessionConfiguration)
-        self.validator = validator ?? DefaultValidator()
+        self.receiptFetcher = SRVBundleReceiptFetcher()
+        self.sessionManager = SRVURLSessionManager(sessionConfiguration: configuration.sessionConfiguration)
+        self.validator = SRVResponseValidator()
+    }
+    
+    // Internal for testing
+    init(configuration: Configuration,
+         receiptFetcher: SRVBundleReceiptFetcherType,
+         sessionManager: SRVURLSessionManagerType,
+         validator: SRVResponseValidatorType) {
+        self.configuration = configuration
+        self.receiptFetcher = receiptFetcher
+        self.sessionManager = sessionManager
+        self.validator = validator
     }
     
     // MARK: - Deinit
     
     deinit {
         print("Deinit SwiftyReceiptValidator")
-    }
-    
-    // MARK: - Validate Purchase
-    
-    /// Validate app store purchase
-    ///
-    /// - parameter productId: The id of the purchase to verify.
-    /// - parameter handler: Completion handler called when the validation has completed.
-    func validatePurchase(withId productId: String, handler: @escaping ResultHandler) {
-        start(sharedSecret: nil, excludeOldTransactions: false) { [weak self] result in
-            switch result {
-            case .success(let response):
-                self?.validator.validatePurchase(forProductId: productId, in: response, handler: handler)
-            case .failure(let error):
-                handler(.failure(error))
-            }
-        }
-    }
-    
-    // MARK: - Validate Subscription
-    
-    /// Validate app store subscription
-    ///
-    /// - parameter sharedSecret: The shared secret setup in iTunes.
-    /// - parameter excludeOldTransactions: If value is true, response includes only the latest renewal transaction for any subscriptions.
-    /// - parameter handler: Completion handler called when the validation has completed.
-    func validateSubscription(sharedSecret: String?, excludeOldTransactions: Bool, handler: @escaping ResultHandler) {
-        start(sharedSecret: sharedSecret, excludeOldTransactions: excludeOldTransactions) { [weak self] result in
-            switch result {
-            case .success(let response):
-                self?.validator.validateSubscription(in: response, handler: handler)
-            case .failure(let error):
-                handler(.failure(error))
-            }
-        }
-    }
-}
-
-// MARK: - Private Methods
-
-private extension SwiftyReceiptValidator {
-    
-    func start(sharedSecret: String?, excludeOldTransactions: Bool, handler: @escaping ResultHandler) {
-        receiptFetcher.fetch { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let receiptURL):
-                do {
-                    let receiptData = try Data(contentsOf: receiptURL)
-                    self.startURLSession(
-                        with: receiptData,
-                        sharedSecret: sharedSecret,
-                        excludeOldTransactions: excludeOldTransactions,
-                        handler: handler
-                    )
-                } catch {
-                    self.printError(error)
-                    handler(.failure(.other(error)))
-                }
-            case .failure(let error):
-                self.printError(error)
-                handler(.failure(error))
-            }
-        }
-    }
-}
-
-// MARK: - Debug
-
-extension SwiftyReceiptValidator {
-    
-    func printError(_ error: Error) {
-        #if DEBUG
-        print("SwiftyReceiptValidator error: \(error)")
-        #endif
     }
 }

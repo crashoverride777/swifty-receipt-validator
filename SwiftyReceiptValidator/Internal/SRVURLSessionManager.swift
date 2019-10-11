@@ -1,44 +1,23 @@
 //
-//  SessionManager.swift
+//  SRVURLSessionManager.swift
 //  SwiftyReceiptValidator
 //
 //  Created by Dominik Ringler on 29/01/2019.
 //  Copyright © 2019 Dominik. All rights reserved.
 //
 
-/*
- The MIT License (MIT)
- 
- Copyright (c) 2016-2019 Dominik Ringler
- 
- Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
- 
- The above copyright notice and this permission notice shall be included in all
- copies or substantial portions of the Software.
- 
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- SOFTWARE.
- */
-
 import Foundation
+import Combine
 
-public protocol URLSessionManagerType: AnyObject {
+public protocol SRVURLSessionManagerType: AnyObject {
+    @available(iOS 13, *)
+    func start(with urlString: String, parameters: [AnyHashable: Any]) -> AnyPublisher<SRVReceiptResponse, Error>
     func start(with urlString: String,
                parameters: [AnyHashable: Any],
-               handler: @escaping (Result<SwiftyReceiptResponse, Error>) -> Void)
+               handler: @escaping (Result<SRVReceiptResponse, Error>) -> Void)
 }
 
-final class URLSessionManager {
+final class SRVURLSessionManager {
     
     // MARK: - Types
     
@@ -49,9 +28,9 @@ final class URLSessionManager {
         var errorDescription: String? {
             switch self {
             case .url:
-                return LocalizedString.Error.url
+                return SRVLocalizedString.Error.url
             case .data:
-                return LocalizedString.Error.data
+                return SRVLocalizedString.Error.data
             }
         }
     }
@@ -80,13 +59,27 @@ final class URLSessionManager {
     }
 }
     
-// MARK: - URLSessionManagerType
+// MARK: - SRVURLSessionManagerType
 
-extension URLSessionManager: URLSessionManagerType {
+extension SRVURLSessionManager: SRVURLSessionManagerType {
+    
+    @available(iOS 13, *)
+    func start(with urlString: String, parameters: [AnyHashable: Any]) -> AnyPublisher<SRVReceiptResponse, Error> {
+        return Future { [weak self] promise in
+            self?.start(with: urlString, parameters: parameters) { result in
+                switch result {
+                case .success(let response):
+                    promise(.success(response))
+                case .failure(let error):
+                    promise(.failure(error))
+                }
+            }
+        }.eraseToAnyPublisher()
+    }
     
     func start(with urlString: String,
                parameters: [AnyHashable: Any],
-               handler: @escaping (Result<SwiftyReceiptResponse, Error>) -> Void) {
+               handler: @escaping (Result<SRVReceiptResponse, Error>) -> Void) {
         // Create url
         guard let url = URL(string: urlString) else {
             handler(.failure(SessionError.url))
@@ -123,7 +116,7 @@ extension URLSessionManager: URLSessionManagerType {
                         
             // Parse data
             do {
-                let response = try self.jsonDecoder.decode(SwiftyReceiptResponse.self, from: data)
+                let response = try self.jsonDecoder.decode(SRVReceiptResponse.self, from: data)
                 handler(.success(response))
             } catch {
                 print(error)

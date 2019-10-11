@@ -1,38 +1,14 @@
 //
-//  SwiftyReceiptInApp.swift
+//  SRVReceiptInApp.swift
 //  SwiftyReceiptValidator
 //
 //  Created by Dominik Ringler on 29/01/2019.
 //  Copyright © 2019 Dominik. All rights reserved.
 //
 
-/*
- The MIT License (MIT)
- 
- Copyright (c) 2016-2019 Dominik Ringler
- 
- Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
- 
- The above copyright notice and this permission notice shall be included in all
- copies or substantial portions of the Software.
- 
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- SOFTWARE.
- */
-
 import Foundation
 
-public struct SwiftyReceiptInApp: Codable {
+public struct SRVReceiptInApp: Codable {
     // The number of items purchased. This value corresponds to the quantity property of the SKPayment object stored in the transaction’s payment property.
     public let quantity: String
      // The product identifier of the item that was purchased. This value corresponds to the productIdentifier property of the SKPayment object stored in the transaction’s payment property.
@@ -70,26 +46,9 @@ public struct SwiftyReceiptInApp: Codable {
     public let webOrderLineItemId: String?
 }
 
-// MARK: - Computed
-
-public extension SwiftyReceiptInApp {
-    
-    var canShowIntroductoryPrice: Bool {
-        /*
-         If a previous subscription period in the receipt has the value “true”
-         for either the is_trial_period or the is_in_intro_offer_period key,
-         the user is not eligible for a free trial or introductory price within that subscription group.
-         */
-        if isTrialPeriod == "true" || isInIntroOfferPeriod == "true" {
-            return false
-        }
-        return true
-    }
-}
-
 // MARK: - Types
 
-public extension SwiftyReceiptInApp {
+public extension SRVReceiptInApp {
     
     enum ExpirationIntent: String, Codable {
         // Customer canceled their subscription
@@ -118,10 +77,28 @@ public extension SwiftyReceiptInApp {
         case customerCancelledDueToErrorInApp = "1"
     }
     
+    #warning("are these working, it seems not")
     enum AutoRenewStatus: String, Codable {
         // Customer has turned off automatic renewal for their subscription
         case off = "0"
         // Subscription will renew at the end of the current subscription period
         case on = "1"
+    }
+}
+
+// MARK: - Computed
+
+public extension SRVReceiptInApp {
+    
+    var canShowIntroductoryPrice: Bool {
+        /*
+         If a previous subscription period in the receipt has the value “true”
+         for either the is_trial_period or the is_in_intro_offer_period key,
+         the user is not eligible for a free trial or introductory price within that subscription group.
+         */
+        if isTrialPeriod == "true" || isInIntroOfferPeriod == "true" {
+            return false
+        }
+        return true
     }
 }

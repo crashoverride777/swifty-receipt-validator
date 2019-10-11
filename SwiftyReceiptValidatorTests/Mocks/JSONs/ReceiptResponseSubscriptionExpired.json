@@ -5,7 +5,7 @@
         "receipt_type": "ProductionSandbox",
         "app_item_id": 0,
         "receipt_creation_date": "2019-08-15 21:05:54 Etc/GMT",
-        "bundle_id": "com.dominikringler.greeny",
+        "bundle_id": "com.swiftyreceiptvalidator",
         "original_purchase_date": "2013-08-01 07:00:00 Etc/GMT",
         "in_app": [
             {
@@ -18,7 +18,7 @@
                 "is_trial_period": "false",
                 "original_transaction_id": "1000000521153418",
                 "purchase_date": "2019-04-20 14:21:57 Etc/GMT",
-                "product_id": "com.dominikringler.greeny.subscription.03months",
+                "product_id": "com.swiftyreceiptvalidator.03months",
                 "original_purchase_date_pst": "2019-05-15 15:00:55 America/Los_Angeles",
                 "original_purchase_date_ms": "1557957655000",
                 "web_order_line_item_id": "1000000043969865",
@@ -42,9 +42,9 @@
     },
     "pending_renewal_info": [
         {
-            "product_id": "com.dominikringler.greeny.subscription.03months",
+            "product_id": "com.swiftyreceiptvalidator.03months",
             "original_transaction_id": "1000000521153418",
-            "auto_renew_product_id": "com.dominikringler.greeny.subscription.03months",
+            "auto_renew_product_id": "com.swiftyreceiptvalidator.03months",
             "auto_renew_status": "1"
         }
     ],
@@ -59,7 +59,7 @@
             "is_trial_period": "false",
             "original_transaction_id": "1000000521153418",
             "purchase_date": "2019-04-21 09:04:26 Etc/GMT",
-            "product_id": "com.dominikringler.greeny.subscription.03months",
+            "product_id": "com.swiftyreceiptvalidator.03months",
             "original_purchase_date_pst": "2019-05-15 15:00:55 America/Los_Angeles",
             "original_purchase_date_ms": "1557957655000",
             "web_order_line_item_id": "1000000043974178",

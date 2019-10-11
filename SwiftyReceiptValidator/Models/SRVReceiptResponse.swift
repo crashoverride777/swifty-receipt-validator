@@ -1,43 +1,19 @@
 //
-//  SwiftyReceiptResponse.swift
+//  SRVReceiptResponse.swift
 //  SwiftyReceiptValidator
 //
 //  Created by Dominik Ringler on 29/01/2019.
 //  Copyright © 2019 Dominik. All rights reserved.
 //
 
-/*
- The MIT License (MIT)
- 
- Copyright (c) 2016-2019 Dominik Ringler
- 
- Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
- 
- The above copyright notice and this permission notice shall be included in all
- copies or substantial portions of the Software.
- 
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- SOFTWARE.
-*/
-
 import Foundation
 
-public struct SwiftyReceiptResponse: Codable {
+public struct SRVReceiptResponse: Codable {
     // For iOS 6 style transaction receipts, the status code reflects the status of the specific transaction’s receipt.
     // For iOS 7 style app receipts, the status code is reflects the status of the app receipt as a whole. For example, if you send a valid app receipt that contains an expired subscription, the response is 0 because the receipt as a whole is valid.
     public let status: StatusCode
     // A JSON representation of the receipt that was sent for verification. For information about keys found in a receipt, see Receipt Fields.
-    public let receipt: SwiftyReceipt?
+    public let receipt: SRVReceipt?
     // Only returned for receipts containing auto-renewable subscriptions.
     // For iOS 6 style transaction receipts, this is the base-64 encoded receipt for the most recent renewal.
     // For iOS 7 style app receipts, this is the latest base-64 encoded app receipt.
@@ -45,54 +21,16 @@ public struct SwiftyReceiptResponse: Codable {
     // Only returned for receipts containing auto-renewable subscriptions.
     // For iOS 6 style transaction receipts, this is the JSON representation of the receipt for the most recent renewal.
     // For iOS 7 style app receipts, the value of this key is an array containing all in-app purchase transactions. This excludes transactions for a consumable product that have been marked as finished by your app.
-    public let latestReceiptInfo: [SwiftyReceiptInApp]?
+    public let latestReceiptInfo: [SRVReceiptInApp]?
     // Only returned for iOS 7 style app receipts containing auto-renewable subscriptions. In the JSON file, the value of this key is an array where each element contains the pending renewal information for each auto-renewable subscription identified by the Product Identifier. A pending renewal may refer to a renewal that is scheduled in the future or a renewal that failed in the past for some reason.
-    public let pendingRenewalInfo: [SwiftyReceiptPendingRenewalInfo]?
+    public let pendingRenewalInfo: [SRVPendingRenewalInfo]?
     // The current environment, Sandbox or Production
     public let environment: String?
 }
 
-// MARK: - Computed
-
-extension SwiftyReceiptResponse {
-    
-    /// All subscriptions that are currently active, sorted by expiry dates
-    var validSubscriptionReceipts: [SwiftyReceiptInApp] {
-        guard let receipts = latestReceiptInfo ?? receipt?.inApp else {
-            return []
-        }
-        
-        return receipts
-            // Filter receipts for subsriptions
-            .filter {
-                /*
-                 To check whether a purchase has been cancelled by Apple Customer Support, look for the
-                 Cancellation Date field in the receipt. If the field contains a date, regardless
-                 of the subscription’s expiration date, the purchase has been cancelled. With respect to
-                 providing content or service, treat a canceled transaction the same as if no purchase
-                 had ever been made.
-                 */
-                guard $0.cancellationDate == nil else {
-                    return false
-                }
-                
-                // Only receipts with an expiry date are subscriptions
-                guard let expiresDate = $0.expiresDate else {
-                    return false
-                }
-                
-                // Return active subscription receipts
-                return expiresDate >= Date()
-            }
-            // Sort subscription receipts by expiry date
-            // We can force unwrap as nil expiry dates get filtered
-            .sorted(by: { $0.expiresDate! > $1.expiresDate! })
-    }
-}
-
 // MARK: - Status Codes
 
-public extension SwiftyReceiptResponse {
+public extension SRVReceiptResponse {
     
     enum StatusCode: Int, Codable {
         case unknown = -1
@@ -138,5 +76,43 @@ public extension SwiftyReceiptResponse {
                 return "This receipt could not be authorized. Treat this the same as if a purchase was never made."
             }
         }
+    }
+}
+
+// MARK: - Computed
+
+extension SRVReceiptResponse {
+    
+    /// All subscriptions that are currently active, sorted by expiry dates
+    var validSubscriptionReceipts: [SRVReceiptInApp] {
+        guard let receipts = latestReceiptInfo ?? receipt?.inApp else {
+            return []
+        }
+        
+        return receipts
+            // Filter receipts for subsriptions
+            .filter {
+                /*
+                 To check whether a purchase has been cancelled by Apple Customer Support, look for the
+                 Cancellation Date field in the receipt. If the field contains a date, regardless
+                 of the subscription’s expiration date, the purchase has been cancelled. With respect to
+                 providing content or service, treat a canceled transaction the same as if no purchase
+                 had ever been made.
+                 */
+                guard $0.cancellationDate == nil else {
+                    return false
+                }
+                
+                // Only receipts with an expiry date are subscriptions
+                guard let expiresDate = $0.expiresDate else {
+                    return false
+                }
+                
+                // Return active subscription receipts
+                return expiresDate >= Date()
+            }
+            // Sort subscription receipts by expiry date
+            // We can force unwrap as nil expiry dates get filtered
+            .sorted(by: { $0.expiresDate! > $1.expiresDate! })
     }
 }
