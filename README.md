@@ -54,7 +54,7 @@ class SomeClass {
 NOTE:
 
 In this example we are using the default configuration which will validate the receipt directly with Apples servers.
-The recommned way by Apple is to use your own server to validate app store receipts.
+The recommended way by Apple is to use your own server to validate app store receipts.
 However for obvious reason this is a hassle for alot of people like me, because I dont have a webserver and dont understand languages like PHP to make it work.
 
 In those cases where you dont want to use your own server you can communcate directly with Apples server. 
@@ -68,7 +68,7 @@ https://www.raywenderlich.com/23266/in-app-purchases-in-ios-6-tutorial-consumabl
 
 ### Validate purchases
 
-- Go to the following delegate method which you must implement for in app purchases
+- Go to the following delegate method in your code, which you must implement for in app purchases
 
 ```swift
 extension SomeClass: SKPaymentTransactionObserver {
@@ -94,9 +94,7 @@ case .purchased:
         // Transaction is in queue, user has been charged.  Client should complete the transaction.
         let productId = transaction.payment.productIdentifier
 
-        receiptValidator.validate(.purchase(productId: productId),
-                                  sharedSecret: nil,
-                                  excludeOldTransactions: false) { result in
+        receiptValidator.validatePurchase(withId: productId) { result in
             switch result {
 
            case .success(let response):
@@ -123,9 +121,7 @@ case .restored:
         return
     }
 
-    receiptValidator.validate(.purchase(productId: productId),
-                              sharedSecret: nil,
-                              excludeOldTransactions: false) { result in
+    receiptValidator.validatePurchase(withId: productId) { result in
         switch result {
 
         case .success(let response):
@@ -146,45 +142,24 @@ case .restored:
     }              
 ```
 
-In this example sharedSecret is set to nil because I am only validating regular in app purchases. To validate an auto renewable subscriptions you can enter your shared secret that you have set up in itunes.
-
 ### Validate subscriptions
 
-- To validate your subscriptions (e.g on app launch), select `.subscription` as the validation method. This will search for all subscription receipts and check if there is at least 1 thats not expired.
+- To validate your subscriptions (e.g on app launch), call `func validateSubscription(...` with your shared secret. This will search for all subscription receipts and check if there is at least 1 thats not expired.
 
 ```swift
-receiptValidator.validate(.subscription, 
-                          sharedSecret: "enter your secret or set to nil",
-                          excludeOldTransactions: true) { result in
+receiptValidator.validateSubscription(sharedSecret: "your secret", excludeOldTransactions: true) { result in
     switch result {
     case .success(let response):
         print("Receipt validation was successfull with receipt response \(response)")
         // Unlock subscription features and/or do additional checks first
     case .failure(let error, let code):
         switch error {
+        print(error.statusCode)
         case .noValidSubscription:
             // no active subscription found, update your cache/app etc
         default:
             break // do nothing e.g internet error or other errors
         }
-    }
-}
-```
-
-### Just fetch receipt
-
-- To only fetch the verified receipt, select `.none` as the validation method.
-
-```swift
-receiptValidator.validate(.none, 
-                          sharedSecret: "enter your secret or set to nil", 
-                          excludeOldTransactions: false) { result in
-    switch result {
-    case .success(let response):
-        print("Receipt response \(response)")
-        // Do additional checks etc
-    case .failure(let error, let code):
-        // Handle error e.g no internet
     }
 }
 ```
