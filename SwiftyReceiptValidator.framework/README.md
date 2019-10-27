@@ -41,11 +41,11 @@ import SwiftyReceiptValidator
 
 ```swift
 class SomeClass {
-    let receiptValidator: SwiftyReceiptValidator
+    var receiptValidator: SwiftyReceiptValidator!
     
     init() {
-        // Standard config communicates with apples server directly, which is not recommended
-        // add your own custom config if required
+        // Standard configuration communicates with apples server directly, which is not recommended
+        // add your own custom config if required to speak with your own server
         receiptValidator = SwiftyReceiptValidator(configuration: .standard)
     }
 }

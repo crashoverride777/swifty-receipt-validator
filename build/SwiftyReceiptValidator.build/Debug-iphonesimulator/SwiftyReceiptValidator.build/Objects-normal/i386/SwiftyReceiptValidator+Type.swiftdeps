@@ -9,6 +9,7 @@ provides-member:
 - ["22SwiftyReceiptValidatorAAC", ""]
 provides-dynamic-lookup:
 depends-top-level:
+- "AnyPublisher"
 - "Bool"
 - !private "BooleanLiteralType"
 - "Result"
@@ -20,21 +21,25 @@ depends-top-level:
 - "SwiftyReceiptValidatorType"
 - "Void"
 depends-member:
+- ["s7CVarArgP", "AnyPublisher"]
 - ["s7CVarArgP", "fetch"]
 - !private ["s7CVarArgP", "urlSessionRequest"]
 - ["s7CVarArgP", "validatePurchase"]
 - ["s7CVarArgP", "validateSubscription"]
 - !private ["s7CVarArgP", "validator"]
+- ["s28CustomDebugStringConvertibleP", "AnyPublisher"]
 - ["s28CustomDebugStringConvertibleP", "fetch"]
 - !private ["s28CustomDebugStringConvertibleP", "urlSessionRequest"]
 - ["s28CustomDebugStringConvertibleP", "validatePurchase"]
 - ["s28CustomDebugStringConvertibleP", "validateSubscription"]
 - !private ["s28CustomDebugStringConvertibleP", "validator"]
+- ["s23CustomStringConvertibleP", "AnyPublisher"]
 - ["s23CustomStringConvertibleP", "fetch"]
 - !private ["s23CustomStringConvertibleP", "urlSessionRequest"]
 - ["s23CustomStringConvertibleP", "validatePurchase"]
 - ["s23CustomStringConvertibleP", "validateSubscription"]
 - !private ["s23CustomStringConvertibleP", "validator"]
+- ["SQ", "AnyPublisher"]
 - !private ["SQ", "failure"]
 - ["SQ", "fetch"]
 - !private ["SQ", "success"]
@@ -42,6 +47,7 @@ depends-member:
 - ["SQ", "validatePurchase"]
 - ["SQ", "validateSubscription"]
 - !private ["SQ", "validator"]
+- ["SH", "AnyPublisher"]
 - !private ["SH", "failure"]
 - ["SH", "fetch"]
 - !private ["SH", "success"]
@@ -49,6 +55,7 @@ depends-member:
 - ["SH", "validatePurchase"]
 - ["SH", "validateSubscription"]
 - !private ["SH", "validator"]
+- ["So8NSObjectC", "AnyPublisher"]
 - ["So8NSObjectC", "Bool"]
 - ["So8NSObjectC", "Result"]
 - ["So8NSObjectC", "SRVError"]
@@ -61,6 +68,7 @@ depends-member:
 - ["So8NSObjectC", "validatePurchase"]
 - ["So8NSObjectC", "validateSubscription"]
 - !private ["So8NSObjectC", "validator"]
+- ["So8NSObjectP", "AnyPublisher"]
 - ["So8NSObjectP", "fetch"]
 - !private ["So8NSObjectP", "urlSessionRequest"]
 - ["So8NSObjectP", "validatePurchase"]
@@ -71,6 +79,7 @@ depends-member:
 - ["22SwiftyReceiptValidator8SRVErrorO", "deinit"]
 - !private ["22SwiftyReceiptValidator011SRVResponseC4TypeP", "validatePurchase"]
 - !private ["22SwiftyReceiptValidator011SRVResponseC4TypeP", "validateSubscription"]
+- ["22SwiftyReceiptValidatorAAC", "AnyPublisher"]
 - ["22SwiftyReceiptValidatorAAC", "Bool"]
 - ["22SwiftyReceiptValidatorAAC", "Result"]
 - ["22SwiftyReceiptValidatorAAC", "SRVError"]
@@ -84,11 +93,7 @@ depends-member:
 - ["22SwiftyReceiptValidatorAAC", "validatePurchase"]
 - ["22SwiftyReceiptValidatorAAC", "validateSubscription"]
 - !private ["22SwiftyReceiptValidatorAAC", "validator"]
-- ["22SwiftyReceiptValidator0abC11CombineTypeP", "fetch"]
-- !private ["22SwiftyReceiptValidator0abC11CombineTypeP", "urlSessionRequest"]
-- ["22SwiftyReceiptValidator0abC11CombineTypeP", "validatePurchase"]
-- ["22SwiftyReceiptValidator0abC11CombineTypeP", "validateSubscription"]
-- !private ["22SwiftyReceiptValidator0abC11CombineTypeP", "validator"]
+- ["22SwiftyReceiptValidator0abC4TypeP", "AnyPublisher"]
 - ["22SwiftyReceiptValidator0abC4TypeP", "Bool"]
 - ["22SwiftyReceiptValidator0abC4TypeP", "Result"]
 - ["22SwiftyReceiptValidator0abC4TypeP", "SRVError"]
@@ -102,6 +107,7 @@ depends-member:
 - ["22SwiftyReceiptValidator0abC4TypeP", "validatePurchase"]
 - ["22SwiftyReceiptValidator0abC4TypeP", "validateSubscription"]
 - !private ["22SwiftyReceiptValidator0abC4TypeP", "validator"]
+- ["10Foundation27_KeyValueCodingAndObservingP", "AnyPublisher"]
 - ["10Foundation27_KeyValueCodingAndObservingP", "fetch"]
 - !private ["10Foundation27_KeyValueCodingAndObservingP", "urlSessionRequest"]
 - ["10Foundation27_KeyValueCodingAndObservingP", "validatePurchase"]
@@ -119,7 +125,6 @@ depends-nominal:
 - "22SwiftyReceiptValidator8SRVErrorO"
 - !private "22SwiftyReceiptValidator011SRVResponseC4TypeP"
 - "22SwiftyReceiptValidatorAAC"
-- "22SwiftyReceiptValidator0abC11CombineTypeP"
 - "22SwiftyReceiptValidator0abC4TypeP"
 - "10Foundation27_KeyValueCodingAndObservingP"
 depends-dynamic-lookup:
@@ -1311,4 +1316,4 @@ depends-external:
 - "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator13.1.sdk/System/Library/Frameworks/StoreKit.framework/Headers/StoreKit.apinotes"
 - "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator13.1.sdk/System/Library/Frameworks/CoreText.framework/Headers/CoreText.apinotes"
 - "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator13.1.sdk/System/Library/Frameworks/Security.framework/Headers/Security.apinotes"
-interface-hash: "269187f20dd7703294f3edbaf472d41a"
+interface-hash: "f0ae9cf2a890a2beb8d0df36f710fa0e"

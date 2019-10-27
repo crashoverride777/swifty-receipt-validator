@@ -180,11 +180,6 @@ depends-member:
 - !private ["22SwiftyReceiptValidatorAAC", "startSandboxRequest"]
 - !private ["22SwiftyReceiptValidatorAAC", "startURLSession"]
 - ["22SwiftyReceiptValidatorAAC", "urlSessionRequest"]
-- !private ["22SwiftyReceiptValidator0abC11CombineTypeP", "Data"]
-- !private ["22SwiftyReceiptValidator0abC11CombineTypeP", "ParamsKey"]
-- !private ["22SwiftyReceiptValidator0abC11CombineTypeP", "configuration"]
-- !private ["22SwiftyReceiptValidator0abC11CombineTypeP", "receiptFetcher"]
-- !private ["22SwiftyReceiptValidator0abC11CombineTypeP", "sessionManager"]
 - !private ["22SwiftyReceiptValidator0abC4TypeP", "Data"]
 - !private ["22SwiftyReceiptValidator0abC4TypeP", "ParamsKey"]
 - !private ["22SwiftyReceiptValidator0abC4TypeP", "configuration"]
@@ -233,7 +228,6 @@ depends-nominal:
 - !private "ST"
 - !private "s10SetAlgebraP"
 - "22SwiftyReceiptValidatorAAC"
-- !private "22SwiftyReceiptValidator0abC11CombineTypeP"
 - !private "22SwiftyReceiptValidator0abC4TypeP"
 - !private "s35_HasCustomAnyHashableRepresentationP"
 - !private "10Foundation27_KeyValueCodingAndObservingP"

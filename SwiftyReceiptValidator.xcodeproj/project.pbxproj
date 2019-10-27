@@ -6,20 +6,6 @@
 	objectVersion = 46;
 	objects = {
 
-/* Begin PBXAggregateTarget section */
-		6A63A28323513A5E00E1CB2F /* Universal */ = {
-			isa = PBXAggregateTarget;
-			buildConfigurationList = 6A63A28623513A5E00E1CB2F /* Build configuration list for PBXAggregateTarget "Universal" */;
-			buildPhases = (
-				6A63A28723513A6B00E1CB2F /* ShellScript */,
-			);
-			dependencies = (
-			);
-			name = Universal;
-			productName = Universal;
-		};
-/* End PBXAggregateTarget section */
-
 /* Begin PBXBuildFile section */
 		6A2755932315D0EB00F131C1 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 6A2755922315D0EA00F131C1 /* README.md */; };
 		6A2755982315D60800F131C1 /* SwiftyReceiptPendingRenewalInfo+Fake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2755972315D60800F131C1 /* SwiftyReceiptPendingRenewalInfo+Fake.swift */; };
@@ -36,7 +22,6 @@
 		6A7DF299230602C4001CAEEF /* MockSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7DF298230602C4001CAEEF /* MockSessionManager.swift */; };
 		6A7DF29E230609BB001CAEEF /* DefaultValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7DF29D230609BB001CAEEF /* DefaultValidatorTests.swift */; };
 		6ACC6246235135630085A42F /* SwiftyReceiptValidator+Type.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACC6245235135630085A42F /* SwiftyReceiptValidator+Type.swift */; };
-		6ACC6248235135770085A42F /* SwiftyReceiptValidator+CombineType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACC6247235135770085A42F /* SwiftyReceiptValidator+CombineType.swift */; };
 		6ACC624D235136070085A42F /* ResponseValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACC6249235136070085A42F /* ResponseValidator.swift */; };
 		6ACC624E235136070085A42F /* BundleReceiptFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACC624A235136070085A42F /* BundleReceiptFetcher.swift */; };
 		6ACC624F235136070085A42F /* URLSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACC624B235136070085A42F /* URLSessionManager.swift */; };
@@ -81,7 +66,6 @@
 		6A7DF298230602C4001CAEEF /* MockSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSessionManager.swift; sourceTree = "<group>"; };
 		6A7DF29D230609BB001CAEEF /* DefaultValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultValidatorTests.swift; sourceTree = "<group>"; };
 		6ACC6245235135630085A42F /* SwiftyReceiptValidator+Type.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftyReceiptValidator+Type.swift"; sourceTree = "<group>"; };
-		6ACC6247235135770085A42F /* SwiftyReceiptValidator+CombineType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftyReceiptValidator+CombineType.swift"; sourceTree = "<group>"; };
 		6ACC6249235136070085A42F /* ResponseValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseValidator.swift; sourceTree = "<group>"; };
 		6ACC624A235136070085A42F /* BundleReceiptFetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BundleReceiptFetcher.swift; sourceTree = "<group>"; };
 		6ACC624B235136070085A42F /* URLSessionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLSessionManager.swift; sourceTree = "<group>"; };
@@ -211,7 +195,6 @@
 			children = (
 				B4533F3D1DA2BDA700440CC0 /* SwiftyReceiptValidator.swift */,
 				6ACC6245235135630085A42F /* SwiftyReceiptValidator+Type.swift */,
-				6ACC6247235135770085A42F /* SwiftyReceiptValidator+CombineType.swift */,
 				6ADEB8EA2200EF1300370C71 /* SwiftyReceiptValidator+URLSession.swift */,
 			);
 			path = Validator;
@@ -334,11 +317,6 @@
 						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
 					};
-					6A63A28323513A5E00E1CB2F = {
-						CreatedOnToolsVersion = 11.1;
-						DevelopmentTeam = DK88YZ475Z;
-						ProvisioningStyle = Automatic;
-					};
 					B4533F301DA2BD8900440CC0 = {
 						CreatedOnToolsVersion = 8.0;
 						LastSwiftMigration = 1020;
@@ -365,7 +343,6 @@
 			targets = (
 				B4533F301DA2BD8900440CC0 /* SwiftyReceiptValidator */,
 				6A4384A8222730C1009EF552 /* SwiftyReceiptValidatorTests */,
-				6A63A28323513A5E00E1CB2F /* Universal */,
 			);
 		};
 /* End PBXProject section */
@@ -391,26 +368,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		6A63A28723513A6B00E1CB2F /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Project name\nPROJECTNAME=\"SwiftyReceiptValidator\"\n\n#!/bin/sh\nUNIVERSAL_OUTPUTFOLDER=${BUILD_DIR}/${CONFIGURATION}-universal\n\n# make sure the output directory exists\nmkdir -p \"${UNIVERSAL_OUTPUTFOLDER}\"\n\n# Step 1. Build Device and Simulator versions\nxcodebuild -target \"${PROJECTNAME}\" ONLY_ACTIVE_ARCH=NO -configuration ${CONFIGURATION} -sdk iphoneos  BUILD_DIR=\"${BUILD_DIR}\" BUILD_ROOT=\"${BUILD_ROOT}\" clean build\nxcodebuild -target \"${PROJECTNAME}\" -configuration ${CONFIGURATION} -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO BUILD_DIR=\"${BUILD_DIR}\" BUILD_ROOT=\"${BUILD_ROOT}\" clean build\n\n# Step 2. Copy the framework structure (from iphoneos build) to the universal folder\ncp -R \"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${PROJECTNAME}.framework\" \"${UNIVERSAL_OUTPUTFOLDER}/\"\n\n# Step 3. Copy Swift modules from iphonesimulator build (if it exists) to the copied framework directory\nSIMULATOR_SWIFT_MODULES_DIR=\"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/${PROJECTNAME}.framework/Modules/${PROJECTNAME}.swiftmodule/.\"\nif [ -d \"${SIMULATOR_SWIFT_MODULES_DIR}\" ]; then\ncp -R \"${SIMULATOR_SWIFT_MODULES_DIR}\" \"${UNIVERSAL_OUTPUTFOLDER}/${PROJECTNAME}.framework/Modules/${PROJECTNAME}.swiftmodule\"\nfi\n\n# Step 4. Create universal binary file using lipo and place the combined executable in the copied framework directory\nlipo -create -output \"${UNIVERSAL_OUTPUTFOLDER}/${PROJECTNAME}.framework/${PROJECTNAME}\" \"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/${PROJECTNAME}.framework/${PROJECTNAME}\" \"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${PROJECTNAME}.framework/${PROJECTNAME}\"\n\n# Step 5. Convenience step to copy the framework to the project's directory\ncp -R \"${UNIVERSAL_OUTPUTFOLDER}/${PROJECTNAME}.framework\" \"${PROJECT_DIR}\"\n\n# Step 6. Convenience step to open the project's directory in Finder\nopen \"${PROJECT_DIR}\"\n\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		6A4384A5222730C1009EF552 /* Sources */ = {
@@ -446,7 +403,6 @@
 				6ACC6246235135630085A42F /* SwiftyReceiptValidator+Type.swift in Sources */,
 				6ACC6259235136150085A42F /* PendingRenewalInfo.swift in Sources */,
 				6ACC6258235136150085A42F /* Error.swift in Sources */,
-				6ACC6248235135770085A42F /* SwiftyReceiptValidator+CombineType.swift in Sources */,
 				6ACC624F235136070085A42F /* URLSessionManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -519,24 +475,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
-		6A63A28423513A5E00E1CB2F /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = DK88YZ475Z;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
-		};
-		6A63A28523513A5E00E1CB2F /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = DK88YZ475Z;
-				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
 		};
@@ -719,15 +657,6 @@
 			buildConfigurations = (
 				6A4384B2222730C1009EF552 /* Debug */,
 				6A4384B3222730C1009EF552 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		6A63A28623513A5E00E1CB2F /* Build configuration list for PBXAggregateTarget "Universal" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				6A63A28423513A5E00E1CB2F /* Debug */,
-				6A63A28523513A5E00E1CB2F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

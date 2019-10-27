@@ -9,8 +9,11 @@ provides-member:
 - ["22SwiftyReceiptValidatorAAC", ""]
 provides-dynamic-lookup:
 depends-top-level:
+- "AnyPublisher"
 - "Bool"
 - !private "BooleanLiteralType"
+- "Error"
+- !private "Future"
 - "Result"
 - "SRVError"
 - "SRVReceiptResponse"
@@ -20,45 +23,70 @@ depends-top-level:
 - "SwiftyReceiptValidatorType"
 - "Void"
 depends-member:
+- !private ["s7CVarArgP", "Future"]
 - !private ["s7CVarArgP", "SRVSubscriptionValidationResponse"]
 - ["s7CVarArgP", "fetch"]
+- ["s7CVarArgP", "fetchPublisher"]
 - !private ["s7CVarArgP", "urlSessionRequest"]
 - ["s7CVarArgP", "validatePurchase"]
+- ["s7CVarArgP", "validatePurchasePublisher"]
 - ["s7CVarArgP", "validateSubscription"]
+- ["s7CVarArgP", "validateSubscriptionPublisher"]
 - !private ["s7CVarArgP", "validator"]
+- !private ["s28CustomDebugStringConvertibleP", "Future"]
 - !private ["s28CustomDebugStringConvertibleP", "SRVSubscriptionValidationResponse"]
 - ["s28CustomDebugStringConvertibleP", "fetch"]
+- ["s28CustomDebugStringConvertibleP", "fetchPublisher"]
 - !private ["s28CustomDebugStringConvertibleP", "urlSessionRequest"]
 - ["s28CustomDebugStringConvertibleP", "validatePurchase"]
+- ["s28CustomDebugStringConvertibleP", "validatePurchasePublisher"]
 - ["s28CustomDebugStringConvertibleP", "validateSubscription"]
+- ["s28CustomDebugStringConvertibleP", "validateSubscriptionPublisher"]
 - !private ["s28CustomDebugStringConvertibleP", "validator"]
+- !private ["s23CustomStringConvertibleP", "Future"]
 - !private ["s23CustomStringConvertibleP", "SRVSubscriptionValidationResponse"]
 - ["s23CustomStringConvertibleP", "fetch"]
+- ["s23CustomStringConvertibleP", "fetchPublisher"]
 - !private ["s23CustomStringConvertibleP", "urlSessionRequest"]
 - ["s23CustomStringConvertibleP", "validatePurchase"]
+- ["s23CustomStringConvertibleP", "validatePurchasePublisher"]
 - ["s23CustomStringConvertibleP", "validateSubscription"]
+- ["s23CustomStringConvertibleP", "validateSubscriptionPublisher"]
 - !private ["s23CustomStringConvertibleP", "validator"]
 - !private ["Se", "pendingRenewalInfo"]
 - !private ["Se", "validSubscriptionReceipts"]
 - !private ["SE", "pendingRenewalInfo"]
 - !private ["SE", "validSubscriptionReceipts"]
+- !private ["SQ", "Future"]
 - !private ["SQ", "SRVSubscriptionValidationResponse"]
 - !private ["SQ", "failure"]
 - ["SQ", "fetch"]
+- ["SQ", "fetchPublisher"]
 - !private ["SQ", "success"]
 - !private ["SQ", "urlSessionRequest"]
 - ["SQ", "validatePurchase"]
+- ["SQ", "validatePurchasePublisher"]
 - ["SQ", "validateSubscription"]
+- ["SQ", "validateSubscriptionPublisher"]
 - !private ["SQ", "validator"]
+- !private ["7Combine6FutureC", "eraseToAnyPublisher"]
+- !private ["7Combine6FutureC", "init"]
+- !private ["SH", "Future"]
 - !private ["SH", "SRVSubscriptionValidationResponse"]
 - !private ["SH", "failure"]
 - ["SH", "fetch"]
+- ["SH", "fetchPublisher"]
 - !private ["SH", "success"]
 - !private ["SH", "urlSessionRequest"]
 - ["SH", "validatePurchase"]
+- ["SH", "validatePurchasePublisher"]
 - ["SH", "validateSubscription"]
+- ["SH", "validateSubscriptionPublisher"]
 - !private ["SH", "validator"]
+- ["So8NSObjectC", "AnyPublisher"]
 - ["So8NSObjectC", "Bool"]
+- ["So8NSObjectC", "Error"]
+- !private ["So8NSObjectC", "Future"]
 - ["So8NSObjectC", "Result"]
 - ["So8NSObjectC", "SRVError"]
 - ["So8NSObjectC", "SRVReceiptResponse"]
@@ -66,16 +94,25 @@ depends-member:
 - ["So8NSObjectC", "String"]
 - ["So8NSObjectC", "Void"]
 - ["So8NSObjectC", "fetch"]
+- ["So8NSObjectC", "fetchPublisher"]
 - !private ["So8NSObjectC", "urlSessionRequest"]
 - ["So8NSObjectC", "validatePurchase"]
+- ["So8NSObjectC", "validatePurchasePublisher"]
 - ["So8NSObjectC", "validateSubscription"]
+- ["So8NSObjectC", "validateSubscriptionPublisher"]
 - !private ["So8NSObjectC", "validator"]
+- !private ["So8NSObjectP", "Future"]
 - !private ["So8NSObjectP", "SRVSubscriptionValidationResponse"]
 - ["So8NSObjectP", "fetch"]
+- ["So8NSObjectP", "fetchPublisher"]
 - !private ["So8NSObjectP", "urlSessionRequest"]
 - ["So8NSObjectP", "validatePurchase"]
+- ["So8NSObjectP", "validatePurchasePublisher"]
 - ["So8NSObjectP", "validateSubscription"]
+- ["So8NSObjectP", "validateSubscriptionPublisher"]
 - !private ["So8NSObjectP", "validator"]
+- !private ["7Combine9PublisherP", "eraseToAnyPublisher"]
+- !private ["7Combine9PublisherP", "init"]
 - !private ["s6ResultO", "failure"]
 - !private ["s6ResultO", "success"]
 - ["22SwiftyReceiptValidator8SRVErrorO", "deinit"]
@@ -84,7 +121,10 @@ depends-member:
 - !private ["22SwiftyReceiptValidator011SRVResponseC4TypeP", "validatePurchase"]
 - !private ["22SwiftyReceiptValidator011SRVResponseC4TypeP", "validateSubscription"]
 - !private ["22SwiftyReceiptValidator33SRVSubscriptionValidationResponseV", "init"]
+- ["22SwiftyReceiptValidatorAAC", "AnyPublisher"]
 - ["22SwiftyReceiptValidatorAAC", "Bool"]
+- ["22SwiftyReceiptValidatorAAC", "Error"]
+- !private ["22SwiftyReceiptValidatorAAC", "Future"]
 - ["22SwiftyReceiptValidatorAAC", "Result"]
 - ["22SwiftyReceiptValidatorAAC", "SRVError"]
 - ["22SwiftyReceiptValidatorAAC", "SRVReceiptResponse"]
@@ -93,17 +133,17 @@ depends-member:
 - ["22SwiftyReceiptValidatorAAC", "Void"]
 - ["22SwiftyReceiptValidatorAAC", "deinit"]
 - ["22SwiftyReceiptValidatorAAC", "fetch"]
+- ["22SwiftyReceiptValidatorAAC", "fetchPublisher"]
 - !private ["22SwiftyReceiptValidatorAAC", "urlSessionRequest"]
 - ["22SwiftyReceiptValidatorAAC", "validatePurchase"]
+- ["22SwiftyReceiptValidatorAAC", "validatePurchasePublisher"]
 - ["22SwiftyReceiptValidatorAAC", "validateSubscription"]
+- ["22SwiftyReceiptValidatorAAC", "validateSubscriptionPublisher"]
 - !private ["22SwiftyReceiptValidatorAAC", "validator"]
-- !private ["22SwiftyReceiptValidator0abC11CombineTypeP", "SRVSubscriptionValidationResponse"]
-- ["22SwiftyReceiptValidator0abC11CombineTypeP", "fetch"]
-- !private ["22SwiftyReceiptValidator0abC11CombineTypeP", "urlSessionRequest"]
-- ["22SwiftyReceiptValidator0abC11CombineTypeP", "validatePurchase"]
-- ["22SwiftyReceiptValidator0abC11CombineTypeP", "validateSubscription"]
-- !private ["22SwiftyReceiptValidator0abC11CombineTypeP", "validator"]
+- ["22SwiftyReceiptValidator0abC4TypeP", "AnyPublisher"]
 - ["22SwiftyReceiptValidator0abC4TypeP", "Bool"]
+- ["22SwiftyReceiptValidator0abC4TypeP", "Error"]
+- !private ["22SwiftyReceiptValidator0abC4TypeP", "Future"]
 - ["22SwiftyReceiptValidator0abC4TypeP", "Result"]
 - ["22SwiftyReceiptValidator0abC4TypeP", "SRVError"]
 - ["22SwiftyReceiptValidator0abC4TypeP", "SRVReceiptResponse"]
@@ -112,21 +152,32 @@ depends-member:
 - ["22SwiftyReceiptValidator0abC4TypeP", "Void"]
 - ["22SwiftyReceiptValidator0abC4TypeP", ""]
 - ["22SwiftyReceiptValidator0abC4TypeP", "fetch"]
+- ["22SwiftyReceiptValidator0abC4TypeP", "fetchPublisher"]
 - !private ["22SwiftyReceiptValidator0abC4TypeP", "urlSessionRequest"]
 - ["22SwiftyReceiptValidator0abC4TypeP", "validatePurchase"]
+- ["22SwiftyReceiptValidator0abC4TypeP", "validatePurchasePublisher"]
 - ["22SwiftyReceiptValidator0abC4TypeP", "validateSubscription"]
+- ["22SwiftyReceiptValidator0abC4TypeP", "validateSubscriptionPublisher"]
 - !private ["22SwiftyReceiptValidator0abC4TypeP", "validator"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "Future"]
 - !private ["10Foundation27_KeyValueCodingAndObservingP", "SRVSubscriptionValidationResponse"]
 - ["10Foundation27_KeyValueCodingAndObservingP", "fetch"]
+- ["10Foundation27_KeyValueCodingAndObservingP", "fetchPublisher"]
 - !private ["10Foundation27_KeyValueCodingAndObservingP", "urlSessionRequest"]
 - ["10Foundation27_KeyValueCodingAndObservingP", "validatePurchase"]
+- ["10Foundation27_KeyValueCodingAndObservingP", "validatePurchasePublisher"]
 - ["10Foundation27_KeyValueCodingAndObservingP", "validateSubscription"]
+- ["10Foundation27_KeyValueCodingAndObservingP", "validateSubscriptionPublisher"]
 - !private ["10Foundation27_KeyValueCodingAndObservingP", "validator"]
+- !private ["10Foundation37_KeyValueCodingAndObservingPublishingP", "Future"]
 - !private ["10Foundation37_KeyValueCodingAndObservingPublishingP", "SRVSubscriptionValidationResponse"]
 - ["10Foundation37_KeyValueCodingAndObservingPublishingP", "fetch"]
+- ["10Foundation37_KeyValueCodingAndObservingPublishingP", "fetchPublisher"]
 - !private ["10Foundation37_KeyValueCodingAndObservingPublishingP", "urlSessionRequest"]
 - ["10Foundation37_KeyValueCodingAndObservingPublishingP", "validatePurchase"]
+- ["10Foundation37_KeyValueCodingAndObservingPublishingP", "validatePurchasePublisher"]
 - ["10Foundation37_KeyValueCodingAndObservingPublishingP", "validateSubscription"]
+- ["10Foundation37_KeyValueCodingAndObservingPublishingP", "validateSubscriptionPublisher"]
 - !private ["10Foundation37_KeyValueCodingAndObservingPublishingP", "validator"]
 depends-nominal:
 - "s7CVarArgP"
@@ -135,16 +186,17 @@ depends-nominal:
 - !private "Se"
 - !private "SE"
 - "SQ"
+- !private "7Combine6FutureC"
 - "SH"
 - "So8NSObjectC"
 - "So8NSObjectP"
+- !private "7Combine9PublisherP"
 - !private "s6ResultO"
 - "22SwiftyReceiptValidator8SRVErrorO"
 - !private "22SwiftyReceiptValidator18SRVReceiptResponseV"
 - !private "22SwiftyReceiptValidator011SRVResponseC4TypeP"
 - !private "22SwiftyReceiptValidator33SRVSubscriptionValidationResponseV"
 - "22SwiftyReceiptValidatorAAC"
-- "22SwiftyReceiptValidator0abC11CombineTypeP"
 - "22SwiftyReceiptValidator0abC4TypeP"
 - "10Foundation27_KeyValueCodingAndObservingP"
 - "10Foundation37_KeyValueCodingAndObservingPublishingP"
@@ -1339,4 +1391,4 @@ depends-external:
 - "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator13.1.sdk/System/Library/Frameworks/StoreKit.framework/Headers/StoreKit.apinotes"
 - "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator13.1.sdk/System/Library/Frameworks/CoreText.framework/Headers/CoreText.apinotes"
 - "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator13.1.sdk/System/Library/Frameworks/Security.framework/Headers/Security.apinotes"
-interface-hash: "269187f20dd7703294f3edbaf472d41a"
+interface-hash: "f0ae9cf2a890a2beb8d0df36f710fa0e"
