@@ -95,7 +95,7 @@ private extension SwiftyReceiptValidator {
         sessionManager.start(with: configuration.sandboxURL, parameters: parameters) { result in
             switch result {
             case .success(let response):
-                print("SwiftyReceiptValidator success (SANDBOX)")
+                print("SwiftyReceiptValidator success (SANDBOX) with response \(response)")
                 handler(.success(response))
             case .failure(let error):
                 print(error)

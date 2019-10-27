@@ -113,7 +113,7 @@ extension SRVURLSessionManager: SRVURLSessionManagerType {
                 handler(.failure(SessionError.data))
                 return
             }
-                        
+            
             // Parse data
             do {
                 let response = try self.jsonDecoder.decode(SRVReceiptResponse.self, from: data)

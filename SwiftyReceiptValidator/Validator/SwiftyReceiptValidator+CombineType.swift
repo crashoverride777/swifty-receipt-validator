@@ -13,7 +13,7 @@ public protocol SwiftyReceiptValidatorCombineType {
     func validatePurchase(withId productId: String, sharedSecret: String?) -> AnyPublisher<SRVReceiptResponse, SRVError>
     func validateSubscription(sharedSecret: String?,
                               refreshLocalReceiptIfNeeded: Bool,
-                              excludeOldTransactions: Bool) -> AnyPublisher<[SRVReceiptInApp], SRVError>
+                              excludeOldTransactions: Bool) -> AnyPublisher<SRVSubscriptionValidationResponse, SRVError>
     func fetch(sharedSecret: String?,
                refreshLocalReceiptIfNeeded: Bool,
                excludeOldTransactions: Bool) -> AnyPublisher<SRVReceiptResponse, Error>
@@ -53,7 +53,7 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorCombineType {
     public func validateSubscription(
         sharedSecret: String?,
         refreshLocalReceiptIfNeeded: Bool,
-        excludeOldTransactions: Bool) -> AnyPublisher<[SRVReceiptInApp], SRVError> {
+        excludeOldTransactions: Bool) -> AnyPublisher<SRVSubscriptionValidationResponse, SRVError> {
          return Future { [weak self] promise in
              self?.validateSubscription(
                  sharedSecret: sharedSecret,

@@ -1,0 +1,15 @@
+/Users/dominikringler/Documents/Xcode/GitHub/swifty-receipt-validator/SwiftyReceiptValidator/Internal/SRVBundleReceiptFetcher.swift
+/Users/dominikringler/Documents/Xcode/GitHub/swifty-receipt-validator/SwiftyReceiptValidator/Models/SRVReceiptResponse.swift
+/Users/dominikringler/Documents/Xcode/GitHub/swifty-receipt-validator/SwiftyReceiptValidator/Models/SRVReceipt.swift
+/Users/dominikringler/Documents/Xcode/GitHub/swifty-receipt-validator/SwiftyReceiptValidator/Validator/SwiftyReceiptValidator+URLSession.swift
+/Users/dominikringler/Documents/Xcode/GitHub/swifty-receipt-validator/SwiftyReceiptValidator/Validator/SwiftyReceiptValidator.swift
+/Users/dominikringler/Documents/Xcode/GitHub/swifty-receipt-validator/SwiftyReceiptValidator/Internal/SRVResponseValidator.swift
+/Users/dominikringler/Documents/Xcode/GitHub/swifty-receipt-validator/SwiftyReceiptValidator/Models/SRVAutoRenewStatus.swift
+/Users/dominikringler/Documents/Xcode/GitHub/swifty-receipt-validator/SwiftyReceiptValidator/Models/SRVReceiptInApp.swift
+/Users/dominikringler/Documents/Xcode/GitHub/swifty-receipt-validator/SwiftyReceiptValidator/Internal/SRVLocalizedString.swift
+/Users/dominikringler/Documents/Xcode/GitHub/swifty-receipt-validator/SwiftyReceiptValidator/Models/SRVSubscriptionValidationResponse.swift
+/Users/dominikringler/Documents/Xcode/GitHub/swifty-receipt-validator/SwiftyReceiptValidator/Validator/SwiftyReceiptValidator+Type.swift
+/Users/dominikringler/Documents/Xcode/GitHub/swifty-receipt-validator/SwiftyReceiptValidator/Models/SRVPendingRenewalInfo.swift
+/Users/dominikringler/Documents/Xcode/GitHub/swifty-receipt-validator/SwiftyReceiptValidator/Models/SRVError.swift
+/Users/dominikringler/Documents/Xcode/GitHub/swifty-receipt-validator/SwiftyReceiptValidator/Validator/SwiftyReceiptValidator+CombineType.swift
+/Users/dominikringler/Documents/Xcode/GitHub/swifty-receipt-validator/SwiftyReceiptValidator/Internal/SRVURLSessionManager.swift

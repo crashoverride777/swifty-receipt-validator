@@ -15,7 +15,7 @@ public protocol SwiftyReceiptValidatorType {
     func validateSubscription(sharedSecret: String?,
                               refreshLocalReceiptIfNeeded: Bool,
                               excludeOldTransactions: Bool,
-                              handler: @escaping (Result<[SRVReceiptInApp], SRVError>) -> Void)
+                              handler: @escaping (Result<SRVSubscriptionValidationResponse, SRVError>) -> Void)
     func fetch(sharedSecret: String?,
                refreshLocalReceiptIfNeeded: Bool,
                excludeOldTransactions: Bool,
@@ -61,7 +61,7 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
         sharedSecret: String?,
         refreshLocalReceiptIfNeeded: Bool,
         excludeOldTransactions: Bool,
-        handler: @escaping (Result<[SRVReceiptInApp], SRVError>) -> Void) {
+        handler: @escaping (Result<SRVSubscriptionValidationResponse, SRVError>) -> Void) {
         urlSessionRequest(sharedSecret: sharedSecret,
                           refreshLocalReceiptIfNeeded: refreshLocalReceiptIfNeeded,
                           excludeOldTransactions: excludeOldTransactions) { [weak self] result in
@@ -70,7 +70,11 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
                 self?.validator.validateSubscription(in: response) { result in
                     switch result {
                     case .success(let nestedResponse):
-                        handler(.success(nestedResponse.validSubscriptionReceipts))
+                        let responseModel = SRVSubscriptionValidationResponse(
+                            validReceipts: nestedResponse.validSubscriptionReceipts,
+                            pendingRenewalInfo: nestedResponse.pendingRenewalInfo
+                        )
+                        handler(.success(responseModel))
                     case .failure(let error):
                         handler(.failure(error))
                     }

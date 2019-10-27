@@ -1,0 +1,10 @@
+framework module SwiftyReceiptValidator {
+  umbrella header "SwiftyReceiptValidator.h"
+
+  export *
+  module * { export * }
+}
+
+module SwiftyReceiptValidator.__Swift {
+    exclude header "SwiftyReceiptValidator-Swift.h"
+}

@@ -6,6 +6,20 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		6A63A28323513A5E00E1CB2F /* Universal */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 6A63A28623513A5E00E1CB2F /* Build configuration list for PBXAggregateTarget "Universal" */;
+			buildPhases = (
+				6A63A28723513A6B00E1CB2F /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = Universal;
+			productName = Universal;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		6A2755932315D0EB00F131C1 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 6A2755922315D0EA00F131C1 /* README.md */; };
 		6A2755982315D60800F131C1 /* SwiftyReceiptPendingRenewalInfo+Fake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2755972315D60800F131C1 /* SwiftyReceiptPendingRenewalInfo+Fake.swift */; };
@@ -23,15 +37,17 @@
 		6A7DF29E230609BB001CAEEF /* DefaultValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7DF29D230609BB001CAEEF /* DefaultValidatorTests.swift */; };
 		6ACC6246235135630085A42F /* SwiftyReceiptValidator+Type.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACC6245235135630085A42F /* SwiftyReceiptValidator+Type.swift */; };
 		6ACC6248235135770085A42F /* SwiftyReceiptValidator+CombineType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACC6247235135770085A42F /* SwiftyReceiptValidator+CombineType.swift */; };
-		6ACC624D235136070085A42F /* SRVResponseValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACC6249235136070085A42F /* SRVResponseValidator.swift */; };
-		6ACC624E235136070085A42F /* SRVBundleReceiptFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACC624A235136070085A42F /* SRVBundleReceiptFetcher.swift */; };
-		6ACC624F235136070085A42F /* SRVURLSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACC624B235136070085A42F /* SRVURLSessionManager.swift */; };
-		6ACC6250235136070085A42F /* SRVLocalizedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACC624C235136070085A42F /* SRVLocalizedString.swift */; };
-		6ACC6256235136150085A42F /* SRVReceiptResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACC6251235136150085A42F /* SRVReceiptResponse.swift */; };
-		6ACC6257235136150085A42F /* SRVReceipt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACC6252235136150085A42F /* SRVReceipt.swift */; };
-		6ACC6258235136150085A42F /* SRVError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACC6253235136150085A42F /* SRVError.swift */; };
-		6ACC6259235136150085A42F /* SRVPendingRenewalInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACC6254235136150085A42F /* SRVPendingRenewalInfo.swift */; };
-		6ACC625A235136150085A42F /* SRVReceiptInApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACC6255235136150085A42F /* SRVReceiptInApp.swift */; };
+		6ACC624D235136070085A42F /* ResponseValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACC6249235136070085A42F /* ResponseValidator.swift */; };
+		6ACC624E235136070085A42F /* BundleReceiptFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACC624A235136070085A42F /* BundleReceiptFetcher.swift */; };
+		6ACC624F235136070085A42F /* URLSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACC624B235136070085A42F /* URLSessionManager.swift */; };
+		6ACC6250235136070085A42F /* LocalizedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACC624C235136070085A42F /* LocalizedString.swift */; };
+		6ACC6256235136150085A42F /* ReceiptResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACC6251235136150085A42F /* ReceiptResponse.swift */; };
+		6ACC6257235136150085A42F /* Receipt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACC6252235136150085A42F /* Receipt.swift */; };
+		6ACC6258235136150085A42F /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACC6253235136150085A42F /* Error.swift */; };
+		6ACC6259235136150085A42F /* PendingRenewalInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACC6254235136150085A42F /* PendingRenewalInfo.swift */; };
+		6ACC625A235136150085A42F /* ReceiptInApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACC6255235136150085A42F /* ReceiptInApp.swift */; };
+		6AD9353C2358FA7000E75ED5 /* AutoRenewStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD9353B2358FA7000E75ED5 /* AutoRenewStatus.swift */; };
+		6AD9353E2358FC8300E75ED5 /* SubscriptionValidationResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD9353D2358FC8300E75ED5 /* SubscriptionValidationResponse.swift */; };
 		6ADEB8EB2200EF1300370C71 /* SwiftyReceiptValidator+URLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADEB8EA2200EF1300370C71 /* SwiftyReceiptValidator+URLSession.swift */; };
 		6AFE27492269D03D0016ED8A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6AFE274B2269D03D0016ED8A /* Localizable.strings */; };
 		B4533F361DA2BD8900440CC0 /* SwiftyReceiptValidator.h in Headers */ = {isa = PBXBuildFile; fileRef = B4533F341DA2BD8900440CC0 /* SwiftyReceiptValidator.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -66,15 +82,17 @@
 		6A7DF29D230609BB001CAEEF /* DefaultValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultValidatorTests.swift; sourceTree = "<group>"; };
 		6ACC6245235135630085A42F /* SwiftyReceiptValidator+Type.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftyReceiptValidator+Type.swift"; sourceTree = "<group>"; };
 		6ACC6247235135770085A42F /* SwiftyReceiptValidator+CombineType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftyReceiptValidator+CombineType.swift"; sourceTree = "<group>"; };
-		6ACC6249235136070085A42F /* SRVResponseValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SRVResponseValidator.swift; sourceTree = "<group>"; };
-		6ACC624A235136070085A42F /* SRVBundleReceiptFetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SRVBundleReceiptFetcher.swift; sourceTree = "<group>"; };
-		6ACC624B235136070085A42F /* SRVURLSessionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SRVURLSessionManager.swift; sourceTree = "<group>"; };
-		6ACC624C235136070085A42F /* SRVLocalizedString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SRVLocalizedString.swift; sourceTree = "<group>"; };
-		6ACC6251235136150085A42F /* SRVReceiptResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SRVReceiptResponse.swift; sourceTree = "<group>"; };
-		6ACC6252235136150085A42F /* SRVReceipt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SRVReceipt.swift; sourceTree = "<group>"; };
-		6ACC6253235136150085A42F /* SRVError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SRVError.swift; sourceTree = "<group>"; };
-		6ACC6254235136150085A42F /* SRVPendingRenewalInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SRVPendingRenewalInfo.swift; sourceTree = "<group>"; };
-		6ACC6255235136150085A42F /* SRVReceiptInApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SRVReceiptInApp.swift; sourceTree = "<group>"; };
+		6ACC6249235136070085A42F /* ResponseValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseValidator.swift; sourceTree = "<group>"; };
+		6ACC624A235136070085A42F /* BundleReceiptFetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BundleReceiptFetcher.swift; sourceTree = "<group>"; };
+		6ACC624B235136070085A42F /* URLSessionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLSessionManager.swift; sourceTree = "<group>"; };
+		6ACC624C235136070085A42F /* LocalizedString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalizedString.swift; sourceTree = "<group>"; };
+		6ACC6251235136150085A42F /* ReceiptResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReceiptResponse.swift; sourceTree = "<group>"; };
+		6ACC6252235136150085A42F /* Receipt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Receipt.swift; sourceTree = "<group>"; };
+		6ACC6253235136150085A42F /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
+		6ACC6254235136150085A42F /* PendingRenewalInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PendingRenewalInfo.swift; sourceTree = "<group>"; };
+		6ACC6255235136150085A42F /* ReceiptInApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReceiptInApp.swift; sourceTree = "<group>"; };
+		6AD9353B2358FA7000E75ED5 /* AutoRenewStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoRenewStatus.swift; sourceTree = "<group>"; };
+		6AD9353D2358FC8300E75ED5 /* SubscriptionValidationResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionValidationResponse.swift; sourceTree = "<group>"; };
 		6ADEB8EA2200EF1300370C71 /* SwiftyReceiptValidator+URLSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftyReceiptValidator+URLSession.swift"; sourceTree = "<group>"; };
 		6AFE274A2269D03D0016ED8A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		6AFE274C2269D0480016ED8A /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -177,11 +195,13 @@
 		6ADEB8B62200859000370C71 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				6ACC6251235136150085A42F /* SRVReceiptResponse.swift */,
-				6ACC6252235136150085A42F /* SRVReceipt.swift */,
-				6ACC6255235136150085A42F /* SRVReceiptInApp.swift */,
-				6ACC6254235136150085A42F /* SRVPendingRenewalInfo.swift */,
-				6ACC6253235136150085A42F /* SRVError.swift */,
+				6ACC6251235136150085A42F /* ReceiptResponse.swift */,
+				6ACC6252235136150085A42F /* Receipt.swift */,
+				6ACC6255235136150085A42F /* ReceiptInApp.swift */,
+				6ACC6254235136150085A42F /* PendingRenewalInfo.swift */,
+				6AD9353B2358FA7000E75ED5 /* AutoRenewStatus.swift */,
+				6AD9353D2358FC8300E75ED5 /* SubscriptionValidationResponse.swift */,
+				6ACC6253235136150085A42F /* Error.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -200,10 +220,10 @@
 		6ADEB8EC2200F8C300370C71 /* Internal */ = {
 			isa = PBXGroup;
 			children = (
-				6ACC624C235136070085A42F /* SRVLocalizedString.swift */,
-				6ACC624A235136070085A42F /* SRVBundleReceiptFetcher.swift */,
-				6ACC6249235136070085A42F /* SRVResponseValidator.swift */,
-				6ACC624B235136070085A42F /* SRVURLSessionManager.swift */,
+				6ACC624C235136070085A42F /* LocalizedString.swift */,
+				6ACC624A235136070085A42F /* BundleReceiptFetcher.swift */,
+				6ACC6249235136070085A42F /* ResponseValidator.swift */,
+				6ACC624B235136070085A42F /* URLSessionManager.swift */,
 				6AFE274B2269D03D0016ED8A /* Localizable.strings */,
 			);
 			path = Internal;
@@ -314,6 +334,11 @@
 						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
 					};
+					6A63A28323513A5E00E1CB2F = {
+						CreatedOnToolsVersion = 11.1;
+						DevelopmentTeam = DK88YZ475Z;
+						ProvisioningStyle = Automatic;
+					};
 					B4533F301DA2BD8900440CC0 = {
 						CreatedOnToolsVersion = 8.0;
 						LastSwiftMigration = 1020;
@@ -340,6 +365,7 @@
 			targets = (
 				B4533F301DA2BD8900440CC0 /* SwiftyReceiptValidator */,
 				6A4384A8222730C1009EF552 /* SwiftyReceiptValidatorTests */,
+				6A63A28323513A5E00E1CB2F /* Universal */,
 			);
 		};
 /* End PBXProject section */
@@ -366,6 +392,26 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		6A63A28723513A6B00E1CB2F /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Project name\nPROJECTNAME=\"SwiftyReceiptValidator\"\n\n#!/bin/sh\nUNIVERSAL_OUTPUTFOLDER=${BUILD_DIR}/${CONFIGURATION}-universal\n\n# make sure the output directory exists\nmkdir -p \"${UNIVERSAL_OUTPUTFOLDER}\"\n\n# Step 1. Build Device and Simulator versions\nxcodebuild -target \"${PROJECTNAME}\" ONLY_ACTIVE_ARCH=NO -configuration ${CONFIGURATION} -sdk iphoneos  BUILD_DIR=\"${BUILD_DIR}\" BUILD_ROOT=\"${BUILD_ROOT}\" clean build\nxcodebuild -target \"${PROJECTNAME}\" -configuration ${CONFIGURATION} -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO BUILD_DIR=\"${BUILD_DIR}\" BUILD_ROOT=\"${BUILD_ROOT}\" clean build\n\n# Step 2. Copy the framework structure (from iphoneos build) to the universal folder\ncp -R \"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${PROJECTNAME}.framework\" \"${UNIVERSAL_OUTPUTFOLDER}/\"\n\n# Step 3. Copy Swift modules from iphonesimulator build (if it exists) to the copied framework directory\nSIMULATOR_SWIFT_MODULES_DIR=\"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/${PROJECTNAME}.framework/Modules/${PROJECTNAME}.swiftmodule/.\"\nif [ -d \"${SIMULATOR_SWIFT_MODULES_DIR}\" ]; then\ncp -R \"${SIMULATOR_SWIFT_MODULES_DIR}\" \"${UNIVERSAL_OUTPUTFOLDER}/${PROJECTNAME}.framework/Modules/${PROJECTNAME}.swiftmodule\"\nfi\n\n# Step 4. Create universal binary file using lipo and place the combined executable in the copied framework directory\nlipo -create -output \"${UNIVERSAL_OUTPUTFOLDER}/${PROJECTNAME}.framework/${PROJECTNAME}\" \"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/${PROJECTNAME}.framework/${PROJECTNAME}\" \"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${PROJECTNAME}.framework/${PROJECTNAME}\"\n\n# Step 5. Convenience step to copy the framework to the project's directory\ncp -R \"${UNIVERSAL_OUTPUTFOLDER}/${PROJECTNAME}.framework\" \"${PROJECT_DIR}\"\n\n# Step 6. Convenience step to open the project's directory in Finder\nopen \"${PROJECT_DIR}\"\n\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		6A4384A5222730C1009EF552 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -387,19 +433,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6ACC624E235136070085A42F /* SRVBundleReceiptFetcher.swift in Sources */,
-				6ACC6256235136150085A42F /* SRVReceiptResponse.swift in Sources */,
-				6ACC6257235136150085A42F /* SRVReceipt.swift in Sources */,
+				6ACC624E235136070085A42F /* BundleReceiptFetcher.swift in Sources */,
+				6ACC6256235136150085A42F /* ReceiptResponse.swift in Sources */,
+				6ACC6257235136150085A42F /* Receipt.swift in Sources */,
 				6ADEB8EB2200EF1300370C71 /* SwiftyReceiptValidator+URLSession.swift in Sources */,
 				B4533F3F1DA2BDA700440CC0 /* SwiftyReceiptValidator.swift in Sources */,
-				6ACC624D235136070085A42F /* SRVResponseValidator.swift in Sources */,
-				6ACC625A235136150085A42F /* SRVReceiptInApp.swift in Sources */,
-				6ACC6250235136070085A42F /* SRVLocalizedString.swift in Sources */,
+				6ACC624D235136070085A42F /* ResponseValidator.swift in Sources */,
+				6AD9353C2358FA7000E75ED5 /* AutoRenewStatus.swift in Sources */,
+				6ACC625A235136150085A42F /* ReceiptInApp.swift in Sources */,
+				6ACC6250235136070085A42F /* LocalizedString.swift in Sources */,
+				6AD9353E2358FC8300E75ED5 /* SubscriptionValidationResponse.swift in Sources */,
 				6ACC6246235135630085A42F /* SwiftyReceiptValidator+Type.swift in Sources */,
-				6ACC6259235136150085A42F /* SRVPendingRenewalInfo.swift in Sources */,
-				6ACC6258235136150085A42F /* SRVError.swift in Sources */,
+				6ACC6259235136150085A42F /* PendingRenewalInfo.swift in Sources */,
+				6ACC6258235136150085A42F /* Error.swift in Sources */,
 				6ACC6248235135770085A42F /* SwiftyReceiptValidator+CombineType.swift in Sources */,
-				6ACC624F235136070085A42F /* SRVURLSessionManager.swift in Sources */,
+				6ACC624F235136070085A42F /* URLSessionManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -471,6 +519,24 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		6A63A28423513A5E00E1CB2F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = DK88YZ475Z;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		6A63A28523513A5E00E1CB2F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = DK88YZ475Z;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
 		};
@@ -651,6 +717,15 @@
 			buildConfigurations = (
 				6A4384B2222730C1009EF552 /* Debug */,
 				6A4384B3222730C1009EF552 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6A63A28623513A5E00E1CB2F /* Build configuration list for PBXAggregateTarget "Universal" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6A63A28423513A5E00E1CB2F /* Debug */,
+				6A63A28523513A5E00E1CB2F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
