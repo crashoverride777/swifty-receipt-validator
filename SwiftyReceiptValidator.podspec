@@ -11,7 +11,7 @@ s.authors = { 'DominikRingler' => 'overrideinteractive@icloud.com' }
 
 s.swift_version = '5.0'
 s.requires_arc = true
-s.ios.deployment_target = '10.3'
+s.ios.deployment_target = '11.0'
 
 s.source = {
     :git => 'https://github.com/crashoverride777/swifty-receipt-validator.git',
