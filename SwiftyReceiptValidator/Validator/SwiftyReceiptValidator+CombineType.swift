@@ -10,13 +10,13 @@ import Combine
 
 @available(iOS 13, *)
 public protocol SwiftyReceiptValidatorCombineType {
-    func validatePurchase(withId productId: String, sharedSecret: String?) -> AnyPublisher<SRVReceiptResponse, SRVError>
-    func validateSubscription(sharedSecret: String?,
-                              refreshLocalReceiptIfNeeded: Bool,
-                              excludeOldTransactions: Bool) -> AnyPublisher<SRVSubscriptionValidationResponse, SRVError>
-    func fetch(sharedSecret: String?,
-               refreshLocalReceiptIfNeeded: Bool,
-               excludeOldTransactions: Bool) -> AnyPublisher<SRVReceiptResponse, Error>
+    func validatePurchasePublisher(withId productId: String, sharedSecret: String?) -> AnyPublisher<SRVReceiptResponse, SRVError>
+    func validateSubscriptionPublisher(sharedSecret: String?,
+                                       refreshLocalReceiptIfNeeded: Bool,
+                                       excludeOldTransactions: Bool) -> AnyPublisher<SRVSubscriptionValidationResponse, SRVError>
+    func fetchPublisher(sharedSecret: String?,
+                        refreshLocalReceiptIfNeeded: Bool,
+                        excludeOldTransactions: Bool) -> AnyPublisher<SRVReceiptResponse, Error>
 }
 
 @available(iOS 13, *)
@@ -29,8 +29,8 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorCombineType {
     /// - parameter productId: The id of the purchase to verify.
     /// - parameter sharedSecret: The shared secret setup in iTunes.
     /// - parameter handler: Completion handler called when the validation has completed.
-    public func validatePurchase(withId productId: String,
-                                  sharedSecret: String?) -> AnyPublisher<SRVReceiptResponse, SRVError> {
+    public func validatePurchasePublisher(withId productId: String,
+                                          sharedSecret: String?) -> AnyPublisher<SRVReceiptResponse, SRVError> {
         return Future { [weak self] promise in
             self?.validatePurchase(withId: productId, sharedSecret: sharedSecret) { result in
                 switch result {
@@ -50,7 +50,7 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorCombineType {
     /// - parameter sharedSecret: The shared secret setup in iTunes.
     /// - parameter refreshReceiptIfNoneFound: If true, make SKReceiptRefreshRequest if no receipt on device. This will show a login alert.
     /// - parameter excludeOldTransactions: If value is true, response includes only the latest renewal transaction for any subscriptions.
-    public func validateSubscription(
+    public func validateSubscriptionPublisher(
         sharedSecret: String?,
         refreshLocalReceiptIfNeeded: Bool,
         excludeOldTransactions: Bool) -> AnyPublisher<SRVSubscriptionValidationResponse, SRVError> {
@@ -78,9 +78,9 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorCombineType {
     /// - parameter sharedSecret: The shared secret setup in iTunes.
     /// - parameter refreshReceiptIfNoneFound: If true, make SKReceiptRefreshRequest if no receipt on device. This will show a login alert.
     /// - parameter excludeOldTransactions: If value is true, response includes only the latest renewal transaction for any subscriptions.
-    public func fetch(sharedSecret: String?,
-                      refreshLocalReceiptIfNeeded: Bool,
-                      excludeOldTransactions: Bool) -> AnyPublisher<SRVReceiptResponse, Error> {
+    public func fetchPublisher(sharedSecret: String?,
+                               refreshLocalReceiptIfNeeded: Bool,
+                               excludeOldTransactions: Bool) -> AnyPublisher<SRVReceiptResponse, Error> {
         return Future { [weak self] promise in
             self?.fetch(
                 sharedSecret: sharedSecret,
