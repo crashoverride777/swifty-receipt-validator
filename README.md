@@ -94,7 +94,7 @@ case .purchased:
         // Transaction is in queue, user has been charged.  Client should complete the transaction.
         let productId = transaction.payment.productIdentifier
 
-        receiptValidator.validatePurchase(withId: productId) { result in
+        receiptValidator.validatePurchase(withId: productId, sharedSecret: nil) { result in
             switch result {
 
            case .success(let response):
@@ -121,7 +121,7 @@ case .restored:
         return
     }
 
-    receiptValidator.validatePurchase(withId: productId) { result in
+    receiptValidator.validatePurchase(withId: productId, sharedSecret: nil) { result in
         switch result {
 
         case .success(let response):
@@ -142,15 +142,21 @@ case .restored:
     }              
 ```
 
+Note: We also added Combine support for these methods if you are targeting iOS 13 and above
+
 ### Validate subscriptions
 
 - To validate your subscriptions (e.g on app launch), call `func validateSubscription(...` with your shared secret. This will search for all subscription receipts and check if there is at least 1 thats not expired.
 
 ```swift
-receiptValidator.validateSubscription(sharedSecret: "your secret", excludeOldTransactions: true) { result in
+receiptValidator.validateSubscription(sharedSecret: "your secret", 
+                                      refreshLocalReceiptIfNeeded: false,  
+                                      excludeOldTransactions: true) { result in
     switch result {
     case .success(let response):
         print("Receipt validation was successfull with receipt response \(response)")
+        print(response.validReceipts)
+        print(response.pendingRenewalInfo)
         // Unlock subscription features and/or do additional checks first
     case .failure(let error, let code):
         switch error {
@@ -163,6 +169,25 @@ receiptValidator.validateSubscription(sharedSecret: "your secret", excludeOldTra
     }
 }
 ```
+
+Setting refreshLocalReceiptIfNeeded = true will create a receipt fetch request if no receipt on device. This will show a iTunes password prompt.
+
+Note: We also added Combine support for these methods if you are targeting iOS 13 and above
+
+### Fetch Receipt Only
+
+```swift
+func fetch(sharedSecret: nil, refreshLocalReceiptIfNeeded: false, excludeOldTransactions: false) { result in 
+  switch result {
+  case .success(let response):
+      print("Receipt fetch was successfull with response \(response)")
+  case .failure(let error, let code):
+      print(error)
+  }
+}
+```
+
+Note: We also added Combine support for these methods if you are targeting iOS 13 and above
 
 ## StoreKit Alert Controllers
 
