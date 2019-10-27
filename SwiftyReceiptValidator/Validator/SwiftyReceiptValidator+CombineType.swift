@@ -24,7 +24,7 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorCombineType {
     
     // MARK: Validate Purchase
      
-    /// Validate app store purchase
+    /// Validate app store purchase publisher
     ///
     /// - parameter productId: The id of the purchase to verify.
     /// - parameter sharedSecret: The shared secret setup in iTunes.
