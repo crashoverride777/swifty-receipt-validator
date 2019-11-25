@@ -157,7 +157,7 @@ case .restored:
     }              
 ```
 
-Note: We also added Combine support for these methods if you are targeting iOS 13 and above
+Note: There is also Combine support for these methods if you are targeting iOS 13 and above
 
 ### Validate subscriptions
 
@@ -187,7 +187,7 @@ receiptValidator.validateSubscription(sharedSecret: "your secret",
 
 Setting refreshLocalReceiptIfNeeded = true will create a receipt fetch request if no receipt on device. This will show a iTunes password prompt.
 
-Note: We also added Combine support for these methods if you are targeting iOS 13 and above
+Note: There is also Combine support for these methods if you are targeting iOS 13 and above
 
 ### Fetch Receipt Only
 
@@ -202,7 +202,7 @@ func fetch(sharedSecret: nil, refreshLocalReceiptIfNeeded: false, excludeOldTran
 }
 ```
 
-Note: We also added Combine support for these methods if you are targeting iOS 13 and above
+Note: There is also Combine support for these methods if you are targeting iOS 13 and above
 
 ## Loggin
 
