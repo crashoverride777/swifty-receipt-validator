@@ -1,5 +1,5 @@
 //
-//  SRVResponseValidator.swift
+//  ResponseValidator.swift
 //  SwiftyReceiptValidator
 //
 //  Created by Dominik Ringler on 14/04/2019.
@@ -7,61 +7,27 @@
 //
 
 import Foundation
-import Combine
 
-protocol SRVResponseValidatorType: AnyObject {
-    @available(iOS 13, *)
-    func validatePurchase(
-        forProductId productId: String,
-        in response: SRVReceiptResponse
-    ) -> AnyPublisher<SRVReceiptResponse, SRVError>
-    
-    func validatePurchase(
-        forProductId productId: String,
-        in response: SRVReceiptResponse,
-        handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void
-    )
-    
-    @available(iOS 13, *)
-    func validateSubscription(
-        in response: SRVReceiptResponse
-    ) -> AnyPublisher<SRVReceiptResponse, SRVError>
-    
-    func validateSubscription(
-        in response: SRVReceiptResponse,
-        handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void
-    )
-}
-
-final class SRVResponseValidator {
-
-}
-
-// MARK: - SRVResponseValidatorType
-
-extension SRVResponseValidator: SRVResponseValidatorType {
-    
-    // MARK: Purchase
-    
-    @available(iOS 13, *)
+protocol ResponseValidatorType: AnyObject {
     func validatePurchase(forProductId productId: String,
-                          in response: SRVReceiptResponse) -> AnyPublisher<SRVReceiptResponse, SRVError> {
-        return Future { [weak self] promise in
-            self?.validatePurchase(forProductId: productId, in: response) { result in
-                switch result {
-                case .success(let response):
-                    promise(.success(response))
-                case .failure(let error):
-                    promise(.failure(error))
-                }
-            }
-        }.eraseToAnyPublisher()
-    }
+                          in response: SRVReceiptResponse,
+                          handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void)
+    func validateSubscription(in response: SRVReceiptResponse,
+                              handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void)
+}
 
+final class ResponseValidator {
+
+}
+
+// MARK: - ResponseValidatorType
+
+extension ResponseValidator: ResponseValidatorType {
+  
     func validatePurchase(forProductId productId: String,
                           in response: SRVReceiptResponse,
                           handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void) {
-        basicValidation(in: response) { result in
+        runBasicValidation(for: response) { result in
             switch result {
             case .success:
                 guard let receipt = response.receipt?.inApp.first(where: { $0.productId == productId }) else {
@@ -86,27 +52,10 @@ extension SRVResponseValidator: SRVResponseValidatorType {
                 handler(.failure(error))
             }
         }
-       
-    }
-    
-    // MARK: Subscription
-    
-    @available(iOS 13, *)
-    func validateSubscription(in response: SRVReceiptResponse) -> AnyPublisher<SRVReceiptResponse, SRVError> {
-        return Future { [weak self] promise in
-            self?.validateSubscription(in: response) { result in
-                switch result {
-                case .success(let response):
-                    promise(.success(response))
-                case .failure(let error):
-                    promise(.failure(error))
-                }
-            }
-        }.eraseToAnyPublisher()
     }
     
     func validateSubscription(in response: SRVReceiptResponse, handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void) {
-        basicValidation(in: response) { result in
+        runBasicValidation(for: response) { result in
             switch result {
             case .success:
                 guard response.status != .subscriptionExpired else {
@@ -129,14 +78,14 @@ extension SRVResponseValidator: SRVResponseValidatorType {
 
 // MARK: - Private Methods
 
-private extension SRVResponseValidator {
+private extension ResponseValidator {
     
     enum BasicValidationResult {
         case success
         case failure(SRVError)
     }
     
-    func basicValidation(in response: SRVReceiptResponse, handler: (BasicValidationResult) -> ()) {
+    func runBasicValidation(for response: SRVReceiptResponse, handler: (BasicValidationResult) -> ()) {
         // Check receipt status code is valid
         guard response.status == .valid else {
             handler(.failure(.invalidStatusCode(response.status)))

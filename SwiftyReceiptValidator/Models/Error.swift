@@ -42,19 +42,19 @@ public enum SRVError: LocalizedError {
     public var errorDescription: String? {
         switch self {
         case .invalidStatusCode:
-            return SRVLocalizedString.Error.invalidStatusCode
+            return LocalizedString.Error.invalidStatusCode
         case .noReceiptFound:
-            return SRVLocalizedString.Error.noReceiptFound
+            return LocalizedString.Error.noReceiptFound
         case .noReceiptFoundInResponse:
-            return SRVLocalizedString.Error.noReceiptFoundInResponse
+            return LocalizedString.Error.noReceiptFoundInResponse
         case .bundleIdNotMatching:
-            return SRVLocalizedString.Error.bundleIdNotMatching
+            return LocalizedString.Error.bundleIdNotMatching
         case .productIdNotMatching:
-            return SRVLocalizedString.Error.productIdNotMatching
+            return LocalizedString.Error.productIdNotMatching
         case .noValidSubscription:
-            return SRVLocalizedString.Error.noValidSubscription
+            return LocalizedString.Error.noValidSubscription
         case .cancelled:
-            return SRVLocalizedString.Error.cancelled
+            return LocalizedString.Error.cancelled
         case .other(let error):
             return error.localizedDescription
         }

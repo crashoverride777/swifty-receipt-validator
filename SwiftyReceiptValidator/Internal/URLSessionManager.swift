@@ -1,5 +1,5 @@
 //
-//  SRVURLSessionManager.swift
+//  URLSessionManager.swift
 //  SwiftyReceiptValidator
 //
 //  Created by Dominik Ringler on 29/01/2019.
@@ -7,17 +7,14 @@
 //
 
 import Foundation
-import Combine
 
-public protocol SRVURLSessionManagerType: AnyObject {
-    @available(iOS 13, *)
-    func start(with urlString: String, parameters: [AnyHashable: Any]) -> AnyPublisher<SRVReceiptResponse, Error>
+public protocol URLSessionManagerType: AnyObject {
     func start(with urlString: String,
                parameters: [AnyHashable: Any],
                handler: @escaping (Result<SRVReceiptResponse, Error>) -> Void)
 }
 
-final class SRVURLSessionManager {
+final class URLSessionManager {
     
     // MARK: - Types
     
@@ -28,9 +25,9 @@ final class SRVURLSessionManager {
         var errorDescription: String? {
             switch self {
             case .url:
-                return SRVLocalizedString.Error.url
+                return LocalizedString.Error.url
             case .data:
-                return SRVLocalizedString.Error.data
+                return LocalizedString.Error.data
             }
         }
     }
@@ -40,7 +37,7 @@ final class SRVURLSessionManager {
     private var urlSession: URLSession?
     private let sessionConfiguration: URLSessionConfiguration
     
-    private(set) lazy var jsonDecoder: JSONDecoder = {
+    private(set) lazy var decoder: JSONDecoder = {
         let dateFormatter = DateFormatter()
         dateFormatter.calendar = Calendar(identifier: .iso8601)
         dateFormatter.locale = .current
@@ -59,24 +56,10 @@ final class SRVURLSessionManager {
     }
 }
     
-// MARK: - SRVURLSessionManagerType
+// MARK: - URLSessionManagerType
 
-extension SRVURLSessionManager: SRVURLSessionManagerType {
-    
-    @available(iOS 13, *)
-    func start(with urlString: String, parameters: [AnyHashable: Any]) -> AnyPublisher<SRVReceiptResponse, Error> {
-        return Future { [weak self] promise in
-            self?.start(with: urlString, parameters: parameters) { result in
-                switch result {
-                case .success(let response):
-                    promise(.success(response))
-                case .failure(let error):
-                    promise(.failure(error))
-                }
-            }
-        }.eraseToAnyPublisher()
-    }
-    
+extension URLSessionManager: URLSessionManagerType {
+ 
     func start(with urlString: String,
                parameters: [AnyHashable: Any],
                handler: @escaping (Result<SRVReceiptResponse, Error>) -> Void) {
@@ -116,10 +99,9 @@ extension SRVURLSessionManager: SRVURLSessionManagerType {
             
             // Parse data
             do {
-                let response = try self.jsonDecoder.decode(SRVReceiptResponse.self, from: data)
+                let response = try self.decoder.decode(SRVReceiptResponse.self, from: data)
                 handler(.success(response))
             } catch {
-                print(error)
                 handler(.failure(error))
             }
         }.resume()

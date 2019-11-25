@@ -14,7 +14,7 @@ Please test this properly, including production mode which will use apples produ
 
 ## Requirements
 
-- iOS 10.3+
+- iOS 11.0+
 - Swift 5.0+
 
 ## Installation
@@ -41,7 +41,7 @@ import SwiftyReceiptValidator
 
 ```swift
 class SomeClass {
-    var receiptValidator: SwiftyReceiptValidator!
+    let receiptValidator: SwiftyReceiptValidatorType
     
     init() {
         // Standard configuration communicates with apples server directly, which is not recommended
@@ -63,6 +63,21 @@ Doing this is apparently not very secure and therefore you should use your own s
 Nevertheless its still better than not doing any validation at all. 
 
 If you have your own webserver you can create your own custom configuration with the correct URLs.
+
+```swift
+class SomeClass {
+    let receiptValidator: SwiftyReceiptValidatorType
+    
+    init() {
+        let configuration = SwiftyReceiptValidator.Configuration(
+            productionURL: "someURL",
+            sandboxURL: "someURL",
+            sessionConfiguration: .default
+        )
+        receiptValidator = SwiftyReceiptValidator(configuration: configuration)
+    }
+}
+```
 
 https://www.raywenderlich.com/23266/in-app-purchases-in-ios-6-tutorial-consumables-and-receipt-validation
 
@@ -189,6 +204,52 @@ func fetch(sharedSecret: nil, refreshLocalReceiptIfNeeded: false, excludeOldTran
 
 Note: We also added Combine support for these methods if you are targeting iOS 13 and above
 
+## Loggin
+
+By default loggin is turned off, to turn on logging events simpy set the flag to true in the init method
+
+```swift
+receiptValidator = SwiftyReceiptValidator(configuration: .standard, isLoggingEnabled: true)
+```
+
+## Unit Tests
+
+In order to unit tests your in app purchase class it is recommended to always inject the type protocol into your class instead of the concret implementation
+
+Not Recommended
+```swift
+class SomeClass {
+    let receiptValidator: SwiftyReceiptValidator
+    init(receiptValidator: SwiftyReceiptValidator) { ... }
+}
+```
+
+Recommended
+```swift
+class SomeClass {
+    let receiptValidator: SwiftyReceiptValidatorType
+    init(receiptValidator: SwiftyReceiptValidatorType) { ... }
+}
+```
+
+This way it is very easy to mock SwiftyReceiptValidator in your in app purchase class e.g
+
+```swift
+class SomeClassTests {
+    private var sut: SomeClass!
+    override func setUp() {
+        super.setUp()
+        sut = SomeClass(receiptValidator: MockReceiptValidator())
+    }
+}
+```
+
+All models that require mocking have a dedicated mock object that should be used
+
+```swift
+SRVPendingRenewalInfo.mock()
+SRVSubscriptionValidationResponse.mock()
+```
 ## StoreKit Alert Controllers
 
 One thing I do not know about receipt validation is if there is a way to stop the default StoreKit alert controller to show. When you get to the purchase code and to the `.purchased` switch statement, storeKit automatically shows an AlertController ("Thank you, purchase was succesfull"). This however is the point where receipt validation is actually starting so it takes another few seconds for the products to unlock. I guess this must be normal, although it would be nicer to show that alert once receipt validation is finished.

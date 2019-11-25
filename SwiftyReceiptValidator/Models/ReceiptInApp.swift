@@ -104,7 +104,7 @@ public struct SRVReceiptInApp: Codable {
     // This key is only present for auto-renewable subscription receipts if the subscription
     // price was increased without keeping the existing price for active subscribers.
     // You can use this value to track customer adoption of the new price and take appropriate action.
-    public let price_consent_status: PriceConsentStatus?
+    public let priceConsentStatus: PriceConsentStatus?
 }
 
 // MARK: - Types

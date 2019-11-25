@@ -9,35 +9,9 @@
 import Foundation
 import Combine
 
-public protocol SwiftyReceiptValidatorType {
-    @available(iOS 13, *)
-    func validatePurchasePublisher(withId productId: String, sharedSecret: String?) -> AnyPublisher<SRVReceiptResponse, SRVError>
-    func validatePurchase(withId productId: String,
-                          sharedSecret: String?,
-                          handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void)
-    
-    @available(iOS 13, *)
-    func validateSubscriptionPublisher(sharedSecret: String?,
-                                       refreshLocalReceiptIfNeeded: Bool,
-                                       excludeOldTransactions: Bool) -> AnyPublisher<SRVSubscriptionValidationResponse, SRVError>
-    func validateSubscription(sharedSecret: String?,
-                              refreshLocalReceiptIfNeeded: Bool,
-                              excludeOldTransactions: Bool,
-                              handler: @escaping (Result<SRVSubscriptionValidationResponse, SRVError>) -> Void)
-    
-    @available(iOS 13, *)
-    func fetchPublisher(sharedSecret: String?,
-                        refreshLocalReceiptIfNeeded: Bool,
-                        excludeOldTransactions: Bool) -> AnyPublisher<SRVReceiptResponse, Error>
-    func fetch(sharedSecret: String?,
-               refreshLocalReceiptIfNeeded: Bool,
-               excludeOldTransactions: Bool,
-               handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void)
-}
-
 extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
     
-    // MARK: Validate Purchase
+    // MARK: Purchase
     
     /// Validate app store purchase publisher
     ///
@@ -45,10 +19,10 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
     /// - parameter sharedSecret: The shared secret setup in iTunes.
     /// - parameter handler: Completion handler called when the validation has completed.
     @available(iOS 13, *)
-    public func validatePurchasePublisher(withId productId: String,
+    public func validatePurchasePublisher(forId productId: String,
                                           sharedSecret: String?) -> AnyPublisher<SRVReceiptResponse, SRVError> {
         return Future { [weak self] promise in
-            self?.validatePurchase(withId: productId, sharedSecret: sharedSecret) { result in
+            self?.validatePurchase(forId: productId, sharedSecret: sharedSecret) { result in
                 switch result {
                 case .success(let response):
                     promise(.success(response))
@@ -64,7 +38,7 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
     /// - parameter productId: The id of the purchase to verify.
     /// - parameter sharedSecret: The shared secret setup in iTunes.
     /// - parameter handler: Completion handler called when the validation has completed.
-    public func validatePurchase(withId productId: String,
+    public func validatePurchase(forId productId: String,
                                  sharedSecret: String?,
                                  handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void) {
         urlSessionRequest(
@@ -82,7 +56,7 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
         )
     }
     
-    // MARK: Validate Subscription
+    // MARK: Subscription
     
     /// Validate app store subscription publisher
     ///
@@ -145,7 +119,7 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
         }
     }
 
-    // MARK: Fetch Receipt Only
+    // MARK: Fetch Only
     
     /// Fetch receipt without any validation publisher
     ///
@@ -155,7 +129,7 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
     @available(iOS 13, *)
     public func fetchPublisher(sharedSecret: String?,
                                refreshLocalReceiptIfNeeded: Bool,
-                               excludeOldTransactions: Bool) -> AnyPublisher<SRVReceiptResponse, Error> {
+                               excludeOldTransactions: Bool) -> AnyPublisher<SRVReceiptResponse, SRVError> {
         return Future { [weak self] promise in
             self?.fetch(
                 sharedSecret: sharedSecret,

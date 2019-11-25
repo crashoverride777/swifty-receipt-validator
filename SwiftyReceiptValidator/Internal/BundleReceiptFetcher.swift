@@ -1,5 +1,5 @@
 //
-//  SRVBundleReceiptFetcher.swift
+//  BundleReceiptFetcher.swift
 //  SwiftyReceiptValidator
 //
 //  Created by Dominik Ringler on 14/04/2019.
@@ -7,21 +7,18 @@
 //
 
 import StoreKit
-import Combine
 
-typealias SRVBundleReceiptFetcherHandler = (Result<URL, Error>) -> Void
+typealias BundleReceiptFetcherHandler = (Result<URL, Error>) -> Void
 
-protocol SRVBundleReceiptFetcherType {
-    @available(iOS 13, *)
-    func fetch(requestRefreshIfNoneFound: Bool) -> AnyPublisher<URL, Error>
-    func fetch(requestRefreshIfNoneFound: Bool, handler: @escaping SRVBundleReceiptFetcherHandler)
+protocol BundleReceiptFetcherType {
+    func fetch(requestRefreshIfNoneFound: Bool, handler: @escaping BundleReceiptFetcherHandler)
 }
 
-final class SRVBundleReceiptFetcher: NSObject {
+final class BundleReceiptFetcher: NSObject {
     
     // MARK: - Properties
 
-    private var receiptHandler: SRVBundleReceiptFetcherHandler?
+    private var receiptHandler: BundleReceiptFetcherHandler?
     private let receiptURL = Bundle.main.appStoreReceiptURL
     private var receiptRefreshRequest: SKReceiptRefreshRequest?
     
@@ -34,26 +31,16 @@ final class SRVBundleReceiptFetcher: NSObject {
     }
 }
 
-// MARK: - SRVBundleReceiptFetcherType
+// MARK: - BundleReceiptFetcherType
 
-extension SRVBundleReceiptFetcher: SRVBundleReceiptFetcherType {
+extension BundleReceiptFetcher: BundleReceiptFetcherType {
     
-    @available(iOS 13, *)
-    func fetch(requestRefreshIfNoneFound: Bool) -> AnyPublisher<URL, Error> {
-        return Future { [weak self] promise in
-            self?.fetch(requestRefreshIfNoneFound: requestRefreshIfNoneFound) { result in
-                switch result {
-                case .success(let response):
-                    promise(.success(response))
-                case .failure(let error):
-                    promise(.failure(error))
-                }
-            }
-        }.eraseToAnyPublisher()
-    }
-    
-    func fetch(requestRefreshIfNoneFound: Bool, handler: @escaping SRVBundleReceiptFetcherHandler) {
+    func fetch(requestRefreshIfNoneFound: Bool, handler: @escaping BundleReceiptFetcherHandler) {
         receiptHandler = handler
+        
+        defer {
+            clean()
+        }
         
         guard hasReceipt, let receiptURL = receiptURL else {
             if requestRefreshIfNoneFound {
@@ -66,16 +53,15 @@ extension SRVBundleReceiptFetcher: SRVBundleReceiptFetcherType {
             return
         }
         
-        clean()
         handler(.success(receiptURL))
     }
 }
 
 // MARK: - SKRequestDelegate
 
-extension SRVBundleReceiptFetcher: SKRequestDelegate {
+extension BundleReceiptFetcher: SKRequestDelegate {
     
-    public func requestDidFinish(_ request: SKRequest) {
+    func requestDidFinish(_ request: SKRequest) {
         defer {
             clean()
         }
@@ -88,8 +74,7 @@ extension SRVBundleReceiptFetcher: SKRequestDelegate {
         receiptHandler?(.success(receiptURL))
     }
     
-    public func request(_ request: SKRequest, didFailWithError error: Error) {
-        print(error)
+    func request(_ request: SKRequest, didFailWithError error: Error) {
         receiptHandler?(.failure(error))
         clean()
     }
@@ -97,7 +82,7 @@ extension SRVBundleReceiptFetcher: SKRequestDelegate {
 
 // MARK: - Private Methods
 
-private extension SRVBundleReceiptFetcher {
+private extension BundleReceiptFetcher {
     
     func clean() {
         receiptHandler = nil

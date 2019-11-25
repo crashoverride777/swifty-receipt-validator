@@ -35,6 +35,8 @@ import StoreKit
 
 /*
  SwiftyReceiptValidator
+ 
+ A concrete implementation of SwiftyReceiptValidatorType to manage in app purchase receipt validation
  */
 public final class SwiftyReceiptValidator: NSObject {
    
@@ -45,53 +47,75 @@ public final class SwiftyReceiptValidator: NSObject {
         let sandboxURL: String
         let sessionConfiguration: URLSessionConfiguration
         
+        /// Init
+        ///
+        /// - parameter productionURL: The production url of the server to validate the receipt with.
+        /// - parameter sandboxURL: The sandbox url of the server to validate the receipt with.
+        /// - parameter sessionConfiguration: The URLSessionConfiguration to make URL requests.
         public init(productionURL: String, sandboxURL: String, sessionConfiguration: URLSessionConfiguration) {
             self.productionURL = productionURL
             self.sandboxURL = sandboxURL
             self.sessionConfiguration = sessionConfiguration
         }
         
-        /// Defaults to apple validation only which is not recommended
-        public static var standard: Configuration {
-            return Configuration(productionURL: "https://buy.itunes.apple.com/verifyReceipt",
-                                 sandboxURL: "https://sandbox.itunes.apple.com/verifyReceipt",
-                                 sessionConfiguration: .default)
-        }
+        /// Standard validation configuration
+        /// Validates directy with apple servers which is not recommended
+        public static let standard = Configuration(
+            productionURL: "https://buy.itunes.apple.com/verifyReceipt",
+            sandboxURL: "https://sandbox.itunes.apple.com/verifyReceipt",
+            sessionConfiguration: .default
+        )
     }
     
     // MARK: - Properties
 
     let configuration: Configuration
-    let receiptFetcher: SRVBundleReceiptFetcherType
-    let sessionManager: SRVURLSessionManagerType
-    let validator: SRVResponseValidatorType
-
+    let receiptFetcher: BundleReceiptFetcherType
+    let sessionManager: URLSessionManagerType
+    let validator: ResponseValidatorType
+    private let isLoggingEnabled: Bool
+    
     // MARK: - Init
     
     /// Init
     ///
-    /// - parameter configuration: The configuration struct to customise SwiftyReceiptValidator.
-    public init(configuration: Configuration) {
+    /// - parameter configuration: The configuration needed for SwiftyReceiptValidator.
+    /// - parameter isLoggingEnabled: Display logging events if true. Defaults to false.
+    public init(configuration: Configuration, isLoggingEnabled: Bool = false) {
         self.configuration = configuration
-        self.receiptFetcher = SRVBundleReceiptFetcher()
-        self.sessionManager = SRVURLSessionManager(sessionConfiguration: configuration.sessionConfiguration)
-        self.validator = SRVResponseValidator()
+        self.receiptFetcher = BundleReceiptFetcher()
+        self.sessionManager = URLSessionManager(sessionConfiguration: configuration.sessionConfiguration)
+        self.validator = ResponseValidator()
+        self.isLoggingEnabled = isLoggingEnabled
     }
     
     // Internal for testing
     init(configuration: Configuration,
-         receiptFetcher: SRVBundleReceiptFetcherType,
-         sessionManager: SRVURLSessionManagerType,
-         validator: SRVResponseValidatorType) {
+         receiptFetcher: BundleReceiptFetcherType,
+         sessionManager: URLSessionManagerType,
+         validator: ResponseValidatorType) {
         self.configuration = configuration
         self.receiptFetcher = receiptFetcher
         self.sessionManager = sessionManager
         self.validator = validator
+        self.isLoggingEnabled = false
     }
     
     // MARK: - Deinit
     
     deinit {
         print("Deinit SwiftyReceiptValidator")
+    }
+}
+
+// MARK: - Print
+
+extension SwiftyReceiptValidator {
+    
+    func print(_ items: Any...) {
+        guard isLoggingEnabled else {
+            return
+        }
+        Swift.print(items[0])
     }
 }

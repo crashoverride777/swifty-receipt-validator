@@ -1,5 +1,5 @@
 //
-//  SRVLocalizedString.swift
+//  LocalizedString.swift
 //  SwiftyReceiptValidator
 //
 //  Created by Dominik Ringler on 19/04/2019.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum SRVLocalizedString {
+enum LocalizedString {
     enum Error {
         static let url = localized("ErrorURL", comment: "Invalid URL")
         static let data = localized("ErrorData", comment: "Invalid data")
@@ -25,7 +25,7 @@ enum SRVLocalizedString {
 
 // MARK: - Get Localized String
 
-private extension SRVLocalizedString {
+private extension LocalizedString {
     
     static func localized(_ text: String, comment: String) -> String {
         return NSLocalizedString(

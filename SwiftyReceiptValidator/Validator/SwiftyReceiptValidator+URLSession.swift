@@ -27,11 +27,11 @@ extension SwiftyReceiptValidator {
                         handler: handler
                     )
                 } catch {
-                    print(error)
+                    self.print(error)
                     handler(.failure(.other(error)))
                 }
             case .failure(let error):
-                print(error)
+                self.print(error)
                 handler(.failure(.other(error)))
             }
         }
@@ -72,15 +72,15 @@ private extension SwiftyReceiptValidator {
             guard let self = self else { return }
             switch result {
             case .success(let response):
-                print("SwiftyReceiptValidator success (PRODUCTION)")
+                self.print("SwiftyReceiptValidator success (PRODUCTION)")
                 if response.status == .testReceipt {
-                    print("SwiftyReceiptValidator production mode with a Sandbox receipt, trying sandbox mode...")
+                    self.print("SwiftyReceiptValidator production mode with a Sandbox receipt, trying sandbox mode...")
                     self.startSandboxRequest(parameters: parameters, handler: handler)
                 } else {
                     handler(.success(response))
                 }
             case .failure(let error):
-                print(error)
+                self.print(error)
                 handler(.failure(.other(error)))
             }
         }
@@ -92,13 +92,14 @@ private extension SwiftyReceiptValidator {
 private extension SwiftyReceiptValidator {
     
     func startSandboxRequest(parameters: [AnyHashable: Any], handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void) {
-        sessionManager.start(with: configuration.sandboxURL, parameters: parameters) { result in
+        sessionManager.start(with: configuration.sandboxURL, parameters: parameters) { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case .success(let response):
-                print("SwiftyReceiptValidator success (SANDBOX) with response \(response)")
+                self.print("SwiftyReceiptValidator success (SANDBOX) with response \(response)")
                 handler(.success(response))
             case .failure(let error):
-                print(error)
+                self.print(error)
                 handler(.failure(.other(error)))
             }
         }
