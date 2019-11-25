@@ -89,7 +89,7 @@ public final class SwiftyReceiptValidator: NSObject {
         self.isLoggingEnabled = isLoggingEnabled
     }
     
-    // Internal for testing
+    // Internal only (testing)
     init(configuration: Configuration,
          receiptFetcher: BundleReceiptFetcherType,
          sessionManager: URLSessionManagerType,

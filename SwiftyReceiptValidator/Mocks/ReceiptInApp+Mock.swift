@@ -1,5 +1,5 @@
 //
-//  SRVReceiptInApp+Mock.swift
+//  ReceiptInApp+Mock.swift
 //  SwiftyReceiptValidator
 //
 //  Created by Dominik Ringler on 25/11/2019.

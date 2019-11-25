@@ -1,5 +1,5 @@
 //
-//  SRVPendingRenewalInfo+Mock.swift
+//  PendingRenewalInfo+Mock.swift
 //  SwiftyReceiptValidator
 //
 //  Created by Dominik Ringler on 25/11/2019.
