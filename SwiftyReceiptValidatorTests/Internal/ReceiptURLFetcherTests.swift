@@ -1,5 +1,5 @@
 //
-//  ReceiptFetcherTests.swift
+//  ReceiptURLFetcherTests.swift
 //  SwiftyReceiptValidatorTests
 //
 //  Created by Dominik Ringler on 18/01/2020.
@@ -9,7 +9,7 @@
 import XCTest
 @testable import SwiftyReceiptValidator
 
-class ReceiptFetcherTests: XCTestCase {
+class ReceiptURLFetcherTests: XCTestCase {
     
     // MARK: - Properties
     
@@ -101,7 +101,7 @@ class ReceiptFetcherTests: XCTestCase {
 
 // MARK: - Private Methods
 
-private extension ReceiptFetcherTests {
+private extension ReceiptURLFetcherTests {
     
     func makeSUT(appStoreReceiptURL: URL = .test) -> ReceiptURLFetcher {
         ReceiptURLFetcher(

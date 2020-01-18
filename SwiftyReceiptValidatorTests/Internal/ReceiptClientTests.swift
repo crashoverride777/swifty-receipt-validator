@@ -24,5 +24,5 @@ class ReceiptClientTests: XCTestCase {
     }
     
     // MARK: - Tests
-
+    #warning("add tests")
 }

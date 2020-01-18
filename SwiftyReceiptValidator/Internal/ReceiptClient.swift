@@ -49,9 +49,24 @@ extension ReceiptClient: ReceiptClientType {
                       excludeOldTransactions: Bool,
                       handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void) {
         do {
+            // Get receipt data
             let receiptData = try Data(contentsOf: receiptURL)
+            
+            // Prepare receipt base 64 string
+            let receiptBase64String = receiptData.base64EncodedString(options: Data.Base64EncodingOptions(rawValue: 0))
+            
+            // Prepare url session parameters
+            var parameters: [String: Any] = [
+                ParamsKey.data.rawValue: receiptBase64String,
+                ParamsKey.excludeOldTransactions.rawValue: excludeOldTransactions
+            ]
+            
+            if let sharedSecret = sharedSecret {
+                parameters[ParamsKey.password.rawValue] = sharedSecret
+            }
+            
             self.startURLSession(
-                with: receiptData,
+                with: parameters,
                 sharedSecret: sharedSecret,
                 excludeOldTransactions: excludeOldTransactions,
                 handler: handler
@@ -66,23 +81,10 @@ extension ReceiptClient: ReceiptClientType {
 
 private extension ReceiptClient {
     
-    func startURLSession(with receiptData: Data,
+    func startURLSession(with parameters: [String: Any],
                          sharedSecret: String?,
                          excludeOldTransactions: Bool,
                          handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void) {
-        // Prepare receipt base 64 string
-        let receiptBase64String = receiptData.base64EncodedString(options: Data.Base64EncodingOptions(rawValue: 0))
-        
-        // Prepare url session parameters
-        var parameters: [String: Any] = [
-            ParamsKey.data.rawValue: receiptBase64String,
-            ParamsKey.excludeOldTransactions.rawValue: excludeOldTransactions
-        ]
-        
-        if let sharedSecret = sharedSecret {
-            parameters[ParamsKey.password.rawValue] = sharedSecret
-        }
-        
         // Start URL request to production server first, if status code returns test environment receipt, try sandbox.
         // This handles validation directily with apple. This is not the recommended way by apple as it is not secure.
         // It is still better than not doing any validation at all.
