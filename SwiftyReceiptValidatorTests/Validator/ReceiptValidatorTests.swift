@@ -120,7 +120,7 @@ class ReceiptValidatorTests: XCTestCase {
         let expectedReceiptResponse: SRVReceiptResponse = .mock()
         let expectedValidationResponse: SRVSubscriptionValidationResponse = .mock(
             validReceipts: expectedReceiptResponse.validSubscriptionReceipts(now: .test),
-            pendingRenewalInfo: expectedReceiptResponse.pendingRenewalInfo ?? []
+            receiptResponse: expectedReceiptResponse
         )
         receiptClient.stub.validateResult = .success(expectedReceiptResponse)
         responseValidator.stub.validateSubscriptionResult = .success(expectedReceiptResponse)
@@ -178,53 +178,6 @@ class ReceiptValidatorTests: XCTestCase {
         sut.validateSubscription(sharedSecret: "abc",
                                  refreshLocalReceiptIfNeeded: false,
                                  excludeOldTransactions: false) { result in
-            if case .failure(let error) = result {
-                XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
-                expectation.fulfill()
-            }
-        }
-        
-        wait(for: [expectation], timeout: 0.1)
-    }
-    
-    // MARK: Fetch
-    
-    func test_fetch_success_returnsCorrectData() {
-        let expectation = self.expectation
-        let sut = makeSUT()
-        let expectedResponse: SRVReceiptResponse = .mock()
-        receiptClient.stub.validateResult = .success(expectedResponse)
-        sut.fetch(sharedSecret: nil, refreshLocalReceiptIfNeeded: false, excludeOldTransactions: false) { result in
-            if case .success(let response) = result {
-                XCTAssertEqual(response, expectedResponse)
-                expectation.fulfill()
-            }
-        }
-        
-        wait(for: [expectation], timeout: 0.1)
-    }
-    
-    func test_fetch_failure_receiptFetcher_returnsCorrectError() {
-        let expectation = self.expectation
-        let sut = makeSUT()
-        let expectedError = URLError(.notConnectedToInternet)
-        receiptURLFetcher.stub.fetchResult = .failure(expectedError)
-        sut.fetch(sharedSecret: nil, refreshLocalReceiptIfNeeded: false, excludeOldTransactions: false) { result in
-            if case .failure(let error) = result {
-                XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
-                expectation.fulfill()
-            }
-        }
-        
-        wait(for: [expectation], timeout: 0.1)
-    }
-    
-    func test_fetch_failure_sessionManager_returnsCorrectError() {
-        let expectation = self.expectation
-        let sut = makeSUT()
-        let expectedError = URLError(.notConnectedToInternet)
-        receiptClient.stub.validateResult = .failure(.other(expectedError))
-        sut.fetch(sharedSecret: nil, refreshLocalReceiptIfNeeded: false, excludeOldTransactions: false) { result in
             if case .failure(let error) = result {
                 XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
                 expectation.fulfill()

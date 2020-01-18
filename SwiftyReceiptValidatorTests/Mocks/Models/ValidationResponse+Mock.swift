@@ -13,10 +13,10 @@ extension SRVSubscriptionValidationResponse {
     
     static func mock(
         validReceipts: [SRVReceiptInApp] = [.mock()],
-        pendingRenewalInfo: [SRVPendingRenewalInfo] = [.mock()]) -> SRVSubscriptionValidationResponse {
+        receiptResponse: SRVReceiptResponse = .mock()) -> SRVSubscriptionValidationResponse {
         SRVSubscriptionValidationResponse(
             validReceipts: validReceipts,
-            pendingRenewalInfo: pendingRenewalInfo
+            receiptResponse: receiptResponse
         )
     }
 }

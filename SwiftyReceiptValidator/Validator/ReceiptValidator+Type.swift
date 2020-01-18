@@ -24,15 +24,6 @@ public protocol SwiftyReceiptValidatorType {
                               refreshLocalReceiptIfNeeded: Bool,
                               excludeOldTransactions: Bool,
                               handler: @escaping (Result<SRVSubscriptionValidationResponse, SRVError>) -> Void)
-    
-    @available(iOS 13, *)
-    func fetchPublisher(sharedSecret: String?,
-                        refreshLocalReceiptIfNeeded: Bool,
-                        excludeOldTransactions: Bool) -> AnyPublisher<SRVReceiptResponse, SRVError>
-    func fetch(sharedSecret: String?,
-               refreshLocalReceiptIfNeeded: Bool,
-               excludeOldTransactions: Bool,
-               handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void)
 }
 
 extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
@@ -120,7 +111,7 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
                         case .success(let nestedResponse):
                             let responseModel = SRVSubscriptionValidationResponse(
                                 validReceipts: nestedResponse.validSubscriptionReceipts(now: Date()),
-                                pendingRenewalInfo: nestedResponse.pendingRenewalInfo
+                                receiptResponse: response
                             )
                             handler(.success(responseModel))
                         case .failure(let error):
@@ -131,45 +122,6 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
                     handler(.failure(error))
                 }
             })
-        )
-    }
-
-    // MARK: Fetch Only
-    
-    /// Fetch receipt without any validation publisher
-    ///
-    /// - parameter sharedSecret: The shared secret setup in iTunes.
-    /// - parameter refreshReceiptIfNoneFound: If true, make SKReceiptRefreshRequest if no receipt on device. This will show a login alert.
-    /// - parameter excludeOldTransactions: If value is true, response includes only the latest renewal transaction for any subscriptions.
-    @available(iOS 13, *)
-    public func fetchPublisher(sharedSecret: String?,
-                               refreshLocalReceiptIfNeeded: Bool,
-                               excludeOldTransactions: Bool) -> AnyPublisher<SRVReceiptResponse, SRVError> {
-        return Future { [weak self] promise in
-            self?.fetch(
-                sharedSecret: sharedSecret,
-                refreshLocalReceiptIfNeeded: refreshLocalReceiptIfNeeded,
-                excludeOldTransactions: excludeOldTransactions,
-                handler: promise
-            )
-        }.eraseToAnyPublisher()
-    }
-    
-    /// Fetch receipt without any validation
-    ///
-    /// - parameter sharedSecret: The shared secret setup in iTunes.
-    /// - parameter refreshReceiptIfNoneFound: If true, make SKReceiptRefreshRequest if no receipt on device. This will show a login alert.
-    /// - parameter excludeOldTransactions: If value is true, response includes only the latest renewal transaction for any subscriptions.
-    /// - parameter handler: Completion handler called when the validation has completed.
-    public func fetch(sharedSecret: String?,
-                      refreshLocalReceiptIfNeeded: Bool,
-                      excludeOldTransactions: Bool,
-                      handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void) {
-        fetchReceipt(
-            sharedSecret: sharedSecret,
-            refreshLocalReceiptIfNeeded: refreshLocalReceiptIfNeeded,
-            excludeOldTransactions: excludeOldTransactions,
-            handler: handler
         )
     }
 }
