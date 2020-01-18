@@ -44,21 +44,8 @@ class SwiftyReceiptValidatorTests: XCTestCase {
 
     // MARK: Config
     
-    func test_config_standard() {
-        let sut = makeSUT(configuration: .standard)
-        let productionURL = "https://buy.itunes.apple.com/verifyReceipt"
-        let sandboxURL = "https://sandbox.itunes.apple.com/verifyReceipt"
-        XCTAssertEqual(sut.configuration.productionURL, productionURL)
-        XCTAssertEqual(sut.configuration.sandboxURL, sandboxURL)
-        XCTAssertEqual(sut.configuration.sessionConfiguration, .default)
-    }
-    
-    func test_config_custom() {
-        let expectedConfiguration = SwiftyReceiptValidator.Configuration(
-            productionURL: "https://example.com",
-            sandboxURL: "https://example.sandbox.com",
-            sessionConfiguration: URLSessionConfiguration()
-        )
+    func test_config() {
+        let expectedConfiguration: SRVConfiguration = .standard
         let sut = makeSUT(configuration: expectedConfiguration)
         XCTAssertEqual(sut.configuration, expectedConfiguration)
     }
@@ -252,7 +239,7 @@ class SwiftyReceiptValidatorTests: XCTestCase {
 
 extension SwiftyReceiptValidatorTests {
     
-    func makeSUT(configuration: SwiftyReceiptValidator.Configuration = .standard) -> SwiftyReceiptValidator {
+    func makeSUT(configuration: SRVConfiguration = .standard) -> SwiftyReceiptValidator {
         SwiftyReceiptValidator(
             configuration: configuration,
             receiptFetcher: receiptFetcher,

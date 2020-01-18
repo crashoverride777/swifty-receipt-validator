@@ -91,7 +91,7 @@ private extension ResponseValidator {
     
     func runBasicValidation(for response: SRVReceiptResponse, handler: (BasicValidationResult) -> ()) {
         // Check receipt status code is valid
-        guard response.status == .valid || response.status == .subscriptionExpired else {
+        guard response.status.isValid else {
             handler(.failure(.invalidStatusCode(response.status)))
             return
         }

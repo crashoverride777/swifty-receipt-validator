@@ -31,6 +31,15 @@ public enum SRVStatusCode: Int, Codable {
 
 public extension SRVStatusCode {
     
+    var isValid: Bool {
+        switch self {
+        case .valid, .subscriptionExpired:
+            return true
+        default:
+            return false
+        }
+    }
+    
     var description: String {
         switch self {
         case .unknown:

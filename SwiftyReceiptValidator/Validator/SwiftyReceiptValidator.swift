@@ -40,36 +40,9 @@ import StoreKit
  */
 public final class SwiftyReceiptValidator: NSObject {
    
-    // MARK: - Types
-    
-    public struct Configuration: Equatable {
-        let productionURL: String
-        let sandboxURL: String
-        let sessionConfiguration: URLSessionConfiguration
-        
-        /// Init
-        ///
-        /// - parameter productionURL: The production url of the server to validate the receipt with.
-        /// - parameter sandboxURL: The sandbox url of the server to validate the receipt with.
-        /// - parameter sessionConfiguration: The URLSessionConfiguration to make URL requests.
-        public init(productionURL: String, sandboxURL: String, sessionConfiguration: URLSessionConfiguration) {
-            self.productionURL = productionURL
-            self.sandboxURL = sandboxURL
-            self.sessionConfiguration = sessionConfiguration
-        }
-        
-        /// Standard validation configuration
-        /// Validates directy with apple servers which is not recommended
-        public static let standard = Configuration(
-            productionURL: "https://buy.itunes.apple.com/verifyReceipt",
-            sandboxURL: "https://sandbox.itunes.apple.com/verifyReceipt",
-            sessionConfiguration: .default
-        )
-    }
-    
     // MARK: - Properties
 
-    let configuration: Configuration
+    let configuration: SRVConfiguration
     let receiptFetcher: BundleReceiptFetcherType
     let sessionManager: URLSessionManagerType
     let responseValidator: ResponseValidatorType
@@ -81,7 +54,7 @@ public final class SwiftyReceiptValidator: NSObject {
     ///
     /// - parameter configuration: The configuration needed for SwiftyReceiptValidator.
     /// - parameter isLoggingEnabled: Display logging events if true. Defaults to false.
-    public init(configuration: Configuration, isLoggingEnabled: Bool = false) {
+    public init(configuration: SRVConfiguration, isLoggingEnabled: Bool = false) {
         self.configuration = configuration
         self.receiptFetcher = BundleReceiptFetcher(
             appStoreReceiptURL: { Bundle.main.appStoreReceiptURL },
@@ -93,7 +66,7 @@ public final class SwiftyReceiptValidator: NSObject {
     }
     
     // Internal only (testing)
-    init(configuration: Configuration,
+    init(configuration: SRVConfiguration,
          receiptFetcher: BundleReceiptFetcherType,
          sessionManager: URLSessionManagerType,
          responseValidator: ResponseValidatorType) {

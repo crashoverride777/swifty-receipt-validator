@@ -15,7 +15,7 @@ final class MockReceiptFetcher {
     }
     
     struct Mock {
-        var fetchRequestRefreshIfNoneFound: Bool = false
+        var refreshRequest: BundleReceiptFetcherReceiptRefreshRequestType? = nil
     }
     
     var stub = Stub()
@@ -23,9 +23,10 @@ final class MockReceiptFetcher {
 }
 
 extension MockReceiptFetcher: BundleReceiptFetcherType {
-   
-    func fetch(requestRefreshIfNoneFound: Bool, handler: @escaping BundleReceiptFetcherHandler) {
-        mock.fetchRequestRefreshIfNoneFound = requestRefreshIfNoneFound
+    
+    func fetch(refreshRequest: BundleReceiptFetcherReceiptRefreshRequestType?,
+               handler: @escaping BundleReceiptFetcherHandler) {
+        mock.refreshRequest = refreshRequest
         handler(stub.fetchResult)
     }
 }

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import StoreKit
 
 extension SwiftyReceiptValidator {
     
@@ -14,7 +15,9 @@ extension SwiftyReceiptValidator {
                            refreshLocalReceiptIfNeeded: Bool,
                            excludeOldTransactions: Bool,
                            handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void) {
-        receiptFetcher.fetch(requestRefreshIfNoneFound: refreshLocalReceiptIfNeeded) { [weak self] result in
+        receiptFetcher.fetch(
+            refreshRequest: refreshLocalReceiptIfNeeded ? SKReceiptRefreshRequest(receiptProperties: nil) : nil
+        ) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let receiptURL):

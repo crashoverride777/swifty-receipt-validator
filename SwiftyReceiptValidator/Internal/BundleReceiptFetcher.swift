@@ -10,9 +10,17 @@ import StoreKit
 
 typealias BundleReceiptFetcherHandler = (Result<URL, Error>) -> Void
 
-protocol BundleReceiptFetcherType {
-    func fetch(requestRefreshIfNoneFound: Bool, handler: @escaping BundleReceiptFetcherHandler)
+protocol BundleReceiptFetcherReceiptRefreshRequestType {
+    var delegate: SKRequestDelegate? { get set }
+    func cancel()
+    func start()
 }
+
+protocol BundleReceiptFetcherType {
+    func fetch(refreshRequest: BundleReceiptFetcherReceiptRefreshRequestType?, handler: @escaping BundleReceiptFetcherHandler)
+}
+
+extension SKReceiptRefreshRequest: BundleReceiptFetcherReceiptRefreshRequestType { }
 
 final class BundleReceiptFetcher: NSObject {
     
@@ -22,7 +30,7 @@ final class BundleReceiptFetcher: NSObject {
     private let fileManager: FileManager
     
     private var receiptHandler: BundleReceiptFetcherHandler?
-    private var receiptRefreshRequest: SKReceiptRefreshRequest?
+    private var receiptRefreshRequest: BundleReceiptFetcherReceiptRefreshRequestType?
     
     // MARK: - Computed Properties
     
@@ -46,7 +54,7 @@ final class BundleReceiptFetcher: NSObject {
 
 extension BundleReceiptFetcher: BundleReceiptFetcherType {
     
-    func fetch(requestRefreshIfNoneFound: Bool, handler: @escaping BundleReceiptFetcherHandler) {
+    func fetch(refreshRequest: BundleReceiptFetcherReceiptRefreshRequestType?, handler: @escaping BundleReceiptFetcherHandler) {
         receiptHandler = handler
         
         defer {
@@ -54,8 +62,8 @@ extension BundleReceiptFetcher: BundleReceiptFetcherType {
         }
         
         guard hasReceipt, let appStoreReceiptURL = appStoreReceiptURL() else {
-            if requestRefreshIfNoneFound {
-                receiptRefreshRequest = SKReceiptRefreshRequest(receiptProperties: nil)
+            if let refreshRequest = refreshRequest {
+                receiptRefreshRequest = refreshRequest
                 receiptRefreshRequest?.delegate = self
                 receiptRefreshRequest?.start()
             } else {
