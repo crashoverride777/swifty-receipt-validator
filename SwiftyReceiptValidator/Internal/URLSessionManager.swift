@@ -9,9 +9,9 @@
 import Foundation
 
 public protocol URLSessionManagerType: AnyObject {
-    func start(with urlString: String,
-               parameters: [AnyHashable: Any],
-               handler: @escaping (Result<SRVReceiptResponse, Error>) -> Void)
+    func start<T: Encodable>(withURL urlString: String,
+                             parameters: T,
+                             handler: @escaping (Result<SRVReceiptResponse, Error>) -> Void)
 }
 
 final class URLSessionManager {
@@ -20,23 +20,27 @@ final class URLSessionManager {
     
     enum SessionError: LocalizedError {
         case url
+        case parameterEncoding
         case data
         
         var errorDescription: String? {
             switch self {
             case .url:
                 return LocalizedString.Error.url
+            case .parameterEncoding:
+                return LocalizedString.Error.parameterEncoding
             case .data:
                 return LocalizedString.Error.data
             }
         }
     }
-
+    
     // MARK: - Properties
     
     private var urlSession: URLSession?
     private let sessionConfiguration: URLSessionConfiguration
     
+    private let encoder = JSONEncoder()
     private(set) lazy var decoder: JSONDecoder = {
         let dateFormatter = DateFormatter()
         dateFormatter.calendar = Calendar(identifier: .iso8601)
@@ -60,9 +64,9 @@ final class URLSessionManager {
 
 extension URLSessionManager: URLSessionManagerType {
  
-    func start(with urlString: String,
-               parameters: [AnyHashable: Any],
-               handler: @escaping (Result<SRVReceiptResponse, Error>) -> Void) {
+    func start<T: Encodable>(withURL urlString: String,
+                             parameters: T,
+                             handler: @escaping (Result<SRVReceiptResponse, Error>) -> Void) {
         // Create url
         guard let url = URL(string: urlString) else {
             handler(.failure(SessionError.url))
@@ -73,7 +77,11 @@ extension URLSessionManager: URLSessionManagerType {
         var urlRequest = URLRequest(url: url)
         urlRequest.cachePolicy = .reloadIgnoringCacheData
         urlRequest.httpMethod = "POST"
-        urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: [])
+        do {
+            urlRequest.httpBody = try encoder.encode(parameters)
+        } catch {
+            handler(.failure(SessionError.parameterEncoding))
+        }
         
         // Setup url session
         urlSession = URLSession(configuration: sessionConfiguration)

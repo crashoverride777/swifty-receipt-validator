@@ -48,6 +48,18 @@ public final class SwiftyReceiptValidator: NSObject {
     let responseValidator: ResponseValidatorType
     private let isLoggingEnabled: Bool
     
+    private(set) lazy var decoder: JSONDecoder = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.calendar = Calendar(identifier: .iso8601)
+        dateFormatter.locale = .current
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss VV"
+
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .formatted(dateFormatter)
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        return decoder
+    }()
+    
     // MARK: - Init
     
     /// Init
@@ -61,7 +73,8 @@ public final class SwiftyReceiptValidator: NSObject {
             fileManager: .default
         )
         self.receiptClient = ReceiptClient(
-            configuration: configuration,
+            productionURL: configuration.productionURL,
+            sandboxURL: configuration.sandboxURL,
             sessionManager: URLSessionManager(sessionConfiguration: configuration.sessionConfiguration),
             isLoggingEnabled: isLoggingEnabled
         )

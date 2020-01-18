@@ -11,6 +11,7 @@ import Foundation
 enum LocalizedString {
     enum Error {
         static let url = localized("ErrorURL", comment: "Invalid URL")
+        static let parameterEncoding = localized("ErrorParameterEncoding", comment: "Parameter encoding error")
         static let data = localized("ErrorData", comment: "Invalid data")
         
         static let invalidStatusCode = localized("ErrorInvalidStatusCode", comment: "Invalid status code")

@@ -8,12 +8,6 @@
 
 import Foundation
 
-private enum ParamsKey: String {
-    case data = "receipt-data"
-    case excludeOldTransactions = "exclude-old-transactions"
-    case password
-}
-
 protocol ReceiptClientType {
     func fetch(with receiptURL: URL,
                sharedSecret: String?,
@@ -23,18 +17,44 @@ protocol ReceiptClientType {
 
 final class ReceiptClient {
     
+    // MARK: - Types
+    
+    struct Parameters: Encodable {
+        let data: String
+        let excludeOldTransactions: Bool
+        let password: String?
+        
+        enum CodingKeys: String, CodingKey {
+            case data = "receipt-data"
+            case excludeOldTransactions = "exclude-old-transactions"
+            case password
+
+        }
+//        var parameters: [String: Any] = [
+//            ParamsKey.data.rawValue: receiptBase64String,
+//            ParamsKey.excludeOldTransactions.rawValue: excludeOldTransactions
+//        ]
+//
+//        if let sharedSecret = sharedSecret {
+//            parameters[ParamsKey.password.rawValue] = sharedSecret
+//        }
+    }
+    
     // MARK: - Properties
     
-    private let configuration: SRVConfiguration
+    private let productionURL: String
+    private let sandboxURL: String
     private let sessionManager: URLSessionManagerType
     private let isLoggingEnabled: Bool
     
     // MARK: - Init
     
-    init(configuration: SRVConfiguration,
+    init(productionURL: String,
+         sandboxURL: String,
          sessionManager: URLSessionManagerType,
          isLoggingEnabled: Bool) {
-        self.configuration = configuration
+        self.productionURL = productionURL
+        self.sandboxURL = sandboxURL
         self.sessionManager = sessionManager
         self.isLoggingEnabled = isLoggingEnabled
     }
@@ -52,25 +72,24 @@ extension ReceiptClient: ReceiptClientType {
             // Get receipt data
             let receiptData = try Data(contentsOf: receiptURL)
             
-            // Prepare receipt base 64 string
-            let receiptBase64String = receiptData.base64EncodedString(options: Data.Base64EncodingOptions(rawValue: 0))
-            
             // Prepare url session parameters
-            var parameters: [String: Any] = [
-                ParamsKey.data.rawValue: receiptBase64String,
-                ParamsKey.excludeOldTransactions.rawValue: excludeOldTransactions
-            ]
-            
-            if let sharedSecret = sharedSecret {
-                parameters[ParamsKey.password.rawValue] = sharedSecret
-            }
-            
-            self.startURLSession(
-                with: parameters,
-                sharedSecret: sharedSecret,
+            let parameters = Parameters(
+                data: receiptData.base64EncodedString(options: Data.Base64EncodingOptions(rawValue: 0)),
                 excludeOldTransactions: excludeOldTransactions,
-                handler: handler
+                password: sharedSecret
             )
+            #warning("remove after tested new Parameters stuct")
+//            var parameters: [String: Any] = [
+//                ParamsKey.data.rawValue: receiptBase64String,
+//                ParamsKey.excludeOldTransactions.rawValue: excludeOldTransactions
+//            ]
+//
+//            if let sharedSecret = sharedSecret {
+//                parameters[ParamsKey.password.rawValue] = sharedSecret
+//            }
+            
+            // Start production url request
+            self.startProductionRequest(with: parameters, handler: handler)
         } catch {
             handler(.failure(.other(error)))
         }
@@ -81,21 +100,19 @@ extension ReceiptClient: ReceiptClientType {
 
 private extension ReceiptClient {
     
-    func startURLSession(with parameters: [String: Any],
-                         sharedSecret: String?,
-                         excludeOldTransactions: Bool,
-                         handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void) {
+    func startProductionRequest(with parameters: Parameters,
+                                handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void) {
         // Start URL request to production server first, if status code returns test environment receipt, try sandbox.
         // This handles validation directily with apple. This is not the recommended way by apple as it is not secure.
         // It is still better than not doing any validation at all.
-        sessionManager.start(with: configuration.productionURL, parameters: parameters) { [weak self] result in
+        sessionManager.start(withURL: productionURL, parameters: parameters) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let response):
-                self.print("SwiftyReceiptValidator success (PRODUCTION)")
+                self.print("SwiftyReceiptValidator success (PRODUCTION) with response\(response)")
                 if response.status == .testReceipt {
-                    self.print("SwiftyReceiptValidator production mode with a Sandbox receipt, trying sandbox mode...")
-                    self.startSandboxRequest(parameters: parameters, handler: handler)
+                    self.print("SwiftyReceiptValidator production mode with test receipt, trying sandbox mode...")
+                    self.startSandboxRequest(with: parameters, handler: handler)
                 } else {
                     handler(.success(response))
                 }
@@ -106,8 +123,9 @@ private extension ReceiptClient {
         }
     }
     
-    func startSandboxRequest(parameters: [AnyHashable: Any], handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void) {
-        sessionManager.start(with: configuration.sandboxURL, parameters: parameters) { [weak self] result in
+    func startSandboxRequest(with parameters: Parameters,
+                             handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void) {
+        sessionManager.start(withURL: sandboxURL, parameters: parameters) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let response):

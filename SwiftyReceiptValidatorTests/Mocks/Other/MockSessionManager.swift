@@ -15,7 +15,7 @@ final class MockSessionManager {
     }
     
     struct Mock {
-        var start: (urlString: String, parameters: [AnyHashable : Any])? = nil
+        var start: (urlString: String, parameters: Encodable)? = nil
     }
     
     var stub = Stub()
@@ -24,9 +24,9 @@ final class MockSessionManager {
 
 extension MockSessionManager: URLSessionManagerType {
     
-    func start(with urlString: String,
-               parameters: [AnyHashable : Any],
-               handler: @escaping (Result<SRVReceiptResponse, Error>) -> Void) {
+    func start<T>(withURL urlString: String,
+                  parameters: T,
+                  handler: @escaping (Result<SRVReceiptResponse, Error>) -> Void) where T : Encodable {
         mock.start = (urlString: urlString, parameters: parameters)
         handler(stub.start)
     }

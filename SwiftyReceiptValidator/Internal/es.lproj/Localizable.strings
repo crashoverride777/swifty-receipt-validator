@@ -7,6 +7,7 @@
 */
 
 ErrorURL = "SwiftyReceiptValidator session URL error";
+ErrorParameterEncoding = "SwiftyReceiptValidator session parameter encoding error";
 ErrorData = "SwiftyReceiptValidator session data error";
 
 ErrorInvalidStatusCode = "SwiftyReceiptValidator Invalid status code";
