@@ -16,7 +16,7 @@ extension SwiftyReceiptValidator {
                excludeOldTransactions: Bool,
                handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void) {
         let refreshRequest = refreshLocalReceiptIfNeeded ? SKReceiptRefreshRequest(receiptProperties: nil) : nil
-        receiptFetcher.fetch(refreshRequest: refreshRequest) { [weak self] result in
+        receiptURLFetcher.fetch(refreshRequest: refreshRequest) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let receiptURL):

@@ -43,7 +43,7 @@ public final class SwiftyReceiptValidator: NSObject {
     // MARK: - Properties
 
     let configuration: SRVConfiguration
-    let receiptFetcher: ReceiptFetcherType
+    let receiptURLFetcher: ReceiptURLFetcherType
     let receiptClient: ReceiptClientType
     let responseValidator: ResponseValidatorType
     private let isLoggingEnabled: Bool
@@ -56,7 +56,7 @@ public final class SwiftyReceiptValidator: NSObject {
     /// - parameter isLoggingEnabled: Display logging events if true. Defaults to false.
     public init(configuration: SRVConfiguration, isLoggingEnabled: Bool = false) {
         self.configuration = configuration
-        self.receiptFetcher = ReceiptFetcher(
+        self.receiptURLFetcher = ReceiptURLFetcher(
             appStoreReceiptURL: { Bundle.main.appStoreReceiptURL },
             fileManager: .default
         )
@@ -71,11 +71,11 @@ public final class SwiftyReceiptValidator: NSObject {
     
     // Internal only (testing)
     init(configuration: SRVConfiguration,
-         receiptFetcher: ReceiptFetcherType,
+         receiptURLFetcher: ReceiptURLFetcherType,
          receiptClient: ReceiptClientType,
          responseValidator: ResponseValidatorType) {
         self.configuration = configuration
-        self.receiptFetcher = receiptFetcher
+        self.receiptURLFetcher = receiptURLFetcher
         self.receiptClient = receiptClient
         self.responseValidator = responseValidator
         self.isLoggingEnabled = false

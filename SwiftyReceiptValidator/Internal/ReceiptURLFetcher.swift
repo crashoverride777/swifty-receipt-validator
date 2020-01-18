@@ -1,5 +1,5 @@
 //
-//  BundleReceiptFetcher.swift
+//  ReceiptURLFetcher.swift
 //  SwiftyReceiptValidator
 //
 //  Created by Dominik Ringler on 14/04/2019.
@@ -8,29 +8,29 @@
 
 import StoreKit
 
-typealias ReceiptFetcherResultHandler = (Result<URL, Error>) -> Void
+typealias ReceiptURLFetcherResultHandler = (Result<URL, Error>) -> Void
 
-protocol ReceiptFetcherReceiptRefreshRequestType {
+protocol ReceiptURLFetcherReceiptRefreshRequestType {
     var delegate: SKRequestDelegate? { get set }
     func cancel()
     func start()
 }
 
-protocol ReceiptFetcherType {
-    func fetch(refreshRequest: ReceiptFetcherReceiptRefreshRequestType?, handler: @escaping ReceiptFetcherResultHandler)
+protocol ReceiptURLFetcherType {
+    func fetch(refreshRequest: ReceiptURLFetcherReceiptRefreshRequestType?, handler: @escaping ReceiptURLFetcherResultHandler)
 }
 
-extension SKReceiptRefreshRequest: ReceiptFetcherReceiptRefreshRequestType { }
+extension SKReceiptRefreshRequest: ReceiptURLFetcherReceiptRefreshRequestType { }
 
-final class ReceiptFetcher: NSObject {
+final class ReceiptURLFetcher: NSObject {
     
     // MARK: - Properties
 
     private let appStoreReceiptURL: () -> URL?
     private let fileManager: FileManager
     
-    private var receiptHandler: ReceiptFetcherResultHandler?
-    private var receiptRefreshRequest: ReceiptFetcherReceiptRefreshRequestType?
+    private var receiptHandler: ReceiptURLFetcherResultHandler?
+    private var receiptRefreshRequest: ReceiptURLFetcherReceiptRefreshRequestType?
     
     // MARK: - Computed Properties
     
@@ -50,11 +50,11 @@ final class ReceiptFetcher: NSObject {
     }
 }
 
-// MARK: - ReceiptFetcherType
+// MARK: - ReceiptURLFetcherType
 
-extension ReceiptFetcher: ReceiptFetcherType {
+extension ReceiptURLFetcher: ReceiptURLFetcherType {
     
-    func fetch(refreshRequest: ReceiptFetcherReceiptRefreshRequestType?, handler: @escaping ReceiptFetcherResultHandler) {
+    func fetch(refreshRequest: ReceiptURLFetcherReceiptRefreshRequestType?, handler: @escaping ReceiptURLFetcherResultHandler) {
         receiptHandler = handler
         
         defer {
@@ -78,7 +78,7 @@ extension ReceiptFetcher: ReceiptFetcherType {
 
 // MARK: - SKRequestDelegate
 
-extension ReceiptFetcher: SKRequestDelegate {
+extension ReceiptURLFetcher: SKRequestDelegate {
     
     func requestDidFinish(_ request: SKRequest) {
         defer {
@@ -101,7 +101,7 @@ extension ReceiptFetcher: SKRequestDelegate {
 
 // MARK: - Private Methods
 
-private extension ReceiptFetcher {
+private extension ReceiptURLFetcher {
     
     func clean() {
         receiptHandler = nil

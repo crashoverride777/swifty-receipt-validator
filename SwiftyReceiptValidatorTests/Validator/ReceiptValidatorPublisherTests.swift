@@ -56,7 +56,7 @@ class ReceiptValidatorPublisherTests: ReceiptValidatorTests {
         let expectation = self.expectation
         let sut = makeSUT()
         let expectedError = URLError(.notConnectedToInternet)
-        receiptFetcher.stub.fetchResult = .failure(expectedError)
+        receiptURLFetcher.stub.fetchResult = .failure(expectedError)
         sut.validatePurchasePublisher(forId: "1", sharedSecret: nil)
             .sink(
                 receiveCompletion: { completion in
@@ -141,7 +141,7 @@ class ReceiptValidatorPublisherTests: ReceiptValidatorTests {
         let expectation = self.expectation
         let sut = makeSUT()
         let expectedError = URLError(.notConnectedToInternet)
-        receiptFetcher.stub.fetchResult = .failure(expectedError)
+        receiptURLFetcher.stub.fetchResult = .failure(expectedError)
         sut.validateSubscriptionPublisher(sharedSecret: "123", refreshLocalReceiptIfNeeded: false, excludeOldTransactions: false)
             .sink(
                 receiveCompletion: { completion in
@@ -221,7 +221,7 @@ class ReceiptValidatorPublisherTests: ReceiptValidatorTests {
         let expectation = self.expectation
         let sut = makeSUT()
         let expectedError = URLError(.notConnectedToInternet)
-        receiptFetcher.stub.fetchResult = .failure(expectedError)
+        receiptURLFetcher.stub.fetchResult = .failure(expectedError)
         sut.fetchPublisher(sharedSecret: nil, refreshLocalReceiptIfNeeded: false, excludeOldTransactions: false)
             .sink(
                 receiveCompletion: { completion in

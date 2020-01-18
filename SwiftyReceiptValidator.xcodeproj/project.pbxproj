@@ -21,7 +21,7 @@
 		6A53FBEC23D32AE400E7D814 /* ValidationResponse+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2F6EED238C6C7F008AA0B0 /* ValidationResponse+Mock.swift */; };
 		6A53FBEE23D32F0B00E7D814 /* URLSessionManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A53FBED23D32F0B00E7D814 /* URLSessionManagerTests.swift */; };
 		6A53FBF023D32F1A00E7D814 /* ReceiptFetcherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A53FBEF23D32F1A00E7D814 /* ReceiptFetcherTests.swift */; };
-		6A53FBF223D32F7900E7D814 /* MockReceiptFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A53FBF123D32F7900E7D814 /* MockReceiptFetcher.swift */; };
+		6A53FBF223D32F7900E7D814 /* MockReceiptURLFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A53FBF123D32F7900E7D814 /* MockReceiptURLFetcher.swift */; };
 		6A53FBF423D32F8D00E7D814 /* MockResponseValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A53FBF323D32F8D00E7D814 /* MockResponseValidator.swift */; };
 		6A53FBF623D3317400E7D814 /* URL+Mocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A53FBF523D3317400E7D814 /* URL+Mocks.swift */; };
 		6A53FBF923D333E100E7D814 /* ReceiptValidatorPublisherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A53FBF823D333E100E7D814 /* ReceiptValidatorPublisherTests.swift */; };
@@ -41,7 +41,7 @@
 		6A7DF29E230609BB001CAEEF /* ResponseValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7DF29D230609BB001CAEEF /* ResponseValidatorTests.swift */; };
 		6ACC6246235135630085A42F /* ReceiptValidator+Type.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACC6245235135630085A42F /* ReceiptValidator+Type.swift */; };
 		6ACC624D235136070085A42F /* ResponseValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACC6249235136070085A42F /* ResponseValidator.swift */; };
-		6ACC624E235136070085A42F /* ReceiptFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACC624A235136070085A42F /* ReceiptFetcher.swift */; };
+		6ACC624E235136070085A42F /* ReceiptURLFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACC624A235136070085A42F /* ReceiptURLFetcher.swift */; };
 		6ACC624F235136070085A42F /* URLSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACC624B235136070085A42F /* URLSessionManager.swift */; };
 		6ACC6250235136070085A42F /* LocalizedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACC624C235136070085A42F /* LocalizedString.swift */; };
 		6ACC6256235136150085A42F /* ReceiptResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACC6251235136150085A42F /* ReceiptResponse.swift */; };
@@ -86,7 +86,7 @@
 		6A53FBE623D3263400E7D814 /* ErrorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorTests.swift; sourceTree = "<group>"; };
 		6A53FBED23D32F0B00E7D814 /* URLSessionManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionManagerTests.swift; sourceTree = "<group>"; };
 		6A53FBEF23D32F1A00E7D814 /* ReceiptFetcherTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptFetcherTests.swift; sourceTree = "<group>"; };
-		6A53FBF123D32F7900E7D814 /* MockReceiptFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockReceiptFetcher.swift; sourceTree = "<group>"; };
+		6A53FBF123D32F7900E7D814 /* MockReceiptURLFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockReceiptURLFetcher.swift; sourceTree = "<group>"; };
 		6A53FBF323D32F8D00E7D814 /* MockResponseValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockResponseValidator.swift; sourceTree = "<group>"; };
 		6A53FBF523D3317400E7D814 /* URL+Mocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Mocks.swift"; sourceTree = "<group>"; };
 		6A53FBF823D333E100E7D814 /* ReceiptValidatorPublisherTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReceiptValidatorPublisherTests.swift; sourceTree = "<group>"; };
@@ -106,7 +106,7 @@
 		6A7DF29D230609BB001CAEEF /* ResponseValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseValidatorTests.swift; sourceTree = "<group>"; };
 		6ACC6245235135630085A42F /* ReceiptValidator+Type.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReceiptValidator+Type.swift"; sourceTree = "<group>"; };
 		6ACC6249235136070085A42F /* ResponseValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseValidator.swift; sourceTree = "<group>"; };
-		6ACC624A235136070085A42F /* ReceiptFetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReceiptFetcher.swift; sourceTree = "<group>"; };
+		6ACC624A235136070085A42F /* ReceiptURLFetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReceiptURLFetcher.swift; sourceTree = "<group>"; };
 		6ACC624B235136070085A42F /* URLSessionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLSessionManager.swift; sourceTree = "<group>"; };
 		6ACC624C235136070085A42F /* LocalizedString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalizedString.swift; sourceTree = "<group>"; };
 		6ACC6251235136150085A42F /* ReceiptResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReceiptResponse.swift; sourceTree = "<group>"; };
@@ -275,7 +275,7 @@
 		6ADEB8EC2200F8C300370C71 /* Internal */ = {
 			isa = PBXGroup;
 			children = (
-				6ACC624A235136070085A42F /* ReceiptFetcher.swift */,
+				6ACC624A235136070085A42F /* ReceiptURLFetcher.swift */,
 				6AD83A5B23D3A0D400D3919C /* ReceiptClient.swift */,
 				6ACC6249235136070085A42F /* ResponseValidator.swift */,
 				6ACC624B235136070085A42F /* URLSessionManager.swift */,
@@ -288,7 +288,7 @@
 		6AE5FDD52315DABA007DD4AC /* Other */ = {
 			isa = PBXGroup;
 			children = (
-				6A53FBF123D32F7900E7D814 /* MockReceiptFetcher.swift */,
+				6A53FBF123D32F7900E7D814 /* MockReceiptURLFetcher.swift */,
 				6AD83A5D23D3A3AC00D3919C /* MockReceiptClient.swift */,
 				6A7DF298230602C4001CAEEF /* MockSessionManager.swift */,
 				6A53FBF323D32F8D00E7D814 /* MockResponseValidator.swift */,
@@ -479,7 +479,7 @@
 				6A53FBF023D32F1A00E7D814 /* ReceiptFetcherTests.swift in Sources */,
 				6A53FBE523D3259900E7D814 /* AutoRenewStatusTests.swift in Sources */,
 				6A4384AC222730C1009EF552 /* ReceiptValidatorTests.swift in Sources */,
-				6A53FBF223D32F7900E7D814 /* MockReceiptFetcher.swift in Sources */,
+				6A53FBF223D32F7900E7D814 /* MockReceiptURLFetcher.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -487,7 +487,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6ACC624E235136070085A42F /* ReceiptFetcher.swift in Sources */,
+				6ACC624E235136070085A42F /* ReceiptURLFetcher.swift in Sources */,
 				6ACC6256235136150085A42F /* ReceiptResponse.swift in Sources */,
 				6ACC6257235136150085A42F /* Receipt.swift in Sources */,
 				6ADEB8EB2200EF1300370C71 /* ReceiptValidator+Fetch.swift in Sources */,
