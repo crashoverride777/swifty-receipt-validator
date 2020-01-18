@@ -1,5 +1,5 @@
 //
-//  SwiftyReceiptPendingRenewalInfo+Fake.swift
+//  SwiftyReceiptPendingRenewalInfo+Mock.swift
 //  SwiftyReceiptValidatorTests
 //
 //  Created by Dominik Ringler on 27/08/2019.
@@ -11,7 +11,7 @@ import Foundation
 
 extension SwiftyReceiptPendingRenewalInfo {
     
-    static func fake(productId: String = "123",
+    static func mock(productId: String = "123",
                      autoRenewProductId: String = "abs") -> SwiftyReceiptPendingRenewalInfo {
         return SwiftyReceiptPendingRenewalInfo(
             productId: productId,

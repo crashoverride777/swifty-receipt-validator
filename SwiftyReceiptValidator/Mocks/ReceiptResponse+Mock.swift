@@ -11,7 +11,7 @@ import Foundation
 extension SRVReceiptResponse {
     
     public static func mock(
-        status: StatusCode = .valid,
+        status: SRVStatusCode = .valid,
         receipt: SRVReceipt? = .mock(),
         latestReceipt: Data? = nil,
         latestReceiptInfo: [SRVReceiptInApp]? = [.mock()],

@@ -1,18 +1,21 @@
 //
-//  SwiftyReceiptPendingRenewalInfoTests.swift
+//  AutoRenewStatusTests.swift
 //  SwiftyReceiptValidatorTests
 //
-//  Created by Dominik Ringler on 15/08/2019.
-//  Copyright © 2019 Dominik. All rights reserved.
+//  Created by Dominik Ringler on 18/01/2020.
+//  Copyright © 2020 Dominik. All rights reserved.
 //
 
 import XCTest
 @testable import SwiftyReceiptValidator
 
-class SwiftyReceiptPendingRenewalInfoTests: XCTestCase {
+class AutoRenewStatusTests: XCTestCase {
     
-    func test_pendingRenewalInfo_autoRenewStatus() {
+    func test_rawValue_off() {
         XCTAssertEqual(SwiftyReceiptPendingRenewalInfo.AutoRenewStatus.off.rawValue, "0")
+    }
+    
+    func test_rawValue_on() {
         XCTAssertEqual(SwiftyReceiptPendingRenewalInfo.AutoRenewStatus.on.rawValue, "1")
     }
 }

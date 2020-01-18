@@ -9,16 +9,16 @@
 import Foundation
 
 public enum SRVError: LocalizedError {
-    case invalidStatusCode(SRVReceiptResponse.StatusCode)
+    case invalidStatusCode(SRVStatusCode)
     case noReceiptFound
-    case noReceiptFoundInResponse(SRVReceiptResponse.StatusCode)
-    case bundleIdNotMatching(SRVReceiptResponse.StatusCode)
-    case productIdNotMatching(SRVReceiptResponse.StatusCode)
-    case noValidSubscription(SRVReceiptResponse.StatusCode?)
-    case cancelled(SRVReceiptResponse.StatusCode)
+    case noReceiptFoundInResponse(SRVStatusCode)
+    case bundleIdNotMatching(SRVStatusCode)
+    case productIdNotMatching(SRVStatusCode)
+    case noValidSubscription(SRVStatusCode?)
+    case cancelled(SRVStatusCode)
     case other(Error)
     
-    public var statusCode: SRVReceiptResponse.StatusCode? {
+    public var statusCode: SRVStatusCode? {
         switch self {
         case .invalidStatusCode(let statusCode):
             return statusCode

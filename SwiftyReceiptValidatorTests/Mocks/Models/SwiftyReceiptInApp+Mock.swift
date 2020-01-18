@@ -1,5 +1,5 @@
 //
-//  SwiftyReceiptInApp+Fake.swift
+//  SwiftyReceiptInApp+Mock.swift
 //  SwiftyReceiptValidatorTests
 //
 //  Created by Dominik Ringler on 27/08/2019.
@@ -11,7 +11,7 @@ import Foundation
 
 extension SwiftyReceiptInApp {
     
-    static func fake(isTrialPeriod: String = "false", isInIntroOfferPeriod: String = "false") -> SwiftyReceiptInApp {
+    static func mock(isTrialPeriod: String = "false", isInIntroOfferPeriod: String = "false") -> SwiftyReceiptInApp {
         let inApp = SwiftyReceiptResponse.fake(.subscription).receipt!.inApp.first!
         return SwiftyReceiptInApp(
             quantity: inApp.quantity,

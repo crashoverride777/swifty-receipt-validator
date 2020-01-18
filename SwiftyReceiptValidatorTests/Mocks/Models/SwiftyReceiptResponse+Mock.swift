@@ -1,5 +1,5 @@
 //
-//  SwiftyReceiptResponse+Fake.swift
+//  SwiftyReceiptResponse+Mock.swift
 //  SwiftyReceiptValidatorTests
 //
 //  Created by Dominik Ringler on 15/08/2019.
@@ -28,7 +28,7 @@ extension SwiftyReceiptResponse {
         }
     }
     
-    static func fake(_ type: JSONType) -> SwiftyReceiptResponse {
+    static func mock(_ type: JSONType) -> SwiftyReceiptResponse {
         guard let path = Bundle(for: MockSessionManager.self).path(forResource: type.name, ofType: "json") else {
             fatalError("Invalid path to JSON file in bundle")
         }
