@@ -1,5 +1,5 @@
 //
-//  SwiftyReceiptValidatorPublisherTests.swift
+//  ReceiptValidatorPublisherTests.swift
 //  SwiftyReceiptValidatorTests
 //
 //  Created by Dominik Ringler on 27/02/2019.
@@ -11,7 +11,7 @@ import Combine
 @testable import SwiftyReceiptValidator
 
 @available(iOS 13.0, *)
-class SwiftyReceiptValidatorPublisherTests: SwiftyReceiptValidatorTests {
+class ReceiptValidatorPublisherTests: ReceiptValidatorTests {
     
     // MARK: - Properties
     

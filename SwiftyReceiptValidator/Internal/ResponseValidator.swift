@@ -34,7 +34,7 @@ extension ResponseValidator: ResponseValidatorType {
         runBasicValidation(for: response) { result in
             switch result {
             case .success:
-                guard let receipt = response.receipt?.inApp.first(where: { $0.productId == productId }) else {
+                guard let receiptInApp = response.receipt?.inApp.first(where: { $0.productId == productId }) else {
                     handler(.failure(.productIdNotMatching(response.status)))
                     return
                 }
@@ -46,7 +46,7 @@ extension ResponseValidator: ResponseValidatorType {
                  providing content or service, treat a canceled transaction the same as if no purchase
                  had ever been made.
                  */
-                guard receipt.cancellationDate == nil else {
+                guard receiptInApp.cancellationDate == nil else {
                     handler(.failure(.cancelled(response.status)))
                     return
                 }
@@ -84,12 +84,7 @@ extension ResponseValidator: ResponseValidatorType {
 
 private extension ResponseValidator {
     
-    enum BasicValidationResult {
-        case success
-        case failure(SRVError)
-    }
-    
-    func runBasicValidation(for response: SRVReceiptResponse, handler: (BasicValidationResult) -> ()) {
+    func runBasicValidation(for response: SRVReceiptResponse, handler: (Result<Void, SRVError>) -> ()) {
         // Check receipt status code is valid
         guard response.status.isValid else {
             handler(.failure(.invalidStatusCode(response.status)))
@@ -108,6 +103,6 @@ private extension ResponseValidator {
             return
         }
         
-        handler(.success)
+        handler(.success(()))
     }
 }

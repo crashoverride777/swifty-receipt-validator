@@ -1,5 +1,5 @@
 //
-//  SwiftyReceiptValidator.swift
+//  ReceiptValidator.swift
 //  SwiftyReceiptValidator
 //
 //  Created by Dominik Ringler on 09/08/2017.
@@ -9,7 +9,7 @@
 /*
  The MIT License (MIT)
  
- Copyright (c) 2016-2019 Dominik Ringler
+ Copyright (c) 2016-2020 Dominik Ringler
  
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -43,7 +43,7 @@ public final class SwiftyReceiptValidator: NSObject {
     // MARK: - Properties
 
     let configuration: SRVConfiguration
-    let receiptFetcher: BundleReceiptFetcherType
+    let receiptFetcher: ReceiptFetcherType
     let sessionManager: URLSessionManagerType
     let responseValidator: ResponseValidatorType
     private let isLoggingEnabled: Bool
@@ -56,7 +56,7 @@ public final class SwiftyReceiptValidator: NSObject {
     /// - parameter isLoggingEnabled: Display logging events if true. Defaults to false.
     public init(configuration: SRVConfiguration, isLoggingEnabled: Bool = false) {
         self.configuration = configuration
-        self.receiptFetcher = BundleReceiptFetcher(
+        self.receiptFetcher = ReceiptFetcher(
             appStoreReceiptURL: { Bundle.main.appStoreReceiptURL },
             fileManager: .default
         )
@@ -67,7 +67,7 @@ public final class SwiftyReceiptValidator: NSObject {
     
     // Internal only (testing)
     init(configuration: SRVConfiguration,
-         receiptFetcher: BundleReceiptFetcherType,
+         receiptFetcher: ReceiptFetcherType,
          sessionManager: URLSessionManagerType,
          responseValidator: ResponseValidatorType) {
         self.configuration = configuration

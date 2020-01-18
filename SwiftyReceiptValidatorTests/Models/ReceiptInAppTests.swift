@@ -76,7 +76,7 @@ class ReceiptInAppTests: XCTestCase {
     }
 
     func test_canShowIntroductoryPrice_returnsTrue() {
-        let sut: SRVReceiptInApp = .mock()
+        let sut: SRVReceiptInApp = .mock(isTrialPeriod: "false", isInIntroOfferPeriod: "false")
         XCTAssertTrue(sut.canShowIntroductoryPrice)
     }
 }

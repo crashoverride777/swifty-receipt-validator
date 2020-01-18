@@ -8,29 +8,29 @@
 
 import StoreKit
 
-typealias BundleReceiptFetcherHandler = (Result<URL, Error>) -> Void
+typealias ReceiptFetcherResultHandler = (Result<URL, Error>) -> Void
 
-protocol BundleReceiptFetcherReceiptRefreshRequestType {
+protocol ReceiptFetcherReceiptRefreshRequestType {
     var delegate: SKRequestDelegate? { get set }
     func cancel()
     func start()
 }
 
-protocol BundleReceiptFetcherType {
-    func fetch(refreshRequest: BundleReceiptFetcherReceiptRefreshRequestType?, handler: @escaping BundleReceiptFetcherHandler)
+protocol ReceiptFetcherType {
+    func fetch(refreshRequest: ReceiptFetcherReceiptRefreshRequestType?, handler: @escaping ReceiptFetcherResultHandler)
 }
 
-extension SKReceiptRefreshRequest: BundleReceiptFetcherReceiptRefreshRequestType { }
+extension SKReceiptRefreshRequest: ReceiptFetcherReceiptRefreshRequestType { }
 
-final class BundleReceiptFetcher: NSObject {
+final class ReceiptFetcher: NSObject {
     
     // MARK: - Properties
 
     private let appStoreReceiptURL: () -> URL?
     private let fileManager: FileManager
     
-    private var receiptHandler: BundleReceiptFetcherHandler?
-    private var receiptRefreshRequest: BundleReceiptFetcherReceiptRefreshRequestType?
+    private var receiptHandler: ReceiptFetcherResultHandler?
+    private var receiptRefreshRequest: ReceiptFetcherReceiptRefreshRequestType?
     
     // MARK: - Computed Properties
     
@@ -50,11 +50,11 @@ final class BundleReceiptFetcher: NSObject {
     }
 }
 
-// MARK: - BundleReceiptFetcherType
+// MARK: - ReceiptFetcherType
 
-extension BundleReceiptFetcher: BundleReceiptFetcherType {
+extension ReceiptFetcher: ReceiptFetcherType {
     
-    func fetch(refreshRequest: BundleReceiptFetcherReceiptRefreshRequestType?, handler: @escaping BundleReceiptFetcherHandler) {
+    func fetch(refreshRequest: ReceiptFetcherReceiptRefreshRequestType?, handler: @escaping ReceiptFetcherResultHandler) {
         receiptHandler = handler
         
         defer {
@@ -78,7 +78,7 @@ extension BundleReceiptFetcher: BundleReceiptFetcherType {
 
 // MARK: - SKRequestDelegate
 
-extension BundleReceiptFetcher: SKRequestDelegate {
+extension ReceiptFetcher: SKRequestDelegate {
     
     func requestDidFinish(_ request: SKRequest) {
         defer {
@@ -101,7 +101,7 @@ extension BundleReceiptFetcher: SKRequestDelegate {
 
 // MARK: - Private Methods
 
-private extension BundleReceiptFetcher {
+private extension ReceiptFetcher {
     
     func clean() {
         receiptHandler = nil

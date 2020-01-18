@@ -1,5 +1,5 @@
 //
-//  SwiftyReceiptValidatorTests.swift
+//  ReceiptValidatorTests.swift
 //  SwiftyReceiptValidatorTests
 //
 //  Created by Dominik Ringler on 27/02/2019.
@@ -10,7 +10,7 @@ import XCTest
 import Combine
 @testable import SwiftyReceiptValidator
 
-class SwiftyReceiptValidatorTests: XCTestCase {
+class ReceiptValidatorTests: XCTestCase {
     
     // MARK: - Properties
     
@@ -237,7 +237,7 @@ class SwiftyReceiptValidatorTests: XCTestCase {
 
 // MARK: - Internal Methods
 
-extension SwiftyReceiptValidatorTests {
+extension ReceiptValidatorTests {
     
     func makeSUT(configuration: SRVConfiguration = .standard) -> SwiftyReceiptValidator {
         SwiftyReceiptValidator(

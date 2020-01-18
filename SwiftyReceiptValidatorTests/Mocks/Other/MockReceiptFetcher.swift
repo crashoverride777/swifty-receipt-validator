@@ -15,17 +15,17 @@ final class MockReceiptFetcher {
     }
     
     struct Mock {
-        var refreshRequest: BundleReceiptFetcherReceiptRefreshRequestType? = nil
+        var refreshRequest: ReceiptFetcherReceiptRefreshRequestType? = nil
     }
     
     var stub = Stub()
     private(set) var mock = Mock()
 }
 
-extension MockReceiptFetcher: BundleReceiptFetcherType {
+extension MockReceiptFetcher: ReceiptFetcherType {
     
-    func fetch(refreshRequest: BundleReceiptFetcherReceiptRefreshRequestType?,
-               handler: @escaping BundleReceiptFetcherHandler) {
+    func fetch(refreshRequest: ReceiptFetcherReceiptRefreshRequestType?,
+               handler: @escaping ReceiptFetcherResultHandler) {
         mock.refreshRequest = refreshRequest
         handler(stub.fetchResult)
     }

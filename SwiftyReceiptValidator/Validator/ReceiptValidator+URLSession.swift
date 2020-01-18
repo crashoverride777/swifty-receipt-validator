@@ -1,5 +1,5 @@
 //
-//  SwiftyReceiptValidator+URLSession.swift
+//  ReceiptValidator+URLSession.swift
 //  SwiftyReceiptValidator
 //
 //  Created by Dominik Ringler on 29/01/2019.

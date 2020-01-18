@@ -103,8 +103,8 @@ class BundleReceiptFetcherTests: XCTestCase {
 
 private extension BundleReceiptFetcherTests {
     
-    func makeSUT(appStoreReceiptURL: URL = .test) -> BundleReceiptFetcher {
-        BundleReceiptFetcher(
+    func makeSUT(appStoreReceiptURL: URL = .test) -> ReceiptFetcher {
+        ReceiptFetcher(
             appStoreReceiptURL: { appStoreReceiptURL },
             fileManager: fileManager
         )
