@@ -14,7 +14,12 @@ final class MockSessionManager {
         var start: (Result<SRVReceiptResponse, Error>) = .success(.mock())
     }
     
+    struct Mock {
+        var start: (urlString: String, parameters: [AnyHashable : Any])? = nil
+    }
+    
     var stub = Stub()
+    private(set) var mock = Mock()
 }
 
 extension MockSessionManager: URLSessionManagerType {
@@ -22,6 +27,7 @@ extension MockSessionManager: URLSessionManagerType {
     func start(with urlString: String,
                parameters: [AnyHashable : Any],
                handler: @escaping (Result<SRVReceiptResponse, Error>) -> Void) {
+        mock.start = (urlString: urlString, parameters: parameters)
         handler(stub.start)
     }
 }
