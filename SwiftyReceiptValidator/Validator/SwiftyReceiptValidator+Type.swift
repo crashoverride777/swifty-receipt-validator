@@ -10,16 +10,12 @@ import Foundation
 import Combine
 
 public protocol SwiftyReceiptValidatorType {
-    // MARK: Purchases
-    
     @available(iOS 13, *)
     func validatePurchasePublisher(forId productId: String, sharedSecret: String?) -> AnyPublisher<SRVReceiptResponse, SRVError>
     func validatePurchase(forId productId: String,
                           sharedSecret: String?,
                           handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void)
    
-    // MARK: Subscriptions
-    
     @available(iOS 13, *)
     func validateSubscriptionPublisher(sharedSecret: String?,
                                        refreshLocalReceiptIfNeeded: Bool,
@@ -28,8 +24,6 @@ public protocol SwiftyReceiptValidatorType {
                               refreshLocalReceiptIfNeeded: Bool,
                               excludeOldTransactions: Bool,
                               handler: @escaping (Result<SRVSubscriptionValidationResponse, SRVError>) -> Void)
-    
-    // MARK: Fetch Only
     
     @available(iOS 13, *)
     func fetchPublisher(sharedSecret: String?,
@@ -54,14 +48,7 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
     public func validatePurchasePublisher(forId productId: String,
                                           sharedSecret: String?) -> AnyPublisher<SRVReceiptResponse, SRVError> {
         return Future { [weak self] promise in
-            self?.validatePurchase(forId: productId, sharedSecret: sharedSecret) { result in
-                switch result {
-                case .success(let response):
-                    promise(.success(response))
-                case .failure(let error):
-                    promise(.failure(error))
-                }
-            }
+            self?.validatePurchase(forId: productId, sharedSecret: sharedSecret, handler: promise)
         }.eraseToAnyPublisher()
     }
    
@@ -105,14 +92,7 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
                  sharedSecret: sharedSecret,
                  refreshLocalReceiptIfNeeded: refreshLocalReceiptIfNeeded,
                  excludeOldTransactions: excludeOldTransactions,
-                 handler: ({ result in
-                     switch result {
-                     case .success(let response):
-                         promise(.success(response))
-                     case .failure(let error):
-                         promise(.failure(error))
-                     }
-                 })
+                 handler: promise
              )
          }.eraseToAnyPublisher()
      }
@@ -128,27 +108,30 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
         refreshLocalReceiptIfNeeded: Bool,
         excludeOldTransactions: Bool,
         handler: @escaping (Result<SRVSubscriptionValidationResponse, SRVError>) -> Void) {
-        urlSessionRequest(sharedSecret: sharedSecret,
-                          refreshLocalReceiptIfNeeded: refreshLocalReceiptIfNeeded,
-                          excludeOldTransactions: excludeOldTransactions) { [weak self] result in
-            switch result {
-            case .success(let response):
-                self?.responseValidator.validateSubscription(in: response) { result in
-                    switch result {
-                    case .success(let nestedResponse):
-                        let responseModel = SRVSubscriptionValidationResponse(
-                            validReceipts: nestedResponse.validSubscriptionReceipts,
-                            pendingRenewalInfo: nestedResponse.pendingRenewalInfo
-                        )
-                        handler(.success(responseModel))
-                    case .failure(let error):
-                        handler(.failure(error))
+        urlSessionRequest(
+            sharedSecret: sharedSecret,
+            refreshLocalReceiptIfNeeded: refreshLocalReceiptIfNeeded,
+            excludeOldTransactions: excludeOldTransactions,
+            handler: ({ [weak self] result in
+                switch result {
+                case .success(let response):
+                    self?.responseValidator.validateSubscription(in: response) { result in
+                        switch result {
+                        case .success(let nestedResponse):
+                            let responseModel = SRVSubscriptionValidationResponse(
+                                validReceipts: nestedResponse.validSubscriptionReceipts,
+                                pendingRenewalInfo: nestedResponse.pendingRenewalInfo
+                            )
+                            handler(.success(responseModel))
+                        case .failure(let error):
+                            handler(.failure(error))
+                        }
                     }
+                case .failure(let error):
+                    handler(.failure(error))
                 }
-            case .failure(let error):
-                handler(.failure(error))
-            }
-        }
+            })
+        )
     }
 
     // MARK: Fetch Only
@@ -167,14 +150,7 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
                 sharedSecret: sharedSecret,
                 refreshLocalReceiptIfNeeded: refreshLocalReceiptIfNeeded,
                 excludeOldTransactions: excludeOldTransactions,
-                handler: ({ result in
-                    switch result {
-                    case .success(let nestedResponse):
-                        promise(.success(nestedResponse))
-                    case .failure(let error):
-                        promise(.failure(error))
-                    }
-                })
+                handler: promise
             )
         }.eraseToAnyPublisher()
     }
