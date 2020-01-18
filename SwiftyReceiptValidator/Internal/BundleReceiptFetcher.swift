@@ -18,16 +18,27 @@ final class BundleReceiptFetcher: NSObject {
     
     // MARK: - Properties
 
+    private let appStoreReceiptURL: () -> URL?
+    private let fileManager: FileManager
+    
     private var receiptHandler: BundleReceiptFetcherHandler?
-    private let receiptURL = Bundle.main.appStoreReceiptURL
     private var receiptRefreshRequest: SKReceiptRefreshRequest?
     
+    // MARK: - Computed Properties
+    
     private var hasReceipt: Bool {
-        guard let path = receiptURL?.path else {
+        guard let path = appStoreReceiptURL()?.path else {
             return false
         }
         
-        return FileManager.default.fileExists(atPath: path)
+        return fileManager.fileExists(atPath: path)
+    }
+    
+    // MARK: - Init
+    
+    init(appStoreReceiptURL: @escaping () -> URL?, fileManager: FileManager) {
+        self.appStoreReceiptURL = appStoreReceiptURL
+        self.fileManager = fileManager
     }
 }
 
@@ -42,7 +53,7 @@ extension BundleReceiptFetcher: BundleReceiptFetcherType {
             clean()
         }
         
-        guard hasReceipt, let receiptURL = receiptURL else {
+        guard hasReceipt, let appStoreReceiptURL = appStoreReceiptURL() else {
             if requestRefreshIfNoneFound {
                 receiptRefreshRequest = SKReceiptRefreshRequest(receiptProperties: nil)
                 receiptRefreshRequest?.delegate = self
@@ -53,7 +64,7 @@ extension BundleReceiptFetcher: BundleReceiptFetcherType {
             return
         }
         
-        handler(.success(receiptURL))
+        handler(.success(appStoreReceiptURL))
     }
 }
 
@@ -66,12 +77,12 @@ extension BundleReceiptFetcher: SKRequestDelegate {
             clean()
         }
         
-        guard hasReceipt, let receiptURL = receiptURL else {
+        guard hasReceipt, let appStoreReceiptURL = appStoreReceiptURL() else {
             receiptHandler?(.failure(SRVError.noReceiptFound))
             return
         }
         
-        receiptHandler?(.success(receiptURL))
+        receiptHandler?(.success(appStoreReceiptURL))
     }
     
     func request(_ request: SKRequest, didFailWithError error: Error) {

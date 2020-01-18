@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct SRVSubscriptionValidationResponse {
+public struct SRVSubscriptionValidationResponse: Equatable {
     public let validReceipts: [SRVReceiptInApp]
     public let pendingRenewalInfo: [SRVPendingRenewalInfo]?
 }

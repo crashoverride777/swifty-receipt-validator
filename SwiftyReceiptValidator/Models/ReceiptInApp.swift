@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct SRVReceiptInApp: Codable {
+public struct SRVReceiptInApp: Codable, Equatable {
     // The number of items purchased.
     // This value corresponds to the quantity property of the SKPayment object stored in the transaction’s payment property.
     public let quantity: String

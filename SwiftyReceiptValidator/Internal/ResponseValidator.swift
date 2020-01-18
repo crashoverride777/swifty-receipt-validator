@@ -17,7 +17,11 @@ protocol ResponseValidatorType: AnyObject {
 }
 
 final class ResponseValidator {
-
+    private let bundle: Bundle
+    
+    init(bundle: Bundle) {
+        self.bundle = bundle
+    }
 }
 
 // MARK: - ResponseValidatorType
@@ -87,7 +91,7 @@ private extension ResponseValidator {
     
     func runBasicValidation(for response: SRVReceiptResponse, handler: (BasicValidationResult) -> ()) {
         // Check receipt status code is valid
-        guard response.status == .valid else {
+        guard response.status == .valid || response.status == .subscriptionExpired else {
             handler(.failure(.invalidStatusCode(response.status)))
             return
         }
@@ -99,7 +103,7 @@ private extension ResponseValidator {
         }
        
         // Check receipt contains correct bundle id
-        guard receipt.bundleId == Bundle.main.bundleIdentifier else {
+        guard receipt.bundleId == bundle.bundleIdentifier else {
             handler(.failure(.bundleIdNotMatching(response.status)))
             return
         }

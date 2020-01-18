@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct SRVReceipt: Codable {
+public struct SRVReceipt: Codable, Equatable {
     // The type of receipt
     public let receiptType: String
     // The adam id of the receipt

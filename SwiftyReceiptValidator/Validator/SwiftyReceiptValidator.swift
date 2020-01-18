@@ -83,9 +83,12 @@ public final class SwiftyReceiptValidator: NSObject {
     /// - parameter isLoggingEnabled: Display logging events if true. Defaults to false.
     public init(configuration: Configuration, isLoggingEnabled: Bool = false) {
         self.configuration = configuration
-        self.receiptFetcher = BundleReceiptFetcher()
+        self.receiptFetcher = BundleReceiptFetcher(
+            appStoreReceiptURL: { Bundle.main.appStoreReceiptURL },
+            fileManager: .default
+        )
         self.sessionManager = URLSessionManager(sessionConfiguration: configuration.sessionConfiguration)
-        self.responseValidator = ResponseValidator()
+        self.responseValidator = ResponseValidator(bundle: .main)
         self.isLoggingEnabled = isLoggingEnabled
     }
     

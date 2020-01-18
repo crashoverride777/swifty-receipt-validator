@@ -29,14 +29,14 @@ extension SRVReceiptResponse {
     }
     
     static func mock(
-        status: SRVStatusCode = .valid,
+        statusCode: SRVStatusCode = .valid,
         receipt: SRVReceipt? = .mock(),
         latestReceipt: Data? = nil,
         latestReceiptInfo: [SRVReceiptInApp]? = [.mock()],
         pendingRenewalInfo: [SRVPendingRenewalInfo]? = [.mock()],
         environment: String? = nil) -> SRVReceiptResponse {
         SRVReceiptResponse(
-            status: status,
+            status: statusCode,
             receipt: receipt,
             latestReceipt: latestReceipt,
             latestReceiptInfo: latestReceiptInfo,
