@@ -60,7 +60,7 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
     public func validatePurchase(forId productId: String,
                                  sharedSecret: String?,
                                  handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void) {
-        urlSessionRequest(
+        fetchReceipt(
             sharedSecret: sharedSecret,
             refreshLocalReceiptIfNeeded: true,
             excludeOldTransactions: false,
@@ -108,7 +108,7 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
         refreshLocalReceiptIfNeeded: Bool,
         excludeOldTransactions: Bool,
         handler: @escaping (Result<SRVSubscriptionValidationResponse, SRVError>) -> Void) {
-        urlSessionRequest(
+        fetchReceipt(
             sharedSecret: sharedSecret,
             refreshLocalReceiptIfNeeded: refreshLocalReceiptIfNeeded,
             excludeOldTransactions: excludeOldTransactions,
@@ -165,7 +165,7 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
                       refreshLocalReceiptIfNeeded: Bool,
                       excludeOldTransactions: Bool,
                       handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void) {
-        urlSessionRequest(
+        fetchReceipt(
             sharedSecret: sharedSecret,
             refreshLocalReceiptIfNeeded: refreshLocalReceiptIfNeeded,
             excludeOldTransactions: excludeOldTransactions,

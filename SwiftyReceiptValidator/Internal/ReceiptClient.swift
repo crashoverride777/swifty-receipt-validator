@@ -1,47 +1,12 @@
 //
-//  ReceiptValidator+URLSession.swift
+//  ReceiptClient.swift
 //  SwiftyReceiptValidator
 //
-//  Created by Dominik Ringler on 29/01/2019.
-//  Copyright © 2019 Dominik. All rights reserved.
+//  Created by Dominik Ringler on 18/01/2020.
+//  Copyright © 2020 Dominik. All rights reserved.
 //
 
 import Foundation
-import StoreKit
-
-extension SwiftyReceiptValidator {
-    
-    func urlSessionRequest(sharedSecret: String?,
-                           refreshLocalReceiptIfNeeded: Bool,
-                           excludeOldTransactions: Bool,
-                           handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void) {
-        receiptFetcher.fetch(
-            refreshRequest: refreshLocalReceiptIfNeeded ? SKReceiptRefreshRequest(receiptProperties: nil) : nil
-        ) { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let receiptURL):
-                do {
-                    let receiptData = try Data(contentsOf: receiptURL)
-                    self.startURLSession(
-                        with: receiptData,
-                        sharedSecret: sharedSecret,
-                        excludeOldTransactions: excludeOldTransactions,
-                        handler: handler
-                    )
-                } catch {
-                    self.print(error)
-                    handler(.failure(.other(error)))
-                }
-            case .failure(let error):
-                self.print(error)
-                handler(.failure(.other(error)))
-            }
-        }
-    }
-}
-
-// MARK: - Private
 
 private enum ParamsKey: String {
     case data = "receipt-data"
@@ -49,7 +14,57 @@ private enum ParamsKey: String {
     case password
 }
 
-private extension SwiftyReceiptValidator {
+protocol ReceiptClientType {
+    func fetch(with receiptURL: URL,
+               sharedSecret: String?,
+               excludeOldTransactions: Bool,
+               handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void)
+}
+
+final class ReceiptClient {
+    
+    // MARK: - Properties
+    
+    private let configuration: SRVConfiguration
+    private let sessionManager: URLSessionManagerType
+    private let isLoggingEnabled: Bool
+    
+    // MARK: - Init
+    
+    init(configuration: SRVConfiguration,
+         sessionManager: URLSessionManagerType,
+         isLoggingEnabled: Bool) {
+        self.configuration = configuration
+        self.sessionManager = sessionManager
+        self.isLoggingEnabled = isLoggingEnabled
+    }
+}
+
+// MARK: - ReceiptClientType
+
+extension ReceiptClient: ReceiptClientType {
+    
+    func fetch(with receiptURL: URL,
+                      sharedSecret: String?,
+                      excludeOldTransactions: Bool,
+                      handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void) {
+        do {
+            let receiptData = try Data(contentsOf: receiptURL)
+            self.startURLSession(
+                with: receiptData,
+                sharedSecret: sharedSecret,
+                excludeOldTransactions: excludeOldTransactions,
+                handler: handler
+            )
+        } catch {
+            handler(.failure(.other(error)))
+        }
+    }
+}
+
+// MARK: - Private Methods
+
+private extension ReceiptClient {
     
     func startURLSession(with receiptData: Data,
                          sharedSecret: String?,
@@ -88,11 +103,6 @@ private extension SwiftyReceiptValidator {
             }
         }
     }
-}
-
-// MARK: - Private Methods
-
-private extension SwiftyReceiptValidator {
     
     func startSandboxRequest(parameters: [AnyHashable: Any], handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void) {
         sessionManager.start(with: configuration.sandboxURL, parameters: parameters) { [weak self] result in
@@ -106,5 +116,12 @@ private extension SwiftyReceiptValidator {
                 handler(.failure(.other(error)))
             }
         }
+    }
+    
+    func print(_ items: Any...) {
+        guard isLoggingEnabled else {
+            return
+        }
+        Swift.print(items[0])
     }
 }
