@@ -230,10 +230,9 @@ private extension ResponseValidatorTests {
         return ResponseValidator(bundle: bundle)
     }
     
-    func makeResponse(
-        statusCode: SRVStatusCode = .valid,
-        productId: String = "1",
-        cancellationDate: Date? = nil) -> SRVReceiptResponse {
+    func makeResponse(statusCode: SRVStatusCode = .valid,
+                      productId: String = "1",
+                      cancellationDate: Date? = nil) -> SRVReceiptResponse {
         .mock(
             statusCode: statusCode,
             receipt: .mock(inApp: [.mock(productId: productId, cancellationDate: cancellationDate)]),
