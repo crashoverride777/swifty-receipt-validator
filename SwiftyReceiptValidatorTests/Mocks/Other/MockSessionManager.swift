@@ -11,7 +11,7 @@ import Foundation
 
 final class MockSessionManager {
     struct Stub {
-        var start: (Result<SwiftyReceiptResponse, Error>) = .success(.fake(.subscription))
+        var start: (Result<SRVReceiptResponse, Error>) = .success(.mock())
     }
     
     var stub = Stub()
@@ -21,7 +21,7 @@ extension MockSessionManager: URLSessionManagerType {
     
     func start(with urlString: String,
                parameters: [AnyHashable : Any],
-               handler: @escaping (Result<SwiftyReceiptResponse, Error>) -> Void) {
+               handler: @escaping (Result<SRVReceiptResponse, Error>) -> Void) {
         handler(stub.start)
     }
 }

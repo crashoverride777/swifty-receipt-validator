@@ -7,10 +7,11 @@
 //
 
 import Foundation
+@testable import SwiftyReceiptValidator
 
 extension SRVReceipt {
     
-    public static func mock(
+    static func mock(
         receiptType: String = "subscription",
         adamId: Int = 1,
         appItemId: Int = 2,

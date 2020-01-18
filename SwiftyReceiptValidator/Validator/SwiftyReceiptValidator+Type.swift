@@ -42,13 +42,13 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
                                  sharedSecret: String?,
                                  handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void) {
         urlSessionRequest(
-            sharedSecret: nil,
+            sharedSecret: sharedSecret,
             refreshLocalReceiptIfNeeded: true,
             excludeOldTransactions: false,
             handler: ({ [weak self] result in
                 switch result {
                 case .success(let response):
-                    self?.validator.validatePurchase(forProductId: productId, in: response, handler: handler)
+                    self?.responseValidator.validatePurchase(forProductId: productId, in: response, handler: handler)
                 case .failure(let error):
                     handler(.failure(error))
                 }
@@ -101,7 +101,7 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
                           excludeOldTransactions: excludeOldTransactions) { [weak self] result in
             switch result {
             case .success(let response):
-                self?.validator.validateSubscription(in: response) { result in
+                self?.responseValidator.validateSubscription(in: response) { result in
                     switch result {
                     case .success(let nestedResponse):
                         let responseModel = SRVSubscriptionValidationResponse(
@@ -157,9 +157,11 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
                       refreshLocalReceiptIfNeeded: Bool,
                       excludeOldTransactions: Bool,
                       handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void) {
-        urlSessionRequest(sharedSecret: sharedSecret,
-                          refreshLocalReceiptIfNeeded: refreshLocalReceiptIfNeeded,
-                          excludeOldTransactions: excludeOldTransactions,
-                          handler: handler)
+        urlSessionRequest(
+            sharedSecret: sharedSecret,
+            refreshLocalReceiptIfNeeded: refreshLocalReceiptIfNeeded,
+            excludeOldTransactions: excludeOldTransactions,
+            handler: handler
+        )
     }
 }

@@ -7,10 +7,11 @@
 //
 
 import Foundation
+@testable import SwiftyReceiptValidator
 
 extension SRVPendingRenewalInfo {
     
-    public static func mock(
+    static func mock(
         productId: String? = UUID().uuidString,
         autoRenewProductId: String? = UUID().uuidString,
         originalTransactionId: String? = UUID().uuidString,

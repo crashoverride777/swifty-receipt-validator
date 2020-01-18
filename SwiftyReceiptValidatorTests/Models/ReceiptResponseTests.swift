@@ -11,21 +11,6 @@ import XCTest
 
 class ReceiptResponseTests: XCTestCase {
     
-    // MARK: - Properties
-    
-    private var sut: SwiftyReceiptResponse!
-    
-    // MARK: - Life Cycle
-    
-    override func setUp() {
-        super.setUp()
-        sut = .fake(.subscription)
-    }
-    
-    override func tearDown() {
-        sut = nil
-        super.tearDown()
-    }
     #warning("add tests/finish")
     // MARK: - Tests
     

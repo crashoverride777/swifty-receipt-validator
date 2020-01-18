@@ -12,10 +12,10 @@ import XCTest
 class AutoRenewStatusTests: XCTestCase {
     
     func test_rawValue_off() {
-        XCTAssertEqual(SwiftyReceiptPendingRenewalInfo.AutoRenewStatus.off.rawValue, "0")
+        XCTAssertEqual(SRVAutoRenewStatus.off.rawValue, "0")
     }
     
     func test_rawValue_on() {
-        XCTAssertEqual(SwiftyReceiptPendingRenewalInfo.AutoRenewStatus.on.rawValue, "1")
+        XCTAssertEqual(SRVAutoRenewStatus.on.rawValue, "1")
     }
 }

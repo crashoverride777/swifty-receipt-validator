@@ -28,7 +28,7 @@ enum LocalizedString {
 private extension LocalizedString {
     
     static func localized(_ text: String, comment: String) -> String {
-        return NSLocalizedString(
+        NSLocalizedString(
             text, tableName: nil,
             bundle: Bundle(for: SwiftyReceiptValidator.self),
             value: "",

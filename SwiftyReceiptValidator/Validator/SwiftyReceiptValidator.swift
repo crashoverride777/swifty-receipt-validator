@@ -42,7 +42,7 @@ public final class SwiftyReceiptValidator: NSObject {
    
     // MARK: - Types
     
-    public struct Configuration {
+    public struct Configuration: Equatable {
         let productionURL: String
         let sandboxURL: String
         let sessionConfiguration: URLSessionConfiguration
@@ -72,7 +72,7 @@ public final class SwiftyReceiptValidator: NSObject {
     let configuration: Configuration
     let receiptFetcher: BundleReceiptFetcherType
     let sessionManager: URLSessionManagerType
-    let validator: ResponseValidatorType
+    let responseValidator: ResponseValidatorType
     private let isLoggingEnabled: Bool
     
     // MARK: - Init
@@ -85,7 +85,7 @@ public final class SwiftyReceiptValidator: NSObject {
         self.configuration = configuration
         self.receiptFetcher = BundleReceiptFetcher()
         self.sessionManager = URLSessionManager(sessionConfiguration: configuration.sessionConfiguration)
-        self.validator = ResponseValidator()
+        self.responseValidator = ResponseValidator()
         self.isLoggingEnabled = isLoggingEnabled
     }
     
@@ -93,11 +93,11 @@ public final class SwiftyReceiptValidator: NSObject {
     init(configuration: Configuration,
          receiptFetcher: BundleReceiptFetcherType,
          sessionManager: URLSessionManagerType,
-         validator: ResponseValidatorType) {
+         responseValidator: ResponseValidatorType) {
         self.configuration = configuration
         self.receiptFetcher = receiptFetcher
         self.sessionManager = sessionManager
-        self.validator = validator
+        self.responseValidator = responseValidator
         self.isLoggingEnabled = false
     }
     

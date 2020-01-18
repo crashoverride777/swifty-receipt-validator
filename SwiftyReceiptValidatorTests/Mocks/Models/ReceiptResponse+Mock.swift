@@ -1,15 +1,15 @@
 //
-//  SwiftyReceiptResponse+Mock.swift
-//  SwiftyReceiptValidatorTests
+//  ReceiptResponse+Mock.swift
+//  SwiftyReceiptValidator
 //
-//  Created by Dominik Ringler on 15/08/2019.
+//  Created by Dominik Ringler on 25/11/2019.
 //  Copyright © 2019 Dominik. All rights reserved.
 //
 
 import Foundation
 @testable import SwiftyReceiptValidator
 
-extension SwiftyReceiptResponse {
+extension SRVReceiptResponse {
     
     enum JSONType {
         case invalid
@@ -28,14 +28,31 @@ extension SwiftyReceiptResponse {
         }
     }
     
-    static func mock(_ type: JSONType) -> SwiftyReceiptResponse {
+    static func mock(
+        status: SRVStatusCode = .valid,
+        receipt: SRVReceipt? = .mock(),
+        latestReceipt: Data? = nil,
+        latestReceiptInfo: [SRVReceiptInApp]? = [.mock()],
+        pendingRenewalInfo: [SRVPendingRenewalInfo]? = [.mock()],
+        environment: String? = nil) -> SRVReceiptResponse {
+        SRVReceiptResponse(
+            status: status,
+            receipt: receipt,
+            latestReceipt: latestReceipt,
+            latestReceiptInfo: latestReceiptInfo,
+            pendingRenewalInfo: pendingRenewalInfo,
+            environment: environment
+        )
+    }
+    
+    static func mock(_ type: JSONType) -> SRVReceiptResponse {
         guard let path = Bundle(for: MockSessionManager.self).path(forResource: type.name, ofType: "json") else {
             fatalError("Invalid path to JSON file in bundle")
         }
         
         do {
             let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
-            let receiptResponse = try JSONDecoder().decode(SwiftyReceiptResponse.self, from: data)
+            let receiptResponse = try JSONDecoder().decode(SRVReceiptResponse.self, from: data)
             return receiptResponse
         } catch {
             fatalError("SwiftyReceiptResponse fake error \(error)")

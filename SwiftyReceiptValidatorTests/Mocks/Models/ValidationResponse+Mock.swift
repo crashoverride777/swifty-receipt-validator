@@ -7,10 +7,11 @@
 //
 
 import Foundation
+@testable import SwiftyReceiptValidator
 
 extension SRVSubscriptionValidationResponse {
     
-    public static func mock(
+    static func mock(
         validReceipts: [SRVReceiptInApp] = [.mock()],
         pendingRenewalInfo: [SRVPendingRenewalInfo] = [.mock()]) -> SRVSubscriptionValidationResponse {
         SRVSubscriptionValidationResponse(

@@ -8,28 +8,30 @@
 
 /* Begin PBXBuildFile section */
 		6A2755932315D0EB00F131C1 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 6A2755922315D0EA00F131C1 /* README.md */; };
-		6A2755982315D60800F131C1 /* SwiftyReceiptPendingRenewalInfo+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2755972315D60800F131C1 /* SwiftyReceiptPendingRenewalInfo+Mock.swift */; };
-		6A27559A2315D84200F131C1 /* SwiftyReceiptInApp+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2755992315D84200F131C1 /* SwiftyReceiptInApp+Mock.swift */; };
 		6A2F6EE9238C68F0008AA0B0 /* SwiftyReceiptValidatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2F6EE8238C68F0008AA0B0 /* SwiftyReceiptValidatorType.swift */; };
-		6A2F6EEC238C6C6C008AA0B0 /* ReceiptResponse+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2F6EEB238C6C6C008AA0B0 /* ReceiptResponse+Mock.swift */; };
-		6A2F6EEE238C6C7F008AA0B0 /* ValidationResponse+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2F6EED238C6C7F008AA0B0 /* ValidationResponse+Mock.swift */; };
-		6A2F6EF0238C6CC0008AA0B0 /* ReceiptInApp+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2F6EEF238C6CC0008AA0B0 /* ReceiptInApp+Mock.swift */; };
-		6A2F6EF2238C6E84008AA0B0 /* PendingRenewalInfo+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2F6EF1238C6E84008AA0B0 /* PendingRenewalInfo+Mock.swift */; };
-		6A2F6EF4238C6F6F008AA0B0 /* Receipt+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2F6EF3238C6F6F008AA0B0 /* Receipt+Mock.swift */; };
 		6A4384AC222730C1009EF552 /* SwiftyReceiptValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4384AB222730C1009EF552 /* SwiftyReceiptValidatorTests.swift */; };
 		6A4384AE222730C1009EF552 /* SwiftyReceiptValidator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4533F311DA2BD8900440CC0 /* SwiftyReceiptValidator.framework */; };
 		6A53FBE123D321FD00E7D814 /* StatusCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A53FBE023D321FD00E7D814 /* StatusCode.swift */; };
 		6A53FBE323D3225200E7D814 /* StatusCodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A53FBE223D3225200E7D814 /* StatusCodeTests.swift */; };
 		6A53FBE523D3259900E7D814 /* AutoRenewStatusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A53FBE423D3259900E7D814 /* AutoRenewStatusTests.swift */; };
 		6A53FBE723D3263400E7D814 /* ErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A53FBE623D3263400E7D814 /* ErrorTests.swift */; };
+		6A53FBE823D32AE400E7D814 /* ReceiptResponse+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2F6EEB238C6C6C008AA0B0 /* ReceiptResponse+Mock.swift */; };
+		6A53FBE923D32AE400E7D814 /* Receipt+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2F6EF3238C6F6F008AA0B0 /* Receipt+Mock.swift */; };
+		6A53FBEA23D32AE400E7D814 /* ReceiptInApp+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2F6EEF238C6CC0008AA0B0 /* ReceiptInApp+Mock.swift */; };
+		6A53FBEB23D32AE400E7D814 /* PendingRenewalInfo+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2F6EF1238C6E84008AA0B0 /* PendingRenewalInfo+Mock.swift */; };
+		6A53FBEC23D32AE400E7D814 /* ValidationResponse+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2F6EED238C6C7F008AA0B0 /* ValidationResponse+Mock.swift */; };
+		6A53FBEE23D32F0B00E7D814 /* URLSessionManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A53FBED23D32F0B00E7D814 /* URLSessionManagerTests.swift */; };
+		6A53FBF023D32F1A00E7D814 /* BundleReceiptFetcherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A53FBEF23D32F1A00E7D814 /* BundleReceiptFetcherTests.swift */; };
+		6A53FBF223D32F7900E7D814 /* MockReceiptFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A53FBF123D32F7900E7D814 /* MockReceiptFetcher.swift */; };
+		6A53FBF423D32F8D00E7D814 /* MockResponseValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A53FBF323D32F8D00E7D814 /* MockResponseValidator.swift */; };
+		6A53FBF623D3317400E7D814 /* URL+Mocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A53FBF523D3317400E7D814 /* URL+Mocks.swift */; };
 		6A7DF2802305E33D001CAEEF /* ReceiptResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7DF27F2305E33D001CAEEF /* ReceiptResponseTests.swift */; };
-		6A7DF2842305E42F001CAEEF /* SwiftyReceiptResponse+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7DF2832305E42F001CAEEF /* SwiftyReceiptResponse+Mock.swift */; };
 		6A7DF2862305E4E8001CAEEF /* ReceiptInAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7DF2852305E4E8001CAEEF /* ReceiptInAppTests.swift */; };
 		6A7DF2932306022D001CAEEF /* ReceiptResponseValidSubscription.json in Resources */ = {isa = PBXBuildFile; fileRef = 6A7DF2922306022D001CAEEF /* ReceiptResponseValidSubscription.json */; };
 		6A7DF29523060254001CAEEF /* ReceiptResponseInvalidFormat.json in Resources */ = {isa = PBXBuildFile; fileRef = 6A7DF29423060254001CAEEF /* ReceiptResponseInvalidFormat.json */; };
 		6A7DF29723060282001CAEEF /* ReceiptResponseSubscriptionExpired.json in Resources */ = {isa = PBXBuildFile; fileRef = 6A7DF29623060282001CAEEF /* ReceiptResponseSubscriptionExpired.json */; };
 		6A7DF299230602C4001CAEEF /* MockSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7DF298230602C4001CAEEF /* MockSessionManager.swift */; };
-		6A7DF29E230609BB001CAEEF /* DefaultValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7DF29D230609BB001CAEEF /* DefaultValidatorTests.swift */; };
+		6A7DF29E230609BB001CAEEF /* ResponseValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7DF29D230609BB001CAEEF /* ResponseValidatorTests.swift */; };
 		6ACC6246235135630085A42F /* SwiftyReceiptValidator+Type.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACC6245235135630085A42F /* SwiftyReceiptValidator+Type.swift */; };
 		6ACC624D235136070085A42F /* ResponseValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACC6249235136070085A42F /* ResponseValidator.swift */; };
 		6ACC624E235136070085A42F /* BundleReceiptFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACC624A235136070085A42F /* BundleReceiptFetcher.swift */; };
@@ -60,8 +62,6 @@
 
 /* Begin PBXFileReference section */
 		6A2755922315D0EA00F131C1 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		6A2755972315D60800F131C1 /* SwiftyReceiptPendingRenewalInfo+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftyReceiptPendingRenewalInfo+Mock.swift"; sourceTree = "<group>"; };
-		6A2755992315D84200F131C1 /* SwiftyReceiptInApp+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftyReceiptInApp+Mock.swift"; sourceTree = "<group>"; };
 		6A2F6EE8238C68F0008AA0B0 /* SwiftyReceiptValidatorType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftyReceiptValidatorType.swift; sourceTree = "<group>"; };
 		6A2F6EEB238C6C6C008AA0B0 /* ReceiptResponse+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReceiptResponse+Mock.swift"; sourceTree = "<group>"; };
 		6A2F6EED238C6C7F008AA0B0 /* ValidationResponse+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ValidationResponse+Mock.swift"; sourceTree = "<group>"; };
@@ -75,14 +75,18 @@
 		6A53FBE223D3225200E7D814 /* StatusCodeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusCodeTests.swift; sourceTree = "<group>"; };
 		6A53FBE423D3259900E7D814 /* AutoRenewStatusTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoRenewStatusTests.swift; sourceTree = "<group>"; };
 		6A53FBE623D3263400E7D814 /* ErrorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorTests.swift; sourceTree = "<group>"; };
+		6A53FBED23D32F0B00E7D814 /* URLSessionManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionManagerTests.swift; sourceTree = "<group>"; };
+		6A53FBEF23D32F1A00E7D814 /* BundleReceiptFetcherTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleReceiptFetcherTests.swift; sourceTree = "<group>"; };
+		6A53FBF123D32F7900E7D814 /* MockReceiptFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockReceiptFetcher.swift; sourceTree = "<group>"; };
+		6A53FBF323D32F8D00E7D814 /* MockResponseValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockResponseValidator.swift; sourceTree = "<group>"; };
+		6A53FBF523D3317400E7D814 /* URL+Mocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Mocks.swift"; sourceTree = "<group>"; };
 		6A7DF27F2305E33D001CAEEF /* ReceiptResponseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptResponseTests.swift; sourceTree = "<group>"; };
-		6A7DF2832305E42F001CAEEF /* SwiftyReceiptResponse+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftyReceiptResponse+Mock.swift"; sourceTree = "<group>"; };
 		6A7DF2852305E4E8001CAEEF /* ReceiptInAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptInAppTests.swift; sourceTree = "<group>"; };
 		6A7DF2922306022D001CAEEF /* ReceiptResponseValidSubscription.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ReceiptResponseValidSubscription.json; sourceTree = "<group>"; };
 		6A7DF29423060254001CAEEF /* ReceiptResponseInvalidFormat.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ReceiptResponseInvalidFormat.json; sourceTree = "<group>"; };
 		6A7DF29623060282001CAEEF /* ReceiptResponseSubscriptionExpired.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ReceiptResponseSubscriptionExpired.json; sourceTree = "<group>"; };
 		6A7DF298230602C4001CAEEF /* MockSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSessionManager.swift; sourceTree = "<group>"; };
-		6A7DF29D230609BB001CAEEF /* DefaultValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultValidatorTests.swift; sourceTree = "<group>"; };
+		6A7DF29D230609BB001CAEEF /* ResponseValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseValidatorTests.swift; sourceTree = "<group>"; };
 		6ACC6245235135630085A42F /* SwiftyReceiptValidator+Type.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftyReceiptValidator+Type.swift"; sourceTree = "<group>"; };
 		6ACC6249235136070085A42F /* ResponseValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseValidator.swift; sourceTree = "<group>"; };
 		6ACC624A235136070085A42F /* BundleReceiptFetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BundleReceiptFetcher.swift; sourceTree = "<group>"; };
@@ -126,17 +130,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		6A2755962315D5F200F131C1 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				6A7DF2832305E42F001CAEEF /* SwiftyReceiptResponse+Mock.swift */,
-				6A2755992315D84200F131C1 /* SwiftyReceiptInApp+Mock.swift */,
-				6A2755972315D60800F131C1 /* SwiftyReceiptPendingRenewalInfo+Mock.swift */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
-		6A2F6EEA238C6C57008AA0B0 /* Mocks */ = {
+		6A2F6EEA238C6C57008AA0B0 /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				6A2F6EEB238C6C6C008AA0B0 /* ReceiptResponse+Mock.swift */,
@@ -145,7 +139,7 @@
 				6A2F6EF1238C6E84008AA0B0 /* PendingRenewalInfo+Mock.swift */,
 				6A2F6EED238C6C7F008AA0B0 /* ValidationResponse+Mock.swift */,
 			);
-			path = Mocks;
+			path = Models;
 			sourceTree = "<group>";
 		};
 		6A4384AA222730C1009EF552 /* SwiftyReceiptValidatorTests */ = {
@@ -158,6 +152,14 @@
 				6A4384AD222730C1009EF552 /* Info.plist */,
 			);
 			path = SwiftyReceiptValidatorTests;
+			sourceTree = "<group>";
+		};
+		6A53FBF723D3328A00E7D814 /* Foundation */ = {
+			isa = PBXGroup;
+			children = (
+				6A53FBF523D3317400E7D814 /* URL+Mocks.swift */,
+			);
+			path = Foundation;
 			sourceTree = "<group>";
 		};
 		6A7DF2812305E386001CAEEF /* Models */ = {
@@ -175,8 +177,9 @@
 		6A7DF2822305E38E001CAEEF /* Mocks */ = {
 			isa = PBXGroup;
 			children = (
+				6A53FBF723D3328A00E7D814 /* Foundation */,
 				6A7DF29A230607AE001CAEEF /* JSONs */,
-				6A2755962315D5F200F131C1 /* Models */,
+				6A2F6EEA238C6C57008AA0B0 /* Models */,
 				6AE5FDD52315DABA007DD4AC /* Other */,
 			);
 			path = Mocks;
@@ -203,7 +206,9 @@
 		6A7DF29C230609AB001CAEEF /* Internal */ = {
 			isa = PBXGroup;
 			children = (
-				6A7DF29D230609BB001CAEEF /* DefaultValidatorTests.swift */,
+				6A53FBEF23D32F1A00E7D814 /* BundleReceiptFetcherTests.swift */,
+				6A7DF29D230609BB001CAEEF /* ResponseValidatorTests.swift */,
+				6A53FBED23D32F0B00E7D814 /* URLSessionManagerTests.swift */,
 			);
 			path = Internal;
 			sourceTree = "<group>";
@@ -249,7 +254,9 @@
 		6AE5FDD52315DABA007DD4AC /* Other */ = {
 			isa = PBXGroup;
 			children = (
+				6A53FBF123D32F7900E7D814 /* MockReceiptFetcher.swift */,
 				6A7DF298230602C4001CAEEF /* MockSessionManager.swift */,
+				6A53FBF323D32F8D00E7D814 /* MockResponseValidator.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -278,7 +285,6 @@
 			children = (
 				6ADEB8B62200859000370C71 /* Models */,
 				6ADEB8BF2200883600370C71 /* Validator */,
-				6A2F6EEA238C6C57008AA0B0 /* Mocks */,
 				6ADEB8EC2200F8C300370C71 /* Internal */,
 				B4533F341DA2BD8900440CC0 /* SwiftyReceiptValidator.h */,
 				B4533F351DA2BD8900440CC0 /* Info.plist */,
@@ -410,16 +416,23 @@
 			buildActionMask = 2147483647;
 			files = (
 				6A53FBE323D3225200E7D814 /* StatusCodeTests.swift in Sources */,
-				6A2755982315D60800F131C1 /* SwiftyReceiptPendingRenewalInfo+Mock.swift in Sources */,
+				6A53FBE823D32AE400E7D814 /* ReceiptResponse+Mock.swift in Sources */,
 				6A7DF2802305E33D001CAEEF /* ReceiptResponseTests.swift in Sources */,
+				6A53FBEB23D32AE400E7D814 /* PendingRenewalInfo+Mock.swift in Sources */,
 				6A7DF2862305E4E8001CAEEF /* ReceiptInAppTests.swift in Sources */,
-				6A7DF29E230609BB001CAEEF /* DefaultValidatorTests.swift in Sources */,
-				6A7DF2842305E42F001CAEEF /* SwiftyReceiptResponse+Mock.swift in Sources */,
+				6A53FBEA23D32AE400E7D814 /* ReceiptInApp+Mock.swift in Sources */,
+				6A53FBEE23D32F0B00E7D814 /* URLSessionManagerTests.swift in Sources */,
+				6A53FBEC23D32AE400E7D814 /* ValidationResponse+Mock.swift in Sources */,
+				6A7DF29E230609BB001CAEEF /* ResponseValidatorTests.swift in Sources */,
+				6A53FBE923D32AE400E7D814 /* Receipt+Mock.swift in Sources */,
 				6A53FBE723D3263400E7D814 /* ErrorTests.swift in Sources */,
+				6A53FBF623D3317400E7D814 /* URL+Mocks.swift in Sources */,
+				6A53FBF423D32F8D00E7D814 /* MockResponseValidator.swift in Sources */,
 				6A7DF299230602C4001CAEEF /* MockSessionManager.swift in Sources */,
+				6A53FBF023D32F1A00E7D814 /* BundleReceiptFetcherTests.swift in Sources */,
 				6A53FBE523D3259900E7D814 /* AutoRenewStatusTests.swift in Sources */,
-				6A27559A2315D84200F131C1 /* SwiftyReceiptInApp+Mock.swift in Sources */,
 				6A4384AC222730C1009EF552 /* SwiftyReceiptValidatorTests.swift in Sources */,
+				6A53FBF223D32F7900E7D814 /* MockReceiptFetcher.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -428,14 +441,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				6A2F6EE9238C68F0008AA0B0 /* SwiftyReceiptValidatorType.swift in Sources */,
-				6A2F6EF2238C6E84008AA0B0 /* PendingRenewalInfo+Mock.swift in Sources */,
-				6A2F6EF0238C6CC0008AA0B0 /* ReceiptInApp+Mock.swift in Sources */,
 				6ACC624E235136070085A42F /* BundleReceiptFetcher.swift in Sources */,
-				6A2F6EF4238C6F6F008AA0B0 /* Receipt+Mock.swift in Sources */,
 				6ACC6256235136150085A42F /* ReceiptResponse.swift in Sources */,
 				6ACC6257235136150085A42F /* Receipt.swift in Sources */,
 				6ADEB8EB2200EF1300370C71 /* SwiftyReceiptValidator+URLSession.swift in Sources */,
-				6A2F6EEC238C6C6C008AA0B0 /* ReceiptResponse+Mock.swift in Sources */,
 				B4533F3F1DA2BDA700440CC0 /* SwiftyReceiptValidator.swift in Sources */,
 				6ACC624D235136070085A42F /* ResponseValidator.swift in Sources */,
 				6AD9353C2358FA7000E75ED5 /* AutoRenewStatus.swift in Sources */,
@@ -444,7 +453,6 @@
 				6A53FBE123D321FD00E7D814 /* StatusCode.swift in Sources */,
 				6AD9353E2358FC8300E75ED5 /* SubscriptionValidationResponse.swift in Sources */,
 				6ACC6246235135630085A42F /* SwiftyReceiptValidator+Type.swift in Sources */,
-				6A2F6EEE238C6C7F008AA0B0 /* ValidationResponse+Mock.swift in Sources */,
 				6ACC6259235136150085A42F /* PendingRenewalInfo.swift in Sources */,
 				6ACC6258235136150085A42F /* Error.swift in Sources */,
 				6ACC624F235136070085A42F /* URLSessionManager.swift in Sources */,
