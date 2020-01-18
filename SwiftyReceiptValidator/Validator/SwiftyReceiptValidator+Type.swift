@@ -119,7 +119,7 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
                         switch result {
                         case .success(let nestedResponse):
                             let responseModel = SRVSubscriptionValidationResponse(
-                                validReceipts: nestedResponse.validSubscriptionReceipts,
+                                validReceipts: nestedResponse.validSubscriptionReceipts(now: Date()),
                                 pendingRenewalInfo: nestedResponse.pendingRenewalInfo
                             )
                             handler(.success(responseModel))

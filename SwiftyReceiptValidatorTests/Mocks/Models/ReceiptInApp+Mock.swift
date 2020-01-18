@@ -18,7 +18,7 @@ extension SRVReceiptInApp {
         originalTransactionId: String = UUID().uuidString,
         purchaseDate: Date = Date().addingTimeInterval(-20000),
         originalPurchaseDate: Date = Date().addingTimeInterval(-20005),
-        expiresDate: Date = Date().addingTimeInterval(20000),
+        expiresDate: Date? = Date().addingTimeInterval(20000),
         expirationIntent: ExpirationIntent? = nil,
         isInBillingRetryPeriod: ExpirationRetry? = nil,
         isTrialPeriod: String? = "false",

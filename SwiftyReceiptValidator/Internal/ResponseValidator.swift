@@ -67,7 +67,7 @@ extension ResponseValidator: ResponseValidatorType {
                     return
                 }
                         
-                guard !response.validSubscriptionReceipts.isEmpty else {
+                guard !response.validSubscriptionReceipts(now: Date()).isEmpty else {
                     handler(.failure(.noValidSubscription(response.status)))
                     return
                 }

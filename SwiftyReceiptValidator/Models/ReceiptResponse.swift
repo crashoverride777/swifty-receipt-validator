@@ -33,7 +33,7 @@ public struct SRVReceiptResponse: Codable, Equatable {
 extension SRVReceiptResponse {
     
     /// All subscriptions that are currently active, sorted by expiry dates
-    var validSubscriptionReceipts: [SRVReceiptInApp] {
+    func validSubscriptionReceipts(now: Date) -> [SRVReceiptInApp] {
         guard let receipts = latestReceiptInfo ?? receipt?.inApp else {
             return []
         }
@@ -58,7 +58,7 @@ extension SRVReceiptResponse {
                 }
                 
                 // Return active subscription receipts
-                return expiresDate >= Date()
+                return expiresDate >= now
             }
             // Sort subscription receipts by expiry date
             // We can force unwrap as nil expiry dates get filtered

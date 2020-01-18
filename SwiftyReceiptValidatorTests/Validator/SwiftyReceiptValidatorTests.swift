@@ -119,7 +119,7 @@ class SwiftyReceiptValidatorTests: XCTestCase {
         let sut = makeSUT()
         let expectedReceiptResponse: SRVReceiptResponse = .mock()
         let expectedValidationResponse: SRVSubscriptionValidationResponse = .mock(
-            validReceipts: expectedReceiptResponse.validSubscriptionReceipts,
+            validReceipts: expectedReceiptResponse.validSubscriptionReceipts(now: .test),
             pendingRenewalInfo: expectedReceiptResponse.pendingRenewalInfo ?? []
         )
         sessionManager.stub.start = .success(expectedReceiptResponse)
