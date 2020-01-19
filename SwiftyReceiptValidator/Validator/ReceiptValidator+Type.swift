@@ -12,21 +12,22 @@ import Combine
 
 public protocol SwiftyReceiptValidatorType {
     @available(iOS 13, *)
-    func validatePurchasePublisher(forProductId productId: String, sharedSecret: String?) -> AnyPublisher<SRVReceiptResponse, SRVError>
-    func validatePurchase(forProductId productId: String,
-                          sharedSecret: String?,
-                          handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void)
+    func validatePurchasePublisher(
+        for request: SwiftyReceiptValidatorPurchaseRequest
+    ) -> AnyPublisher<SRVReceiptResponse, SRVError>
+    func validatePurchase(
+        for request: SwiftyReceiptValidatorPurchaseRequest,
+        handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void
+    )
    
     @available(iOS 13, *)
-    func validateSubscriptionPublisher(sharedSecret: String?,
-                                       refreshLocalReceiptIfNeeded: Bool,
-                                       excludeOldTransactions: Bool,
-                                       now: Date) -> AnyPublisher<SRVSubscriptionValidationResponse, SRVError>
-    func validateSubscription(sharedSecret: String?,
-                              refreshLocalReceiptIfNeeded: Bool,
-                              excludeOldTransactions: Bool,
-                              now: Date,
-                              handler: @escaping (Result<SRVSubscriptionValidationResponse, SRVError>) -> Void)
+    func validateSubscriptionPublisher(
+        for request: SwiftyReceiptValidatorSubscriptionRequest
+    ) -> AnyPublisher<SRVSubscriptionValidationResponse, SRVError>
+    func validateSubscription(
+        for request: SwiftyReceiptValidatorSubscriptionRequest,
+        handler: @escaping (Result<SRVSubscriptionValidationResponse, SRVError>) -> Void
+    )
 }
 
 extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
@@ -40,15 +41,10 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
     /// - parameter handler: Completion handler called when the validation has completed.
     @available(iOS 13, *)
     public func validatePurchasePublisher(
-        forProductId productId: String,
-        sharedSecret: String?
+        for request: SwiftyReceiptValidatorPurchaseRequest
     ) -> AnyPublisher<SRVReceiptResponse, SRVError> {
         return Future { [weak self] promise in
-            self?.validatePurchase(
-                forProductId: productId,
-                sharedSecret: sharedSecret,
-                handler: promise
-            )
+            self?.validatePurchase(for: request, handler: promise)
         }.eraseToAnyPublisher()
     }
    
@@ -58,18 +54,21 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
     /// - parameter sharedSecret: The shared secret setup in iTunes.
     /// - parameter handler: Completion handler called when the validation has completed.
     public func validatePurchase(
-        forProductId productId: String,
-        sharedSecret: String?,
+        for request: SwiftyReceiptValidatorPurchaseRequest,
         handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void
     ) {
         fetchReceipt(
-            sharedSecret: sharedSecret,
+            sharedSecret: request.sharedSecret,
             refreshLocalReceiptIfNeeded: true,
             excludeOldTransactions: false,
             handler: ({ [weak self] result in
                 switch result {
                 case .success(let response):
-                    self?.responseValidator.validatePurchase(forProductId: productId, in: response, handler: handler)
+                    self?.responseValidator.validatePurchase(
+                        forProductId: request.productId,
+                        in: response,
+                        handler: handler
+                    )
                 case .failure(let error):
                     handler(.failure(error))
                 }
@@ -86,43 +85,35 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
     /// - parameter excludeOldTransactions: If value is true, response includes only the latest renewal transaction for any subscriptions.
     @available(iOS 13, *)
     public func validateSubscriptionPublisher(
-        sharedSecret: String?,
-        refreshLocalReceiptIfNeeded: Bool,
-        excludeOldTransactions: Bool,
-        now: Date
+        for request: SwiftyReceiptValidatorSubscriptionRequest
     ) -> AnyPublisher<SRVSubscriptionValidationResponse, SRVError> {
          return Future { [weak self] promise in
-             self?.validateSubscription(
-                 sharedSecret: sharedSecret,
-                 refreshLocalReceiptIfNeeded: refreshLocalReceiptIfNeeded,
-                 excludeOldTransactions: excludeOldTransactions,
-                 now: now,
-                 handler: promise
-             )
+             self?.validateSubscription(for: request, handler: promise)
          }.eraseToAnyPublisher()
      }
     
     /// Validate app store subscription
     ///
-    /// - parameter sharedSecret: The shared secret setup in iTunes.
+    /// - parameter request: The shared secret setup in iTunes.
     /// - parameter refreshReceiptIfNoneFound: If true, make SKReceiptRefreshRequest if no receipt on device. This will show a login alert.
     /// - parameter excludeOldTransactions: If value is true, response includes only the latest renewal transaction for any subscriptions.
     /// - parameter handler: Completion handler called when the validation has completed.
     public func validateSubscription(
-        sharedSecret: String?,
-        refreshLocalReceiptIfNeeded: Bool,
-        excludeOldTransactions: Bool,
-        now: Date,
+        for request: SwiftyReceiptValidatorSubscriptionRequest,
         handler: @escaping (Result<SRVSubscriptionValidationResponse, SRVError>) -> Void
     ) {
         fetchReceipt(
-            sharedSecret: sharedSecret,
-            refreshLocalReceiptIfNeeded: refreshLocalReceiptIfNeeded,
-            excludeOldTransactions: excludeOldTransactions,
+            sharedSecret: request.sharedSecret,
+            refreshLocalReceiptIfNeeded: request.refreshLocalReceiptIfNeeded,
+            excludeOldTransactions: request.excludeOldTransactions,
             handler: ({ [weak self] result in
                 switch result {
                 case .success(let response):
-                    self?.responseValidator.validateSubscriptions(in: response, now: now, handler: handler)
+                    self?.responseValidator.validateSubscriptions(
+                        in: response,
+                        now: request.now,
+                        handler: handler
+                    )
                 case .failure(let error):
                     handler(.failure(error))
                 }

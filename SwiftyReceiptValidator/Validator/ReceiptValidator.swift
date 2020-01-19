@@ -53,7 +53,7 @@ public final class SwiftyReceiptValidator: NSObject {
     /// Init
     ///
     /// - parameter configuration: The configuration needed for SwiftyReceiptValidator.
-    /// - parameter isLoggingEnabled: Display logging events if true.
+    /// - parameter isLoggingEnabled: Displays console logging events if set to true.
     public init(configuration: SRVConfiguration, isLoggingEnabled: Bool) {
         self.configuration = configuration
         self.receiptURLFetcher = ReceiptURLFetcher(

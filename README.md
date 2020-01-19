@@ -174,8 +174,8 @@ receiptValidator.validateSubscription(sharedSecret: "your secret",
     switch result {
     case .success(let response):
         print("Receipt validation was successfull with receipt response \(response)")
-        print(response.validReceipts)
-        print(response.receiptResponse)
+        print(response.validSubscriptionReceipts) // convenience array for active receipts
+        print(response.receiptResponse) // full receipt response
         print(response.receiptResponse.pendingRenewalInfo)
         // Unlock subscription features and/or do additional checks first
     case .failure(let error, let code):

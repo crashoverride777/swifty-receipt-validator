@@ -79,7 +79,7 @@ extension ResponseValidator: ResponseValidatorType {
                 }
                 
                 let validationResponse = SRVSubscriptionValidationResponse(
-                    validReceipts: response.validSubscriptionReceipts(now: now),
+                    validSubscriptionReceipts: response.validSubscriptionReceipts(now: now),
                     receiptResponse: response
                 )
                         

@@ -9,6 +9,6 @@
 import Foundation
 
 public struct SRVSubscriptionValidationResponse: Equatable {
-    public let validReceipts: [SRVReceiptInApp]
+    public let validSubscriptionReceipts: [SRVReceiptInApp]
     public let receiptResponse: SRVReceiptResponse
 }

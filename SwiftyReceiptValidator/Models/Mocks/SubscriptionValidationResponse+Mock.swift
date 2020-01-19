@@ -14,7 +14,7 @@ public extension SRVSubscriptionValidationResponse {
         validReceipts: [SRVReceiptInApp] = [.mock()],
         receiptResponse: SRVReceiptResponse = .mock()) -> SRVSubscriptionValidationResponse {
         SRVSubscriptionValidationResponse(
-            validReceipts: validReceipts,
+            validSubscriptionReceipts: validReceipts,
             receiptResponse: receiptResponse
         )
     }
