@@ -66,7 +66,10 @@ public final class SwiftyReceiptValidator: NSObject {
             sessionManager: URLSessionManager(sessionConfiguration: configuration.sessionConfiguration),
             isLoggingEnabled: isLoggingEnabled
         )
-        self.responseValidator = ResponseValidator(bundle: .main)
+        self.responseValidator = ResponseValidator(
+            bundle: .main,
+            isLoggingEnabled: isLoggingEnabled
+        )
         self.isLoggingEnabled = isLoggingEnabled
     }
     

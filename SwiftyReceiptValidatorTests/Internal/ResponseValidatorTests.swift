@@ -215,7 +215,7 @@ class ResponseValidatorTests: XCTestCase {
     func test_validateSubscription_failure_statusCodeExpired_returnsCorrectError() {
         let expectation = self.expectation
         let sut = makeSUT()
-        let expectedError: SRVError = .noValidSubscription(.subscriptionExpired)
+        let expectedError: SRVError = .subscriptionExpired(.subscriptionExpired)
         let expectedResponse = makeResponse(statusCode: .subscriptionExpired)
         sut.validateSubscriptions(in: expectedResponse, now: .test) { result in
             if case .failure(let error) = result {
@@ -234,7 +234,7 @@ private extension ResponseValidatorTests {
     
     func makeSUT() -> ResponseValidator {
         bundle.stub.bundleIdentifier = "test.com"
-        return ResponseValidator(bundle: bundle)
+        return ResponseValidator(bundle: bundle, isLoggingEnabled: false)
     }
     
     func makeResponse(statusCode: SRVStatusCode = .valid,

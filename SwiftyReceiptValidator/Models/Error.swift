@@ -14,7 +14,7 @@ public enum SRVError: LocalizedError {
     case noReceiptFoundInResponse(SRVStatusCode)
     case bundleIdNotMatching(SRVStatusCode)
     case productIdNotMatching(SRVStatusCode)
-    case noValidSubscription(SRVStatusCode?)
+    case subscriptionExpired(SRVStatusCode?)
     case cancelled(SRVStatusCode)
     case other(Error)
     
@@ -30,7 +30,7 @@ public enum SRVError: LocalizedError {
             return statusCode
         case .productIdNotMatching(let statusCode):
             return statusCode
-        case .noValidSubscription(let statusCode):
+        case .subscriptionExpired(let statusCode):
             return statusCode
         case .cancelled(let statusCode):
             return statusCode
@@ -51,7 +51,7 @@ public enum SRVError: LocalizedError {
             return LocalizedString.Error.bundleIdNotMatching
         case .productIdNotMatching:
             return LocalizedString.Error.productIdNotMatching
-        case .noValidSubscription:
+        case .subscriptionExpired:
             return LocalizedString.Error.noValidSubscription
         case .cancelled:
             return LocalizedString.Error.cancelled

@@ -75,7 +75,7 @@ extension ReceiptClient: ReceiptClientType {
                 case .success(let receiptResponse):
                     switch receiptResponse.status {
                     case .testReceipt:
-                        self.print("SwiftyReceiptValidator production mode with test receipt, trying sandbox mode...")
+                        self.print("SRVReceiptClient production success with test receipt, trying sandbox mode...")
                         self.startSessionRequest(forURL: self.sandboxURL, parameters: parameters, handler: handler)
                     default:
                         handler(.success(receiptResponse))
@@ -102,9 +102,9 @@ private extension ReceiptClient {
             switch result {
             case .success(let data):
                 if urlString == self.productionURL {
-                    self.print("SwiftyReceiptValidator success (PRODUCTION)")
+                    self.print("SRVReceiptClient session request success (PRODUCTION)")
                 } else {
-                    self.print("SwiftyReceiptValidator success (SANDBOX)")
+                    self.print("SRVReceiptClient session request success (SANDBOX)")
                 }
                 
                 do {

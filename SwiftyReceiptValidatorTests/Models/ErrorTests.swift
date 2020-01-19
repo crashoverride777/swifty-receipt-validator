@@ -34,7 +34,7 @@ class ErrorTests: XCTestCase {
     }
     
     func test_statusCode_noValidSubscription() {
-        XCTAssertEqual(SRVError.noValidSubscription(.valid).statusCode, .valid)
+        XCTAssertEqual(SRVError.subscriptionExpired(.valid).statusCode, .valid)
     }
     
     func test_statusCode_cancelled() {
@@ -85,7 +85,7 @@ class ErrorTests: XCTestCase {
     
     func test_description_noValidSubscription() {
         XCTAssertEqual(
-            SRVError.noValidSubscription(.valid).localizedDescription,
+            SRVError.subscriptionExpired(.valid).localizedDescription,
             LocalizedString.Error.noValidSubscription
         )
     }
