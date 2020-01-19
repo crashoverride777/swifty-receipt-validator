@@ -37,14 +37,16 @@ final class URLSessionManager {
     
     // MARK: - Properties
     
-    private var urlSession: URLSession?
     private let sessionConfiguration: URLSessionConfiguration
-    private let encoder = JSONEncoder()
-
+    private let encoder: JSONEncoder
+    private var urlSession: URLSession?
+    
     // MARK: - Init
     
-    init(sessionConfiguration: URLSessionConfiguration = .default) {
+    init(sessionConfiguration: URLSessionConfiguration = .default,
+         encoder: JSONEncoder = JSONEncoder()) {
         self.sessionConfiguration = sessionConfiguration
+        self.encoder = encoder
     }
 }
     

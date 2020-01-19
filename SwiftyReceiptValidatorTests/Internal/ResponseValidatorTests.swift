@@ -133,14 +133,36 @@ class ResponseValidatorTests: XCTestCase {
     func test_validateSubscription_success_returnsCorrectData() {
         let expectation = self.expectation
         let sut = makeSUT()
-        let expectedResponse = makeResponse()
-        sut.validateSubscription(in: expectedResponse) { result in
+        let expectedReceiptResponse = makeResponse()
+        let expectedValidationResponse: SRVSubscriptionValidationResponse = .mock(
+            validReceipts: expectedReceiptResponse.validSubscriptionReceipts(now: .test),
+            receiptResponse: expectedReceiptResponse
+        )
+        sut.validateSubscriptions(in: expectedReceiptResponse, now: .test) { result in
             if case .success(let response) = result {
-                XCTAssertEqual(response, expectedResponse)
+                XCTAssertEqual(response, expectedValidationResponse)
                 expectation.fulfill()
             }
         }
         
+        wait(for: [expectation], timeout: 0.1)
+    }
+    
+    func test_validateSubscription_success_noValidSubscriptionsFound_returnsCorrectResponse() {
+        let expectation = self.expectation
+        let sut = makeSUT()
+        let expectedReceiptResponse = makeEmptyResponse()
+        let expectedValidationResponse: SRVSubscriptionValidationResponse = .mock(
+            validReceipts: expectedReceiptResponse.validSubscriptionReceipts(now: .test),
+            receiptResponse: expectedReceiptResponse
+        )
+        sut.validateSubscriptions(in: expectedReceiptResponse, now: .test) { result in
+            if case .success(let response) = result {
+                XCTAssertEqual(response, expectedValidationResponse)
+                expectation.fulfill()
+            }
+        }
+          
         wait(for: [expectation], timeout: 0.1)
     }
     
@@ -149,7 +171,7 @@ class ResponseValidatorTests: XCTestCase {
         let sut = makeSUT()
         let expectedError: SRVError = .invalidStatusCode(.jsonNotReadable)
         let expectedResponse = makeResponse(statusCode: .jsonNotReadable)
-        sut.validateSubscription(in: expectedResponse) { result in
+        sut.validateSubscriptions(in: expectedResponse, now: .test) { result in
             if case .failure(let error) = result {
                 XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
                 expectation.fulfill()
@@ -164,7 +186,7 @@ class ResponseValidatorTests: XCTestCase {
         let sut = makeSUT()
         let expectedError: SRVError = .noReceiptFoundInResponse(.jsonNotReadable)
         let expectedResponse = makeResponseWithNilReceipt()
-        sut.validateSubscription(in: expectedResponse) { result in
+        sut.validateSubscriptions(in: expectedResponse, now: .test) { result in
             if case .failure(let error) = result {
                 XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
                 expectation.fulfill()
@@ -180,7 +202,7 @@ class ResponseValidatorTests: XCTestCase {
         bundle.stub.bundleIdentifier = "invalid"
         let expectedError: SRVError = .bundleIdNotMatching(.valid)
         let expectedResponse = makeResponse()
-        sut.validateSubscription(in: expectedResponse) { result in
+        sut.validateSubscriptions(in: expectedResponse, now: .test) { result in
             if case .failure(let error) = result {
                 XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
                 expectation.fulfill()
@@ -195,22 +217,7 @@ class ResponseValidatorTests: XCTestCase {
         let sut = makeSUT()
         let expectedError: SRVError = .noValidSubscription(.subscriptionExpired)
         let expectedResponse = makeResponse(statusCode: .subscriptionExpired)
-        sut.validateSubscription(in: expectedResponse) { result in
-            if case .failure(let error) = result {
-                XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
-                expectation.fulfill()
-            }
-        }
-        
-        wait(for: [expectation], timeout: 0.1)
-    }
-    
-    func test_validateSubscription_failure_noValidSubscriptionsFound_returnsCorrectError() {
-        let expectation = self.expectation
-        let sut = makeSUT()
-        let expectedError: SRVError = .noValidSubscription(.subscriptionExpired)
-        let expectedResponse = makeEmptyResponse()
-        sut.validateSubscription(in: expectedResponse) { result in
+        sut.validateSubscriptions(in: expectedResponse, now: .test) { result in
             if case .failure(let error) = result {
                 XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
                 expectation.fulfill()

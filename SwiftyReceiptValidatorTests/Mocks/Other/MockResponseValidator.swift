@@ -12,12 +12,12 @@ import Foundation
 final class MockResponseValidator {
     struct Stub {
         var validatePurchaseResult: (Result<SRVReceiptResponse, SRVError>) = .success(.mock())
-        var validateSubscriptionResult: (Result<SRVReceiptResponse, SRVError>) = .success(.mock())
+        var validateSubscriptionResult: (Result<SRVSubscriptionValidationResponse, SRVError>) = .success(.mock())
     }
     
     struct Mock {
         var validatePurchase: (id: String, response: SRVReceiptResponse)? = nil
-        var validateSubscription: SRVReceiptResponse? = nil
+        var validateSubscription: (response: SRVReceiptResponse, now: Date)? = nil
     }
     
     var stub = Stub()
@@ -33,9 +33,10 @@ extension MockResponseValidator: ResponseValidatorType {
         handler(stub.validatePurchaseResult)
     }
     
-    func validateSubscription(in response: SRVReceiptResponse,
-                              handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void) {
-        mock.validateSubscription = response
+    func validateSubscriptions(in response: SRVReceiptResponse,
+                               now: Date,
+                               handler: @escaping (Result<SRVSubscriptionValidationResponse, SRVError>) -> Void) {
+        mock.validateSubscription = (response: response, now: now)
         handler(stub.validateSubscriptionResult)
     }
 }

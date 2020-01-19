@@ -12,8 +12,9 @@ protocol ResponseValidatorType: AnyObject {
     func validatePurchase(forProductId productId: String,
                           in response: SRVReceiptResponse,
                           handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void)
-    func validateSubscription(in response: SRVReceiptResponse,
-                              handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void)
+    func validateSubscriptions(in response: SRVReceiptResponse,
+                               now: Date,
+                               handler: @escaping (Result<SRVSubscriptionValidationResponse, SRVError>) -> Void)
 }
 
 final class ResponseValidator {
@@ -58,7 +59,9 @@ extension ResponseValidator: ResponseValidatorType {
         }
     }
     
-    func validateSubscription(in response: SRVReceiptResponse, handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void) {
+    func validateSubscriptions(in response: SRVReceiptResponse,
+                               now: Date,
+                               handler: @escaping (Result<SRVSubscriptionValidationResponse, SRVError>) -> Void) {
         runBasicValidation(for: response) { result in
             switch result {
             case .success:
@@ -66,13 +69,13 @@ extension ResponseValidator: ResponseValidatorType {
                     handler(.failure(.noValidSubscription(response.status)))
                     return
                 }
-                        
-                guard !response.validSubscriptionReceipts(now: Date()).isEmpty else {
-                    handler(.failure(.noValidSubscription(response.status)))
-                    return
-                }
                 
-                handler(.success((response)))
+                let validationResponse = SRVSubscriptionValidationResponse(
+                    validReceipts: response.validSubscriptionReceipts(now: now),
+                    receiptResponse: response
+                )
+                        
+                handler(.success((validationResponse)))
             case .failure(let error):
                 handler(.failure(error))
             }

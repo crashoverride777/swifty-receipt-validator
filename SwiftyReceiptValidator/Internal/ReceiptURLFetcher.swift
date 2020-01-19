@@ -10,17 +10,17 @@ import StoreKit
 
 typealias ReceiptURLFetcherResultHandler = (Result<URL, Error>) -> Void
 
-protocol ReceiptURLFetcherReceiptRefreshRequestType {
+protocol ReceiptURLFetcherRefreshRequestType {
     var delegate: SKRequestDelegate? { get set }
     func cancel()
     func start()
 }
 
 protocol ReceiptURLFetcherType {
-    func fetch(refreshRequest: ReceiptURLFetcherReceiptRefreshRequestType?, handler: @escaping ReceiptURLFetcherResultHandler)
+    func fetch(refreshRequest: ReceiptURLFetcherRefreshRequestType?, handler: @escaping ReceiptURLFetcherResultHandler)
 }
 
-extension SKReceiptRefreshRequest: ReceiptURLFetcherReceiptRefreshRequestType { }
+extension SKReceiptRefreshRequest: ReceiptURLFetcherRefreshRequestType { }
 
 final class ReceiptURLFetcher: NSObject {
     
@@ -30,7 +30,7 @@ final class ReceiptURLFetcher: NSObject {
     private let fileManager: FileManager
     
     private var receiptHandler: ReceiptURLFetcherResultHandler?
-    private var receiptRefreshRequest: ReceiptURLFetcherReceiptRefreshRequestType?
+    private var receiptRefreshRequest: ReceiptURLFetcherRefreshRequestType?
     
     // MARK: - Computed Properties
     
@@ -54,7 +54,7 @@ final class ReceiptURLFetcher: NSObject {
 
 extension ReceiptURLFetcher: ReceiptURLFetcherType {
     
-    func fetch(refreshRequest: ReceiptURLFetcherReceiptRefreshRequestType?, handler: @escaping ReceiptURLFetcherResultHandler) {
+    func fetch(refreshRequest: ReceiptURLFetcherRefreshRequestType?, handler: @escaping ReceiptURLFetcherResultHandler) {
         receiptHandler = handler
         
         defer {

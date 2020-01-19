@@ -58,7 +58,7 @@ class ReceiptValidatorTests: XCTestCase {
         let expectedResponse: SRVReceiptResponse = .mock()
         receiptClient.stub.validateResult = .success(expectedResponse)
         responseValidator.stub.validatePurchaseResult = .success(expectedResponse)
-        sut.validatePurchase(forId: "123", sharedSecret: nil) { result in
+        sut.validatePurchase(forProductId: "123", sharedSecret: nil) { result in
             if case .success(let response) = result {
                 XCTAssertEqual(response, expectedResponse)
                 expectation.fulfill()
@@ -72,7 +72,7 @@ class ReceiptValidatorTests: XCTestCase {
         let sut = makeSUT()
         let expectedError = URLError(.notConnectedToInternet)
         receiptURLFetcher.stub.fetchResult = .failure(expectedError)
-        sut.validatePurchase(forId: "123", sharedSecret: nil) { result in
+        sut.validatePurchase(forProductId: "123", sharedSecret: nil) { result in
             if case .failure(let error) = result {
                 XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
                 expectation.fulfill()
@@ -87,7 +87,7 @@ class ReceiptValidatorTests: XCTestCase {
         let sut = makeSUT()
         let expectedError = URLError(.notConnectedToInternet)
         receiptClient.stub.validateResult = .failure(.other(expectedError))
-        sut.validatePurchase(forId: "123", sharedSecret: nil) { result in
+        sut.validatePurchase(forProductId: "123", sharedSecret: nil) { result in
             if case .failure(let error) = result {
                 XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
                 expectation.fulfill()
@@ -102,7 +102,7 @@ class ReceiptValidatorTests: XCTestCase {
         let sut = makeSUT()
         let expectedError: SRVError = .productIdNotMatching(.unknown)
         responseValidator.stub.validatePurchaseResult = .failure(expectedError)
-        sut.validatePurchase(forId: "123", sharedSecret: nil) { result in
+        sut.validatePurchase(forProductId: "123", sharedSecret: nil) { result in
             if case .failure(let error) = result {
                 XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
                 expectation.fulfill()
@@ -123,10 +123,11 @@ class ReceiptValidatorTests: XCTestCase {
             receiptResponse: expectedReceiptResponse
         )
         receiptClient.stub.validateResult = .success(expectedReceiptResponse)
-        responseValidator.stub.validateSubscriptionResult = .success(expectedReceiptResponse)
+        responseValidator.stub.validateSubscriptionResult = .success(expectedValidationResponse)
         sut.validateSubscription(sharedSecret: "abc",
                                  refreshLocalReceiptIfNeeded: false,
-                                 excludeOldTransactions: false) { result in
+                                 excludeOldTransactions: false,
+                                 now: .test) { result in
             if case .success(let response) = result {
                 XCTAssertEqual(response, expectedValidationResponse)
                 expectation.fulfill()
@@ -143,7 +144,8 @@ class ReceiptValidatorTests: XCTestCase {
         receiptURLFetcher.stub.fetchResult = .failure(expectedError)
         sut.validateSubscription(sharedSecret: "abc",
                                  refreshLocalReceiptIfNeeded: false,
-                                 excludeOldTransactions: false) { result in
+                                 excludeOldTransactions: false,
+                                 now: .test) { result in
             if case .failure(let error) = result {
                 XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
                 expectation.fulfill()
@@ -160,7 +162,8 @@ class ReceiptValidatorTests: XCTestCase {
         receiptClient.stub.validateResult = .failure(.other(expectedError))
         sut.validateSubscription(sharedSecret: "abc",
                                  refreshLocalReceiptIfNeeded: false,
-                                 excludeOldTransactions: false) { result in
+                                 excludeOldTransactions: false,
+                                 now: .test) { result in
             if case .failure(let error) = result {
                 XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
                 expectation.fulfill()
@@ -177,7 +180,8 @@ class ReceiptValidatorTests: XCTestCase {
         responseValidator.stub.validateSubscriptionResult = .failure(.other(expectedError))
         sut.validateSubscription(sharedSecret: "abc",
                                  refreshLocalReceiptIfNeeded: false,
-                                 excludeOldTransactions: false) { result in
+                                 excludeOldTransactions: false,
+                                 now: .test) { result in
             if case .failure(let error) = result {
                 XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
                 expectation.fulfill()

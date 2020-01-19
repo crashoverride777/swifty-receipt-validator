@@ -15,7 +15,7 @@ final class MockReceiptURLFetcher {
     }
     
     struct Mock {
-        var refreshRequest: ReceiptURLFetcherReceiptRefreshRequestType? = nil
+        var refreshRequest: ReceiptURLFetcherRefreshRequestType? = nil
     }
     
     var stub = Stub()
@@ -24,7 +24,7 @@ final class MockReceiptURLFetcher {
 
 extension MockReceiptURLFetcher: ReceiptURLFetcherType {
     
-    func fetch(refreshRequest: ReceiptURLFetcherReceiptRefreshRequestType?,
+    func fetch(refreshRequest: ReceiptURLFetcherRefreshRequestType?,
                handler: @escaping ReceiptURLFetcherResultHandler) {
         mock.refreshRequest = refreshRequest
         handler(stub.fetchResult)
