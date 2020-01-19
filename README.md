@@ -38,42 +38,38 @@ import SwiftyReceiptValidator
 
 - In your class with your in app purchase code create a reference to SwiftyReceiptValidator
 
+### Standard Configuration (Not Recommended)
+
 ```swift
 class SomeClass {
     let receiptValidator: SwiftyReceiptValidatorType
     
     init() {
         // Standard configuration communicates with apples server directly, which is not recommended
-        // add your own custom config if required to speak with your own server
-        // You can also enable/disable logging events in your console
+        // Enable logging events in your console by setting isLoggingEnabled to true
         receiptValidator = SwiftyReceiptValidator(configuration: .standard, isLoggingEnabled: false)
     }
 }
 ```
 
-NOTE:
+### Custom Configuration (Recommended)
 
-In this example we are using the default configuration which will validate the receipt directly with Apples servers.
-The recommended way by Apple is to use your own server to validate app store receipts.
-However for obvious reason this is a hassle for alot of people like me, because I dont have a webserver and dont understand languages like PHP to make it work.
-
-In those cases where you dont want to use your own server you can communcate directly with Apples server. 
-Doing this is apparently not very secure and therefore you should use your own server when verifying receipts 
-
-Nevertheless its still better than not doing any validation at all. 
-
-If you have your own webserver you can create your own custom configuration with the correct URLs.
+// Note: Requires your own server
 
 ```swift
 class SomeClass {
     let receiptValidator: SwiftyReceiptValidatorType
     
     init() {
+        // The recommended approach is to communicate with your own webserver
+        // which would than connect with apples server
         let configuration = SRVConfiguration(
             productionURL: "someProductionURL",
             sandboxURL: "someSandboxURL",
             sessionConfiguration: .default
         )
+        
+        // Enable logging events in your console by setting isLoggingEnabled to true
         receiptValidator = SwiftyReceiptValidator(configuration: configuration, isLoggingEnabled: false)
     }
 }
