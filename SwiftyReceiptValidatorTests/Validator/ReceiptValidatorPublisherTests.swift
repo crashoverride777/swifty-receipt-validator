@@ -39,7 +39,7 @@ class ReceiptValidatorPublisherTests: ReceiptValidatorTests {
         let expectedResponse: SRVReceiptResponse = .mock()
         receiptClient.stub.validateResult = .success(expectedResponse)
         responseValidator.stub.validatePurchaseResult = .success(expectedResponse)
-        let request = SwiftyReceiptValidatorPurchaseRequest(productId: "1", sharedSecret: nil)
+        let request = SRVPurchaseRequest(productId: "1", sharedSecret: nil)
         sut.validatePurchasePublisher(for: request)
             .sink(
                 receiveCompletion: { _ in },
@@ -58,7 +58,7 @@ class ReceiptValidatorPublisherTests: ReceiptValidatorTests {
         let sut = makeSUT()
         let expectedError = URLError(.notConnectedToInternet)
         receiptURLFetcher.stub.fetchResult = .failure(expectedError)
-        let request = SwiftyReceiptValidatorPurchaseRequest(productId: "1", sharedSecret: nil)
+        let request = SRVPurchaseRequest(productId: "1", sharedSecret: nil)
         sut.validatePurchasePublisher(for: request)
             .sink(
                 receiveCompletion: { completion in
@@ -79,7 +79,7 @@ class ReceiptValidatorPublisherTests: ReceiptValidatorTests {
         let sut = makeSUT()
         let expectedError = URLError(.notConnectedToInternet)
         receiptClient.stub.validateResult = .failure(.other(expectedError))
-        let request = SwiftyReceiptValidatorPurchaseRequest(productId: "1", sharedSecret: nil)
+        let request = SRVPurchaseRequest(productId: "1", sharedSecret: nil)
         sut.validatePurchasePublisher(for: request)
             .sink(
                 receiveCompletion: { completion in
@@ -100,7 +100,7 @@ class ReceiptValidatorPublisherTests: ReceiptValidatorTests {
         let sut = makeSUT()
         let expectedError: SRVError = .productIdNotMatching(.unknown)
         responseValidator.stub.validatePurchaseResult = .failure(expectedError)
-        let request = SwiftyReceiptValidatorPurchaseRequest(productId: "1", sharedSecret: nil)
+        let request = SRVPurchaseRequest(productId: "1", sharedSecret: nil)
         sut.validatePurchasePublisher(for: request)
             .sink(
                 receiveCompletion: { completion in
@@ -128,7 +128,7 @@ class ReceiptValidatorPublisherTests: ReceiptValidatorTests {
         )
         receiptClient.stub.validateResult = .success(expectedReceiptResponse)
         responseValidator.stub.validateSubscriptionResult = .success(expectedValidationResponse)
-        let request = SwiftyReceiptValidatorSubscriptionRequest(
+        let request = SRVSubscriptionRequest(
             sharedSecret: "secret",
             refreshLocalReceiptIfNeeded: false,
             excludeOldTransactions: false,
@@ -152,7 +152,7 @@ class ReceiptValidatorPublisherTests: ReceiptValidatorTests {
         let sut = makeSUT()
         let expectedError = URLError(.notConnectedToInternet)
         receiptURLFetcher.stub.fetchResult = .failure(expectedError)
-        let request = SwiftyReceiptValidatorSubscriptionRequest(
+        let request = SRVSubscriptionRequest(
             sharedSecret: "secret",
             refreshLocalReceiptIfNeeded: false,
             excludeOldTransactions: false,
@@ -178,7 +178,7 @@ class ReceiptValidatorPublisherTests: ReceiptValidatorTests {
         let sut = makeSUT()
         let expectedError = URLError(.notConnectedToInternet)
         receiptClient.stub.validateResult = .failure(.other(expectedError))
-        let request = SwiftyReceiptValidatorSubscriptionRequest(
+        let request = SRVSubscriptionRequest(
             sharedSecret: "secret",
             refreshLocalReceiptIfNeeded: false,
             excludeOldTransactions: false,
@@ -204,7 +204,7 @@ class ReceiptValidatorPublisherTests: ReceiptValidatorTests {
         let sut = makeSUT()
         let expectedError = URLError(.notConnectedToInternet)
         responseValidator.stub.validateSubscriptionResult = .failure(.other(expectedError))
-        let request = SwiftyReceiptValidatorSubscriptionRequest(
+        let request = SRVSubscriptionRequest(
             sharedSecret: "secret",
             refreshLocalReceiptIfNeeded: false,
             excludeOldTransactions: false,

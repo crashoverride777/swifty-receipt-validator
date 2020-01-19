@@ -13,19 +13,19 @@ import Combine
 public protocol SwiftyReceiptValidatorType {
     @available(iOS 13, *)
     func validatePurchasePublisher(
-        for request: SwiftyReceiptValidatorPurchaseRequest
+        for request: SRVPurchaseRequest
     ) -> AnyPublisher<SRVReceiptResponse, SRVError>
     func validatePurchase(
-        for request: SwiftyReceiptValidatorPurchaseRequest,
+        for request: SRVPurchaseRequest,
         handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void
     )
    
     @available(iOS 13, *)
     func validateSubscriptionPublisher(
-        for request: SwiftyReceiptValidatorSubscriptionRequest
+        for request: SRVSubscriptionRequest
     ) -> AnyPublisher<SRVSubscriptionValidationResponse, SRVError>
     func validateSubscription(
-        for request: SwiftyReceiptValidatorSubscriptionRequest,
+        for request: SRVSubscriptionRequest,
         handler: @escaping (Result<SRVSubscriptionValidationResponse, SRVError>) -> Void
     )
 }
@@ -41,7 +41,7 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
     /// - parameter handler: Completion handler called when the validation has completed.
     @available(iOS 13, *)
     public func validatePurchasePublisher(
-        for request: SwiftyReceiptValidatorPurchaseRequest
+        for request: SRVPurchaseRequest
     ) -> AnyPublisher<SRVReceiptResponse, SRVError> {
         return Future { [weak self] promise in
             self?.validatePurchase(for: request, handler: promise)
@@ -54,7 +54,7 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
     /// - parameter sharedSecret: The shared secret setup in iTunes.
     /// - parameter handler: Completion handler called when the validation has completed.
     public func validatePurchase(
-        for request: SwiftyReceiptValidatorPurchaseRequest,
+        for request: SRVPurchaseRequest,
         handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void
     ) {
         fetchReceipt(
@@ -85,7 +85,7 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
     /// - parameter excludeOldTransactions: If value is true, response includes only the latest renewal transaction for any subscriptions.
     @available(iOS 13, *)
     public func validateSubscriptionPublisher(
-        for request: SwiftyReceiptValidatorSubscriptionRequest
+        for request: SRVSubscriptionRequest
     ) -> AnyPublisher<SRVSubscriptionValidationResponse, SRVError> {
          return Future { [weak self] promise in
              self?.validateSubscription(for: request, handler: promise)
@@ -99,7 +99,7 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
     /// - parameter excludeOldTransactions: If value is true, response includes only the latest renewal transaction for any subscriptions.
     /// - parameter handler: Completion handler called when the validation has completed.
     public func validateSubscription(
-        for request: SwiftyReceiptValidatorSubscriptionRequest,
+        for request: SRVSubscriptionRequest,
         handler: @escaping (Result<SRVSubscriptionValidationResponse, SRVError>) -> Void
     ) {
         fetchReceipt(

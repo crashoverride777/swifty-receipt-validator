@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct SwiftyReceiptValidatorPurchaseRequest {
+public struct SRVPurchaseRequest {
     let productId: String
     let sharedSecret: String?
     

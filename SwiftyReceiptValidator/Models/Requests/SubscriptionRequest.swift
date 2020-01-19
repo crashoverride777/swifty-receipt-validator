@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct SwiftyReceiptValidatorSubscriptionRequest {
+public struct SRVSubscriptionRequest {
     let sharedSecret: String?
     let refreshLocalReceiptIfNeeded: Bool
     let excludeOldTransactions: Bool

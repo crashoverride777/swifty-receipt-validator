@@ -16,7 +16,7 @@ class SubscriptionRequest: XCTestCase {
         let refreshLocalReceiptIfNeeded = true
         let excludeOldTransactions = false
         let now: Date = .test
-        let sut = SwiftyReceiptValidatorSubscriptionRequest(
+        let sut = SRVSubscriptionRequest(
             sharedSecret: sharedSecret,
             refreshLocalReceiptIfNeeded: refreshLocalReceiptIfNeeded,
             excludeOldTransactions: excludeOldTransactions,
