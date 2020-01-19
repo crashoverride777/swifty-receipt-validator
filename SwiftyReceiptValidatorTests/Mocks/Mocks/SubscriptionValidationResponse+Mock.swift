@@ -1,5 +1,5 @@
 //
-//  ValidationResponse+Mock.swift
+//  SubscriptionValidationResponse+Mock.swift
 //  SwiftyReceiptValidator
 //
 //  Created by Dominik Ringler on 25/11/2019.
@@ -7,9 +7,8 @@
 //
 
 import Foundation
-@testable import SwiftyReceiptValidator
 
-extension SRVSubscriptionValidationResponse {
+public extension SRVSubscriptionValidationResponse {
     
     static func mock(
         validReceipts: [SRVReceiptInApp] = [.mock()],

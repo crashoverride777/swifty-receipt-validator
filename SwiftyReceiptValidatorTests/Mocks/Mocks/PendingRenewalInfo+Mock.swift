@@ -7,9 +7,8 @@
 //
 
 import Foundation
-@testable import SwiftyReceiptValidator
 
-extension SRVPendingRenewalInfo {
+public extension SRVPendingRenewalInfo {
     
     static func mock(
         productId: String? = UUID().uuidString,

@@ -7,9 +7,8 @@
 //
 
 import Foundation
-@testable import SwiftyReceiptValidator
 
-extension SRVReceiptInApp {
+public extension SRVReceiptInApp {
     
     static func mock(
         quantity: String = "1",

@@ -1,9 +1,9 @@
 //
 //  ReceiptResponse+Mock.swift
-//  SwiftyReceiptValidator
+//  SwiftyReceiptValidatorTests
 //
-//  Created by Dominik Ringler on 25/11/2019.
-//  Copyright © 2019 Dominik. All rights reserved.
+//  Created by Dominik Ringler on 19/01/2020.
+//  Copyright © 2020 Dominik. All rights reserved.
 //
 
 import Foundation
@@ -29,23 +29,6 @@ extension SRVReceiptResponse {
                 return "ReceiptResponseSandbox"
             }
         }
-    }
-    
-    static func mock(
-        statusCode: SRVStatusCode = .valid,
-        receipt: SRVReceipt? = .mock(),
-        latestReceipt: Data? = nil,
-        latestReceiptInfo: [SRVReceiptInApp]? = [.mock()],
-        pendingRenewalInfo: [SRVPendingRenewalInfo]? = [.mock()],
-        environment: String? = nil) -> SRVReceiptResponse {
-        SRVReceiptResponse(
-            status: statusCode,
-            receipt: receipt,
-            latestReceipt: latestReceipt,
-            latestReceiptInfo: latestReceiptInfo,
-            pendingRenewalInfo: pendingRenewalInfo,
-            environment: environment
-        )
     }
     
     static func mock(_ type: JSONType) -> [String: Any] {

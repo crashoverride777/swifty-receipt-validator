@@ -46,7 +46,8 @@ class SomeClass {
     init() {
         // Standard configuration communicates with apples server directly, which is not recommended
         // add your own custom config if required to speak with your own server
-        receiptValidator = SwiftyReceiptValidator(configuration: .standard)
+        // You can also enable/disable logging events in your console
+        receiptValidator = SwiftyReceiptValidator(configuration: .standard, isLoggingEnabled: false)
     }
 }
 ```
@@ -70,11 +71,11 @@ class SomeClass {
     
     init() {
         let configuration = SwiftyReceiptValidator.Configuration(
-            productionURL: "someURL",
-            sandboxURL: "someURL",
+            productionURL: "someProductionURL",
+            sandboxURL: "someSandboxURL",
             sessionConfiguration: .default
         )
-        receiptValidator = SwiftyReceiptValidator(configuration: configuration)
+        receiptValidator = SwiftyReceiptValidator(configuration: configuration, isLoggingEnabled: false)
     }
 }
 ```
@@ -109,12 +110,12 @@ case .purchased:
         // Transaction is in queue, user has been charged.  Client should complete the transaction.
         let productId = transaction.payment.productIdentifier
 
-        receiptValidator.validatePurchase(withId: productId, sharedSecret: nil) { result in
+        receiptValidator.validatePurchase(forProductId: productId, sharedSecret: nil) { result in
             switch result {
 
            case .success(let response):
                  defer {
-                    // Complete the transaction only after validation was successful
+                    // IMPORTANT: Complete the transaction ONLY after validation was successful
                     // if validation error e.g due to internet, the transaction will stay in pending state
                     // and than can/will be resumed on next app launch
                     queue.finishTransaction(transaction)
@@ -141,7 +142,7 @@ case .restored:
 
         case .success(let response):
             defer {
-                // Complete the transaction only after validation was successful
+                // IMPORTANT: Complete the transaction ONLY after validation was successful
                 // if validation error e.g due to internet, the transaction will stay in pending state
                 // and than can/will be resumed on next app launch
                 queue.finishTransaction(transaction)
@@ -166,7 +167,8 @@ Note: There is also Combine support for these methods if you are targeting iOS 1
 ```swift
 receiptValidator.validateSubscription(sharedSecret: "your secret", 
                                       refreshLocalReceiptIfNeeded: false,  
-                                      excludeOldTransactions: true) { result in
+                                      excludeOldTransactions: true,
+                                      now: Date()) { result in
     switch result {
     case .success(let response):
         print("Receipt validation was successfull with receipt response \(response)")
@@ -188,29 +190,6 @@ receiptValidator.validateSubscription(sharedSecret: "your secret",
 Setting refreshLocalReceiptIfNeeded = true will create a receipt fetch request if no receipt on device. This will show a iTunes password prompt.
 
 Note: There is also Combine support for these methods if you are targeting iOS 13 and above
-
-### Fetch Receipt Only
-
-```swift
-func fetch(sharedSecret: nil, refreshLocalReceiptIfNeeded: false, excludeOldTransactions: false) { result in 
-  switch result {
-  case .success(let response):
-      print("Receipt fetch was successfull with response \(response)")
-  case .failure(let error, let code):
-      print(error)
-  }
-}
-```
-
-Note: There is also Combine support for these methods if you are targeting iOS 13 and above
-
-## Loggin
-
-By default loggin is turned off, to turn on logging events simpy set the flag to true in the init method
-
-```swift
-receiptValidator = SwiftyReceiptValidator(configuration: .standard, isLoggingEnabled: true)
-```
 
 ## Unit Tests
 
@@ -236,10 +215,8 @@ This way it is very easy to mock SwiftyReceiptValidator in your in app purchase 
 
 ```swift
 class SomeClassTests {
-    private var sut: SomeClass!
-    override func setUp() {
-        super.setUp()
-        sut = SomeClass(receiptValidator: MockReceiptValidator())
+    func test() {
+        let sut = SomeClass(receiptValidator: MockReceiptValidator())
     }
 }
 ```
@@ -247,6 +224,9 @@ class SomeClassTests {
 All models that require mocking have a dedicated mock object that should be used
 
 ```swift
+SRVReceiptResponse.mock()
+SRVReceipt.mock()
+SRVReceiptInApp.mock()
 SRVPendingRenewalInfo.mock()
 SRVSubscriptionValidationResponse.mock()
 ```
