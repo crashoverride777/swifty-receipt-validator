@@ -52,6 +52,9 @@
 		6AD83A5C23D3A0D400D3919C /* ReceiptClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD83A5B23D3A0D400D3919C /* ReceiptClient.swift */; };
 		6AD83A5E23D3A3AC00D3919C /* MockReceiptClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD83A5D23D3A3AC00D3919C /* MockReceiptClient.swift */; };
 		6AD83A6023D3A65F00D3919C /* ReceiptClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD83A5F23D3A65F00D3919C /* ReceiptClientTests.swift */; };
+		6AD83A6A23D46D6E00D3919C /* JSONDecoder+Receipt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD83A6923D46D6E00D3919C /* JSONDecoder+Receipt.swift */; };
+		6AD83A6C23D46FCE00D3919C /* ReceiptResponseSandbox.json in Resources */ = {isa = PBXBuildFile; fileRef = 6AD83A6B23D46FCE00D3919C /* ReceiptResponseSandbox.json */; };
+		6AD83A6E23D4768F00D3919C /* JSONDecoderReceiptTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD83A6D23D4768F00D3919C /* JSONDecoderReceiptTests.swift */; };
 		6AD9353C2358FA7000E75ED5 /* AutoRenewStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD9353B2358FA7000E75ED5 /* AutoRenewStatus.swift */; };
 		6AD9353E2358FC8300E75ED5 /* SubscriptionValidationResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD9353D2358FC8300E75ED5 /* SubscriptionValidationResponse.swift */; };
 		6ADEB8EB2200EF1300370C71 /* ReceiptValidator+Fetch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADEB8EA2200EF1300370C71 /* ReceiptValidator+Fetch.swift */; };
@@ -117,6 +120,9 @@
 		6AD83A5B23D3A0D400D3919C /* ReceiptClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptClient.swift; sourceTree = "<group>"; };
 		6AD83A5D23D3A3AC00D3919C /* MockReceiptClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockReceiptClient.swift; sourceTree = "<group>"; };
 		6AD83A5F23D3A65F00D3919C /* ReceiptClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptClientTests.swift; sourceTree = "<group>"; };
+		6AD83A6923D46D6E00D3919C /* JSONDecoder+Receipt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JSONDecoder+Receipt.swift"; sourceTree = "<group>"; };
+		6AD83A6B23D46FCE00D3919C /* ReceiptResponseSandbox.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ReceiptResponseSandbox.json; sourceTree = "<group>"; };
+		6AD83A6D23D4768F00D3919C /* JSONDecoderReceiptTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONDecoderReceiptTests.swift; sourceTree = "<group>"; };
 		6AD9353B2358FA7000E75ED5 /* AutoRenewStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoRenewStatus.swift; sourceTree = "<group>"; };
 		6AD9353D2358FC8300E75ED5 /* SubscriptionValidationResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionValidationResponse.swift; sourceTree = "<group>"; };
 		6ADEB8EA2200EF1300370C71 /* ReceiptValidator+Fetch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReceiptValidator+Fetch.swift"; sourceTree = "<group>"; };
@@ -231,6 +237,7 @@
 				6A7DF29423060254001CAEEF /* ReceiptResponseInvalidFormat.json */,
 				6A7DF2922306022D001CAEEF /* ReceiptResponseValidSubscription.json */,
 				6A7DF29623060282001CAEEF /* ReceiptResponseSubscriptionExpired.json */,
+				6AD83A6B23D46FCE00D3919C /* ReceiptResponseSandbox.json */,
 			);
 			path = JSONs;
 			sourceTree = "<group>";
@@ -242,6 +249,7 @@
 				6AD83A5F23D3A65F00D3919C /* ReceiptClientTests.swift */,
 				6A7DF29D230609BB001CAEEF /* ResponseValidatorTests.swift */,
 				6A53FBED23D32F0B00E7D814 /* URLSessionManagerTests.swift */,
+				6AD83A6D23D4768F00D3919C /* JSONDecoderReceiptTests.swift */,
 			);
 			path = Internal;
 			sourceTree = "<group>";
@@ -280,6 +288,7 @@
 				6ACC6249235136070085A42F /* ResponseValidator.swift */,
 				6ACC624B235136070085A42F /* URLSessionManager.swift */,
 				6ACC624C235136070085A42F /* LocalizedString.swift */,
+				6AD83A6923D46D6E00D3919C /* JSONDecoder+Receipt.swift */,
 				6AFE274B2269D03D0016ED8A /* Localizable.strings */,
 			);
 			path = Internal;
@@ -434,6 +443,7 @@
 				6A7DF29723060282001CAEEF /* ReceiptResponseSubscriptionExpired.json in Resources */,
 				6A7DF29523060254001CAEEF /* ReceiptResponseInvalidFormat.json in Resources */,
 				6A7DF2932306022D001CAEEF /* ReceiptResponseValidSubscription.json in Resources */,
+				6AD83A6C23D46FCE00D3919C /* ReceiptResponseSandbox.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -460,6 +470,7 @@
 				6A7DF2862305E4E8001CAEEF /* ReceiptInAppTests.swift in Sources */,
 				6A53FBEA23D32AE400E7D814 /* ReceiptInApp+Mock.swift in Sources */,
 				6A53FBEE23D32F0B00E7D814 /* URLSessionManagerTests.swift in Sources */,
+				6AD83A6E23D4768F00D3919C /* JSONDecoderReceiptTests.swift in Sources */,
 				6A53FBFD23D344D800E7D814 /* MockBundle.swift in Sources */,
 				6A53FBEC23D32AE400E7D814 /* ValidationResponse+Mock.swift in Sources */,
 				6A7DF29E230609BB001CAEEF /* ResponseValidatorTests.swift in Sources */,
@@ -490,6 +501,7 @@
 				6ACC624E235136070085A42F /* ReceiptURLFetcher.swift in Sources */,
 				6ACC6256235136150085A42F /* ReceiptResponse.swift in Sources */,
 				6ACC6257235136150085A42F /* Receipt.swift in Sources */,
+				6AD83A6A23D46D6E00D3919C /* JSONDecoder+Receipt.swift in Sources */,
 				6ADEB8EB2200EF1300370C71 /* ReceiptValidator+Fetch.swift in Sources */,
 				B4533F3F1DA2BDA700440CC0 /* ReceiptValidator.swift in Sources */,
 				6ACC624D235136070085A42F /* ResponseValidator.swift in Sources */,

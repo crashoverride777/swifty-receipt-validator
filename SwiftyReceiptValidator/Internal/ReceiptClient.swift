@@ -19,7 +19,7 @@ final class ReceiptClient {
     
     // MARK: - Types
     
-    struct Parameters: Encodable {
+    fileprivate struct Parameters: Encodable {
         let data: String
         let excludeOldTransactions: Bool
         let password: String?
@@ -28,16 +28,7 @@ final class ReceiptClient {
             case data = "receipt-data"
             case excludeOldTransactions = "exclude-old-transactions"
             case password
-
         }
-//        var parameters: [String: Any] = [
-//            ParamsKey.data.rawValue: receiptBase64String,
-//            ParamsKey.excludeOldTransactions.rawValue: excludeOldTransactions
-//        ]
-//
-//        if let sharedSecret = sharedSecret {
-//            parameters[ParamsKey.password.rawValue] = sharedSecret
-//        }
     }
     
     // MARK: - Properties
@@ -65,31 +56,34 @@ final class ReceiptClient {
 extension ReceiptClient: ReceiptClientType {
     
     func fetch(with receiptURL: URL,
-                      sharedSecret: String?,
-                      excludeOldTransactions: Bool,
-                      handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void) {
+               sharedSecret: String?,
+               excludeOldTransactions: Bool,
+               handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void) {
         do {
-            // Get receipt data
-            let receiptData = try Data(contentsOf: receiptURL)
-            
             // Prepare url session parameters
+            let receiptData = try Data(contentsOf: receiptURL)
             let parameters = Parameters(
                 data: receiptData.base64EncodedString(options: Data.Base64EncodingOptions(rawValue: 0)),
                 excludeOldTransactions: excludeOldTransactions,
                 password: sharedSecret
             )
-            #warning("remove after tested new Parameters stuct")
-//            var parameters: [String: Any] = [
-//                ParamsKey.data.rawValue: receiptBase64String,
-//                ParamsKey.excludeOldTransactions.rawValue: excludeOldTransactions
-//            ]
-//
-//            if let sharedSecret = sharedSecret {
-//                parameters[ParamsKey.password.rawValue] = sharedSecret
-//            }
-            
-            // Start production url request
-            self.startProductionRequest(with: parameters, handler: handler)
+
+            // Start URL request to production server first, if status code returns test environment receipt, try sandbox.
+            self.startSessionRequest(forURL: productionURL, parameters: parameters) { [weak self] result in
+                guard let self = self else { return }
+                switch result {
+                case .success(let receiptResponse):
+                    switch receiptResponse.status {
+                    case .testReceipt:
+                        self.print("SwiftyReceiptValidator production mode with test receipt, trying sandbox mode...")
+                        self.startSessionRequest(forURL: self.sandboxURL, parameters: parameters, handler: handler)
+                    default:
+                        handler(.success(receiptResponse))
+                    }
+                case .failure(let error):
+                    handler(.failure(.other(error)))
+                }
+            }
         } catch {
             handler(.failure(.other(error)))
         }
@@ -100,39 +94,27 @@ extension ReceiptClient: ReceiptClientType {
 
 private extension ReceiptClient {
     
-    func startProductionRequest(with parameters: Parameters,
-                                handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void) {
-        // Start URL request to production server first, if status code returns test environment receipt, try sandbox.
-        // This handles validation directily with apple. This is not the recommended way by apple as it is not secure.
-        // It is still better than not doing any validation at all.
-        sessionManager.start(withURL: productionURL, parameters: parameters) { [weak self] result in
+    func startSessionRequest(forURL urlString: String,
+                             parameters: Parameters,
+                             handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void) {
+        sessionManager.start(withURL: urlString, parameters: parameters) { [weak self] result in
             guard let self = self else { return }
             switch result {
-            case .success(let response):
-                self.print("SwiftyReceiptValidator success (PRODUCTION) with response\(response)")
-                if response.status == .testReceipt {
-                    self.print("SwiftyReceiptValidator production mode with test receipt, trying sandbox mode...")
-                    self.startSandboxRequest(with: parameters, handler: handler)
+            case .success(let data):
+                if urlString == self.productionURL {
+                    self.print("SwiftyReceiptValidator success (PRODUCTION)")
                 } else {
-                    handler(.success(response))
+                    self.print("SwiftyReceiptValidator success (SANDBOX)")
+                }
+                
+                do {
+                    let decoder: JSONDecoder = .receiptResponse
+                    let receiptResponse = try decoder.decode(SRVReceiptResponse.self, from: data)
+                    handler(.success(receiptResponse))
+                } catch {
+                    handler(.failure(.other(error)))
                 }
             case .failure(let error):
-                self.print(error)
-                handler(.failure(.other(error)))
-            }
-        }
-    }
-    
-    func startSandboxRequest(with parameters: Parameters,
-                             handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void) {
-        sessionManager.start(withURL: sandboxURL, parameters: parameters) { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let response):
-                self.print("SwiftyReceiptValidator success (SANDBOX) with response \(response)")
-                handler(.success(response))
-            case .failure(let error):
-                self.print(error)
                 handler(.failure(.other(error)))
             }
         }

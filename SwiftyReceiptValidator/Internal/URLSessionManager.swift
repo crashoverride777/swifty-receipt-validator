@@ -11,7 +11,7 @@ import Foundation
 public protocol URLSessionManagerType: AnyObject {
     func start<T: Encodable>(withURL urlString: String,
                              parameters: T,
-                             handler: @escaping (Result<SRVReceiptResponse, Error>) -> Void)
+                             handler: @escaping (Result<Data, Error>) -> Void)
 }
 
 final class URLSessionManager {
@@ -39,20 +39,8 @@ final class URLSessionManager {
     
     private var urlSession: URLSession?
     private let sessionConfiguration: URLSessionConfiguration
-    
     private let encoder = JSONEncoder()
-    private(set) lazy var decoder: JSONDecoder = {
-        let dateFormatter = DateFormatter()
-        dateFormatter.calendar = Calendar(identifier: .iso8601)
-        dateFormatter.locale = .current
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss VV"
-        
-        let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .formatted(dateFormatter)
-        decoder.keyDecodingStrategy = .convertFromSnakeCase
-        return decoder
-    }()
-    
+
     // MARK: - Init
     
     init(sessionConfiguration: URLSessionConfiguration = .default) {
@@ -66,7 +54,7 @@ extension URLSessionManager: URLSessionManagerType {
  
     func start<T: Encodable>(withURL urlString: String,
                              parameters: T,
-                             handler: @escaping (Result<SRVReceiptResponse, Error>) -> Void) {
+                             handler: @escaping (Result<Data, Error>) -> Void) {
         // Create url
         guard let url = URL(string: urlString) else {
             handler(.failure(SessionError.url))
@@ -104,14 +92,9 @@ extension URLSessionManager: URLSessionManagerType {
                 handler(.failure(SessionError.data))
                 return
             }
-            
-            // Parse data
-            do {
-                let response = try self.decoder.decode(SRVReceiptResponse.self, from: data)
-                handler(.success(response))
-            } catch {
-                handler(.failure(error))
-            }
-        }.resume()
+            // Return success handler with data
+            handler(.success(data))
+        }
+        .resume()
     }
 }

@@ -15,6 +15,7 @@ extension SRVReceiptResponse {
         case invalid
         case subscription
         case subscriptionExpired
+        case sandbox
         
         var name: String {
             switch self {
@@ -24,6 +25,8 @@ extension SRVReceiptResponse {
                 return "ReceiptResponseValidSubscription"
             case .subscriptionExpired:
                 return "ReceiptResponseSubscriptionExpired"
+            case .sandbox:
+                return "ReceiptResponseSandbox"
             }
         }
     }
@@ -45,14 +48,27 @@ extension SRVReceiptResponse {
         )
     }
     
-    static func mock(_ type: JSONType) -> SRVReceiptResponse {
+    static func mock(_ type: JSONType) -> [String: Any] {
         guard let path = Bundle(for: MockSessionManager.self).path(forResource: type.name, ofType: "json") else {
             fatalError("Invalid path to JSON file in bundle")
         }
         
         do {
-            let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
-            let receiptResponse = try JSONDecoder().decode(SRVReceiptResponse.self, from: data)
+            let data = try Data(contentsOf: URL(fileURLWithPath: path), options: [])
+            guard let dictionary = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] else {
+                fatalError("Invalid jsob object")
+            }
+            return dictionary
+        } catch {
+            fatalError("SwiftyReceiptResponse fake error \(error)")
+        }
+    }
+    
+    static func mock(from dictionary: [String: Any]) -> SRVReceiptResponse {
+        do {
+            let data = try JSONSerialization.data(withJSONObject: dictionary, options: [])
+            let decoder: JSONDecoder = .receiptResponse
+            let receiptResponse = try decoder.decode(SRVReceiptResponse.self, from: data)
             return receiptResponse
         } catch {
             fatalError("SwiftyReceiptResponse fake error \(error)")
