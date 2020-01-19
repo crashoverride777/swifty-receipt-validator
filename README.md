@@ -70,7 +70,7 @@ class SomeClass {
     let receiptValidator: SwiftyReceiptValidatorType
     
     init() {
-        let configuration = SwiftyReceiptValidator.Configuration(
+        let configuration = SRVConfiguration(
             productionURL: "someProductionURL",
             sandboxURL: "someSandboxURL",
             sessionConfiguration: .default
