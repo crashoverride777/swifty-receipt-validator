@@ -110,6 +110,7 @@ case .purchased:
         // Transaction is in queue, user has been charged.  Client should complete the transaction.
         let productId = transaction.payment.productIdentifier
 
+        // Enter your shared secret if your have set one on iTunes, otherwise set to nil
         receiptValidator.validatePurchase(forProductId: productId, sharedSecret: nil) { result in
             switch result {
 
@@ -137,6 +138,7 @@ case .restored:
         return
     }
 
+    // Enter your shared secret if your have set one on iTunes, otherwise set to nil
     receiptValidator.validatePurchase(withId: productId, sharedSecret: nil) { result in
         switch result {
 
