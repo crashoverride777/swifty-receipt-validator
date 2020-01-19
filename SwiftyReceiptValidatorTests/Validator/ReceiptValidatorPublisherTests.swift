@@ -39,7 +39,7 @@ class ReceiptValidatorPublisherTests: ReceiptValidatorTests {
         let expectedResponse: SRVReceiptResponse = .mock()
         receiptClient.stub.validateResult = .success(expectedResponse)
         responseValidator.stub.validatePurchaseResult = .success(expectedResponse)
-        sut.validatePurchasePublisher(forId: "1", sharedSecret: nil)
+        sut.validatePurchasePublisher(forProductId: "1", sharedSecret: nil)
             .sink(
                 receiveCompletion: { _ in },
                 receiveValue: { response in
@@ -57,7 +57,7 @@ class ReceiptValidatorPublisherTests: ReceiptValidatorTests {
         let sut = makeSUT()
         let expectedError = URLError(.notConnectedToInternet)
         receiptURLFetcher.stub.fetchResult = .failure(expectedError)
-        sut.validatePurchasePublisher(forId: "1", sharedSecret: nil)
+        sut.validatePurchasePublisher(forProductId: "1", sharedSecret: nil)
             .sink(
                 receiveCompletion: { completion in
                     if case .failure(let error) = completion {
@@ -77,7 +77,7 @@ class ReceiptValidatorPublisherTests: ReceiptValidatorTests {
         let sut = makeSUT()
         let expectedError = URLError(.notConnectedToInternet)
         receiptClient.stub.validateResult = .failure(.other(expectedError))
-        sut.validatePurchasePublisher(forId: "1", sharedSecret: nil)
+        sut.validatePurchasePublisher(forProductId: "1", sharedSecret: nil)
             .sink(
                 receiveCompletion: { completion in
                     if case .failure(let error) = completion {
@@ -97,7 +97,7 @@ class ReceiptValidatorPublisherTests: ReceiptValidatorTests {
         let sut = makeSUT()
         let expectedError: SRVError = .productIdNotMatching(.unknown)
         responseValidator.stub.validatePurchaseResult = .failure(expectedError)
-        sut.validatePurchasePublisher(forId: "1", sharedSecret: nil)
+        sut.validatePurchasePublisher(forProductId: "1", sharedSecret: nil)
             .sink(
                 receiveCompletion: { completion in
                     if case .failure(let error) = completion {
