@@ -174,7 +174,7 @@
 				6A2F6EED238C6C7F008AA0B0 /* SubscriptionValidationResponse+Mock.swift */,
 			);
 			name = Mocks;
-			path = SwiftyReceiptValidator/Models/Mocks;
+			path = "Sources/swifty-receipt-validator/Models/Mocks";
 			sourceTree = SOURCE_ROOT;
 		};
 		6A4384AA222730C1009EF552 /* SwiftyReceiptValidatorTests */ = {
@@ -259,6 +259,24 @@
 				6AD83A6D23D4768F00D3919C /* JSONDecoderReceiptTests.swift */,
 			);
 			path = Internal;
+			sourceTree = "<group>";
+		};
+		6AA4F7BC23D5095E00CF4514 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				6AA4F7BD23D5095E00CF4514 /* swifty-receipt-validator */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		6AA4F7BD23D5095E00CF4514 /* swifty-receipt-validator */ = {
+			isa = PBXGroup;
+			children = (
+				6ADEB8B62200859000370C71 /* Models */,
+				6ADEB8BF2200883600370C71 /* Validator */,
+				6ADEB8EC2200F8C300370C71 /* Internal */,
+			);
+			path = "swifty-receipt-validator";
 			sourceTree = "<group>";
 		};
 		6AD83A7623D49BA100D3919C /* Models */ = {
@@ -397,6 +415,7 @@
 			isa = PBXGroup;
 			children = (
 				6A2755922315D0EA00F131C1 /* README.md */,
+				6AA4F7BC23D5095E00CF4514 /* Sources */,
 				B4533F331DA2BD8900440CC0 /* SwiftyReceiptValidator */,
 				6A4384AA222730C1009EF552 /* SwiftyReceiptValidatorTests */,
 				B4533F321DA2BD8900440CC0 /* Products */,
@@ -415,9 +434,6 @@
 		B4533F331DA2BD8900440CC0 /* SwiftyReceiptValidator */ = {
 			isa = PBXGroup;
 			children = (
-				6ADEB8B62200859000370C71 /* Models */,
-				6ADEB8BF2200883600370C71 /* Validator */,
-				6ADEB8EC2200F8C300370C71 /* Internal */,
 				B4533F341DA2BD8900440CC0 /* SwiftyReceiptValidator.h */,
 				B4533F351DA2BD8900440CC0 /* Info.plist */,
 			);
