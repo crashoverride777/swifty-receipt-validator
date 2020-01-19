@@ -181,7 +181,7 @@ receiptValidator.validate(validationRequest) { result in
     case .failure(let error, let code):
         switch error {
         print(error.statusCode)
-        case .noValidSubscription:
+        case .subscriptionExpired:
             // no active subscription found, update your cache/app etc
         default:
             break // do nothing e.g internet error or other errors
@@ -190,7 +190,7 @@ receiptValidator.validate(validationRequest) { result in
 }
 ```
 
-Setting refreshLocalReceiptIfNeeded = true will create a receipt fetch request if no receipt is found on the iOS device. This will show a iTunes password prompt so might always be wanted e.g app launch.
+Setting `refreshLocalReceiptIfNeeded = true` will create a receipt fetch request if no receipt is found on the iOS device. This will show a iTunes password prompt so might not always be wanted e.g app launch.
 
 Note: There is also Combine support for these methods if you are targeting iOS 13 and above
 
