@@ -18,6 +18,6 @@ s.source = {
     :tag => s.version
 }
 
-s.source_files = "SwiftyReceiptValidator/**/*.{swift}"
+s.source_files = "Sources/**/*.{swift}"
 
 end
