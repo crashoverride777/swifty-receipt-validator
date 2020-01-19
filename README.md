@@ -19,12 +19,25 @@ Please test this properly, including production mode which will use apples produ
 
 ## Installation
 
+### Cocoa Pods
+
 [CocoaPods](https://developers.google.com/admob/ios/quick-start#streamlined_using_cocoapods) is a dependency manager for Cocoa projects. 
 Simply install the pod by adding the following line to your pod file
-
 ```swift
 pod 'SwiftyReceiptValidator'
 ```
+
+### Swift Package Manager
+
+The Swift Package Manager is a tool for automating the distribution of Swift code and is integrated into the swift compiler.
+Once you have your Swift package set up, adding SwiftyReceiptValidator as a dependency is as easy as adding it to the dependencies value of your Package.swift.
+```swift
+dependencies: [
+.package(url: "https://github.com/SwiftyReceiptValidator/SwiftyReceiptValidator.git", from: "6.0.0")
+]
+```
+
+### Manually 
 
 Altenatively you can drag the SwiftyReceiptValidator folder and its containing files manually into your project.
 
