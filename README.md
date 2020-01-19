@@ -110,8 +110,12 @@ case .purchased:
         // Transaction is in queue, user has been charged.  Client should complete the transaction.
         let productId = transaction.payment.productIdentifier
 
-        // Enter your shared secret if your have set one on iTunes, otherwise set to nil
-        receiptValidator.validatePurchase(forProductId: productId, sharedSecret: nil) { result in
+        let validationRequest = SRVPurchaseRequest(
+            productId: productId,
+            sharedSecret: "your secret or nil" // Enter your shared secret if your have set one on iTunes, otherwise set to nil
+        )
+        
+        receiptValidator.validatePurchase(for: request) { result in
             switch result {
 
            case .success(let response):
@@ -137,9 +141,13 @@ case .restored:
         queue.finishTransaction(transaction)
         return
     }
-
-    // Enter your shared secret if your have set one on iTunes, otherwise set to nil
-    receiptValidator.validatePurchase(withId: productId, sharedSecret: nil) { result in
+    
+    let validationRequest = SRVPurchaseRequest(
+        productId: productId,
+        sharedSecret: "your secret or nil" // Enter your shared secret if your have set one on iTunes, otherwise set to nil
+    )
+    
+    receiptValidator.validatePurchase(for: validationRequest) { result in
         switch result {
 
         case .success(let response):
@@ -167,10 +175,13 @@ Note: There is also Combine support for these methods if you are targeting iOS 1
 - To validate your subscriptions (e.g on app launch), call `func validateSubscription(...` with your shared secret. This will search for all subscription receipts and check if there is at least 1 thats not expired.
 
 ```swift
-receiptValidator.validateSubscription(sharedSecret: "your secret", 
-                                      refreshLocalReceiptIfNeeded: false,  
-                                      excludeOldTransactions: true,
-                                      now: Date()) { result in
+let request = SRVSubscriptionRequest(
+    sharedSecret: "your shared secret",
+    refreshLocalReceiptIfNeeded: false,
+    excludeOldTransactions: false,
+    now: Date()
+)
+receiptValidator.validateSubscription(for: request) { result in
     switch result {
     case .success(let response):
         print("Receipt validation was successfull with receipt response \(response)")
