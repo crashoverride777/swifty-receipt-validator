@@ -56,8 +56,6 @@ class SomeClass {
 
 - Custom Configuration (Recommended)
 
-// Note: Requires your own server
-
 ```swift
 class SomeClass {
     let receiptValidator: SwiftyReceiptValidatorType
@@ -76,7 +74,7 @@ class SomeClass {
     }
 }
 ```
-
+NOTE: Requires your own server
 https://www.raywenderlich.com/23266/in-app-purchases-in-ios-6-tutorial-consumables-and-receipt-validation
 
 ### Validate Purchases
@@ -87,8 +85,8 @@ https://www.raywenderlich.com/23266/in-app-purchases-in-ios-6-tutorial-consumabl
 extension SomeClass: SKPaymentTransactionObserver {
 
     func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
-        transactions.forEach {
-            switch $0.transactionState {
+        transactions.forEach { transaction in
+            switch transaction.transactionState {
                 case .purchased:
                 ...
                 case .restored:
@@ -116,7 +114,7 @@ case .purchased:
         switch result {
         case .success(let response):
             defer {
-                // IMPORTANT: Complete the transaction ONLY after validation was successful
+                // IMPORTANT: Finish the transaction ONLY after validation was successful
                 // if validation error e.g due to internet, the transaction will stay in pending state
                 // and than can/will be resumed on next app launch
                 queue.finishTransaction(transaction)
@@ -145,7 +143,7 @@ case .restored:
         switch result {
         case .success(let response):
             defer {
-                // IMPORTANT: Complete the transaction ONLY after validation was successful
+                // IMPORTANT: Finish the transaction ONLY after validation was successful
                 // if validation error e.g due to internet, the transaction will stay in pending state
                 // and than can/will be resumed on next app launch
                 queue.finishTransaction(transaction)
@@ -163,7 +161,7 @@ Note: There is also Combine support for these methods if you are targeting iOS 1
 
 ### Validate Subscriptions
 
-- To validate your subscriptions (e.g on app launch), create a validationRequest object  `let validationRequest = SRVSubscriptionValidationRequest(...)` and  `func validate(validationRequest)`. This will search for all subscription receipts and check if there is at least 1 thats not expired.
+- To validate your subscriptions (e.g on app launch), create a validationRequest object  `let validationRequest = SRVSubscriptionValidationRequest(...)` and  call `func validate(validationRequest)`. This will search for all subscription receipts.
 
 ```swift
 let validationRequest = SRVSubscriptionValidationRequest(
