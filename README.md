@@ -19,15 +19,14 @@ Please test this properly, including production mode which will use apples produ
 
 ## Installation
 
-[CocoaPods](https://developers.google.com/admob/ios/quick-start#streamlined_using_cocoapods) is a dependency manager for Cocoa projects. Simply install the pod by adding the following line to your pod file
+[CocoaPods](https://developers.google.com/admob/ios/quick-start#streamlined_using_cocoapods) is a dependency manager for Cocoa projects. 
+Simply install the pod by adding the following line to your pod file
 
 ```swift
 pod 'SwiftyReceiptValidator'
 ```
 
-There is now an [app](https://cocoapods.org/app) which makes handling pods much easier
-
-Altenatively you can drag the swift file(s) manually into your project.
+Altenatively you can drag the SwiftyReceiptValidator folder and its containing files manually into your project.
 
 ## Usage
 
@@ -107,33 +106,30 @@ and modify the `.purchased` and `.restored` enum cases to look like this
 
 ```swift
 case .purchased:
-        // Transaction is in queue, user has been charged.  Client should complete the transaction.
-        let productId = transaction.payment.productIdentifier
+    // Transaction is in queue, user has been charged.  Client should complete the transaction.
+    let productId = transaction.payment.productIdentifier
 
-        let validationRequest = SRVPurchaseValidationRequest(
-            productId: productId,
-            sharedSecret: "your secret or nil" // Enter your shared secret if your have set one on iTunes, otherwise set to nil
-        )
+    let validationRequest = SRVPurchaseValidationRequest(
+        productId: productId,
+        sharedSecret: "your secret or nil" // Enter your shared secret if your have set one on iTunes, otherwise set to nil
+    )
         
-        receiptValidator.validate(validationRequest) { result in
-            switch result {
-
-           case .success(let response):
-                 defer {
-                    // IMPORTANT: Complete the transaction ONLY after validation was successful
-                    // if validation error e.g due to internet, the transaction will stay in pending state
-                    // and than can/will be resumed on next app launch
-                    queue.finishTransaction(transaction)
-                }
-
-               print("Receipt validation was successfull with receipt response \(response)")
-                // Unlock products and/or do additional checks
-
-            case .failure(let error, let code):
-                print("Receipt validation failed with code \(code), error \(error.localizedDescription)")    
-                // Inform user of error, maybe try validation again.
+    receiptValidator.validate(validationRequest) { result in
+        switch result {
+        case .success(let response):
+            defer {
+                // IMPORTANT: Complete the transaction ONLY after validation was successful
+                // if validation error e.g due to internet, the transaction will stay in pending state
+                // and than can/will be resumed on next app launch
+                queue.finishTransaction(transaction)
             }
+            print("Receipt validation was successfull with receipt response \(response)")
+            // Unlock products and/or do additional checks
+        case .failure(let error, let code):
+            print("Receipt validation failed with code \(code), error \(error.localizedDescription)")    
+            // Inform user of error, maybe try validation again.
         }
+    }
             
 case .restored:
     // Transaction was restored from user's purchase history.  Client should complete the transaction.
@@ -149,7 +145,6 @@ case .restored:
     
     receiptValidator.validate(validationRequest) { result in
         switch result {
-
         case .success(let response):
             defer {
                 // IMPORTANT: Complete the transaction ONLY after validation was successful
@@ -157,10 +152,8 @@ case .restored:
                 // and than can/will be resumed on next app launch
                 queue.finishTransaction(transaction)
             }
-
             print("Receipt validation was successfull with receipt response \(response)")
             // Unlock products and/or do additional checks
-
        case .failure(let error, let code):
             print("Receipt validation failed with code \(code), error \(error.localizedDescription)")  
             // Inform user of error, maybe try validation again.
@@ -172,7 +165,7 @@ Note: There is also Combine support for these methods if you are targeting iOS 1
 
 ### Validate subscriptions
 
-- To validate your subscriptions (e.g on app launch), call `func validateSubscription(...` with your shared secret. This will search for all subscription receipts and check if there is at least 1 thats not expired.
+- To validate your subscriptions (e.g on app launch), create a validationRequest object  `let validationRequest = SRVSubscriptionValidationRequest(...)` and  `func validate(validationRequest)`. This will search for all subscription receipts and check if there is at least 1 thats not expired.
 
 ```swift
 let validationRequest = SRVSubscriptionValidationRequest(
@@ -201,7 +194,7 @@ receiptValidator.validate(validationRequest) { result in
 }
 ```
 
-Setting refreshLocalReceiptIfNeeded = true will create a receipt fetch request if no receipt on device. This will show a iTunes password prompt.
+Setting refreshLocalReceiptIfNeeded = true will create a receipt fetch request if no receipt is found on the iOS device. This will show a iTunes password prompt so might always be wanted e.g app launch.
 
 Note: There is also Combine support for these methods if you are targeting iOS 13 and above
 
