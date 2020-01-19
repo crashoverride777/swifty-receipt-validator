@@ -30,17 +30,17 @@ Altenatively you can drag the SwiftyReceiptValidator folder and its containing f
 
 ## Usage
 
+### Add import (if using cocoaPods)
+
 - Add the import statement to your swift file(s) when you installed via cocoa pods
 
 ```swift
 import SwiftyReceiptValidator
 ```
 
-- In your class with your in app purchase code create a reference to SwiftyReceiptValidator
+### Instantiate Receipt Validator
 
-### Instantiate receipt validator
-
-#### Standard Configuration (Not Recommended)
+- Standard Configuration (Not Recommended)
 
 ```swift
 class SomeClass {
@@ -54,7 +54,7 @@ class SomeClass {
 }
 ```
 
-#### Custom Configuration (Recommended)
+- Custom Configuration (Recommended)
 
 // Note: Requires your own server
 
@@ -79,7 +79,7 @@ class SomeClass {
 
 https://www.raywenderlich.com/23266/in-app-purchases-in-ios-6-tutorial-consumables-and-receipt-validation
 
-### Validate purchases
+### Validate Purchases
 
 - Go to the following delegate method in your code, which you must implement for in app purchases
 
@@ -161,7 +161,7 @@ case .restored:
 
 Note: There is also Combine support for these methods if you are targeting iOS 13 and above
 
-### Validate subscriptions
+### Validate Subscriptions
 
 - To validate your subscriptions (e.g on app launch), create a validationRequest object  `let validationRequest = SRVSubscriptionValidationRequest(...)` and  `func validate(validationRequest)`. This will search for all subscription receipts and check if there is at least 1 thats not expired.
 
@@ -200,7 +200,7 @@ Note: There is also Combine support for these methods if you are targeting iOS 1
 
 In order to unit tests your in app purchase class it is recommended to always inject the type protocol into your class instead of the concret implementation
 
-Not Recommended
+- Not Recommended
 ```swift
 class SomeClass {
     let receiptValidator: SwiftyReceiptValidator
@@ -208,7 +208,7 @@ class SomeClass {
 }
 ```
 
-Recommended
+- Recommended
 ```swift
 class SomeClass {
     let receiptValidator: SwiftyReceiptValidatorType
@@ -216,9 +216,11 @@ class SomeClass {
 }
 ```
 
-This way it is very easy to mock SwiftyReceiptValidator in your in app purchase class e.g
-
+- UnitTest example
 ```swift
+class MockReceiptValidator { }
+extension MockReceiptValidator: SwiftyReceiptValidatorType { ... }
+
 class SomeClassTests {
     func test() {
         let sut = SomeClass(receiptValidator: MockReceiptValidator())
@@ -226,8 +228,7 @@ class SomeClassTests {
 }
 ```
 
-All models that require mocking have a dedicated mock object that should be used
-
+- Mocking models
 ```swift
 SRVReceiptResponse.mock()
 SRVReceipt.mock()
