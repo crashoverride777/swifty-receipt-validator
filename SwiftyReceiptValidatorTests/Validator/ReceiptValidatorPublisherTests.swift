@@ -74,7 +74,7 @@ class ReceiptValidatorPublisherTests: ReceiptValidatorTests {
         wait(for: [expectation], timeout: 0.1)
     }
     
-    func test_validPurchasePublisher_failure_sessionManager_publishesCorrectError() {
+    func test_validPurchasePublisher_failure_receiptClient_publishesCorrectError() {
         let expectation = self.expectation
         let sut = makeSUT()
         let expectedError = URLError(.notConnectedToInternet)
@@ -173,7 +173,7 @@ class ReceiptValidatorPublisherTests: ReceiptValidatorTests {
         wait(for: [expectation], timeout: 0.1)
     }
     
-    func test_validSubscriptionPublisher_failure_sessionManager_publishesCorrectError() {
+    func test_validSubscriptionPublisher_failure_receiptClient_publishesCorrectError() {
         let expectation = self.expectation
         let sut = makeSUT()
         let expectedError = URLError(.notConnectedToInternet)

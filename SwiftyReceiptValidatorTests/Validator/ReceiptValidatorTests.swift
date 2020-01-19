@@ -90,7 +90,7 @@ class ReceiptValidatorTests: XCTestCase {
         wait(for: [expectation], timeout: 0.1)
     }
     
-    func test_validPurchase_failure_sessionManager_returnsCorrectError() {
+    func test_validPurchase_failure_receiptClient_returnsCorrectError() {
         let expectation = self.expectation
         let sut = makeSUT()
         let expectedError = URLError(.notConnectedToInternet)
@@ -177,7 +177,7 @@ class ReceiptValidatorTests: XCTestCase {
         wait(for: [expectation], timeout: 0.1)
     }
     
-    func test_validSubscription_failure_sessionManager_returnsCorrectError() {
+    func test_validSubscription_failure_receiptClient_returnsCorrectError() {
         let expectation = self.expectation
         let sut = makeSUT()
         let expectedError = URLError(.notConnectedToInternet)
