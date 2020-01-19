@@ -38,7 +38,9 @@ import SwiftyReceiptValidator
 
 - In your class with your in app purchase code create a reference to SwiftyReceiptValidator
 
-### Standard Configuration (Not Recommended)
+### Instantiate receipt validator
+
+#### Standard Configuration (Not Recommended)
 
 ```swift
 class SomeClass {
@@ -52,7 +54,7 @@ class SomeClass {
 }
 ```
 
-### Custom Configuration (Recommended)
+#### Custom Configuration (Recommended)
 
 // Note: Requires your own server
 
