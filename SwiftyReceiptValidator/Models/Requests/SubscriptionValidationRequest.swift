@@ -1,5 +1,5 @@
 //
-//  SubscriptionRequest.swift
+//  SubscriptionValidationRequest.swift
 //  SwiftyReceiptValidator
 //
 //  Created by Dominik Ringler on 19/01/2020.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct SRVSubscriptionRequest {
+public struct SRVSubscriptionValidationRequest {
     let sharedSecret: String?
     let refreshLocalReceiptIfNeeded: Bool
     let excludeOldTransactions: Bool

@@ -12,12 +12,12 @@ import Combine
 
 public protocol SwiftyReceiptValidatorType {
     @available(iOS 13, *)
-    func validatePurchasePublisher(for request: SRVPurchaseRequest) -> AnyPublisher<SRVReceiptResponse, SRVError>
-    func validatePurchase(for request: SRVPurchaseRequest, handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void)
+    func validatePurchasePublisher(for request: SRVPurchaseValidationRequest) -> AnyPublisher<SRVReceiptResponse, SRVError>
+    func validatePurchase(for request: SRVPurchaseValidationRequest, handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void)
    
     @available(iOS 13, *)
-    func validateSubscriptionPublisher(for request: SRVSubscriptionRequest) -> AnyPublisher<SRVSubscriptionValidationResponse, SRVError>
-    func validateSubscription(for request: SRVSubscriptionRequest, handler: @escaping (Result<SRVSubscriptionValidationResponse, SRVError>) -> Void)
+    func validateSubscriptionPublisher(for request: SRVSubscriptionValidationRequest) -> AnyPublisher<SRVSubscriptionValidationResponse, SRVError>
+    func validateSubscription(for request: SRVSubscriptionValidationRequest, handler: @escaping (Result<SRVSubscriptionValidationResponse, SRVError>) -> Void)
 }
 
 extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
@@ -30,7 +30,7 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
     /// - parameter sharedSecret: The shared secret setup in iTunes.
     /// - parameter handler: Completion handler called when the validation has completed.
     @available(iOS 13, *)
-    public func validatePurchasePublisher(for request: SRVPurchaseRequest) -> AnyPublisher<SRVReceiptResponse, SRVError> {
+    public func validatePurchasePublisher(for request: SRVPurchaseValidationRequest) -> AnyPublisher<SRVReceiptResponse, SRVError> {
         return Future { [weak self] promise in
             self?.validatePurchase(for: request, handler: promise)
         }.eraseToAnyPublisher()
@@ -41,7 +41,7 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
     /// - parameter productId: The id of the purchase to verify.
     /// - parameter sharedSecret: The shared secret setup in iTunes.
     /// - parameter handler: Completion handler called when the validation has completed.
-    public func validatePurchase(for request: SRVPurchaseRequest, handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void) {
+    public func validatePurchase(for request: SRVPurchaseValidationRequest, handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void) {
         fetchReceipt(
             sharedSecret: request.sharedSecret,
             refreshLocalReceiptIfNeeded: true,
@@ -69,7 +69,7 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
     /// - parameter refreshReceiptIfNoneFound: If true, make SKReceiptRefreshRequest if no receipt on device. This will show a login alert.
     /// - parameter excludeOldTransactions: If value is true, response includes only the latest renewal transaction for any subscriptions.
     @available(iOS 13, *)
-    public func validateSubscriptionPublisher(for request: SRVSubscriptionRequest) -> AnyPublisher<SRVSubscriptionValidationResponse, SRVError> {
+    public func validateSubscriptionPublisher(for request: SRVSubscriptionValidationRequest) -> AnyPublisher<SRVSubscriptionValidationResponse, SRVError> {
          return Future { [weak self] promise in
              self?.validateSubscription(for: request, handler: promise)
          }.eraseToAnyPublisher()
@@ -81,7 +81,7 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
     /// - parameter refreshReceiptIfNoneFound: If true, make SKReceiptRefreshRequest if no receipt on device. This will show a login alert.
     /// - parameter excludeOldTransactions: If value is true, response includes only the latest renewal transaction for any subscriptions.
     /// - parameter handler: Completion handler called when the validation has completed.
-    public func validateSubscription(for request: SRVSubscriptionRequest, handler: @escaping (Result<SRVSubscriptionValidationResponse, SRVError>) -> Void) {
+    public func validateSubscription(for request: SRVSubscriptionValidationRequest, handler: @escaping (Result<SRVSubscriptionValidationResponse, SRVError>) -> Void) {
         fetchReceipt(
             sharedSecret: request.sharedSecret,
             refreshLocalReceiptIfNeeded: request.refreshLocalReceiptIfNeeded,

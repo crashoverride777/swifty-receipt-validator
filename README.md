@@ -110,7 +110,7 @@ case .purchased:
         // Transaction is in queue, user has been charged.  Client should complete the transaction.
         let productId = transaction.payment.productIdentifier
 
-        let validationRequest = SRVPurchaseRequest(
+        let validationRequest = SRVPurchaseValidationRequest(
             productId: productId,
             sharedSecret: "your secret or nil" // Enter your shared secret if your have set one on iTunes, otherwise set to nil
         )
@@ -142,7 +142,7 @@ case .restored:
         return
     }
     
-    let validationRequest = SRVPurchaseRequest(
+    let validationRequest = SRVPurchaseValidationRequest(
         productId: productId,
         sharedSecret: "your secret or nil" // Enter your shared secret if your have set one on iTunes, otherwise set to nil
     )
@@ -175,7 +175,7 @@ Note: There is also Combine support for these methods if you are targeting iOS 1
 - To validate your subscriptions (e.g on app launch), call `func validateSubscription(...` with your shared secret. This will search for all subscription receipts and check if there is at least 1 thats not expired.
 
 ```swift
-let request = SRVSubscriptionRequest(
+let request = SRVSubscriptionValidationRequest(
     sharedSecret: "your shared secret",
     refreshLocalReceiptIfNeeded: false,
     excludeOldTransactions: false,

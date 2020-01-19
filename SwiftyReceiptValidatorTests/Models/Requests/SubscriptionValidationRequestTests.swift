@@ -1,5 +1,5 @@
 //
-//  SubscriptionRequest.swift
+//  SubscriptionValidationRequestTests.swift
 //  SwiftyReceiptValidatorTests
 //
 //  Created by Dominik Ringler on 19/01/2020.
@@ -9,7 +9,7 @@
 import XCTest
 @testable import SwiftyReceiptValidator
 
-class SubscriptionRequest: XCTestCase {
+class SubscriptionValidationRequestTests: XCTestCase {
 
     func test_init() {
         let sharedSecret = "secret"
@@ -17,7 +17,7 @@ class SubscriptionRequest: XCTestCase {
         let excludeOldTransactions = false
         let now: Date = .test
         
-        let sut = SRVSubscriptionRequest(
+        let sut = SRVSubscriptionValidationRequest(
             sharedSecret: sharedSecret,
             refreshLocalReceiptIfNeeded: refreshLocalReceiptIfNeeded,
             excludeOldTransactions: excludeOldTransactions,

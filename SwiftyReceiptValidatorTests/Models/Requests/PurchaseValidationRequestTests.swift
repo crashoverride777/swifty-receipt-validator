@@ -1,5 +1,5 @@
 //
-//  PurchaseRequestTests.swift
+//  PurchaseValidationRequestTests.swift
 //  SwiftyReceiptValidatorTests
 //
 //  Created by Dominik Ringler on 19/01/2020.
@@ -9,13 +9,13 @@
 import XCTest
 @testable import SwiftyReceiptValidator
 
-class PurchaseRequestTests: XCTestCase {
+class PurchaseValidationRequestTests: XCTestCase {
 
     func test_init() {
         let productId = "123"
         let sharedSecret = "secret"
        
-        let sut = SRVPurchaseRequest(
+        let sut = SRVPurchaseValidationRequest(
             productId: productId,
             sharedSecret: sharedSecret
         )

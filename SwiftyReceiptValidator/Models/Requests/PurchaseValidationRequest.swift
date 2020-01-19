@@ -1,5 +1,5 @@
 //
-//  PurchaseRequest.swift
+//  PurchaseValidationRequest.swift
 //  SwiftyReceiptValidator
 //
 //  Created by Dominik Ringler on 19/01/2020.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct SRVPurchaseRequest {
+public struct SRVPurchaseValidationRequest {
     let productId: String
     let sharedSecret: String?
     
