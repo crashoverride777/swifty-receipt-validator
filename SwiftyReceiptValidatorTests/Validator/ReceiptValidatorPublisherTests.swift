@@ -40,7 +40,7 @@ class ReceiptValidatorPublisherTests: ReceiptValidatorTests {
         receiptClient.stub.validateResult = .success(expectedResponse)
         responseValidator.stub.validatePurchaseResult = .success(expectedResponse)
         let request = SRVPurchaseValidationRequest(productId: "1", sharedSecret: nil)
-        sut.validatePurchasePublisher(for: request)
+        sut.validatePublisher(for: request)
             .sink(
                 receiveCompletion: { _ in },
                 receiveValue: { response in
@@ -59,7 +59,7 @@ class ReceiptValidatorPublisherTests: ReceiptValidatorTests {
         let expectedError = URLError(.notConnectedToInternet)
         receiptURLFetcher.stub.fetchResult = .failure(expectedError)
         let request = SRVPurchaseValidationRequest(productId: "1", sharedSecret: nil)
-        sut.validatePurchasePublisher(for: request)
+        sut.validatePublisher(for: request)
             .sink(
                 receiveCompletion: { completion in
                     if case .failure(let error) = completion {
@@ -80,7 +80,7 @@ class ReceiptValidatorPublisherTests: ReceiptValidatorTests {
         let expectedError = URLError(.notConnectedToInternet)
         receiptClient.stub.validateResult = .failure(.other(expectedError))
         let request = SRVPurchaseValidationRequest(productId: "1", sharedSecret: nil)
-        sut.validatePurchasePublisher(for: request)
+        sut.validatePublisher(for: request)
             .sink(
                 receiveCompletion: { completion in
                     if case .failure(let error) = completion {
@@ -101,7 +101,7 @@ class ReceiptValidatorPublisherTests: ReceiptValidatorTests {
         let expectedError: SRVError = .productIdNotMatching(.unknown)
         responseValidator.stub.validatePurchaseResult = .failure(expectedError)
         let request = SRVPurchaseValidationRequest(productId: "1", sharedSecret: nil)
-        sut.validatePurchasePublisher(for: request)
+        sut.validatePublisher(for: request)
             .sink(
                 receiveCompletion: { completion in
                     if case .failure(let error) = completion {
@@ -134,7 +134,7 @@ class ReceiptValidatorPublisherTests: ReceiptValidatorTests {
             excludeOldTransactions: false,
             now: .test
         )
-        sut.validateSubscriptionPublisher(for: request)
+        sut.validatePublisher(for: request)
             .sink(
                 receiveCompletion: { _ in },
                 receiveValue: { response in
@@ -158,7 +158,7 @@ class ReceiptValidatorPublisherTests: ReceiptValidatorTests {
             excludeOldTransactions: false,
             now: .test
         )
-        sut.validateSubscriptionPublisher(for: request)
+        sut.validatePublisher(for: request)
             .sink(
                 receiveCompletion: { completion in
                     if case .failure(let error) = completion {
@@ -184,7 +184,7 @@ class ReceiptValidatorPublisherTests: ReceiptValidatorTests {
             excludeOldTransactions: false,
             now: .test
         )
-        sut.validateSubscriptionPublisher(for: request)
+        sut.validatePublisher(for: request)
             .sink(
                 receiveCompletion: { completion in
                     if case .failure(let error) = completion {
@@ -210,7 +210,7 @@ class ReceiptValidatorPublisherTests: ReceiptValidatorTests {
             excludeOldTransactions: false,
             now: .test
         )
-        sut.validateSubscriptionPublisher(for: request)
+        sut.validatePublisher(for: request)
             .sink(
                 receiveCompletion: { completion in
                     if case .failure(let error) = completion {

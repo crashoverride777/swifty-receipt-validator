@@ -12,12 +12,12 @@ import Combine
 
 public protocol SwiftyReceiptValidatorType {
     @available(iOS 13, *)
-    func validatePurchasePublisher(for request: SRVPurchaseValidationRequest) -> AnyPublisher<SRVReceiptResponse, SRVError>
-    func validatePurchase(for request: SRVPurchaseValidationRequest, handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void)
+    func validatePublisher(for request: SRVPurchaseValidationRequest) -> AnyPublisher<SRVReceiptResponse, SRVError>
+    func validate(_ request: SRVPurchaseValidationRequest, handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void)
    
     @available(iOS 13, *)
-    func validateSubscriptionPublisher(for request: SRVSubscriptionValidationRequest) -> AnyPublisher<SRVSubscriptionValidationResponse, SRVError>
-    func validateSubscription(for request: SRVSubscriptionValidationRequest, handler: @escaping (Result<SRVSubscriptionValidationResponse, SRVError>) -> Void)
+    func validatePublisher(for request: SRVSubscriptionValidationRequest) -> AnyPublisher<SRVSubscriptionValidationResponse, SRVError>
+    func validate(_ request: SRVSubscriptionValidationRequest, handler: @escaping (Result<SRVSubscriptionValidationResponse, SRVError>) -> Void)
 }
 
 extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
@@ -26,22 +26,19 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
     
     /// Validate app store purchase publisher
     ///
-    /// - parameter productId: The id of the purchase to verify.
-    /// - parameter sharedSecret: The shared secret setup in iTunes.
-    /// - parameter handler: Completion handler called when the validation has completed.
+    /// - parameter request: The request configuration.
     @available(iOS 13, *)
-    public func validatePurchasePublisher(for request: SRVPurchaseValidationRequest) -> AnyPublisher<SRVReceiptResponse, SRVError> {
+    public func validatePublisher(for request: SRVPurchaseValidationRequest) -> AnyPublisher<SRVReceiptResponse, SRVError> {
         return Future { [weak self] promise in
-            self?.validatePurchase(for: request, handler: promise)
+            self?.validate(request, handler: promise)
         }.eraseToAnyPublisher()
     }
    
     /// Validate app store purchase
     ///
-    /// - parameter productId: The id of the purchase to verify.
-    /// - parameter sharedSecret: The shared secret setup in iTunes.
+    /// - parameter request: The request configuration.
     /// - parameter handler: Completion handler called when the validation has completed.
-    public func validatePurchase(for request: SRVPurchaseValidationRequest, handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void) {
+    public func validate(_ request: SRVPurchaseValidationRequest, handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void) {
         fetchReceipt(
             sharedSecret: request.sharedSecret,
             refreshLocalReceiptIfNeeded: true,
@@ -65,23 +62,19 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
     
     /// Validate app store subscription publisher
     ///
-    /// - parameter sharedSecret: The shared secret setup in iTunes.
-    /// - parameter refreshReceiptIfNoneFound: If true, make SKReceiptRefreshRequest if no receipt on device. This will show a login alert.
-    /// - parameter excludeOldTransactions: If value is true, response includes only the latest renewal transaction for any subscriptions.
+    /// - parameter request: The request configuration.
     @available(iOS 13, *)
-    public func validateSubscriptionPublisher(for request: SRVSubscriptionValidationRequest) -> AnyPublisher<SRVSubscriptionValidationResponse, SRVError> {
+    public func validatePublisher(for request: SRVSubscriptionValidationRequest) -> AnyPublisher<SRVSubscriptionValidationResponse, SRVError> {
          return Future { [weak self] promise in
-             self?.validateSubscription(for: request, handler: promise)
+             self?.validate(request, handler: promise)
          }.eraseToAnyPublisher()
      }
     
     /// Validate app store subscription
     ///
-    /// - parameter request: The shared secret setup in iTunes.
-    /// - parameter refreshReceiptIfNoneFound: If true, make SKReceiptRefreshRequest if no receipt on device. This will show a login alert.
-    /// - parameter excludeOldTransactions: If value is true, response includes only the latest renewal transaction for any subscriptions.
+    /// - parameter request: The request configuration.
     /// - parameter handler: Completion handler called when the validation has completed.
-    public func validateSubscription(for request: SRVSubscriptionValidationRequest, handler: @escaping (Result<SRVSubscriptionValidationResponse, SRVError>) -> Void) {
+    public func validate(_ request: SRVSubscriptionValidationRequest, handler: @escaping (Result<SRVSubscriptionValidationResponse, SRVError>) -> Void) {
         fetchReceipt(
             sharedSecret: request.sharedSecret,
             refreshLocalReceiptIfNeeded: request.refreshLocalReceiptIfNeeded,

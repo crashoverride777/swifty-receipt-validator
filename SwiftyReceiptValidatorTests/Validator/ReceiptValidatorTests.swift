@@ -62,7 +62,7 @@ class ReceiptValidatorTests: XCTestCase {
             productId: "123",
             sharedSecret: "secret"
         )
-        sut.validatePurchase(for: request) { result in
+        sut.validate(request) { result in
             if case .success(let response) = result {
                 XCTAssertEqual(response, expectedResponse)
                 expectation.fulfill()
@@ -80,7 +80,7 @@ class ReceiptValidatorTests: XCTestCase {
             productId: "123",
             sharedSecret: "secret"
         )
-        sut.validatePurchase(for: request) { result in
+        sut.validate(request) { result in
             if case .failure(let error) = result {
                 XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
                 expectation.fulfill()
@@ -99,7 +99,7 @@ class ReceiptValidatorTests: XCTestCase {
             productId: "123",
             sharedSecret: "secret"
         )
-        sut.validatePurchase(for: request) { result in
+        sut.validate(request) { result in
             if case .failure(let error) = result {
                 XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
                 expectation.fulfill()
@@ -118,7 +118,7 @@ class ReceiptValidatorTests: XCTestCase {
             productId: "123",
             sharedSecret: "secret"
         )
-        sut.validatePurchase(for: request) { result in
+        sut.validate(request) { result in
             if case .failure(let error) = result {
                 XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
                 expectation.fulfill()
@@ -146,7 +146,7 @@ class ReceiptValidatorTests: XCTestCase {
             excludeOldTransactions: false,
             now: .test
         )
-        sut.validateSubscription(for: request) { result in
+        sut.validate(request) { result in
             if case .success(let response) = result {
                 XCTAssertEqual(response, expectedValidationResponse)
                 expectation.fulfill()
@@ -167,7 +167,7 @@ class ReceiptValidatorTests: XCTestCase {
             excludeOldTransactions: false,
             now: .test
         )
-        sut.validateSubscription(for: request) { result in
+        sut.validate(request) { result in
             if case .failure(let error) = result {
                 XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
                 expectation.fulfill()
@@ -188,7 +188,7 @@ class ReceiptValidatorTests: XCTestCase {
             excludeOldTransactions: false,
             now: .test
         )
-        sut.validateSubscription(for: request) { result in
+        sut.validate(request) { result in
             if case .failure(let error) = result {
                 XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
                 expectation.fulfill()
@@ -209,7 +209,7 @@ class ReceiptValidatorTests: XCTestCase {
             excludeOldTransactions: false,
             now: .test
         )
-        sut.validateSubscription(for: request) { result in
+        sut.validate(request) { result in
             if case .failure(let error) = result {
                 XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
                 expectation.fulfill()
