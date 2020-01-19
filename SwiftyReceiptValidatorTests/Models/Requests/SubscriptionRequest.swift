@@ -16,12 +16,14 @@ class SubscriptionRequest: XCTestCase {
         let refreshLocalReceiptIfNeeded = true
         let excludeOldTransactions = false
         let now: Date = .test
+        
         let sut = SRVSubscriptionRequest(
             sharedSecret: sharedSecret,
             refreshLocalReceiptIfNeeded: refreshLocalReceiptIfNeeded,
             excludeOldTransactions: excludeOldTransactions,
             now: now
         )
+        
         XCTAssertEqual(sut.sharedSecret, sharedSecret)
         XCTAssertEqual(sut.refreshLocalReceiptIfNeeded, refreshLocalReceiptIfNeeded)
         XCTAssertEqual(sut.excludeOldTransactions, excludeOldTransactions)
