@@ -121,9 +121,9 @@ case .purchased:
             }
             print("Receipt validation was successfull with receipt response \(response)")
             // Unlock products and/or do additional checks
-        case .failure(let error, let code):
-            print("Receipt validation failed with code \(code), error \(error.localizedDescription)")    
-            // Inform user of error, maybe try validation again.
+        case .failure(let error):
+            print("Receipt validation failed with error \(error.localizedDescription)")  
+            // Inform user of error
         }
     }
             
@@ -150,9 +150,9 @@ case .restored:
             }
             print("Receipt validation was successfull with receipt response \(response)")
             // Unlock products and/or do additional checks
-       case .failure(let error, let code):
-            print("Receipt validation failed with code \(code), error \(error.localizedDescription)")  
-            // Inform user of error, maybe try validation again.
+       case .failure(let error):
+            print("Receipt validation failed with error \(error.localizedDescription)")  
+            // Inform user of error
         }
     }              
 ```
@@ -178,10 +178,9 @@ receiptValidator.validate(validationRequest) { result in
         print(response.receiptResponse) // full receipt response
         print(response.receiptResponse.pendingRenewalInfo)
         // Unlock subscription features and/or do additional checks first
-    case .failure(let error, let code):
+    case .failure(let error):
         switch error {
-        print(error.statusCode)
-        case .subscriptionExpired:
+        case .subscriptionExpired(let statusCode):
             // no active subscription found, update your cache/app etc
         default:
             break // do nothing e.g internet error or other errors
