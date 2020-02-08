@@ -100,9 +100,9 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
 private extension SwiftyReceiptValidator {
     
     func fetchReceipt(sharedSecret: String?,
-               refreshLocalReceiptIfNeeded: Bool,
-               excludeOldTransactions: Bool,
-               handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void) {
+                      refreshLocalReceiptIfNeeded: Bool,
+                      excludeOldTransactions: Bool,
+                      handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void) {
         let refreshRequest = refreshLocalReceiptIfNeeded ? SKReceiptRefreshRequest(receiptProperties: nil) : nil
         receiptURLFetcher.fetch(refreshRequest: refreshRequest) { [weak self] result in
             guard let self = self else { return }

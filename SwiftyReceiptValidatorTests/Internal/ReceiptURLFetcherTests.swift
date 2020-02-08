@@ -16,12 +16,6 @@ class ReceiptURLFetcherTests: XCTestCase {
     private var fileManager: MockFileManager!
     private var refreshRequest: MockSKReceiptRefreshRequest!
     
-    // MARK: - Computed Properties
-    
-    private var expectation: XCTestExpectation {
-        XCTestExpectation(description: "Expectation Succeeded")
-    }
-    
     // MARK: - Life Cycle
        
     override func setUp() {
@@ -39,9 +33,10 @@ class ReceiptURLFetcherTests: XCTestCase {
     // MARK: - Tests
 
     func test_fetch_success_hasReceiptOnFile_returnsCorrectData() {
-        let expectation = self.expectation
+        let expectation = self.expectation(description: "Finished")
         let expectedURL: URL = .test
         fileManager.stub.fileExists = true
+        
         let sut = makeSUT(appStoreReceiptURL: expectedURL)
         sut.fetch(refreshRequest: nil) { result in
             if case .success(let url) = result {
@@ -50,13 +45,14 @@ class ReceiptURLFetcherTests: XCTestCase {
             }
         }
         
-        wait(for: [expectation], timeout: 0.1)
+        waitForExpectations(timeout: 0.1)
     }
     
     func test_fetch_success_noReceiptOnFile_returnsCorrectData() {
-        let expectation = self.expectation
+        let expectation = self.expectation(description: "Finished")
         let expectedURL: URL = .test
         fileManager.stub.fileExists = false
+        
         let sut = makeSUT(appStoreReceiptURL: expectedURL)
         sut.fetch(refreshRequest: refreshRequest) { result in
             if case .success(let url) = result {
@@ -65,13 +61,14 @@ class ReceiptURLFetcherTests: XCTestCase {
             }
         }
         
-        wait(for: [expectation], timeout: 0.1)
+        waitForExpectations(timeout: 0.1)
     }
     
     func test_fetch_failure_noReceiptOnFile_noRefreshRequest_returnsCorrectError() {
-        let expectation = self.expectation
+        let expectation = self.expectation(description: "Finished")
         fileManager.stub.fileExists = false
         let expectedError: SRVError = .noReceiptFound
+        
         let sut = makeSUT()
         sut.fetch(refreshRequest: nil) { result in
             if case .failure(let error) = result {
@@ -80,13 +77,14 @@ class ReceiptURLFetcherTests: XCTestCase {
             }
         }
         
-        wait(for: [expectation], timeout: 0.1)
+        waitForExpectations(timeout: 0.1)
     }
     
     func test_fetch_failure_noReceiptOnFile_refreshRequest_returnsCorrectError() {
-        let expectation = self.expectation
+        let expectation = self.expectation(description: "Finished")
         let expectedError = URLError(.notConnectedToInternet)
         refreshRequest.stub.startResult = .failure(expectedError)
+        
         let sut = makeSUT()
         sut.fetch(refreshRequest: refreshRequest) { result in
             if case .failure(let error) = result {
@@ -95,7 +93,7 @@ class ReceiptURLFetcherTests: XCTestCase {
             }
         }
 
-        wait(for: [expectation], timeout: 0.1)
+        waitForExpectations(timeout: 0.1)
     }
 }
 

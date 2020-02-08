@@ -12,7 +12,7 @@ public struct SRVPurchaseValidationRequest {
     let productId: String
     let sharedSecret: String?
     
-    /// SwiftyReceiptValidatorSubscriptionRequest Init
+    /// SRVPurchaseValidationRequest
     ///
     /// - parameter productId: The product id of the purchase to validate.
     /// - parameter sharedSecret: The shared secret setup in iTunes.

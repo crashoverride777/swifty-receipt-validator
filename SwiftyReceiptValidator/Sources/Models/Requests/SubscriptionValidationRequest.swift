@@ -14,7 +14,7 @@ public struct SRVSubscriptionValidationRequest {
     let excludeOldTransactions: Bool
     let now: Date
     
-    /// SwiftyReceiptValidatorSubscriptionRequest Init
+    /// SRVSubscriptionValidationRequest
     ///
     /// - parameter sharedSecret: The shared secret setup in iTunes.
     /// - parameter refreshReceiptIfNoneFound: If true, make SKReceiptRefreshRequest if no receipt on device. This will show a login alert.

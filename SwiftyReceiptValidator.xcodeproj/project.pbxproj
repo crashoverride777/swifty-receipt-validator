@@ -84,6 +84,7 @@
 		6A2F6EEF238C6CC0008AA0B0 /* ReceiptInApp+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReceiptInApp+Mock.swift"; sourceTree = "<group>"; };
 		6A2F6EF1238C6E84008AA0B0 /* PendingRenewalInfo+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PendingRenewalInfo+Mock.swift"; sourceTree = "<group>"; };
 		6A2F6EF3238C6F6F008AA0B0 /* Receipt+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Receipt+Mock.swift"; sourceTree = "<group>"; };
+		6A436B5C23EEDAC500D5F5EA /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		6A4384A9222730C1009EF552 /* SwiftyReceiptValidatorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftyReceiptValidatorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A4384AB222730C1009EF552 /* ReceiptValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptValidatorTests.swift; sourceTree = "<group>"; };
 		6A4384AD222730C1009EF552 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -164,7 +165,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		6A2F6EEA238C6C57008AA0B0 /* Mocks */ = {
+		6A436B5E23EEDE9700D5F5EA /* Mocks */ = {
 			isa = PBXGroup;
 			children = (
 				6A2F6EEB238C6C6C008AA0B0 /* ReceiptResponse+Mock.swift */,
@@ -173,9 +174,8 @@
 				6A2F6EF1238C6E84008AA0B0 /* PendingRenewalInfo+Mock.swift */,
 				6A2F6EED238C6C7F008AA0B0 /* SubscriptionValidationResponse+Mock.swift */,
 			);
-			name = Mocks;
-			path = SwiftyReceiptValidator/Models/Mocks;
-			sourceTree = SOURCE_ROOT;
+			path = Mocks;
+			sourceTree = "<group>";
 		};
 		6A4384AA222730C1009EF552 /* SwiftyReceiptValidatorTests */ = {
 			isa = PBXGroup;
@@ -183,27 +183,10 @@
 				6A7DF2812305E386001CAEEF /* Models */,
 				6A7DF2892305E54D001CAEEF /* Validator */,
 				6A7DF29C230609AB001CAEEF /* Internal */,
-				6A7DF2822305E38E001CAEEF /* Mocks */,
+				6A7DF2822305E38E001CAEEF /* Test Data */,
 				6A4384AD222730C1009EF552 /* Info.plist */,
 			);
 			path = SwiftyReceiptValidatorTests;
-			sourceTree = "<group>";
-		};
-		6A53FBF723D3328A00E7D814 /* Foundation */ = {
-			isa = PBXGroup;
-			children = (
-				6A53FBFE23D349D700E7D814 /* Date+Mocks.swift */,
-				6A53FBF523D3317400E7D814 /* URL+Mocks.swift */,
-			);
-			path = Foundation;
-			sourceTree = "<group>";
-		};
-		6A53FC0223D3637500E7D814 /* StoreKit */ = {
-			isa = PBXGroup;
-			children = (
-				6A53FC0323D3638400E7D814 /* SKRequest+Mock.swift */,
-			);
-			path = StoreKit;
 			sourceTree = "<group>";
 		};
 		6A7DF2812305E386001CAEEF /* Models */ = {
@@ -217,16 +200,14 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		6A7DF2822305E38E001CAEEF /* Mocks */ = {
+		6A7DF2822305E38E001CAEEF /* Test Data */ = {
 			isa = PBXGroup;
 			children = (
 				6A7DF29A230607AE001CAEEF /* JSONs */,
-				6A53FBF723D3328A00E7D814 /* Foundation */,
-				6AD83A7623D49BA100D3919C /* Models */,
-				6A53FC0223D3637500E7D814 /* StoreKit */,
-				6AE5FDD52315DABA007DD4AC /* Other */,
+				6AD83A7623D49BA100D3919C /* Extensions */,
+				6AE5FDD52315DABA007DD4AC /* Mocks */,
 			);
-			path = Mocks;
+			path = "Test Data";
 			sourceTree = "<group>";
 		};
 		6A7DF2892305E54D001CAEEF /* Validator */ = {
@@ -261,12 +242,25 @@
 			path = Internal;
 			sourceTree = "<group>";
 		};
-		6AD83A7623D49BA100D3919C /* Models */ = {
+		6AA4F7BC23D5095E00CF4514 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				6ADEB8B62200859000370C71 /* Models */,
+				6ADEB8BF2200883600370C71 /* Validator */,
+				6ADEB8EC2200F8C300370C71 /* Internal */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		6AD83A7623D49BA100D3919C /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
 				6AD83A7423D49B8B00D3919C /* ReceiptResponse+Mock.swift */,
+				6A53FC0323D3638400E7D814 /* SKRequest+Mock.swift */,
+				6A53FBFE23D349D700E7D814 /* Date+Mocks.swift */,
+				6A53FBF523D3317400E7D814 /* URL+Mocks.swift */,
 			);
-			path = Models;
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		6AD83A7723D4A16000D3919C /* Requests */ = {
@@ -347,7 +341,7 @@
 		6ADEB8B62200859000370C71 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				6A2F6EEA238C6C57008AA0B0 /* Mocks */,
+				6A436B5E23EEDE9700D5F5EA /* Mocks */,
 				6AD83A8223D4A5B500D3919C /* Errors */,
 				6AD83A7723D4A16000D3919C /* Requests */,
 				6AD83A8123D4A5A200D3919C /* Responses */,
@@ -379,7 +373,7 @@
 			path = Internal;
 			sourceTree = "<group>";
 		};
-		6AE5FDD52315DABA007DD4AC /* Other */ = {
+		6AE5FDD52315DABA007DD4AC /* Mocks */ = {
 			isa = PBXGroup;
 			children = (
 				6A53FBF123D32F7900E7D814 /* MockReceiptURLFetcher.swift */,
@@ -390,13 +384,14 @@
 				6A53FBFA23D33FDB00E7D814 /* MockFileManager.swift */,
 				6A53FC0023D362B100E7D814 /* MockSKReceiptRefreshRequest.swift */,
 			);
-			path = Other;
+			path = Mocks;
 			sourceTree = "<group>";
 		};
 		B4533F271DA2BD8900440CC0 = {
 			isa = PBXGroup;
 			children = (
 				6A2755922315D0EA00F131C1 /* README.md */,
+				6A436B5C23EEDAC500D5F5EA /* Package.swift */,
 				B4533F331DA2BD8900440CC0 /* SwiftyReceiptValidator */,
 				6A4384AA222730C1009EF552 /* SwiftyReceiptValidatorTests */,
 				B4533F321DA2BD8900440CC0 /* Products */,
@@ -415,9 +410,7 @@
 		B4533F331DA2BD8900440CC0 /* SwiftyReceiptValidator */ = {
 			isa = PBXGroup;
 			children = (
-				6ADEB8B62200859000370C71 /* Models */,
-				6ADEB8BF2200883600370C71 /* Validator */,
-				6ADEB8EC2200F8C300370C71 /* Internal */,
+				6AA4F7BC23D5095E00CF4514 /* Sources */,
 				B4533F341DA2BD8900440CC0 /* SwiftyReceiptValidator.h */,
 				B4533F351DA2BD8900440CC0 /* Info.plist */,
 			);
@@ -806,7 +799,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				CURRENT_PROJECT_VERSION = 696;
+				CURRENT_PROJECT_VERSION = 702;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -816,11 +809,12 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MARKETING_VERSION = 6.0.0;
+				MARKETING_VERSION = 6.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.swiftyreceiptvalidator;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 			};
@@ -831,7 +825,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
-				CURRENT_PROJECT_VERSION = 696;
+				CURRENT_PROJECT_VERSION = 702;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -841,11 +835,12 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MARKETING_VERSION = 6.0.0;
+				MARKETING_VERSION = 6.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.swiftyreceiptvalidator;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;

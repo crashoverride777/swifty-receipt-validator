@@ -25,6 +25,7 @@ class StatusCodeTests: XCTestCase {
         XCTAssertEqual(SRVStatusCode.testReceipt.rawValue, 21007)
         XCTAssertEqual(SRVStatusCode.productionEnvironment.rawValue, 21008)
         XCTAssertEqual(SRVStatusCode.receiptCouldNotBeAuthorized.rawValue, 21010)
+        XCTAssertEqual(SRVStatusCode.internalDataAccessError.rawValue, 21100)
     }
     
     // MARK: Is Valid
@@ -81,6 +82,11 @@ class StatusCodeTests: XCTestCase {
     
     func test_isValid_receiptCouldNotBeAuthorized_returnsFalse() {
         let sut: SRVStatusCode = .receiptCouldNotBeAuthorized
+        XCTAssertFalse(sut.isValid)
+    }
+    
+    func test_isValid_internalDataAccessError_returnsFalse() {
+        let sut: SRVStatusCode = .internalDataAccessError
         XCTAssertFalse(sut.isValid)
     }
 }
