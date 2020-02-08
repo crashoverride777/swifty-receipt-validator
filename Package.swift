@@ -7,6 +7,6 @@ let package = Package(
     name: "SwiftyReceiptValidator",
     platforms: [.iOS(.v11)],
     products: [.library(name: "SwiftyReceiptValidator", targets: ["SwiftyReceiptValidator"])],
-    targets: [.target(name: "SwiftyReceiptValidator", path: "Sources")],
+    targets: [.target(name: "SwiftyReceiptValidator", path: "SwiftyReceiptValidator")],
     swiftLanguageVersions: [.v5]
 )

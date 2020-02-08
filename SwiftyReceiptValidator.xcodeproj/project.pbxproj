@@ -392,7 +392,6 @@
 			children = (
 				6A2755922315D0EA00F131C1 /* README.md */,
 				6A436B5C23EEDAC500D5F5EA /* Package.swift */,
-				6AA4F7BC23D5095E00CF4514 /* Sources */,
 				B4533F331DA2BD8900440CC0 /* SwiftyReceiptValidator */,
 				6A4384AA222730C1009EF552 /* SwiftyReceiptValidatorTests */,
 				B4533F321DA2BD8900440CC0 /* Products */,
@@ -411,6 +410,7 @@
 		B4533F331DA2BD8900440CC0 /* SwiftyReceiptValidator */ = {
 			isa = PBXGroup;
 			children = (
+				6AA4F7BC23D5095E00CF4514 /* Sources */,
 				B4533F341DA2BD8900440CC0 /* SwiftyReceiptValidator.h */,
 				B4533F351DA2BD8900440CC0 /* Info.plist */,
 			);
