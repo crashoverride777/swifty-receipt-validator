@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6A2755932315D0EB00F131C1 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 6A2755922315D0EA00F131C1 /* README.md */; };
 		6A4384AC222730C1009EF552 /* ReceiptValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4384AB222730C1009EF552 /* ReceiptValidatorTests.swift */; };
 		6A4384AE222730C1009EF552 /* SwiftyReceiptValidator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4533F311DA2BD8900440CC0 /* SwiftyReceiptValidator.framework */; };
 		6A53FBE123D321FD00E7D814 /* StatusCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A53FBE023D321FD00E7D814 /* StatusCode.swift */; };
@@ -529,7 +528,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6A2755932315D0EB00F131C1 /* README.md in Resources */,
 				6AFE27492269D03D0016ED8A /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
