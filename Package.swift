@@ -10,16 +10,3 @@ let package = Package(
     targets: [.target(name: "SwiftyReceiptValidator", path: "Sources")],
     swiftLanguageVersions: [.v5]
 )
-
-/*
- let package = Package(
-     name: "SwiftyReceiptValidator",
-     platforms: [.iOS(.v11)],
-     products: [.library(name: "SwiftyReceiptValidator", targets: ["SwiftyReceiptValidator"])],
-     targets: [
-         .target(name: "SwiftyReceiptValidator", path: "Source")
-         .testTarget(name: "SwiftyReceiptValidatorTests", dependencies: ["SwiftyReceiptValidator"]
-     ],
-     swiftLanguageVersions: [.v5]
- )
- */
