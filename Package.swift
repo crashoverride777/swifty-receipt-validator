@@ -3,10 +3,12 @@
 
 import PackageDescription
 
+private let packageName = "SwiftyReceiptValidator"
+
 let package = Package(
-    name: "SwiftyReceiptValidator",
+    name: packageName,
     platforms: [.iOS(.v11)],
-    products: [.library(name: "SwiftyReceiptValidator", targets: ["SwiftyReceiptValidator"])],
-    targets: [.target(name: "SwiftyReceiptValidator", path: "SwiftyReceiptValidator")],
+    products: [.library(name: packageName, targets: [packageName])],
+    targets: [.target(name: packageName, path: packageName)],
     swiftLanguageVersions: [.v5]
 )
