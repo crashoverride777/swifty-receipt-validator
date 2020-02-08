@@ -5,30 +5,8 @@ import PackageDescription
 
 let package = Package(
     name: "SwiftyReceiptValidator",
-    platforms: [
-        .iOS(.v11)
-    ],
-    products: [
-        // Products define the executables and libraries produced by a package, and make them visible to other packages.
-        .library(
-            name: "SwiftyReceiptValidator",
-            targets: ["SwiftyReceiptValidator"]
-        )
-    ],
-    targets: [
-        // Targets are the basic building blocks of a package. A target can define a module or a test suite.
-        // Targets can depend on other targets in this package, and on products in packages which this package depends on.
-        .target(
-            name: "SwiftyReceiptValidator",
-            dependencies: []
-        ),
-        .testTarget(
-            name: "SwiftyReceiptValidatorTests",
-            dependencies: ["SwiftyReceiptValidator"]
-        ),
-    ],
-    swiftLanguageVersions: [.v5])
-//    dependencies: [
-//        // Dependencies declare other packages that this package depends on.
-//        // .package(url: /* package url */, from: "1.0.0"),
-//    ],
+    platforms: [.iOS(.v11)],
+    products: [.library(name: "SwiftyReceiptValidator", targets: ["SwiftyReceiptValidator"])],
+    targets: [.target(name: "SwiftyReceiptValidator")],
+    swiftLanguageVersions: [.v5]
+)
