@@ -30,7 +30,11 @@ pod 'SwiftyReceiptValidator'
 ### Swift Package Manager
 
 The Swift Package Manager is a tool for automating the distribution of Swift code and is integrated into the swift compiler.
-Once you have your Swift package set up, adding SwiftyReceiptValidator as a dependency is as easy as adding it to the dependencies value of your Package.swift.
+
+To add a swift package to your project simple open your project in xCode and click File > Swift Packages > Add Package Dependency.
+Than enter `https://github.com/crashoverride777/swifty-receipt-validator.git` as the repository URL and finish the setup wizard.
+
+Alternatively if you have a Framwork that requires adding SwiftyReceiptValidator as a dependency is as easy as adding it to the dependencies value of your Package.swift.
 ```swift
 dependencies: [
 .package(url: "https://github.com/crashoverride777/swifty-receipt-validator.git", from: "6.1.0")
@@ -39,7 +43,7 @@ dependencies: [
 
 ### Manually 
 
-Altenatively you can drag the `Source` folder and its containing files into your project.
+Altenatively you can drag the `Sources` folder and its containing files into your project.
 
 ## Usage
 
