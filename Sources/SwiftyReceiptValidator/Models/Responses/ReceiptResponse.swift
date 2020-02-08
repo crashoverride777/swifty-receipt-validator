@@ -61,7 +61,7 @@ extension SRVReceiptResponse {
                 return expiresDate >= now
             }
             // Sort subscription receipts by expiry date
-            // We can force unwrap as nil expiry dates get filtered
+            // We can force unwrap as nil expiry dates get filtered above
             .sorted(by: { $0.expiresDate! > $1.expiresDate! })
     }
 }

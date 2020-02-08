@@ -20,10 +20,11 @@ public enum SRVStatusCode: Int, Codable {
     case testReceipt = 21007
     case productionEnvironment = 21008
     case receiptCouldNotBeAuthorized = 21010
-    //21100-21199 = Internal data access error.
+    // Codes 21100-21199 = Internal data access error.
+    case internalDataAccessError = 21100
     
     public init(from decoder: Decoder) throws {
-        self = try SRVStatusCode(rawValue: decoder.singleValueContainer().decode(RawValue.self)) ?? .unknown
+        self = try SRVStatusCode(rawValue: decoder.singleValueContainer().decode(RawValue.self)) ?? .internalDataAccessError
     }
 }
 
@@ -64,6 +65,8 @@ public extension SRVStatusCode {
             return "This receipt is from the production environment, but it was sent to the test environment for verification. Send it to the production environment instead."
         case .receiptCouldNotBeAuthorized:
             return "This receipt could not be authorized. Treat this the same as if a purchase was never made."
+        case .internalDataAccessError:
+            return "Internal data access error (21100-21199)"
         }
     }
 }

@@ -13,7 +13,7 @@ public struct SRVConfiguration: Equatable {
     let sandboxURL: String
     let sessionConfiguration: URLSessionConfiguration
     
-    /// Init
+    /// SRVConfiguration
     ///
     /// - parameter productionURL: The production url of the server to validate the receipt with.
     /// - parameter sandboxURL: The sandbox url of the server to validate the receipt with.

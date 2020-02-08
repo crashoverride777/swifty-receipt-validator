@@ -34,12 +34,13 @@ class ReceiptValidatorPublisherTests: ReceiptValidatorTests {
     // MARK: Validate Purchase
     
     func test_validPurchasePublisher_success_publishesCorrectData() {
-        let expectation = self.expectation
-        let sut = makeSUT()
+        let expectation = self.expectation(description: "Finished")
         let expectedResponse: SRVReceiptResponse = .mock()
         receiptClient.stub.validateResult = .success(expectedResponse)
         responseValidator.stub.validatePurchaseResult = .success(expectedResponse)
         let request = SRVPurchaseValidationRequest(productId: "1", sharedSecret: nil)
+        
+        let sut = makeSUT()
         sut.validatePublisher(for: request)
             .sink(
                 receiveCompletion: { _ in },
@@ -50,15 +51,16 @@ class ReceiptValidatorPublisherTests: ReceiptValidatorTests {
             )
             .store(in: &cancellables)
         
-        wait(for: [expectation], timeout: 0.1)
+        waitForExpectations(timeout: 0.1)
     }
     
     func test_validPurchasePublisher_failure_receiptFetcher_publishesCorrectError() {
-        let expectation = self.expectation
-        let sut = makeSUT()
+        let expectation = self.expectation(description: "Finished")
         let expectedError = URLError(.notConnectedToInternet)
         receiptURLFetcher.stub.fetchResult = .failure(expectedError)
         let request = SRVPurchaseValidationRequest(productId: "1", sharedSecret: nil)
+        
+        let sut = makeSUT()
         sut.validatePublisher(for: request)
             .sink(
                 receiveCompletion: { completion in
@@ -71,15 +73,16 @@ class ReceiptValidatorPublisherTests: ReceiptValidatorTests {
             )
             .store(in: &cancellables)
         
-        wait(for: [expectation], timeout: 0.1)
+        waitForExpectations(timeout: 0.1)
     }
     
     func test_validPurchasePublisher_failure_receiptClient_publishesCorrectError() {
-        let expectation = self.expectation
-        let sut = makeSUT()
+        let expectation = self.expectation(description: "Finished")
         let expectedError = URLError(.notConnectedToInternet)
         receiptClient.stub.validateResult = .failure(.other(expectedError))
         let request = SRVPurchaseValidationRequest(productId: "1", sharedSecret: nil)
+        
+        let sut = makeSUT()
         sut.validatePublisher(for: request)
             .sink(
                 receiveCompletion: { completion in
@@ -92,15 +95,16 @@ class ReceiptValidatorPublisherTests: ReceiptValidatorTests {
             )
             .store(in: &cancellables)
         
-        wait(for: [expectation], timeout: 0.1)
+        waitForExpectations(timeout: 0.1)
     }
     
     func test_validPurchasePublisher_failure_responseValidator_publishesCorrectError() {
-        let expectation = self.expectation
-        let sut = makeSUT()
+        let expectation = self.expectation(description: "Finished")
         let expectedError: SRVError = .productIdNotMatching(.unknown)
         responseValidator.stub.validatePurchaseResult = .failure(expectedError)
         let request = SRVPurchaseValidationRequest(productId: "1", sharedSecret: nil)
+        
+        let sut = makeSUT()
         sut.validatePublisher(for: request)
             .sink(
                 receiveCompletion: { completion in
@@ -113,14 +117,13 @@ class ReceiptValidatorPublisherTests: ReceiptValidatorTests {
             )
             .store(in: &cancellables)
         
-        wait(for: [expectation], timeout: 0.1)
+        waitForExpectations(timeout: 0.1)
     }
     
     // MARK: Validate Subscription
     
     func test_validSubscriptionPublisher_success_publishesCorrectData() {
-        let expectation = self.expectation
-        let sut = makeSUT()
+        let expectation = self.expectation(description: "Finished")
         let expectedReceiptResponse: SRVReceiptResponse = .mock()
         let expectedValidationResponse: SRVSubscriptionValidationResponse = .mock(
             validReceipts: expectedReceiptResponse.validSubscriptionReceipts(now: .test),
@@ -134,6 +137,8 @@ class ReceiptValidatorPublisherTests: ReceiptValidatorTests {
             excludeOldTransactions: false,
             now: .test
         )
+        
+        let sut = makeSUT()
         sut.validatePublisher(for: request)
             .sink(
                 receiveCompletion: { _ in },
@@ -144,12 +149,11 @@ class ReceiptValidatorPublisherTests: ReceiptValidatorTests {
             )
             .store(in: &cancellables)
         
-        wait(for: [expectation], timeout: 0.1)
+        waitForExpectations(timeout: 0.1)
     }
     
     func test_validSubscriptionPublisher_failure_receiptFetcher_publishesCorrectError() {
-        let expectation = self.expectation
-        let sut = makeSUT()
+        let expectation = self.expectation(description: "Finished")
         let expectedError = URLError(.notConnectedToInternet)
         receiptURLFetcher.stub.fetchResult = .failure(expectedError)
         let request = SRVSubscriptionValidationRequest(
@@ -158,6 +162,8 @@ class ReceiptValidatorPublisherTests: ReceiptValidatorTests {
             excludeOldTransactions: false,
             now: .test
         )
+        
+        let sut = makeSUT()
         sut.validatePublisher(for: request)
             .sink(
                 receiveCompletion: { completion in
@@ -170,12 +176,11 @@ class ReceiptValidatorPublisherTests: ReceiptValidatorTests {
             )
             .store(in: &cancellables)
         
-        wait(for: [expectation], timeout: 0.1)
+        waitForExpectations(timeout: 0.1)
     }
     
     func test_validSubscriptionPublisher_failure_receiptClient_publishesCorrectError() {
-        let expectation = self.expectation
-        let sut = makeSUT()
+        let expectation = self.expectation(description: "Finished")
         let expectedError = URLError(.notConnectedToInternet)
         receiptClient.stub.validateResult = .failure(.other(expectedError))
         let request = SRVSubscriptionValidationRequest(
@@ -184,6 +189,8 @@ class ReceiptValidatorPublisherTests: ReceiptValidatorTests {
             excludeOldTransactions: false,
             now: .test
         )
+        
+        let sut = makeSUT()
         sut.validatePublisher(for: request)
             .sink(
                 receiveCompletion: { completion in
@@ -196,12 +203,11 @@ class ReceiptValidatorPublisherTests: ReceiptValidatorTests {
             )
             .store(in: &cancellables)
         
-        wait(for: [expectation], timeout: 0.1)
+        waitForExpectations(timeout: 0.1)
     }
     
     func test_validSubscriptionPublisher_failure_responseValidator_publishesCorrectError() {
-        let expectation = self.expectation
-        let sut = makeSUT()
+        let expectation = self.expectation(description: "Finished")
         let expectedError = URLError(.notConnectedToInternet)
         responseValidator.stub.validateSubscriptionResult = .failure(.other(expectedError))
         let request = SRVSubscriptionValidationRequest(
@@ -210,6 +216,8 @@ class ReceiptValidatorPublisherTests: ReceiptValidatorTests {
             excludeOldTransactions: false,
             now: .test
         )
+        
+        let sut = makeSUT()
         sut.validatePublisher(for: request)
             .sink(
                 receiveCompletion: { completion in
@@ -222,6 +230,6 @@ class ReceiptValidatorPublisherTests: ReceiptValidatorTests {
             )
             .store(in: &cancellables)
         
-        wait(for: [expectation], timeout: 0.1)
+        waitForExpectations(timeout: 0.1)
     }
 }

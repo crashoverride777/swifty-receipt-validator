@@ -183,27 +183,10 @@
 				6A7DF2812305E386001CAEEF /* Models */,
 				6A7DF2892305E54D001CAEEF /* Validator */,
 				6A7DF29C230609AB001CAEEF /* Internal */,
-				6A7DF2822305E38E001CAEEF /* Mocks */,
+				6A7DF2822305E38E001CAEEF /* Test Data */,
 				6A4384AD222730C1009EF552 /* Info.plist */,
 			);
 			path = SwiftyReceiptValidatorTests;
-			sourceTree = "<group>";
-		};
-		6A53FBF723D3328A00E7D814 /* Foundation */ = {
-			isa = PBXGroup;
-			children = (
-				6A53FBFE23D349D700E7D814 /* Date+Mocks.swift */,
-				6A53FBF523D3317400E7D814 /* URL+Mocks.swift */,
-			);
-			path = Foundation;
-			sourceTree = "<group>";
-		};
-		6A53FC0223D3637500E7D814 /* StoreKit */ = {
-			isa = PBXGroup;
-			children = (
-				6A53FC0323D3638400E7D814 /* SKRequest+Mock.swift */,
-			);
-			path = StoreKit;
 			sourceTree = "<group>";
 		};
 		6A7DF2812305E386001CAEEF /* Models */ = {
@@ -217,16 +200,14 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		6A7DF2822305E38E001CAEEF /* Mocks */ = {
+		6A7DF2822305E38E001CAEEF /* Test Data */ = {
 			isa = PBXGroup;
 			children = (
 				6A7DF29A230607AE001CAEEF /* JSONs */,
-				6A53FBF723D3328A00E7D814 /* Foundation */,
-				6AD83A7623D49BA100D3919C /* Models */,
-				6A53FC0223D3637500E7D814 /* StoreKit */,
-				6AE5FDD52315DABA007DD4AC /* Other */,
+				6AD83A7623D49BA100D3919C /* Extensions */,
+				6AE5FDD52315DABA007DD4AC /* Mocks */,
 			);
-			path = Mocks;
+			path = "Test Data";
 			sourceTree = "<group>";
 		};
 		6A7DF2892305E54D001CAEEF /* Validator */ = {
@@ -279,12 +260,15 @@
 			path = SwiftyReceiptValidator;
 			sourceTree = "<group>";
 		};
-		6AD83A7623D49BA100D3919C /* Models */ = {
+		6AD83A7623D49BA100D3919C /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
 				6AD83A7423D49B8B00D3919C /* ReceiptResponse+Mock.swift */,
+				6A53FC0323D3638400E7D814 /* SKRequest+Mock.swift */,
+				6A53FBFE23D349D700E7D814 /* Date+Mocks.swift */,
+				6A53FBF523D3317400E7D814 /* URL+Mocks.swift */,
 			);
-			path = Models;
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		6AD83A7723D4A16000D3919C /* Requests */ = {
@@ -397,7 +381,7 @@
 			path = Internal;
 			sourceTree = "<group>";
 		};
-		6AE5FDD52315DABA007DD4AC /* Other */ = {
+		6AE5FDD52315DABA007DD4AC /* Mocks */ = {
 			isa = PBXGroup;
 			children = (
 				6A53FBF123D32F7900E7D814 /* MockReceiptURLFetcher.swift */,
@@ -408,7 +392,7 @@
 				6A53FBFA23D33FDB00E7D814 /* MockFileManager.swift */,
 				6A53FC0023D362B100E7D814 /* MockSKReceiptRefreshRequest.swift */,
 			);
-			path = Other;
+			path = Mocks;
 			sourceTree = "<group>";
 		};
 		B4533F271DA2BD8900440CC0 = {
