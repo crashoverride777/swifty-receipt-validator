@@ -62,21 +62,19 @@ extension ReceiptURLFetcher: ReceiptURLFetcherType {
     func fetch(refreshRequest: ReceiptURLFetcherRefreshRequest?, handler: @escaping ReceiptURLFetcherCompletion) {
         completionHandler = handler
         
-        defer {
-            clean()
-        }
-        
         guard hasReceipt, let appStoreReceiptURL = appStoreReceiptURL() else {
             if let refreshRequest = refreshRequest {
                 receiptRefreshRequest = refreshRequest
                 receiptRefreshRequest?.delegate = self
                 receiptRefreshRequest?.start()
             } else {
+                clean()
                 handler(.failure(FetchError.noReceiptFound))
             }
             return
         }
         
+        clean()
         handler(.success(appStoreReceiptURL))
     }
 }

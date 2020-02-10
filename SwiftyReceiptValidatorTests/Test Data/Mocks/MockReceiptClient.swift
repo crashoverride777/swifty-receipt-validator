@@ -21,11 +21,8 @@ final class MockReceiptClient {
 
 extension MockReceiptClient: ReceiptClientType {
     
-    func fetch(with receiptURL: URL,
-                  sharedSecret: String?,
-                  excludeOldTransactions: Bool,
-                  handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void) {
-        let completion = stub.validateResult(receiptURL, sharedSecret, excludeOldTransactions)
+    func perform(_ request: ReceiptClientRequest, handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void) {
+        let completion = stub.validateResult(request.receiptURL, request.sharedSecret, request.excludeOldTransactions)
         handler(completion)
     }
 }

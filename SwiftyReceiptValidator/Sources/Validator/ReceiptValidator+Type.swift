@@ -108,12 +108,12 @@ private extension SwiftyReceiptValidator {
             guard let self = self else { return }
             switch result {
             case .success(let receiptURL):
-                self.receiptClient.fetch(
-                    with: receiptURL,
+                let clientRequest = ReceiptClientRequest(
+                    receiptURL: receiptURL,
                     sharedSecret: sharedSecret,
-                    excludeOldTransactions: excludeOldTransactions,
-                    handler: handler
+                    excludeOldTransactions: excludeOldTransactions
                 )
+                self.receiptClient.perform(clientRequest, handler: handler)
             case .failure(let error):
                 handler(.failure(.other(error)))
             }

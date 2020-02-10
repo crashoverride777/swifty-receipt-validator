@@ -46,12 +46,14 @@ class ReceiptClientTests: XCTestCase {
             expectation.fulfill()
             return .success(SRVReceiptResponse.mock(.subscription).asData) }
         
-        let sut = makeSUT()
-        sut.fetch(
-            with: receiptURL,
+        let request = ReceiptClientRequest(
+            receiptURL: receiptURL,
             sharedSecret: expectedParameters.password,
             excludeOldTransactions: expectedParameters.excludeOldTransactions
-        ) { _ in }
+        )
+        
+        let sut = makeSUT()
+        sut.perform(request) { _ in }
         
         waitForExpectations(timeout: 0.1)
     }
@@ -64,8 +66,14 @@ class ReceiptClientTests: XCTestCase {
         let expectedResponse: SRVReceiptResponse = .mock(from: expectedDictionaryResponse)
         sessionManager.stub.start = { (_, _) in .success(expectedDictionaryResponse.asData) }
         
+        let request = ReceiptClientRequest(
+            receiptURL: .test,
+            sharedSecret: "secret",
+            excludeOldTransactions: false
+        )
+        
         let sut = makeSUT()
-        sut.fetch(with: .test, sharedSecret: "secret", excludeOldTransactions: false) { result in
+        sut.perform(request) { result in
             if case .success(let response) = result {
                 XCTAssertEqual(response, expectedResponse)
                 expectation.fulfill()
@@ -85,8 +93,14 @@ class ReceiptClientTests: XCTestCase {
             return .success(expectedDictionaryResponse.asData)
         }
         
+        let request = ReceiptClientRequest(
+            receiptURL: .test,
+            sharedSecret: "secret",
+            excludeOldTransactions: false
+        )
+        
         let sut = makeSUT()
-        sut.fetch(with: .test, sharedSecret: "secret", excludeOldTransactions: false) { _ in }
+        sut.perform(request) { _ in }
         
         waitForExpectations(timeout: 0.1)
     }
@@ -104,8 +118,14 @@ class ReceiptClientTests: XCTestCase {
             return .success(expectedDictionaryResponse.asData)
         }
         
+        let request = ReceiptClientRequest(
+            receiptURL: .test,
+            sharedSecret: "secret",
+            excludeOldTransactions: false
+        )
+        
         let sut = makeSUT()
-        sut.fetch(with: .test, sharedSecret: "secret", excludeOldTransactions: false) { _ in }
+        sut.perform(request) { _ in }
         
         waitForExpectations(timeout: 0.1)
     }
@@ -115,8 +135,14 @@ class ReceiptClientTests: XCTestCase {
         let expectedError = URLError(.notConnectedToInternet)
         sessionManager.stub.start = { (_, _) in .failure(expectedError) }
         
+        let request = ReceiptClientRequest(
+            receiptURL: .test,
+            sharedSecret: "secret",
+            excludeOldTransactions: false
+        )
+        
         let sut = makeSUT()
-        sut.fetch(with: .test, sharedSecret: "secret", excludeOldTransactions: false) { result in
+        sut.perform(request) { result in
             if case .failure(let error) = result {
                 XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
                 expectation.fulfill()

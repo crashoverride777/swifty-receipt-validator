@@ -9,10 +9,13 @@
 import Foundation
 
 protocol ReceiptClientType {
-    func fetch(with receiptURL: URL,
-               sharedSecret: String?,
-               excludeOldTransactions: Bool,
-               handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void)
+    func perform(_ request: ReceiptClientRequest, handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void)
+}
+
+struct ReceiptClientRequest {
+    let receiptURL: URL
+    let sharedSecret: String?
+    let excludeOldTransactions: Bool
 }
 
 final class ReceiptClient {
@@ -55,17 +58,14 @@ final class ReceiptClient {
 
 extension ReceiptClient: ReceiptClientType {
     
-    func fetch(with receiptURL: URL,
-               sharedSecret: String?,
-               excludeOldTransactions: Bool,
-               handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void) {
+    func perform(_ request: ReceiptClientRequest, handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void) {
         do {
             // Prepare url session parameters
-            let receiptData = try Data(contentsOf: receiptURL)
+            let receiptData = try Data(contentsOf: request.receiptURL)
             let parameters = Parameters(
                 data: receiptData.base64EncodedString(options: Data.Base64EncodingOptions(rawValue: 0)),
-                excludeOldTransactions: excludeOldTransactions,
-                password: sharedSecret
+                excludeOldTransactions: request.excludeOldTransactions,
+                password: request.sharedSecret
             )
 
             // Start URL request to production server first, if status code returns test environment receipt, try sandbox.
