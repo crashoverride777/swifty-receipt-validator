@@ -29,13 +29,40 @@ class ReceiptClientTests: XCTestCase {
     
     // MARK: - Tests
     
+    // MARK: Parameters
+    
+    func test_setsCorrectParameters_production() {
+        let expectation = self.expectation(description: "Finished")
+        let receiptURL: URL = .test
+        let receiptData = try! Data(contentsOf: receiptURL)
+        let expectedParameters = ReceiptClient.Parameters(
+            data: receiptData.base64EncodedString(options: Data.Base64EncodingOptions(rawValue: 0)),
+            excludeOldTransactions: false,
+            password: "secret"
+        )
+        
+        sessionManager.stub.start = { (_, parameters) in
+            XCTAssertEqual(parameters, expectedParameters.asData)
+            expectation.fulfill()
+            return .success(SRVReceiptResponse.mock(.subscription).asData) }
+        
+        let sut = makeSUT()
+        sut.fetch(
+            with: receiptURL,
+            sharedSecret: expectedParameters.password,
+            excludeOldTransactions: expectedParameters.excludeOldTransactions
+        ) { _ in }
+        
+        waitForExpectations(timeout: 0.1)
+    }
+    
     // MARK: Fetch
   
     func test_fetch_success_returnsCorrectResponse() {
         let expectation = self.expectation(description: "Finished")
         let expectedDictionaryResponse: [String: Any] = SRVReceiptResponse.mock(.subscription)
         let expectedResponse: SRVReceiptResponse = .mock(from: expectedDictionaryResponse)
-        sessionManager.stub.start = .success(expectedDictionaryResponse.asData)
+        sessionManager.stub.start = { (_, _) in .success(expectedDictionaryResponse.asData) }
         
         let sut = makeSUT()
         sut.fetch(with: .test, sharedSecret: "secret", excludeOldTransactions: false) { result in
@@ -48,18 +75,37 @@ class ReceiptClientTests: XCTestCase {
         waitForExpectations(timeout: 0.1)
     }
     
-    func test_fetch_success_testReceipt_callsSandboxURL() {
+    func test_fetch_success_productionReceipt_callsProductionURL() {
         let expectation = self.expectation(description: "Finished")
-        let expectedDictionaryResponse: [String: Any] = SRVReceiptResponse.mock(.sandbox)
-        sessionManager.stub.start = .success(expectedDictionaryResponse.asData)
+        let expectedDictionaryResponse: [String: Any] = SRVReceiptResponse.mock(.subscription)
+        
+        sessionManager.stub.start = { (url, _) in
+            XCTAssertEqual(url, "production.com")
+            expectation.fulfill()
+            return .success(expectedDictionaryResponse.asData)
+        }
         
         let sut = makeSUT()
-        sut.fetch(with: .test, sharedSecret: "secret", excludeOldTransactions: false) { result in
-            if case .success = result {
-                XCTAssertEqual(self.sessionManager.mock.start?.urlString, "sandbox.com")
-                expectation.fulfill()
-            }
+        sut.fetch(with: .test, sharedSecret: "secret", excludeOldTransactions: false) { _ in }
+        
+        waitForExpectations(timeout: 0.1)
+    }
+    
+    func test_fetch_success_testReceipt_callsProductionURLThanSandboxURL() {
+        let expectation = self.expectation(description: "Finished")
+        expectation.expectedFulfillmentCount = 2
+        let expectedDictionaryResponse: [String: Any] = SRVReceiptResponse.mock(.sandbox)
+        
+        var count = 0
+        sessionManager.stub.start = { (url, _) in
+            XCTAssertEqual(url, count == 0 ? "production.com" : "sandbox.com")
+            count += 1
+            expectation.fulfill()
+            return .success(expectedDictionaryResponse.asData)
         }
+        
+        let sut = makeSUT()
+        sut.fetch(with: .test, sharedSecret: "secret", excludeOldTransactions: false) { _ in }
         
         waitForExpectations(timeout: 0.1)
     }
@@ -67,64 +113,12 @@ class ReceiptClientTests: XCTestCase {
     func test_fetch_failure_returnsCorrectError() {
         let expectation = self.expectation(description: "Finished")
         let expectedError = URLError(.notConnectedToInternet)
-        sessionManager.stub.start = .failure(expectedError)
+        sessionManager.stub.start = { (_, _) in .failure(expectedError) }
         
         let sut = makeSUT()
         sut.fetch(with: .test, sharedSecret: "secret", excludeOldTransactions: false) { result in
             if case .failure(let error) = result {
                 XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
-                expectation.fulfill()
-            }
-        }
-        
-        waitForExpectations(timeout: 0.1)
-    }
-    
-    // MARK: Parameters
-    
-    func test_fetch_setsCorrectParameters_production() {
-        let expectation = self.expectation(description: "Finished")
-        
-        let receiptURL: URL = .test
-        let receiptData = try! Data(contentsOf: receiptURL)
-        let expectedParameters = ReceiptClient.Parameters(
-            data: receiptData.base64EncodedString(options: Data.Base64EncodingOptions(rawValue: 0)),
-            excludeOldTransactions: false,
-            password: "secret"
-        )
-        sessionManager.stub.start = .success(SRVReceiptResponse.mock(.subscription).asData)
-        
-        let sut = makeSUT()
-        sut.fetch(with: receiptURL,
-                  sharedSecret: expectedParameters.password,
-                  excludeOldTransactions: expectedParameters.excludeOldTransactions) { result in
-            if case .success = result {
-                XCTAssertEqual(self.sessionManager.mock.start?.parameters, expectedParameters.asData)
-                expectation.fulfill()
-            }
-        }
-        
-        waitForExpectations(timeout: 0.1)
-    }
-    
-    func test_fetch_setsCorrectParameters_sandbox() {
-        let expectation = self.expectation(description: "Finished")
-        
-        let receiptURL: URL = .test
-        let receiptData = try! Data(contentsOf: receiptURL)
-        let expectedParameters = ReceiptClient.Parameters(
-            data: receiptData.base64EncodedString(options: Data.Base64EncodingOptions(rawValue: 0)),
-            excludeOldTransactions: true,
-            password: "abc"
-        )
-        sessionManager.stub.start = .success(SRVReceiptResponse.mock(.sandbox).asData)
-        
-        let sut = makeSUT()
-        sut.fetch(with: receiptURL,
-                  sharedSecret: expectedParameters.password,
-                  excludeOldTransactions: expectedParameters.excludeOldTransactions) { result in
-            if case .success = result {
-                XCTAssertEqual(self.sessionManager.mock.start?.parameters, expectedParameters.asData)
                 expectation.fulfill()
             }
         }
@@ -139,9 +133,9 @@ private extension ReceiptClientTests {
     
     func makeSUT() -> ReceiptClient {
         ReceiptClient(
+            sessionManager: sessionManager,
             productionURL: "production.com",
             sandboxURL: "sandbox.com",
-            sessionManager: sessionManager,
             isLoggingEnabled: false
         )
     }

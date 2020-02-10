@@ -61,9 +61,9 @@ public final class SwiftyReceiptValidator: NSObject {
             fileManager: .default
         )
         self.receiptClient = ReceiptClient(
+            sessionManager: URLSessionManager(sessionConfiguration: configuration.sessionConfiguration),
             productionURL: configuration.productionURL,
             sandboxURL: configuration.sandboxURL,
-            sessionManager: URLSessionManager(sessionConfiguration: configuration.sessionConfiguration),
             isLoggingEnabled: isLoggingEnabled
         )
         self.responseValidator = ResponseValidator(

@@ -375,13 +375,13 @@
 		6AE5FDD52315DABA007DD4AC /* Mocks */ = {
 			isa = PBXGroup;
 			children = (
+				6A53FBFC23D344D800E7D814 /* MockBundle.swift */,
+				6A53FBFA23D33FDB00E7D814 /* MockFileManager.swift */,
+				6A53FC0023D362B100E7D814 /* MockSKReceiptRefreshRequest.swift */,
 				6A53FBF123D32F7900E7D814 /* MockReceiptURLFetcher.swift */,
 				6AD83A5D23D3A3AC00D3919C /* MockReceiptClient.swift */,
 				6A7DF298230602C4001CAEEF /* MockSessionManager.swift */,
 				6A53FBF323D32F8D00E7D814 /* MockResponseValidator.swift */,
-				6A53FBFC23D344D800E7D814 /* MockBundle.swift */,
-				6A53FBFA23D33FDB00E7D814 /* MockFileManager.swift */,
-				6A53FC0023D362B100E7D814 /* MockSKReceiptRefreshRequest.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";

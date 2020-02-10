@@ -9,17 +9,10 @@
 import StoreKit
 
 typealias ReceiptURLFetcherCompletion = (Result<URL, Error>) -> Void
-
-protocol ReceiptURLFetcherRefreshRequestType {
-    var delegate: SKRequestDelegate? { get set }
-    func cancel()
-    func start()
-}
-
-extension SKReceiptRefreshRequest: ReceiptURLFetcherRefreshRequestType { }
+typealias ReceiptURLFetcherRefreshRequest = SKReceiptRefreshRequest
 
 protocol ReceiptURLFetcherType {
-    func fetch(refreshRequest: ReceiptURLFetcherRefreshRequestType?, handler: @escaping ReceiptURLFetcherCompletion)
+    func fetch(refreshRequest: ReceiptURLFetcherRefreshRequest?, handler: @escaping ReceiptURLFetcherCompletion)
 }
 
 final class ReceiptURLFetcher: NSObject {
@@ -41,9 +34,8 @@ final class ReceiptURLFetcher: NSObject {
 
     private let appStoreReceiptURL: () -> URL?
     private let fileManager: FileManager
-    
     private var completionHandler: ReceiptURLFetcherCompletion?
-    private var receiptRefreshRequest: ReceiptURLFetcherRefreshRequestType?
+    private var receiptRefreshRequest: ReceiptURLFetcherRefreshRequest?
     
     // MARK: - Computed Properties
     
@@ -67,7 +59,7 @@ final class ReceiptURLFetcher: NSObject {
 
 extension ReceiptURLFetcher: ReceiptURLFetcherType {
     
-    func fetch(refreshRequest: ReceiptURLFetcherRefreshRequestType?, handler: @escaping ReceiptURLFetcherCompletion) {
+    func fetch(refreshRequest: ReceiptURLFetcherRefreshRequest?, handler: @escaping ReceiptURLFetcherCompletion) {
         completionHandler = handler
         
         defer {

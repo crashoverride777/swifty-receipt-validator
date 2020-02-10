@@ -33,20 +33,20 @@ final class ReceiptClient {
     
     // MARK: - Properties
     
+    private let sessionManager: URLSessionManagerType
     private let productionURL: String
     private let sandboxURL: String
-    private let sessionManager: URLSessionManagerType
     private let isLoggingEnabled: Bool
     
     // MARK: - Init
     
-    init(productionURL: String,
+    init(sessionManager: URLSessionManagerType,
+         productionURL: String,
          sandboxURL: String,
-         sessionManager: URLSessionManagerType,
          isLoggingEnabled: Bool) {
+        self.sessionManager = sessionManager
         self.productionURL = productionURL
         self.sandboxURL = sandboxURL
-        self.sessionManager = sessionManager
         self.isLoggingEnabled = isLoggingEnabled
     }
 }

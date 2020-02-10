@@ -90,7 +90,7 @@ class ReceiptURLFetcherTests: XCTestCase {
     func test_fetch_failure_noReceiptOnFile_refreshRequest_returnsCorrectError() {
         let expectation = self.expectation(description: "Finished")
         let expectedError = URLError(.notConnectedToInternet)
-        refreshRequest.stub.startResult = .failure(expectedError)
+        refreshRequest.stub.start = .failure(expectedError)
         
         let sut = makeSUT()
         sut.fetch(refreshRequest: refreshRequest) { result in

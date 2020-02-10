@@ -11,7 +11,7 @@ import StoreKit
 
 final class MockSKReceiptRefreshRequest: SKReceiptRefreshRequest {
     struct Stub {
-        var startResult: Result<Void, Error> = .success(())
+        var start: Result<Void, Error> = .success(())
     }
 
     var stub = Stub()
@@ -23,7 +23,7 @@ final class MockSKReceiptRefreshRequest: SKReceiptRefreshRequest {
     }
     
     override func start() {
-        switch stub.startResult {
+        switch stub.start {
         case .success:
             fileManager.stub.fileExists = true
             delegate?.requestDidFinish?(.mock())

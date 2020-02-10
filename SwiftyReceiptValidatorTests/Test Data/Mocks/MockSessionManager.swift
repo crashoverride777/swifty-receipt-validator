@@ -11,15 +11,12 @@ import Foundation
 
 final class MockSessionManager {
     struct Stub {
-        var start: (Result<Data, Error>) = .success(Data([1, 2, 3]))
+        var start: (_ urlString: String, _ parameters: Data) -> (Result<Data, Error>) = {
+            (_, _) in .success(Data([1, 2, 3]))
+        }
     }
-    
-    struct Mock {
-        var start: (urlString: String, parameters: Data)? = nil
-    }
-    
+
     var stub = Stub()
-    private(set) var mock = Mock()
 }
 
 extension MockSessionManager: URLSessionManagerType {
@@ -27,8 +24,12 @@ extension MockSessionManager: URLSessionManagerType {
     func start<T: Encodable>(withURL urlString: String,
                   parameters: T,
                   handler: @escaping (Result<Data, Error>) -> Void) {
-        let parametersData = try! JSONEncoder().encode(parameters)
-        mock.start = (urlString: urlString, parameters: parametersData)
-        handler(stub.start)
+        do {
+            let parametersData = try JSONEncoder().encode(parameters)
+            let completion = stub.start(urlString, parametersData)
+            handler(completion)
+        } catch {
+            fatalError(error.localizedDescription)
+        }
     }
 }

@@ -11,17 +11,15 @@ import Foundation
 
 final class MockResponseValidator {
     struct Stub {
-        var validatePurchaseResult: (Result<SRVReceiptResponse, SRVError>) = .success(.mock())
-        var validateSubscriptionResult: (Result<SRVSubscriptionValidationResponse, SRVError>) = .success(.mock())
-    }
-    
-    struct Mock {
-        var validatePurchase: (id: String, response: SRVReceiptResponse)? = nil
-        var validateSubscription: (response: SRVReceiptResponse, now: Date)? = nil
+        var validatePurchaseResult: (_ id: String, _ response: SRVReceiptResponse) -> (Result<SRVReceiptResponse, SRVError>) = { (_, _) in
+            .success(.mock())
+        }
+        var validateSubscriptionResult: (_ response: SRVReceiptResponse, _ now: Date) -> (Result<SRVSubscriptionValidationResponse, SRVError>) = { (_, _) in
+            .success(.mock())
+        }
     }
     
     var stub = Stub()
-    private(set) var mock = Mock()
 }
 
 extension MockResponseValidator: ResponseValidatorType {
@@ -29,14 +27,14 @@ extension MockResponseValidator: ResponseValidatorType {
     func validatePurchase(forProductId productId: String,
                           in response: SRVReceiptResponse,
                           handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void) {
-        mock.validatePurchase = (id: productId, response: response)
-        handler(stub.validatePurchaseResult)
+        let completion = stub.validatePurchaseResult(productId, response)
+        handler(completion)
     }
     
     func validateSubscriptions(in response: SRVReceiptResponse,
                                now: Date,
                                handler: @escaping (Result<SRVSubscriptionValidationResponse, SRVError>) -> Void) {
-        mock.validateSubscription = (response: response, now: now)
-        handler(stub.validateSubscriptionResult)
+        let completion = stub.validateSubscriptionResult(response, now)
+        handler(completion)
     }
 }

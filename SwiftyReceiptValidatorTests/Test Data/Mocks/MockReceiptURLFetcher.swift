@@ -11,22 +11,16 @@ import Foundation
 
 final class MockReceiptURLFetcher {
     struct Stub {
-        var fetchResult: (Result<URL, Error>) = .success(.test)
-    }
-    
-    struct Mock {
-        var refreshRequest: ReceiptURLFetcherRefreshRequestType? = nil
+        var fetchResult: (ReceiptURLFetcherRefreshRequest?) -> (Result<URL, Error>) = { _ in .success(.test) }
     }
     
     var stub = Stub()
-    private(set) var mock = Mock()
 }
 
 extension MockReceiptURLFetcher: ReceiptURLFetcherType {
     
-    func fetch(refreshRequest: ReceiptURLFetcherRefreshRequestType?,
-               handler: @escaping ReceiptURLFetcherCompletion) {
-        mock.refreshRequest = refreshRequest
-        handler(stub.fetchResult)
+    func fetch(refreshRequest: ReceiptURLFetcherRefreshRequest?, handler: @escaping ReceiptURLFetcherCompletion) {
+        let completion = stub.fetchResult(refreshRequest)
+        handler(completion)
     }
 }
