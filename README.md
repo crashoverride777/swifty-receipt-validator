@@ -208,6 +208,19 @@ receiptValidator.validate(validationRequest) { result in
 
 Setting `refreshLocalReceiptIfNeeded = true` will create a receipt fetch request if no receipt is found on the iOS device. This will show a iTunes password prompt so might not always be wanted e.g app launch.
 
+If you want to check the users auto renewal status it is recommended, as far as I understand,  to 1st check the pending renewal info and than fall
+back on the current subscription status. 
+
+e.g 
+```swift
+let isAutoRenewOn: Bool
+if let pendingRenewalInfo = response.receiptResponse.pendingRenewalInfo, !pendingRenewalInfo.isEmpty {
+    isAutoRenewOn = pendingRenewalInfo.first { $0.autoRenewStatus == .on } != nil
+} else {
+    isAutoRenewOn = response.validSubscriptionReceipts.first { $0.autoRenewStatus == .on } != nil
+}
+```
+
 Note: There is also Combine support for these methods if you are targeting iOS 13 and above
 
 ## Unit Tests
