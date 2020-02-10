@@ -49,7 +49,7 @@ Altenatively you can drag the `Sources` folder and its containing files into you
 
 ### Add import (if using cocoaPods or SwiftPackageManager)
 
-- Add the import statement to your swift file(s) when you installed via cocoa pods
+- Add the import statement to your swift file(s) when you installed via cocoa pods or SwiftPackageManager
 
 ```swift
 import SwiftyReceiptValidator
