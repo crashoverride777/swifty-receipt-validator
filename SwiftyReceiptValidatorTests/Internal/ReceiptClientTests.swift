@@ -11,20 +11,6 @@ import XCTest
 
 class ReceiptClientTests: XCTestCase {
     
-    // MARK: - Types
-    
-    fileprivate struct Parameters: Encodable {
-        let data: String
-        let excludeOldTransactions: Bool
-        let password: String?
-        
-        enum CodingKeys: String, CodingKey {
-            case data = "receipt-data"
-            case excludeOldTransactions = "exclude-old-transactions"
-            case password
-        }
-    }
-    
     // MARK: - Properties
 
     private var sessionManager: MockSessionManager!
@@ -101,7 +87,7 @@ class ReceiptClientTests: XCTestCase {
         
         let receiptURL: URL = .test
         let receiptData = try! Data(contentsOf: receiptURL)
-        let expectedParameters = Parameters(
+        let expectedParameters = ReceiptClient.Parameters(
             data: receiptData.base64EncodedString(options: Data.Base64EncodingOptions(rawValue: 0)),
             excludeOldTransactions: false,
             password: "secret"
@@ -126,7 +112,7 @@ class ReceiptClientTests: XCTestCase {
         
         let receiptURL: URL = .test
         let receiptData = try! Data(contentsOf: receiptURL)
-        let expectedParameters = Parameters(
+        let expectedParameters = ReceiptClient.Parameters(
             data: receiptData.base64EncodedString(options: Data.Base64EncodingOptions(rawValue: 0)),
             excludeOldTransactions: true,
             password: "abc"
@@ -160,6 +146,8 @@ private extension ReceiptClientTests {
         )
     }
 }
+
+// MARK: - Private Extensions
 
 private extension Dictionary {
     

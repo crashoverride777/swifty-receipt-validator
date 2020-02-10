@@ -19,7 +19,7 @@ class JSONDecoderReceiptTests: XCTestCase {
         case .formatted:
             break
         default:
-            XCTFail("Wrong keyDecodingStrategy")
+            XCTFail("Wrong dateDecodingStrategy")
         }
     }
     
@@ -29,7 +29,7 @@ class JSONDecoderReceiptTests: XCTestCase {
         case .convertFromSnakeCase:
             break
         default:
-            XCTFail("Wrong dateDecodingStrategy")
+            XCTFail("Wrong keyDecodingStrategy")
         }
     }
 }

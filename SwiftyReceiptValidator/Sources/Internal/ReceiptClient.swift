@@ -19,7 +19,7 @@ final class ReceiptClient {
     
     // MARK: - Types
     
-    fileprivate struct Parameters: Encodable {
+    struct Parameters: Encodable {
         let data: String
         let excludeOldTransactions: Bool
         let password: String?
