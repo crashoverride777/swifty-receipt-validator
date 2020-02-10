@@ -194,7 +194,7 @@ receiptValidator.validate(validationRequest) { result in
         print(response.validSubscriptionReceipts) // convenience array for active receipts
         print(response.receiptResponse) // full receipt response
         print(response.receiptResponse.pendingRenewalInfo)
-        // Unlock subscription features and/or do additional checks first
+        // Check the validSubscriptionReceipts and unlock products accordingly
     case .failure(let error):
         switch error {
         case .subscriptionExpired(let statusCode):

@@ -28,6 +28,5 @@ public struct SRVSubscriptionValidationRequest {
         self.refreshLocalReceiptIfNeeded = refreshLocalReceiptIfNeeded
         self.excludeOldTransactions = excludeOldTransactions
         self.now = now
-        
     }
 }
