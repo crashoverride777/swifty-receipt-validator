@@ -32,6 +32,13 @@ class ReceiptURLFetcherTests: XCTestCase {
     
     // MARK: - Tests
 
+    func test_error_descriptions() {
+        XCTAssertEqual(
+            ReceiptURLFetcher.FetchError.noReceiptFound.localizedDescription,
+            LocalizedString.Error.ReceiptURLFetcher.noReceiptOnDevice
+        )
+    }
+    
     func test_fetch_success_hasReceiptOnFile_returnsCorrectData() {
         let expectation = self.expectation(description: "Finished")
         let expectedURL: URL = .test
@@ -67,7 +74,7 @@ class ReceiptURLFetcherTests: XCTestCase {
     func test_fetch_failure_noReceiptOnFile_noRefreshRequest_returnsCorrectError() {
         let expectation = self.expectation(description: "Finished")
         fileManager.stub.fileExists = false
-        let expectedError: SRVError = .noReceiptFound
+        let expectedError: ReceiptURLFetcher.FetchError = .noReceiptFound
         
         let sut = makeSUT()
         sut.fetch(refreshRequest: nil) { result in

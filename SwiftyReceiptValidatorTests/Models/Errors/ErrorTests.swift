@@ -17,10 +17,6 @@ class ErrorTests: XCTestCase {
         XCTAssertEqual(SRVError.invalidStatusCode(.valid).statusCode, .valid)
     }
     
-    func test_statusCode_noReceiptFound() {
-        XCTAssertNil(SRVError.noReceiptFound.statusCode)
-    }
-    
     func test_statusCode_noReceiptFoundInResponse() {
         XCTAssertEqual(SRVError.noReceiptFoundInResponse(.valid).statusCode, .valid)
     }
@@ -51,49 +47,42 @@ class ErrorTests: XCTestCase {
     func test_description_invalidStatusCode() {
         XCTAssertEqual(
             SRVError.invalidStatusCode(.unknown).localizedDescription,
-            LocalizedString.Error.invalidStatusCode
+            LocalizedString.Error.Validator.invalidStatusCode
         )
     }
-    
-    func test_description_noReceiptFound() {
-        XCTAssertEqual(
-            SRVError.noReceiptFound.localizedDescription,
-            LocalizedString.Error.noReceiptFound
-        )
-    }
-    
+  
     func test_description_noReceiptFoundInResponse() {
         XCTAssertEqual(
             SRVError.noReceiptFoundInResponse(.valid).localizedDescription,
-            LocalizedString.Error.noReceiptFoundInResponse
+            LocalizedString.Error.Validator.noReceiptFoundInResponse
         )
     }
     
     func test_description_bundleIdNotMatching() {
         XCTAssertEqual(
             SRVError.bundleIdNotMatching(.valid).localizedDescription,
-            LocalizedString.Error.bundleIdNotMatching
+            LocalizedString.Error.Validator.bundleIdNotMatching
         )
     }
     
     func test_description_productIdNotMatching() {
         XCTAssertEqual(
             SRVError.productIdNotMatching(.valid).localizedDescription,
-            LocalizedString.Error.productIdNotMatching
+            LocalizedString.Error.Validator.productIdNotMatching
         )
     }
     
     func test_description_noValidSubscription() {
         XCTAssertEqual(
             SRVError.subscriptionExpired(.valid).localizedDescription,
-            LocalizedString.Error.noValidSubscription
+            LocalizedString.Error.Validator.noValidSubscription
         )
     }
     
     func test_description_cancelled() {
         XCTAssertEqual(
             SRVError.cancelled(.valid).localizedDescription,
-            LocalizedString.Error.cancelled
+            LocalizedString.Error.Validator.cancelled
         )
     }
     

@@ -365,8 +365,8 @@
 				6AD83A5B23D3A0D400D3919C /* ReceiptClient.swift */,
 				6ACC6249235136070085A42F /* ResponseValidator.swift */,
 				6ACC624B235136070085A42F /* URLSessionManager.swift */,
-				6ACC624C235136070085A42F /* LocalizedString.swift */,
 				6AD83A6923D46D6E00D3919C /* JSONDecoder+Receipt.swift */,
+				6ACC624C235136070085A42F /* LocalizedString.swift */,
 				6AFE274B2269D03D0016ED8A /* Localizable.strings */,
 			);
 			path = Internal;

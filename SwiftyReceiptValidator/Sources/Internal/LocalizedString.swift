@@ -10,17 +10,24 @@ import Foundation
 
 enum LocalizedString {
     enum Error {
-        static let url = localized("ErrorURL", comment: "Invalid URL")
-        static let parameterEncoding = localized("ErrorParameterEncoding", comment: "Parameter encoding error")
-        static let data = localized("ErrorData", comment: "Invalid data")
+        enum ReceiptURLFetcher {
+            static let noReceiptOnDevice = localized("ErrorNoReceiptOnDevice", comment: "No receipt found on device")
+        }
         
-        static let invalidStatusCode = localized("ErrorInvalidStatusCode", comment: "Invalid status code")
-        static let noReceiptFound = localized("ErrorNoReceiptFound", comment: "No receipt found on device")
-        static let noReceiptFoundInResponse = localized("ErrorNoReceiptFoundInResponse", comment: "No receipt found in server response")
-        static let bundleIdNotMatching = localized("ErrorBundleIdNotMatching", comment: "Bundle id is not matching receipt")
-        static let productIdNotMatching = localized("ErrorProductIdNotMatching", comment: "Product id is not matching with receipt")
-        static let noValidSubscription = localized("ErrorNoValidSubscription", comment: "No active subscription found")
-        static let cancelled = localized("ErrorCancelled", comment: "Cancelled")
+        enum SessionManager {
+            static let url = localized("ErrorURL", comment: "Invalid URL")
+            static let parameterEncoding = localized("ErrorParameterEncoding", comment: "Parameter encoding error")
+            static let data = localized("ErrorData", comment: "Invalid data")
+        }
+        
+        enum Validator {
+            static let invalidStatusCode = localized("ErrorInvalidStatusCode", comment: "Invalid status code")
+            static let noReceiptFoundInResponse = localized("ErrorNoReceiptFoundInResponse", comment: "No receipt found in server response")
+            static let bundleIdNotMatching = localized("ErrorBundleIdNotMatching", comment: "Bundle id is not matching receipt")
+            static let productIdNotMatching = localized("ErrorProductIdNotMatching", comment: "Product id is not matching with receipt")
+            static let noValidSubscription = localized("ErrorNoValidSubscription", comment: "No active subscription found")
+            static let cancelled = localized("ErrorCancelled", comment: "Cancelled")
+        }
     }
 }
 

@@ -26,11 +26,11 @@ final class URLSessionManager {
         var errorDescription: String? {
             switch self {
             case .url:
-                return LocalizedString.Error.url
+                return LocalizedString.Error.SessionManager.url
             case .parameterEncoding:
-                return LocalizedString.Error.parameterEncoding
+                return LocalizedString.Error.SessionManager.parameterEncoding
             case .data:
-                return LocalizedString.Error.data
+                return LocalizedString.Error.SessionManager.data
             }
         }
     }
@@ -79,6 +79,7 @@ extension URLSessionManager: URLSessionManagerType {
         // Start data task
         urlSession?.dataTask(with: urlRequest) { [weak self] (data, response, error) in
             guard let self = self else { return }
+            
             defer {
                 self.urlSession = nil
             }
@@ -94,6 +95,7 @@ extension URLSessionManager: URLSessionManagerType {
                 handler(.failure(SessionError.data))
                 return
             }
+            
             // Return success handler with data
             handler(.success(data))
         }

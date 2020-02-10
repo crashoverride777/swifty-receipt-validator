@@ -25,7 +25,7 @@ final class MockReceiptURLFetcher {
 extension MockReceiptURLFetcher: ReceiptURLFetcherType {
     
     func fetch(refreshRequest: ReceiptURLFetcherRefreshRequestType?,
-               handler: @escaping ReceiptURLFetcherResultHandler) {
+               handler: @escaping ReceiptURLFetcherCompletion) {
         mock.refreshRequest = refreshRequest
         handler(stub.fetchResult)
     }

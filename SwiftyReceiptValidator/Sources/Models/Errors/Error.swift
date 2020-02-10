@@ -10,7 +10,6 @@ import Foundation
 
 public enum SRVError: LocalizedError {
     case invalidStatusCode(SRVStatusCode)
-    case noReceiptFound
     case noReceiptFoundInResponse(SRVStatusCode)
     case bundleIdNotMatching(SRVStatusCode)
     case productIdNotMatching(SRVStatusCode)
@@ -22,8 +21,6 @@ public enum SRVError: LocalizedError {
         switch self {
         case .invalidStatusCode(let statusCode):
             return statusCode
-        case .noReceiptFound:
-            return nil
         case .noReceiptFoundInResponse(let statusCode):
             return statusCode
         case .bundleIdNotMatching(let statusCode):
@@ -42,19 +39,17 @@ public enum SRVError: LocalizedError {
     public var errorDescription: String? {
         switch self {
         case .invalidStatusCode:
-            return LocalizedString.Error.invalidStatusCode
-        case .noReceiptFound:
-            return LocalizedString.Error.noReceiptFound
+            return LocalizedString.Error.Validator.invalidStatusCode
         case .noReceiptFoundInResponse:
-            return LocalizedString.Error.noReceiptFoundInResponse
+            return LocalizedString.Error.Validator.noReceiptFoundInResponse
         case .bundleIdNotMatching:
-            return LocalizedString.Error.bundleIdNotMatching
+            return LocalizedString.Error.Validator.bundleIdNotMatching
         case .productIdNotMatching:
-            return LocalizedString.Error.productIdNotMatching
+            return LocalizedString.Error.Validator.productIdNotMatching
         case .subscriptionExpired:
-            return LocalizedString.Error.noValidSubscription
+            return LocalizedString.Error.Validator.noValidSubscription
         case .cancelled:
-            return LocalizedString.Error.cancelled
+            return LocalizedString.Error.Validator.cancelled
         case .other(let error):
             return error.localizedDescription
         }

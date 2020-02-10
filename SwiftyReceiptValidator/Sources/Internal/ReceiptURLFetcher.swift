@@ -8,7 +8,7 @@
 
 import StoreKit
 
-typealias ReceiptURLFetcherResultHandler = (Result<URL, Error>) -> Void
+typealias ReceiptURLFetcherCompletion = (Result<URL, Error>) -> Void
 
 protocol ReceiptURLFetcherRefreshRequestType {
     var delegate: SKRequestDelegate? { get set }
@@ -16,20 +16,33 @@ protocol ReceiptURLFetcherRefreshRequestType {
     func start()
 }
 
-protocol ReceiptURLFetcherType {
-    func fetch(refreshRequest: ReceiptURLFetcherRefreshRequestType?, handler: @escaping ReceiptURLFetcherResultHandler)
-}
-
 extension SKReceiptRefreshRequest: ReceiptURLFetcherRefreshRequestType { }
+
+protocol ReceiptURLFetcherType {
+    func fetch(refreshRequest: ReceiptURLFetcherRefreshRequestType?, handler: @escaping ReceiptURLFetcherCompletion)
+}
 
 final class ReceiptURLFetcher: NSObject {
     
+    // MARK: Types
+    
+    enum FetchError: LocalizedError {
+        case noReceiptFound
+        
+        public var errorDescription: String? {
+            switch self {
+            case .noReceiptFound:
+                return LocalizedString.Error.ReceiptURLFetcher.noReceiptOnDevice
+            }
+        }
+    }
+
     // MARK: - Properties
 
     private let appStoreReceiptURL: () -> URL?
     private let fileManager: FileManager
     
-    private var receiptHandler: ReceiptURLFetcherResultHandler?
+    private var completionHandler: ReceiptURLFetcherCompletion?
     private var receiptRefreshRequest: ReceiptURLFetcherRefreshRequestType?
     
     // MARK: - Computed Properties
@@ -54,8 +67,8 @@ final class ReceiptURLFetcher: NSObject {
 
 extension ReceiptURLFetcher: ReceiptURLFetcherType {
     
-    func fetch(refreshRequest: ReceiptURLFetcherRefreshRequestType?, handler: @escaping ReceiptURLFetcherResultHandler) {
-        receiptHandler = handler
+    func fetch(refreshRequest: ReceiptURLFetcherRefreshRequestType?, handler: @escaping ReceiptURLFetcherCompletion) {
+        completionHandler = handler
         
         defer {
             clean()
@@ -67,7 +80,7 @@ extension ReceiptURLFetcher: ReceiptURLFetcherType {
                 receiptRefreshRequest?.delegate = self
                 receiptRefreshRequest?.start()
             } else {
-                handler(.failure(SRVError.noReceiptFound))
+                handler(.failure(FetchError.noReceiptFound))
             }
             return
         }
@@ -86,15 +99,15 @@ extension ReceiptURLFetcher: SKRequestDelegate {
         }
         
         guard hasReceipt, let appStoreReceiptURL = appStoreReceiptURL() else {
-            receiptHandler?(.failure(SRVError.noReceiptFound))
+            completionHandler?(.failure(FetchError.noReceiptFound))
             return
         }
         
-        receiptHandler?(.success(appStoreReceiptURL))
+        completionHandler?(.success(appStoreReceiptURL))
     }
     
     func request(_ request: SKRequest, didFailWithError error: Error) {
-        receiptHandler?(.failure(error))
+        completionHandler?(.failure(error))
         clean()
     }
 }
@@ -104,7 +117,7 @@ extension ReceiptURLFetcher: SKRequestDelegate {
 private extension ReceiptURLFetcher {
     
     func clean() {
-        receiptHandler = nil
+        completionHandler = nil
         receiptRefreshRequest = nil
     }
 }
