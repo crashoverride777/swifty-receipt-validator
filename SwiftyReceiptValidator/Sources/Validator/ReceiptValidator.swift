@@ -46,11 +46,10 @@ public final class SwiftyReceiptValidator: NSObject {
     let receiptURLFetcher: ReceiptURLFetcherType
     let receiptClient: ReceiptClientType
     let responseValidator: ResponseValidatorType
-    private let isLoggingEnabled: Bool
     
     // MARK: - Init
     
-    /// Init
+    /// Initializer
     ///
     /// - parameter configuration: The configuration needed for SwiftyReceiptValidator.
     /// - parameter isLoggingEnabled: Displays console logging events if set to true.
@@ -70,7 +69,6 @@ public final class SwiftyReceiptValidator: NSObject {
             bundle: .main,
             isLoggingEnabled: isLoggingEnabled
         )
-        self.isLoggingEnabled = isLoggingEnabled
     }
     
     // Internal only (testing)
@@ -82,24 +80,5 @@ public final class SwiftyReceiptValidator: NSObject {
         self.receiptURLFetcher = receiptURLFetcher
         self.receiptClient = receiptClient
         self.responseValidator = responseValidator
-        self.isLoggingEnabled = false
-    }
-    
-    // MARK: - Deinit
-    
-    deinit {
-        print("Deinit SwiftyReceiptValidator")
-    }
-}
-
-// MARK: - Print
-
-extension SwiftyReceiptValidator {
-    
-    func print(_ items: Any...) {
-        guard isLoggingEnabled else {
-            return
-        }
-        Swift.print(items[0])
     }
 }
