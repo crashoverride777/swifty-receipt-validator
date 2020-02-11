@@ -37,7 +37,8 @@ private extension LocalizedString {
     
     static func localized(_ text: String, comment: String) -> String {
         NSLocalizedString(
-            text, tableName: nil,
+            text,
+            tableName: nil,
             bundle: Bundle(for: SwiftyReceiptValidator.self),
             value: "",
             comment: comment

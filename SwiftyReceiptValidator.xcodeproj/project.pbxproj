@@ -177,6 +177,14 @@
 			path = Mocks;
 			sourceTree = "<group>";
 		};
+		6A436BD623F34E9B00D5F5EA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				6AFE274B2269D03D0016ED8A /* Localizable.strings */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		6A4384AA222730C1009EF552 /* SwiftyReceiptValidatorTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -249,6 +257,7 @@
 				6ADEB8B62200859000370C71 /* Models */,
 				6ADEB8BF2200883600370C71 /* Validator */,
 				6ADEB8EC2200F8C300370C71 /* Internal */,
+				6A436BD623F34E9B00D5F5EA /* Resources */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -369,7 +378,6 @@
 				6ACC624B235136070085A42F /* URLSessionManager.swift */,
 				6AD83A6923D46D6E00D3919C /* JSONDecoder+Receipt.swift */,
 				6ACC624C235136070085A42F /* LocalizedString.swift */,
-				6AFE274B2269D03D0016ED8A /* Localizable.strings */,
 			);
 			path = Internal;
 			sourceTree = "<group>";
