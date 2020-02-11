@@ -1,0 +1,32 @@
+{
+  "configurations" : [
+    {
+      "id" : "0F419955-573C-461B-81EE-ECD553811FB2",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : {
+      "targets" : [
+        {
+          "containerPath" : "container:SwiftyReceiptValidator.xcodeproj",
+          "identifier" : "B4533F301DA2BD8900440CC0",
+          "name" : "SwiftyReceiptValidator"
+        }
+      ]
+    }
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:SwiftyReceiptValidator.xcodeproj",
+        "identifier" : "6A4384A8222730C1009EF552",
+        "name" : "SwiftyReceiptValidatorTests"
+      }
+    }
+  ],
+  "version" : 1
+}

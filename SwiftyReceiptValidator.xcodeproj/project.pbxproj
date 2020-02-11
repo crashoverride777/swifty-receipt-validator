@@ -84,6 +84,7 @@
 		6A2F6EF1238C6E84008AA0B0 /* PendingRenewalInfo+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PendingRenewalInfo+Mock.swift"; sourceTree = "<group>"; };
 		6A2F6EF3238C6F6F008AA0B0 /* Receipt+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Receipt+Mock.swift"; sourceTree = "<group>"; };
 		6A436B5C23EEDAC500D5F5EA /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
+		6A436BD523F34DC200D5F5EA /* UnitTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = UnitTests.xctestplan; sourceTree = "<group>"; };
 		6A4384A9222730C1009EF552 /* SwiftyReceiptValidatorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftyReceiptValidatorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A4384AB222730C1009EF552 /* ReceiptValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptValidatorTests.swift; sourceTree = "<group>"; };
 		6A4384AD222730C1009EF552 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -179,6 +180,7 @@
 		6A4384AA222730C1009EF552 /* SwiftyReceiptValidatorTests */ = {
 			isa = PBXGroup;
 			children = (
+				6A436BD523F34DC200D5F5EA /* UnitTests.xctestplan */,
 				6A7DF2812305E386001CAEEF /* Models */,
 				6A7DF2892305E54D001CAEEF /* Validator */,
 				6A7DF29C230609AB001CAEEF /* Internal */,
