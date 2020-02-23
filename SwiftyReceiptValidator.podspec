@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
 s.name = 'SwiftyReceiptValidator'
-s.version = '6.1.0'
+s.version = '6.1.1'
 s.license = 'MIT'
 s.summary = 'A swift helper for in app purchase receipt validation.'
 
@@ -18,6 +18,7 @@ s.source = {
     :tag => s.version
 }
 
-s.source_files = "SwiftyReceiptValidator/**/*.{swift}"
+s.source_files = 'Source/**/*.{swift}'
+s.resource_bundle = { 'SwiftyReceiptValidator' => ['Source/Resources/**/*.{strings}'] }
 
 end

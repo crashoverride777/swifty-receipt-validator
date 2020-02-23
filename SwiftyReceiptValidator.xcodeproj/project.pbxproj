@@ -251,7 +251,7 @@
 			path = Internal;
 			sourceTree = "<group>";
 		};
-		6AA4F7BC23D5095E00CF4514 /* Sources */ = {
+		6AA4F7BC23D5095E00CF4514 /* Source */ = {
 			isa = PBXGroup;
 			children = (
 				6ADEB8B62200859000370C71 /* Models */,
@@ -259,7 +259,7 @@
 				6ADEB8EC2200F8C300370C71 /* Internal */,
 				6A436BD623F34E9B00D5F5EA /* Resources */,
 			);
-			path = Sources;
+			path = Source;
 			sourceTree = "<group>";
 		};
 		6AD83A7623D49BA100D3919C /* Extensions */ = {
@@ -401,6 +401,7 @@
 			children = (
 				6A2755922315D0EA00F131C1 /* README.md */,
 				6A436B5C23EEDAC500D5F5EA /* Package.swift */,
+				6AA4F7BC23D5095E00CF4514 /* Source */,
 				B4533F331DA2BD8900440CC0 /* SwiftyReceiptValidator */,
 				6A4384AA222730C1009EF552 /* SwiftyReceiptValidatorTests */,
 				B4533F321DA2BD8900440CC0 /* Products */,
@@ -419,7 +420,6 @@
 		B4533F331DA2BD8900440CC0 /* SwiftyReceiptValidator */ = {
 			isa = PBXGroup;
 			children = (
-				6AA4F7BC23D5095E00CF4514 /* Sources */,
 				B4533F341DA2BD8900440CC0 /* SwiftyReceiptValidator.h */,
 				B4533F351DA2BD8900440CC0 /* Info.plist */,
 			);
@@ -807,7 +807,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				CURRENT_PROJECT_VERSION = 702;
+				CURRENT_PROJECT_VERSION = 703;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -833,7 +833,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
-				CURRENT_PROJECT_VERSION = 702;
+				CURRENT_PROJECT_VERSION = 703;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;

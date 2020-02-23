@@ -39,9 +39,26 @@ private extension LocalizedString {
         NSLocalizedString(
             text,
             tableName: nil,
-            bundle: Bundle(for: SwiftyReceiptValidator.self),
+            bundle: .localization,
             value: "",
             comment: comment
         )
+    }
+}
+
+private extension Bundle {
+ 
+    static var localization: Bundle {
+        let frameworkBundle = Bundle(for: SwiftyReceiptValidator.self)
+        
+        guard let path = frameworkBundle.resourcePath else {
+            return frameworkBundle
+        }
+        
+        guard let resourceBundle = Bundle(path: path.appending("/SwiftyReceiptValidator.bundle")) else {
+            return frameworkBundle
+        }
+        
+        return resourceBundle
     }
 }
