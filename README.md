@@ -178,7 +178,7 @@ Note: There is also Combine support for these methods if you are targeting iOS 1
 
 ### Validate Subscriptions
 
-- To validate your subscriptions (e.g on app launch), create a validationRequest object  `let validationRequest = SRVSubscriptionValidationRequest(...)` and  call `func validate(validationRequest)`. This will search for all subscription receipts.
+- To validate your subscriptions (e.g on app launch), create a subscription validation request and validate it. This will search for all subscription receipts found on the device.
 
 ```swift
 let validationRequest = SRVSubscriptionValidationRequest(
