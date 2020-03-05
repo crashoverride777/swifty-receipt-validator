@@ -251,7 +251,7 @@
 			path = Internal;
 			sourceTree = "<group>";
 		};
-		6AA4F7BC23D5095E00CF4514 /* Source */ = {
+		6AA4F7BC23D5095E00CF4514 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
 				6ADEB8B62200859000370C71 /* Models */,
@@ -259,7 +259,7 @@
 				6ADEB8EC2200F8C300370C71 /* Internal */,
 				6A436BD623F34E9B00D5F5EA /* Resources */,
 			);
-			path = Source;
+			path = Sources;
 			sourceTree = "<group>";
 		};
 		6AD83A7623D49BA100D3919C /* Extensions */ = {
@@ -401,7 +401,7 @@
 			children = (
 				6A2755922315D0EA00F131C1 /* README.md */,
 				6A436B5C23EEDAC500D5F5EA /* Package.swift */,
-				6AA4F7BC23D5095E00CF4514 /* Source */,
+				6AA4F7BC23D5095E00CF4514 /* Sources */,
 				B4533F331DA2BD8900440CC0 /* SwiftyReceiptValidator */,
 				6A4384AA222730C1009EF552 /* SwiftyReceiptValidatorTests */,
 				B4533F321DA2BD8900440CC0 /* Products */,
