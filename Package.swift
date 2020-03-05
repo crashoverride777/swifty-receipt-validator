@@ -9,6 +9,6 @@ let package = Package(
     name: packageName,
     platforms: [.iOS(.v11)],
     products: [.library(name: packageName, targets: [packageName])],
-    targets: [.target(name: packageName, path: "Source")],
+    targets: [.target(name: packageName)],
     swiftLanguageVersions: [.v5]
 )

@@ -18,7 +18,7 @@ s.source = {
     :tag => s.version
 }
 
-s.source_files = 'Source/**/*.{swift}'
+s.source_files = 'Sources/**/*.{swift}'
 s.resource_bundle = { 'SwiftyReceiptValidator' => ['Source/Resources/**/*.{strings}'] }
 
 end
