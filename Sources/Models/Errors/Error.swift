@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum SRVError: LocalizedError {
+public enum SRVError: Error {
     case invalidStatusCode(SRVStatusCode)
     case noReceiptFoundInResponse(SRVStatusCode)
     case bundleIdNotMatching(SRVStatusCode)
@@ -33,25 +33,6 @@ public enum SRVError: LocalizedError {
             return statusCode
         case .other:
             return nil
-        }
-    }
-    
-    public var errorDescription: String? {
-        switch self {
-        case .invalidStatusCode:
-            return LocalizedString.Error.Validator.invalidStatusCode
-        case .noReceiptFoundInResponse:
-            return LocalizedString.Error.Validator.noReceiptFoundInResponse
-        case .bundleIdNotMatching:
-            return LocalizedString.Error.Validator.bundleIdNotMatching
-        case .productIdNotMatching:
-            return LocalizedString.Error.Validator.productIdNotMatching
-        case .subscriptionExpired:
-            return LocalizedString.Error.Validator.noValidSubscription
-        case .cancelled:
-            return LocalizedString.Error.Validator.cancelled
-        case .other(let error):
-            return error.localizedDescription
         }
     }
 }

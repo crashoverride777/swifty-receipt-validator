@@ -18,21 +18,10 @@ final class URLSessionManager {
     
     // MARK: - Types
     
-    enum SessionError: LocalizedError {
+    enum SessionError: Error {
         case url
         case parameterEncoding
         case data
-        
-        var errorDescription: String? {
-            switch self {
-            case .url:
-                return LocalizedString.Error.SessionManager.url
-            case .parameterEncoding:
-                return LocalizedString.Error.SessionManager.parameterEncoding
-            case .data:
-                return LocalizedString.Error.SessionManager.data
-            }
-        }
     }
     
     // MARK: - Properties

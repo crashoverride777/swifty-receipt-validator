@@ -19,15 +19,8 @@ final class ReceiptURLFetcher: NSObject {
     
     // MARK: Types
     
-    enum FetchError: LocalizedError {
+    enum FetchError: Error {
         case noReceiptFound
-        
-        public var errorDescription: String? {
-            switch self {
-            case .noReceiptFound:
-                return LocalizedString.Error.ReceiptURLFetcher.noReceiptOnDevice
-            }
-        }
     }
 
     // MARK: - Properties
