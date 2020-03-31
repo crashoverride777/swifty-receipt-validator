@@ -32,13 +32,6 @@ class ReceiptURLFetcherTests: XCTestCase {
     
     // MARK: - Tests
 
-    func test_error_descriptions() {
-        XCTAssertEqual(
-            ReceiptURLFetcher.FetchError.noReceiptFound.localizedDescription,
-            LocalizedString.Error.ReceiptURLFetcher.noReceiptOnDevice
-        )
-    }
-    
     func test_fetch_success_hasReceiptOnFile_returnsCorrectData() {
         let expectation = self.expectation(description: "Finished")
         let expectedURL: URL = .test

@@ -238,8 +238,7 @@
 		6AA4F7BC23D5095E00CF4514 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				6ADEB8B62200859000370C71 /* Models */,
-				6ADEB8BF2200883600370C71 /* Validator */,
+				6AE7FC8C2433892C0098A896 /* Public */,
 				6ADEB8EC2200F8C300370C71 /* Internal */,
 			);
 			path = Sources;
@@ -376,6 +375,15 @@
 				6A53FBF323D32F8D00E7D814 /* MockResponseValidator.swift */,
 			);
 			path = Mocks;
+			sourceTree = "<group>";
+		};
+		6AE7FC8C2433892C0098A896 /* Public */ = {
+			isa = PBXGroup;
+			children = (
+				6ADEB8B62200859000370C71 /* Models */,
+				6ADEB8BF2200883600370C71 /* Validator */,
+			);
+			path = Public;
 			sourceTree = "<group>";
 		};
 		B4533F271DA2BD8900440CC0 = {

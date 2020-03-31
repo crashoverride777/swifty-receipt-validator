@@ -12,21 +12,6 @@ import XCTest
 class URLSessionManagerTests: XCTestCase {
 
     // MARK: - Tests
-
-    func test_error_descriptions() {
-        XCTAssertEqual(
-            URLSessionManager.SessionError.url.localizedDescription,
-            LocalizedString.Error.SessionManager.url
-        )
-        XCTAssertEqual(
-            URLSessionManager.SessionError.parameterEncoding.localizedDescription,
-            LocalizedString.Error.SessionManager.parameterEncoding
-        )
-        XCTAssertEqual(
-            URLSessionManager.SessionError.data.localizedDescription,
-            LocalizedString.Error.SessionManager.data
-        )
-    }
     
-    #warning("add remaining tests")
+    #warning("add tests")
 }
