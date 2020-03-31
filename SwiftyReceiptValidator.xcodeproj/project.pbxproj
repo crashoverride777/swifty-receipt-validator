@@ -169,19 +169,6 @@
 			path = Mocks;
 			sourceTree = "<group>";
 		};
-		6A4384AA222730C1009EF552 /* SwiftyReceiptValidatorTests */ = {
-			isa = PBXGroup;
-			children = (
-				6A436BD523F34DC200D5F5EA /* UnitTests.xctestplan */,
-				6A7DF2812305E386001CAEEF /* Models */,
-				6A7DF2892305E54D001CAEEF /* Validator */,
-				6A7DF29C230609AB001CAEEF /* Internal */,
-				6A7DF2822305E38E001CAEEF /* Test Data */,
-				6A4384AD222730C1009EF552 /* Info.plist */,
-			);
-			path = SwiftyReceiptValidatorTests;
-			sourceTree = "<group>";
-		};
 		6A7DF2812305E386001CAEEF /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -386,14 +373,27 @@
 			path = Public;
 			sourceTree = "<group>";
 		};
+		6AE7FC8F24338B4E0098A896 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				6A436BD523F34DC200D5F5EA /* UnitTests.xctestplan */,
+				6A7DF2812305E386001CAEEF /* Models */,
+				6A7DF2892305E54D001CAEEF /* Validator */,
+				6A7DF29C230609AB001CAEEF /* Internal */,
+				6A7DF2822305E38E001CAEEF /* Test Data */,
+				6A4384AD222730C1009EF552 /* Info.plist */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
 		B4533F271DA2BD8900440CC0 = {
 			isa = PBXGroup;
 			children = (
 				6A2755922315D0EA00F131C1 /* README.md */,
 				6A436B5C23EEDAC500D5F5EA /* Package.swift */,
-				6AA4F7BC23D5095E00CF4514 /* Sources */,
 				B4533F331DA2BD8900440CC0 /* SwiftyReceiptValidator */,
-				6A4384AA222730C1009EF552 /* SwiftyReceiptValidatorTests */,
+				6AA4F7BC23D5095E00CF4514 /* Sources */,
+				6AE7FC8F24338B4E0098A896 /* Tests */,
 				B4533F321DA2BD8900440CC0 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -619,7 +619,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = DK88YZ475Z;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = SwiftyReceiptValidatorTests/Info.plist;
+				INFOPLIST_FILE = Tests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -642,7 +642,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = DK88YZ475Z;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = SwiftyReceiptValidatorTests/Info.plist;
+				INFOPLIST_FILE = Tests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_FAST_MATH = YES;
