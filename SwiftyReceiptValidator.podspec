@@ -19,6 +19,5 @@ s.source = {
 }
 
 s.source_files = 'Sources/**/*.{swift}'
-s.resource_bundle = { 'SwiftyReceiptValidator' => ['Sources/Resources/**/*.{strings}'] }
 
 end
