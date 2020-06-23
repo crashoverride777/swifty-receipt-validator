@@ -15,8 +15,8 @@ s.ios.deployment_target = '11.4'
 
 s.source = {
     :git => 'https://github.com/crashoverride777/swifty-receipt-validator.git',
-    :tag => s.version,
-    :commit => 0922b9ec56b45c60d080f6e2bc7bbb1000f3a272
+    :commit => "0922b9ec56b45c60d080f6e2bc7bbb1000f3a272",
+    :tag => s.version
 }
 
 s.source_files = 'Sources/**/*.{swift}'
