@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
 s.name = 'SwiftyReceiptValidator'
-s.version = '6.1.2'
+s.version = '6.1.3'
 s.license = 'MIT'
 s.summary = 'A swift helper for in app purchase receipt validation.'
 
@@ -15,7 +15,6 @@ s.ios.deployment_target = '11.4'
 
 s.source = {
     :git => 'https://github.com/crashoverride777/swifty-receipt-validator.git',
-    :commit => "7d4185421d692b56a075155b3f15a30d3f8a7980",
     :tag => s.version
 }
 
