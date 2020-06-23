@@ -201,16 +201,16 @@ receiptValidator.validate(validationRequest) { result in
         if response.validSubscriptionReceipts.isEmpty {
            // disable subscription features etc
         } else {
+           // Validate subscription receipts are sorted by latest expiry date
            // enable subscription features etc
         }
         
     case .failure(let error):
         switch error {
         case .subscriptionExpired(let statusCode):
-            // In some cases apple returns status code 21006 (subscription expired) when doing receipt
-            // validation. I am not 100% when they do this, usually they just return status code 0 (valid)
-            // if no network error occured and you check your receipts for active subscriptions.
-            // Should this status code be return you should probably 
+            // Only returned for iOS 6 style transaction receipts for auto-renewable subscriptions.
+            // This receipt is valid but the subscription has expired. 
+            
             // disable subscription features 
         default:
             break // do nothing e.g internet error or other errors
