@@ -220,8 +220,8 @@ class ResponseValidatorTests: XCTestCase {
     
     func test_validateSubscription_failure_statusCodeExpired_returnsCorrectError() {
         let expectation = self.expectation(description: "Finished")
-        let expectedError: SRVError = .subscriptionExpired(.subscriptionExpired)
-        let expectedResponse = makeResponse(statusCode: .subscriptionExpired)
+        let expectedError: SRVError = .subscriptionExpired(.subscriptioniOS6StyleExpired)
+        let expectedResponse = makeResponse(statusCode: .subscriptioniOS6StyleExpired)
         
         let sut = makeSUT()
         sut.validateSubscriptions(in: expectedResponse, now: .test) { result in

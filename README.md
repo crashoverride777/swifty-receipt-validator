@@ -207,7 +207,7 @@ receiptValidator.validate(validationRequest) { result in
         
     case .failure(let error):
         switch error {
-        case .subscriptionExpired(let statusCode):
+        case .subscriptioniOS6StyleExpired(let statusCode):
             // Only returned for iOS 6 style transaction receipts for auto-renewable subscriptions.
             // This receipt is valid but the subscription has expired. 
             

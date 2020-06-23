@@ -72,7 +72,7 @@ extension ResponseValidator: ResponseValidatorType {
         runBasicValidation(for: response) { result in
             switch result {
             case .success:
-                guard response.status != .subscriptionExpired else {
+                guard response.status != .subscriptioniOS6StyleExpired else {
                     self.print("SVRResponseValidator subscriptions validation subscriptionExpired error")
                     handler(.failure(.subscriptionExpired(response.status)))
                     return

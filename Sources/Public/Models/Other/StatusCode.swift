@@ -16,7 +16,7 @@ public enum SRVStatusCode: Int, Codable {
     case receiptCouldNotBeAuthenticated = 21003
     case sharedSecretNotMatching = 21004
     case receiptServerUnavailable = 21005
-    case subscriptionExpired = 21006
+    case subscriptioniOS6StyleExpired = 21006
     case testReceipt = 21007
     case productionEnvironment = 21008
     case receiptCouldNotBeAuthorized = 21010
@@ -34,7 +34,7 @@ public extension SRVStatusCode {
     
     var isValid: Bool {
         switch self {
-        case .valid, .subscriptionExpired:
+        case .valid, .subscriptioniOS6StyleExpired:
             return true
         default:
             return false
@@ -57,7 +57,7 @@ public extension SRVStatusCode {
             return "The shared secret you provided does not match the shared secret on file for your account. Only returned for iOS 6 style transaction receipts for auto-renewable subscriptions."
         case .receiptServerUnavailable:
             return "The receipt server is currently not available."
-        case .subscriptionExpired:
+        case .subscriptioniOS6StyleExpired:
             return "This receipt is valid but the subscription has expired. When this status code is returned to your server, the receipt data is also decoded and returned as part of the response. Only returned for iOS 6 style transaction receipts for auto-renewable subscriptions."
         case .testReceipt:
             return "This receipt is from the test environment, but it was sent to the production environment for verification. Send it to the test environment instead."

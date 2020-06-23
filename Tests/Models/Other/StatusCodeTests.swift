@@ -21,7 +21,7 @@ class StatusCodeTests: XCTestCase {
         XCTAssertEqual(SRVStatusCode.receiptCouldNotBeAuthenticated.rawValue, 21003)
         XCTAssertEqual(SRVStatusCode.sharedSecretNotMatching.rawValue, 21004)
         XCTAssertEqual(SRVStatusCode.receiptServerUnavailable.rawValue, 21005)
-        XCTAssertEqual(SRVStatusCode.subscriptionExpired.rawValue, 21006)
+        XCTAssertEqual(SRVStatusCode.subscriptioniOS6StyleExpired.rawValue, 21006)
         XCTAssertEqual(SRVStatusCode.testReceipt.rawValue, 21007)
         XCTAssertEqual(SRVStatusCode.productionEnvironment.rawValue, 21008)
         XCTAssertEqual(SRVStatusCode.receiptCouldNotBeAuthorized.rawValue, 21010)
@@ -66,7 +66,7 @@ class StatusCodeTests: XCTestCase {
     }
     
     func test_isValid_subscriptionExpired_returnsTrue() {
-        let sut: SRVStatusCode = .subscriptionExpired
+        let sut: SRVStatusCode = .subscriptioniOS6StyleExpired
         XCTAssertTrue(sut.isValid)
     }
     

@@ -29,7 +29,7 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
     /// - parameter request: The request configuration.
     @available(iOS 13, *)
     public func validatePublisher(for request: SRVPurchaseValidationRequest) -> AnyPublisher<SRVReceiptResponse, SRVError> {
-        return Future { [weak self] promise in
+        Future { [weak self] promise in
             self?.validate(request, handler: promise)
         }.eraseToAnyPublisher()
     }
@@ -65,7 +65,7 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
     /// - parameter request: The request configuration.
     @available(iOS 13, *)
     public func validatePublisher(for request: SRVSubscriptionValidationRequest) -> AnyPublisher<SRVSubscriptionValidationResponse, SRVError> {
-         return Future { [weak self] promise in
+        Future { [weak self] promise in
              self?.validate(request, handler: promise)
          }.eraseToAnyPublisher()
      }

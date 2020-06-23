@@ -33,10 +33,7 @@ final class ReceiptURLFetcher: NSObject {
     // MARK: - Computed Properties
     
     private var hasReceipt: Bool {
-        guard let path = appStoreReceiptURL()?.path else {
-            return false
-        }
-        
+        guard let path = appStoreReceiptURL()?.path else { return false }
         return fileManager.fileExists(atPath: path)
     }
     
