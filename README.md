@@ -19,26 +19,26 @@ Please test this properly, including production mode which will use apples produ
 
 ## Installation
 
-### Cocoa Pods
-
-[CocoaPods](https://developers.google.com/admob/ios/quick-start#streamlined_using_cocoapods) is a dependency manager for Cocoa projects. 
-Simply install the pod by adding the following line to your pod file
-```swift
-pod 'SwiftyReceiptValidator'
-```
-
 ### Swift Package Manager
 
 The Swift Package Manager is a tool for automating the distribution of Swift code and is integrated into the swift compiler.
 
 To add a swift package to your project simple open your project in xCode and click File > Swift Packages > Add Package Dependency.
-Than enter `https://github.com/crashoverride777/swifty-receipt-validator` as the repository URL and finish the setup wizard.
+Than enter `https://github.com/crashoverride777/swifty-receipt-validator.git` as the repository URL and finish the setup wizard.
 
 Alternatively if you have a Framwork that requires adding SwiftyReceiptValidator as a dependency is as easy as adding it to the dependencies value of your Package.swift.
 ```swift
 dependencies: [
 .package(url: "https://github.com/crashoverride777/swifty-receipt-validator.git", from: "6.1.0")
 ]
+```
+
+### Cocoa Pods
+
+[CocoaPods](https://developers.google.com/admob/ios/quick-start#streamlined_using_cocoapods) is a dependency manager for Cocoa projects. 
+Simply install the pod by adding the following line to your pod file
+```swift
+pod 'SwiftyReceiptValidator'
 ```
 
 ### Manually 
@@ -189,16 +189,29 @@ let validationRequest = SRVSubscriptionValidationRequest(
 )
 receiptValidator.validate(validationRequest) { result in
     switch result {
+    
     case .success(let response):
         print("Receipt validation was successfull with receipt response \(response)")
         print(response.validSubscriptionReceipts) // convenience array for active receipts
         print(response.receiptResponse) // full receipt response
         print(response.receiptResponse.pendingRenewalInfo)
-        // Check the validSubscriptionReceipts and unlock products accordingly
+        // Check the validSubscriptionReceipts and unlock products accordingly 
+        // or disable features if no active subscriptions are found e.g.
+        
+        if response.validSubscriptionReceipts.isEmpty {
+           // disable subscription features etc
+        } else {
+           // Validate subscription receipts are sorted by latest expiry date
+           // enable subscription features etc
+        }
+        
     case .failure(let error):
         switch error {
         case .subscriptionExpired(let statusCode):
-            // no active subscription found, update your cache/app etc
+            // Only returned for iOS 6 style transaction receipts for auto-renewable subscriptions.
+            // This receipt is valid but the subscription has expired. 
+            
+            // disable subscription features 
         default:
             break // do nothing e.g internet error or other errors
         }
@@ -265,7 +278,7 @@ SRVSubscriptionValidationResponse.mock()
 ```
 ## StoreKit Alert Controllers
 
-One thing I do not know about receipt validation is if there is a way to stop the default StoreKit alert controller to show. When you get to the purchase code and to the `.purchased` switch statement, storeKit automatically shows an AlertController ("Thank you, purchase was succesfull"). This however is the point where receipt validation is actually starting so it takes another few seconds for the products to unlock. I guess this must be normal, although it would be nicer to show that alert once receipt validation is finished.
+When you get to the purchase code and to the `.purchased` switch statement, StoreKit automatically shows an AlertController ("Thank you, purchase was succesfull"). This is the point receipt validation starts and you might want to display a custom loading/validation alert. I dont think you can disable showing the default alert.
 
 ## Final Note
 
