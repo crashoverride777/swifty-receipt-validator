@@ -207,7 +207,7 @@ receiptValidator.validate(validationRequest) { result in
     case .failure(let error):
         switch error {
         case .subscriptionExpired(let statusCode):
-            // In some cases apple returns status code 21006 when doing receipt
+            // In some cases apple returns status code 21006 (subscription expired) when doing receipt
             // validation. I am not 100% when they do this, usually they just return status code 0 (valid)
             // if no network error occured and you check your receipts for active subscriptions.
             // Should this status code be return you should probably 
