@@ -189,16 +189,29 @@ let validationRequest = SRVSubscriptionValidationRequest(
 )
 receiptValidator.validate(validationRequest) { result in
     switch result {
+    
     case .success(let response):
         print("Receipt validation was successfull with receipt response \(response)")
         print(response.validSubscriptionReceipts) // convenience array for active receipts
         print(response.receiptResponse) // full receipt response
         print(response.receiptResponse.pendingRenewalInfo)
-        // Check the validSubscriptionReceipts and unlock products accordingly
+        // Check the validSubscriptionReceipts and unlock products accordingly 
+        // or disable features if no active subscriptions are found e.g.
+        
+        if response.validSubscriptionReceipts.isEmpty {
+           // disable subscription features etc
+        } else {
+           // enable subscription features etc
+        }
+        
     case .failure(let error):
         switch error {
         case .subscriptionExpired(let statusCode):
-            // no active subscription found, update your cache/app etc
+            // In some cases apple returns status code 21006 when doing receipt
+            // validation. I am not 100% when they do this, usually they just return status code 0 (valid)
+            // if no network error occured and you check your receipts for active subscriptions.
+            // Should this status code be return you should probably 
+            // disable subscription features 
         default:
             break // do nothing e.g internet error or other errors
         }
