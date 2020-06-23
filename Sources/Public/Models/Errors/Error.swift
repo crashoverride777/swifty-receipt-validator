@@ -13,7 +13,7 @@ public enum SRVError: Error {
     case noReceiptFoundInResponse(SRVStatusCode)
     case bundleIdNotMatching(SRVStatusCode)
     case productIdNotMatching(SRVStatusCode)
-    case subscriptionExpired(SRVStatusCode?)
+    case subscriptioniOS6StyleExpired(SRVStatusCode?)
     case cancelled(SRVStatusCode)
     case other(Error)
     
@@ -27,7 +27,7 @@ public enum SRVError: Error {
             return statusCode
         case .productIdNotMatching(let statusCode):
             return statusCode
-        case .subscriptionExpired(let statusCode):
+        case .subscriptioniOS6StyleExpired(let statusCode):
             return statusCode
         case .cancelled(let statusCode):
             return statusCode
