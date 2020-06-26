@@ -124,7 +124,7 @@ case .purchased:
 
     let validationRequest = SRVPurchaseValidationRequest(
         productId: productId,
-        sharedSecret: "your secret or nil" // Enter your shared secret if your have set one on iTunes, otherwise set to nil
+        sharedSecret: "your shared secret setup in iTunesConnect or nil when dealing with non-subscription purchases"
     )
         
     receiptValidator.validate(validationRequest) { result in
@@ -193,7 +193,7 @@ let cancellable = receiptValidator
 
 ```swift
 let validationRequest = SRVSubscriptionValidationRequest(
-    sharedSecret: "your shared secret",
+    sharedSecret: "your shared secret setup in iTunesConnect",
     refreshLocalReceiptIfNeeded: false,
     excludeOldTransactions: false,
     now: Date()
@@ -230,7 +230,13 @@ receiptValidator.validate(validationRequest) { result in
 }
 ```
 
-Setting `refreshLocalReceiptIfNeeded = true` will create a receipt fetch request if no receipt is found on the iOS device. This will show a iTunes password prompt so might not always be wanted e.g app launch.
+Setting `refreshLocalReceiptIfNeeded` to `true` will create a `SKReceiptRefreshRequest` if no receipt is found in your apps bundle.
+
+I would recommend to always set this flag to `false` for the following reasons.
+1. Creating a `SKReceiptRefreshRequest` will always show an iTunes password prompt which might not be wanted in your apps flow.
+2. When you call this at app launch you can handle the returned error discretly.
+3. Once a user made an in app purchase there should always be a receipt in your apps bundle
+4. Users re-installing your app which have an existing subscription should use the restore functionality in your app which is a requirment when using in app purchases (https://developer.apple.com/documentation/storekit/skpaymentqueue/1506123-restorecompletedtransactions).
 
 Note: There is also `Combine` support for this method if you are targeting iOS 13 and above
 
@@ -252,11 +258,19 @@ back on the current subscription status.
 
 e.g 
 ```swift
-let isAutoRenewOn: Bool
-if let pendingRenewalInfo = response.receiptResponse.pendingRenewalInfo, !pendingRenewalInfo.isEmpty {
-    isAutoRenewOn = pendingRenewalInfo.first { $0.autoRenewStatus == .on } != nil
-} else {
-    isAutoRenewOn = response.validSubscriptionReceipts.first { $0.autoRenewStatus == .on } != nil
+receiptValidator.validate(validationRequest) { result in
+    switch result {
+    case .success(let response):
+    
+        let isAutoRenewOn: Bool
+        if let pendingRenewalInfo = response.receiptResponse.pendingRenewalInfo, !pendingRenewalInfo.isEmpty {
+            isAutoRenewOn = pendingRenewalInfo.first { $0.autoRenewStatus == .on } != nil
+        } else {
+            isAutoRenewOn = response.validSubscriptionReceipts.first { $0.autoRenewStatus == .on } != nil
+        }
+    
+    case .failure(let error):
+    ...
 }
 ```
 
