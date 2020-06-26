@@ -81,8 +81,9 @@ class SomeClass {
 
 Your own webserver would than send the received response to apples servers for validation
 
-- `https://buy.itunes.apple.com/verifyReceipt`
-- `https://sandbox.itunes.apple.com/verifyReceipt`
+`https://buy.itunes.apple.com/verifyReceipt`
+
+`https://sandbox.itunes.apple.com/verifyReceipt`
 
 and handle the response
 
