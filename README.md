@@ -49,7 +49,7 @@ Altenatively you can drag the `Sources` folder and its containing files into you
 
 ### Add import (if using cocoaPods or SwiftPackageManager)
 
-- Add the import statement to your swift file(s) when you installed via cocoa pods or SwiftPackageManager
+- Add the import statement to your swift file(s) when you installed via SwiftPackageManager or CocoaPods
 
 ```swift
 import SwiftyReceiptValidator
@@ -174,7 +174,18 @@ case .restored:
     }              
 ```
 
-Note: There is also Combine support for these methods if you are targeting iOS 13 and above
+Note: There is also `Combine` support for this method if you are targeting iOS 13 and above
+
+```swift
+let cancellable = receiptValidator
+    .validatePublisher(for: validationRequest)
+    .map { response in
+        // handle response
+    }
+    .mapError { error in
+        // handle error
+    }
+```
 
 ### Validate Subscriptions
 
@@ -221,6 +232,21 @@ receiptValidator.validate(validationRequest) { result in
 
 Setting `refreshLocalReceiptIfNeeded = true` will create a receipt fetch request if no receipt is found on the iOS device. This will show a iTunes password prompt so might not always be wanted e.g app launch.
 
+Note: There is also `Combine` support for this method if you are targeting iOS 13 and above
+
+```swift
+let cancellable = receiptValidator
+    .validatePublisher(for: validationRequest)
+    .map { response in
+        // handle response
+    }
+    .mapError { error in
+        // handle error
+    }
+```
+
+### Check auto-renew status
+
 If you want to check the users auto renewal status it is recommended, as far as I understand,  to 1st check the pending renewal info and than fall
 back on the current subscription status. 
 
@@ -233,8 +259,6 @@ if let pendingRenewalInfo = response.receiptResponse.pendingRenewalInfo, !pendin
     isAutoRenewOn = response.validSubscriptionReceipts.first { $0.autoRenewStatus == .on } != nil
 }
 ```
-
-Note: There is also Combine support for these methods if you are targeting iOS 13 and above
 
 ## Unit Tests
 
@@ -283,5 +307,3 @@ When you get to the purchase code and to the `.purchased` switch statement, Stor
 ## Final Note
 
 As per apples guidlines you should always first connect to apples production servers and than fall back on apples sandbox servers if needed. So keep this in mind when testing in sandbox mode, validation will take a bit longer due to this.
-
-I will try to update this in the future if I have a better grasp of what is needed for your own server.
