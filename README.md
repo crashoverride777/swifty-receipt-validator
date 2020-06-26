@@ -24,9 +24,9 @@ Please test this properly, including production mode which will use apples produ
 The Swift Package Manager is a tool for automating the distribution of Swift code and is integrated into the swift compiler.
 
 To add a swift package to your project simple open your project in xCode and click File > Swift Packages > Add Package Dependency.
-Than enter `https://github.com/crashoverride777/swifty-receipt-validator.git` as the repository URL and finish the setup wizard.
+Than enter `https://github.com/crashoverride777/swifty-receipt-validator.git` as the repository URL and finish the installation wizard.
 
-Alternatively if you have a Framwork that requires adding SwiftyReceiptValidator as a dependency is as easy as adding it to the dependencies value of your Package.swift.
+Alternatively if you have another swift package that requires `SwiftyReceiptValidator` as a dependency it is as easy as adding it to the dependencies value of your Package.swift.
 ```swift
 dependencies: [
 .package(url: "https://github.com/crashoverride777/swifty-receipt-validator.git", from: "6.1.0")
@@ -57,42 +57,48 @@ import SwiftyReceiptValidator
 
 ### Instantiate Receipt Validator
 
-- Standard Configuration (Not Recommended)
-
-```swift
-class SomeClass {
-    let receiptValidator: SwiftyReceiptValidatorType
-    
-    init() {
-        // Standard configuration communicates with apples server directly, which is not recommended
-        // Enable logging events in your console by setting isLoggingEnabled to true
-        receiptValidator = SwiftyReceiptValidator(configuration: .standard, isLoggingEnabled: false)
-    }
-}
-```
+Instantiate `SwiftyReceiptValidator` inside your class that handles in app purchases.
 
 - Custom Configuration (Recommended)
 
+Apple's official recommendation to perform receipt validation is to connect to your own server, which then connects to Apple's servers to validate the receipts.
+
 ```swift
 class SomeClass {
     let receiptValidator: SwiftyReceiptValidatorType
     
     init() {
-        // The recommended approach is to communicate with your own webserver
-        // which would than connect with apples server
         let configuration = SRVConfiguration(
-            productionURL: "someProductionURL",
-            sandboxURL: "someSandboxURL",
+            productionURL: "your validation server production url",
+            sandboxURL: "your validation server sandbox url",
             sessionConfiguration: .default
         )
         
-        // Enable logging events in your console by setting isLoggingEnabled to true
         receiptValidator = SwiftyReceiptValidator(configuration: configuration, isLoggingEnabled: false)
     }
 }
 ```
-NOTE: Requires your own server
-https://www.raywenderlich.com/23266/in-app-purchases-in-ios-6-tutorial-consumables-and-receipt-validation
+
+Your own webserver would than send the received response to apples servers for validation
+
+`https://buy.itunes.apple.com/verifyReceipt`
+`https://sandbox.itunes.apple.com/verifyReceipt`
+
+and handle the response
+
+- Standard Configuration (Not Recommended)
+
+Standard configuration works without your own webserver by sending the validation request directly to apples servers. This approach is not very secure and is therefore not recommended.
+
+```swift
+class SomeClass {
+    let receiptValidator: SwiftyReceiptValidatorType
+    
+    init() {
+        receiptValidator = SwiftyReceiptValidator(configuration: .standard, isLoggingEnabled: false)
+    }
+}
+```
 
 ### Validate Purchases
 
@@ -202,10 +208,9 @@ receiptValidator.validate(validationRequest) { result in
     switch result {
     
     case .success(let response):
-        print("Receipt validation was successfull with receipt response \(response)")
-        print(response.validSubscriptionReceipts) // convenience array for active receipts
         print(response.receiptResponse) // full receipt response
-        print(response.receiptResponse.pendingRenewalInfo)
+        print(response.validSubscriptionReceipts) // convenience array for active subscription receipts
+
         // Check the validSubscriptionReceipts and unlock products accordingly 
         // or disable features if no active subscriptions are found e.g.
         
@@ -218,13 +223,16 @@ receiptValidator.validate(validationRequest) { result in
         
     case .failure(let error):
         switch error {
+        case .noReceiptFoundInBundle:
+             break
+             // do nothing, see description below
         case .subscriptioniOS6StyleExpired(let statusCode):
             // Only returned for iOS 6 style transaction receipts for auto-renewable subscriptions.
             // This receipt is valid but the subscription has expired. 
             
             // disable subscription features 
         default:
-            break // do nothing e.g internet error or other errors
+            // do nothing or inform user of error during validation e.g UIAlertController
         }
     }
 }
@@ -234,8 +242,8 @@ Setting `refreshLocalReceiptIfNeeded` to `true` will create a `SKReceiptRefreshR
 
 I would recommend to always set this flag to `false` for the following reasons.
 1. Creating a `SKReceiptRefreshRequest` will always show an iTunes password prompt which might not be wanted in your apps flow.
-2. When you call this at app launch you can handle the returned error discretly.
-3. Once a user made an in app purchase there should always be a receipt in your apps bundle
+2. When you call this at app launch you can handle the return `SRVError.noReceiptFoundInBundle` error discretly.
+3. Once a user made an in app purchase there should always be a receipt in your apps bundle.
 4. Users re-installing your app which have an existing subscription should use the restore functionality in your app which is a requirment when using in app purchases (https://developer.apple.com/documentation/storekit/skpaymentqueue/1506123-restorecompletedtransactions).
 
 Note: There is also `Combine` support for this method if you are targeting iOS 13 and above
@@ -256,8 +264,8 @@ let cancellable = receiptValidator
 If you want to check the users auto renewal status it is recommended, as far as I understand,  to 1st check the pending renewal info and than fall
 back on the current subscription status. 
 
-e.g 
 ```swift
+let validationRequest = SRVSubscriptionValidationRequest(...)
 receiptValidator.validate(validationRequest) { result in
     switch result {
     case .success(let response):
@@ -269,6 +277,25 @@ receiptValidator.validate(validationRequest) { result in
             isAutoRenewOn = response.validSubscriptionReceipts.first { $0.autoRenewStatus == .on } != nil
         }
     
+    case .failure(let error):
+    ...
+}
+```
+
+### Show Introductory Price
+
+If a previous subscription period in the receipt has the value “true” for either the` is_trial_period` or the `is_in_intro_offer_period` key,
+the user is not eligible for a free trial or introductory price within that subscription group.
+`SwiftyReceiptValidator` provides a convenience boolean for this
+
+```swift
+let validationRequest = SRVSubscriptionValidationRequest(...)
+receiptValidator.validate(validationRequest) { result in
+    switch result {
+    case .success(let response):
+        response.validSubscriptionReceipts.forEach { receipt in
+            print(receipt.canShowIntroductoryPrice)
+        }
     case .failure(let error):
     ...
 }

@@ -8,7 +8,7 @@
 
 import StoreKit
 
-typealias ReceiptURLFetcherCompletion = (Result<URL, Error>) -> Void
+typealias ReceiptURLFetcherCompletion = (Result<URL, SRVError>) -> Void
 typealias ReceiptURLFetcherRefreshRequest = SKReceiptRefreshRequest
 
 protocol ReceiptURLFetcherType {
@@ -17,12 +17,6 @@ protocol ReceiptURLFetcherType {
 
 final class ReceiptURLFetcher: NSObject {
     
-    // MARK: Types
-    
-    enum FetchError: Error {
-        case noReceiptFound
-    }
-
     // MARK: - Properties
 
     private let appStoreReceiptURL: () -> URL?
@@ -59,7 +53,7 @@ extension ReceiptURLFetcher: ReceiptURLFetcherType {
                 receiptRefreshRequest?.start()
             } else {
                 clean()
-                handler(.failure(FetchError.noReceiptFound))
+                handler(.failure(.noReceiptFoundInBundle))
             }
             return
         }
@@ -79,7 +73,7 @@ extension ReceiptURLFetcher: SKRequestDelegate {
         }
         
         guard hasReceipt, let appStoreReceiptURL = appStoreReceiptURL() else {
-            completionHandler?(.failure(FetchError.noReceiptFound))
+            completionHandler?(.failure(.noReceiptFoundInBundle))
             return
         }
         
@@ -87,7 +81,7 @@ extension ReceiptURLFetcher: SKRequestDelegate {
     }
     
     func request(_ request: SKRequest, didFailWithError error: Error) {
-        completionHandler?(.failure(error))
+        completionHandler?(.failure(.other(error)))
         clean()
     }
 }

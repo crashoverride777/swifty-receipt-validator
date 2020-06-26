@@ -70,7 +70,6 @@ public struct SRVReceiptInApp: Codable, Equatable {
     // For an auto-renewable subscription, whether or not it is in the introductory price period.
     // This key is only present for auto-renewable subscription receipts.
     // The value for this key is "true" if the customer’s subscription is currently in an introductory price period, or "false" if not.
-    // Note: If a previous subscription period in the receipt has the value “true” for either the is_trial_period or the is_in_intro_offer_period key, the user is not eligible for a free trial or introductory price within that subscription group.
     public let isInIntroOfferPeriod: String?
     // For a transaction that was canceled by Apple customer support, the time and date of the cancellation.
     // For an auto-renewable subscription plan that was upgraded, the time and date of the upgrade transaction
@@ -151,12 +150,12 @@ public extension SRVReceiptInApp {
 
 public extension SRVReceiptInApp {
     
+    /*
+    If a previous subscription period in the receipt has the value “true”
+    for either the is_trial_period or the is_in_intro_offer_period key,
+    the user is not eligible for a free trial or introductory price within that subscription group.
+    */
     var canShowIntroductoryPrice: Bool {
-        /*
-         If a previous subscription period in the receipt has the value “true”
-         for either the is_trial_period or the is_in_intro_offer_period key,
-         the user is not eligible for a free trial or introductory price within that subscription group.
-         */
         if isTrialPeriod == "true" || isInIntroOfferPeriod == "true" {
             return false
         }

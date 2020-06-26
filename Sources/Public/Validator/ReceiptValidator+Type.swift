@@ -115,7 +115,7 @@ private extension SwiftyReceiptValidator {
                 )
                 self.receiptClient.perform(clientRequest, handler: handler)
             case .failure(let error):
-                handler(.failure(.other(error)))
+                handler(.failure(error))
             }
         }
     }

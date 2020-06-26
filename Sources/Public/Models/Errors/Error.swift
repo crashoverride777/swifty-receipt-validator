@@ -9,6 +9,7 @@
 import Foundation
 
 public enum SRVError: Error {
+    case noReceiptFoundInBundle
     case invalidStatusCode(SRVStatusCode)
     case noReceiptFoundInResponse(SRVStatusCode)
     case bundleIdNotMatching(SRVStatusCode)
@@ -19,6 +20,8 @@ public enum SRVError: Error {
     
     public var statusCode: SRVStatusCode? {
         switch self {
+        case .noReceiptFoundInBundle:
+            return nil
         case .invalidStatusCode(let statusCode):
             return statusCode
         case .noReceiptFoundInResponse(let statusCode):
