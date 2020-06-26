@@ -279,7 +279,8 @@ receiptValidator.validate(validationRequest) { result in
         }
     
     case .failure(let error):
-    ...
+        ...
+    }
 }
 ```
 
