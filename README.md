@@ -103,7 +103,7 @@ class SomeClass {
 
 ### Validate Purchases
 
-- Go to the following delegate method in your code, which you must implement for in app purchases
+- Go to the following delegate method in your in app purchase code, which you must implement.
 
 ```swift
 extension SomeClass: SKPaymentTransactionObserver {
@@ -111,9 +111,6 @@ extension SomeClass: SKPaymentTransactionObserver {
     func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
         transactions.forEach { transaction in
             switch transaction.transactionState {
-                case .purchased:
-                ...
-                case .restored:
                 ...
             }
         }
@@ -151,6 +148,8 @@ case .purchased:
         }
     }
 ```
+
+In older versions of SwiftyReceiptValidator I was suggesting to also add this code to the `.restored` case which was incorrect.
 
 Note: There is also `Combine` support for this method if you are targeting iOS 13 and above
 
