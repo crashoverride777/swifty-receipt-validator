@@ -121,7 +121,7 @@ extension SomeClass: SKPaymentTransactionObserver {
 }
 ```
 
-and modify the `.purchased` and `.restored` enum cases to look like this
+and modify the `.purchased` case to look like this
 
 
 ```swift
@@ -150,35 +150,6 @@ case .purchased:
             // Inform user of error
         }
     }
-            
-case .restored:
-    // Transaction was restored from user's purchase history.  Client should complete the transaction.
-    guard let productId = transaction.originalTransaction?.payment.productIdentifier else {
-        queue.finishTransaction(transaction)
-        return
-    }
-    
-    let validationRequest = SRVPurchaseValidationRequest(
-        productId: productId,
-        sharedSecret: "your secret or nil" // Enter your shared secret if your have set one on iTunes, otherwise set to nil
-    )
-    
-    receiptValidator.validate(validationRequest) { result in
-        switch result {
-        case .success(let response):
-            defer {
-                // IMPORTANT: Finish the transaction ONLY after validation was successful
-                // if validation error e.g due to internet, the transaction will stay in pending state
-                // and than can/will be resumed on next app launch
-                queue.finishTransaction(transaction)
-            }
-            print("Receipt validation was successfull with receipt response \(response)")
-            // Unlock products and/or do additional checks
-       case .failure(let error):
-            print("Receipt validation failed with error \(error.localizedDescription)")  
-            // Inform user of error
-        }
-    }              
 ```
 
 Note: There is also `Combine` support for this method if you are targeting iOS 13 and above
