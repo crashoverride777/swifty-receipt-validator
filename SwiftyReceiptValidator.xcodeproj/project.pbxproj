@@ -157,6 +157,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6A03709524B0A626000865A2 /* Public */ = {
+			isa = PBXGroup;
+			children = (
+				6A7DF2812305E386001CAEEF /* Models */,
+				6A7DF2892305E54D001CAEEF /* Validator */,
+			);
+			path = Public;
+			sourceTree = "<group>";
+		};
 		6A436B5E23EEDE9700D5F5EA /* Mocks */ = {
 			isa = PBXGroup;
 			children = (
@@ -376,12 +385,11 @@
 		6AE7FC8F24338B4E0098A896 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				6A436BD523F34DC200D5F5EA /* UnitTests.xctestplan */,
-				6A7DF2812305E386001CAEEF /* Models */,
-				6A7DF2892305E54D001CAEEF /* Validator */,
+				6A03709524B0A626000865A2 /* Public */,
 				6A7DF29C230609AB001CAEEF /* Internal */,
 				6A7DF2822305E38E001CAEEF /* Test Data */,
 				6A4384AD222730C1009EF552 /* Info.plist */,
+				6A436BD523F34DC200D5F5EA /* UnitTests.xctestplan */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
