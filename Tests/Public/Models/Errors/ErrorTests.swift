@@ -13,6 +13,10 @@ class ErrorTests: XCTestCase {
     
     // MARK: - Status Code
     
+    func test_statusCode_noReceiptFoundInBundle() {
+        XCTAssertEqual(SRVError.noReceiptFoundInBundle.statusCode, nil)
+    }
+    
     func test_statusCode_invalidStatusCode() {
         XCTAssertEqual(SRVError.invalidStatusCode(.valid).statusCode, .valid)
     }

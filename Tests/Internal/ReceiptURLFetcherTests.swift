@@ -32,7 +32,7 @@ class ReceiptURLFetcherTests: XCTestCase {
     
     // MARK: - Tests
 
-    func test_fetch_success_hasReceiptOnFile_returnsCorrectData() {
+    func test_fetch_hasReceiptOnFile_returnsCorrectData() {
         let expectation = self.expectation(description: "Finished")
         let expectedURL: URL = .test
         fileManager.stub.fileExists = true
@@ -48,23 +48,7 @@ class ReceiptURLFetcherTests: XCTestCase {
         waitForExpectations(timeout: 0.1)
     }
     
-    func test_fetch_success_noReceiptOnFile_returnsCorrectData() {
-        let expectation = self.expectation(description: "Finished")
-        let expectedURL: URL = .test
-        fileManager.stub.fileExists = false
-        
-        let sut = makeSUT(appStoreReceiptURL: expectedURL)
-        sut.fetch(refreshRequest: refreshRequest) { result in
-            if case .success(let url) = result {
-                XCTAssertEqual(url, expectedURL)
-                expectation.fulfill()
-            }
-        }
-        
-        waitForExpectations(timeout: 0.1)
-    }
-    
-    func test_fetch_failure_noReceiptOnFile_noRefreshRequest_returnsCorrectError() {
+    func test_fetch_noReceiptOnFile_noRefreshRequest_returnsCorrectError() {
         let expectation = self.expectation(description: "Finished")
         fileManager.stub.fileExists = false
         let expectedError: SRVError = .noReceiptFoundInBundle
@@ -80,10 +64,43 @@ class ReceiptURLFetcherTests: XCTestCase {
         waitForExpectations(timeout: 0.1)
     }
     
-    func test_fetch_failure_noReceiptOnFile_refreshRequest_returnsCorrectError() {
+    func test_fetch_noReceiptOnFile_refreshRequestSuccess_returnsCorrectData() {
+        let expectation = self.expectation(description: "Finished")
+        let expectedURL: URL = .test
+        fileManager.stub.fileExists = false
+        
+        let sut = makeSUT(appStoreReceiptURL: expectedURL)
+        sut.fetch(refreshRequest: refreshRequest) { result in
+            if case .success(let url) = result {
+                XCTAssertEqual(url, expectedURL)
+                expectation.fulfill()
+            }
+        }
+        
+        waitForExpectations(timeout: 0.1)
+    }
+    
+    func test_fetch_noReceiptOnFile_refreshRequestError_returnsCorrectError() {
         let expectation = self.expectation(description: "Finished")
         let expectedError = URLError(.notConnectedToInternet)
         refreshRequest.stub.start = .failure(expectedError)
+        
+        let sut = makeSUT()
+        sut.fetch(refreshRequest: refreshRequest) { result in
+            if case .failure(let error) = result {
+                XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
+                expectation.fulfill()
+            }
+        }
+
+        waitForExpectations(timeout: 0.1)
+    }
+    
+    func test_fetch_noReceiptOnFile_refreshRequestSuccess_stillNoReceipt_returnsCorrectError() {
+        let expectation = self.expectation(description: "Finished")
+        let expectedError: SRVError = .noReceiptFoundInBundle
+        refreshRequest.stub.hasReceiptAfterRequest = false
+        refreshRequest.stub.start = .success(())
         
         let sut = makeSUT()
         sut.fetch(refreshRequest: refreshRequest) { result in
