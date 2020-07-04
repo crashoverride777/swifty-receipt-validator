@@ -12,12 +12,14 @@ import XCTest
 class JSONDecoderReceiptTests: XCTestCase {
 
     // MARK: - Tests
-
+    
     func test_dateDecodingStrategy() {
         let sut: JSONDecoder = .receiptResponse
         switch sut.dateDecodingStrategy {
-        case .formatted:
-            break
+        case .formatted(let formatter):
+            XCTAssertEqual(formatter.calendar, Calendar(identifier: .iso8601))
+            XCTAssertEqual(formatter.locale, .current)
+            XCTAssertEqual(formatter.dateFormat, "yyyy-MM-dd HH:mm:ss VV")
         default:
             XCTFail("Wrong dateDecodingStrategy")
         }
