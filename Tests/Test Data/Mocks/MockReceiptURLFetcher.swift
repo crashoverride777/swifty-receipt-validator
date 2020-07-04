@@ -11,7 +11,7 @@ import Foundation
 
 final class MockReceiptURLFetcher {
     struct Stub {
-        var fetchResult: (ReceiptURLFetcherRefreshRequest?) -> (Result<URL, Error>) = { _ in .success(.test) }
+        var fetchResult: (ReceiptURLFetcherRefreshRequest?) -> (Result<URL, SRVError>) = { _ in .success(.test) }
     }
     
     var stub = Stub()

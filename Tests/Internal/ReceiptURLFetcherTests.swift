@@ -67,7 +67,7 @@ class ReceiptURLFetcherTests: XCTestCase {
     func test_fetch_failure_noReceiptOnFile_noRefreshRequest_returnsCorrectError() {
         let expectation = self.expectation(description: "Finished")
         fileManager.stub.fileExists = false
-        let expectedError: ReceiptURLFetcher.FetchError = .noReceiptFound
+        let expectedError: SRVError = .noReceiptFoundInBundle
         
         let sut = makeSUT()
         sut.fetch(refreshRequest: nil) { result in

@@ -53,7 +53,7 @@ extension ResponseValidator: ResponseValidatorType {
                  */
                 guard receiptInApp.cancellationDate == nil else {
                     self.print("SVRResponseValidator purchase validation cancelled")
-                    handler(.failure(.cancelled(response.status)))
+                    handler(.failure(.purchaseCancelled(response.status)))
                     return
                 }
                 self.print("SVRResponseValidator purchase validation success")

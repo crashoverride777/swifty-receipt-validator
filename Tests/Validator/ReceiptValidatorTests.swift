@@ -70,7 +70,7 @@ class ReceiptValidatorTests: XCTestCase {
     func test_validatePurchase_failure_receiptFetcher_returnsCorrectError() {
         let expectation = self.expectation(description: "Finished")
         let expectedError = URLError(.notConnectedToInternet)
-        receiptURLFetcher.stub.fetchResult = { _ in .failure(expectedError) }
+        receiptURLFetcher.stub.fetchResult = { _ in .failure(.other(expectedError)) }
         let request = SRVPurchaseValidationRequest(
             productId: "123",
             sharedSecret: "secret"
@@ -159,7 +159,7 @@ class ReceiptValidatorTests: XCTestCase {
     func test_validateSubscription_failure_receiptFetcher_returnsCorrectError() {
         let expectation = self.expectation(description: "Finished")
         let expectedError = URLError(.notConnectedToInternet)
-        receiptURLFetcher.stub.fetchResult = { _ in .failure(expectedError) }
+        receiptURLFetcher.stub.fetchResult = { _ in .failure(.other(expectedError)) }
         let request = SRVSubscriptionValidationRequest(
             sharedSecret: "secret",
             refreshLocalReceiptIfNeeded: false,

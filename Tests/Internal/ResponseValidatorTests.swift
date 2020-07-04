@@ -113,9 +113,9 @@ class ResponseValidatorTests: XCTestCase {
         waitForExpectations(timeout: 0.1)
     }
     
-    func test_validatePurchase_failure_cancelled_returnsCorrectError() {
+    func test_validatePurchase_failure_purchaseCancelled_returnsCorrectError() {
         let expectation = self.expectation(description: "Finished")
-        let expectedError: SRVError = .cancelled(.valid)
+        let expectedError: SRVError = .purchaseCancelled(.valid)
         let expectedResponse = makeResponse(cancellationDate: .test)
         
         let sut = makeSUT()

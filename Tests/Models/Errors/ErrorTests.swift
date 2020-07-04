@@ -33,8 +33,8 @@ class ErrorTests: XCTestCase {
         XCTAssertEqual(SRVError.subscriptioniOS6StyleExpired(.valid).statusCode, .valid)
     }
     
-    func test_statusCode_cancelled() {
-        XCTAssertEqual(SRVError.cancelled(.valid).statusCode, .valid)
+    func test_statusCode_purchaseCancelled() {
+        XCTAssertEqual(SRVError.purchaseCancelled(.valid).statusCode, .valid)
     }
     
     func test_statusCode_other() {
