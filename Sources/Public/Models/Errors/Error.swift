@@ -47,19 +47,19 @@ extension SRVError: LocalizedError {
     public var errorDescription: String? {
         switch self {
         case .noReceiptFoundInBundle:
-            return "No receipt found in bundle."
+            return LocalizedString.Error.noReceiptFoundInBundle
         case .invalidStatusCode(let statusCode):
-            return "Invalid status code \(statusCode.rawValue): \(statusCode.description)."
+            return LocalizedString.Error.invalidStatusCode(statusCode.rawValue)
         case .noReceiptFoundInResponse:
-            return "Receipt not found in response."
+            return LocalizedString.Error.noReceiptFoundInResponse
         case .bundleIdNotMatching:
-            return "Bundle id not matching receipt."
+            return LocalizedString.Error.bundleIdNotMatching
         case .productIdNotMatching:
-            return "Product id not matching receipt."
+            return LocalizedString.Error.productIdNotMatching
         case .subscriptioniOS6StyleExpired:
-            return "iOS 6 style subscription expired."
+            return LocalizedString.Error.subscriptioniOS6StyleExpired
         case .purchaseCancelled:
-            return "Purchase has been cancelled."
+            return LocalizedString.Error.purchaseCancelled
         case .other(let error):
             return error.localizedDescription
         }
