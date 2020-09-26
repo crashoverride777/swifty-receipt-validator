@@ -43,23 +43,23 @@ public enum SRVError: Error {
 // MARK: - LocalizedError
 
 extension SRVError: LocalizedError {
-    
+
     public var errorDescription: String? {
         switch self {
         case .noReceiptFoundInBundle:
-            return LocalizedString.Error.noReceiptFoundInBundle
+            return "No receipt found in bundle."
         case .invalidStatusCode(let statusCode):
-            return LocalizedString.Error.invalidStatusCode(statusCode.rawValue)
+            return "Invalid status code \(statusCode.rawValue): \(statusCode.description)."
         case .noReceiptFoundInResponse:
-            return LocalizedString.Error.noReceiptFoundInResponse
+            return "Receipt not found in response."
         case .bundleIdNotMatching:
-            return LocalizedString.Error.bundleIdNotMatching
+            return "Bundle id not matching receipt."
         case .productIdNotMatching:
-            return LocalizedString.Error.productIdNotMatching
+            return "Product id not matching receipt."
         case .subscriptioniOS6StyleExpired:
-            return LocalizedString.Error.subscriptioniOS6StyleExpired
+            return "iOS 6 style subscription expired."
         case .purchaseCancelled:
-            return LocalizedString.Error.purchaseCancelled
+            return "Purchase has been cancelled."
         case .other(let error):
             return error.localizedDescription
         }

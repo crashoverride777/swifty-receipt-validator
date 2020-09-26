@@ -1,9 +1,0 @@
-// MARK: - Errors
-
-NoReceiptFoundInBundle = "No receipt found in bundle.";
-InvalidStatusCode = "Invalid status code (%@)";
-NoReceiptFoundInResponse = "Receipt not found in response.";
-BundleIdNotMatching = "Bundle id not matching receipt.";
-ProductIdNotMatching = "Product id not matching receipt.";
-SubscriptioniOS6StyleExpired = "iOS 6 style subscription expired.";
-PurchaseCancelled = "Purchase has been cancelled.";
