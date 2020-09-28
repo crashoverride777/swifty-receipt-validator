@@ -15,6 +15,12 @@ let package = Package(
             name: packageName,
             path: "Sources",
             resources: [.process("Resources")]
+        ),
+        .testTarget(
+            name: packageName + "Tests",
+            dependencies: ["SwiftyReceiptValidator"],
+            path: "Tests",
+            resources: [.process("Resources")]
         )
     ],
     swiftLanguageVersions: [.v5]

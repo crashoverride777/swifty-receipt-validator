@@ -32,7 +32,7 @@ extension SRVReceiptResponse {
     }
     
     static func mock(_ type: JSONType) -> [String: Any] {
-        guard let path = Bundle(for: MockSessionManager.self).path(forResource: type.name, ofType: "json") else {
+        guard let path = Bundle.module.path(forResource: type.name, ofType: "json") else {
             fatalError("Invalid path to JSON file in bundle")
         }
         
