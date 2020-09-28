@@ -38,7 +38,7 @@ class ResponseValidatorTests: XCTestCase {
         let expectedResponse = makeResponse(productId: productId)
         
         let sut = makeSUT()
-        sut.validatePurchase(forProductId: productId, in: expectedResponse) { result in
+        sut.validatePurchase(in: expectedResponse, productId: productId) { result in
             if case .success(let response) = result {
                 XCTAssertEqual(response, expectedResponse)
                 expectation.fulfill()
@@ -54,7 +54,7 @@ class ResponseValidatorTests: XCTestCase {
         let expectedResponse = makeResponse(statusCode: .jsonNotReadable)
         
         let sut = makeSUT()
-        sut.validatePurchase(forProductId: "1", in: expectedResponse) { result in
+        sut.validatePurchase(in: expectedResponse, productId: "1") { result in
             if case .failure(let error) = result {
                 XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
                 expectation.fulfill()
@@ -70,7 +70,7 @@ class ResponseValidatorTests: XCTestCase {
         let expectedResponse = makeResponseWithNilReceipt()
         
         let sut = makeSUT()
-        sut.validatePurchase(forProductId: "1", in: expectedResponse) { result in
+        sut.validatePurchase(in: expectedResponse, productId: "1") { result in
             if case .failure(let error) = result {
                 XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
                 expectation.fulfill()
@@ -87,7 +87,7 @@ class ResponseValidatorTests: XCTestCase {
         let expectedResponse = makeResponse()
         
         let sut = makeSUT()
-        sut.validatePurchase(forProductId: "1", in: expectedResponse) { result in
+        sut.validatePurchase(in: expectedResponse, productId: "1") { result in
             if case .failure(let error) = result {
                 XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
                 expectation.fulfill()
@@ -103,7 +103,7 @@ class ResponseValidatorTests: XCTestCase {
         let expectedResponse = makeResponse()
         
         let sut = makeSUT()
-        sut.validatePurchase(forProductId: "invalid", in: expectedResponse) { result in
+        sut.validatePurchase(in: expectedResponse, productId: "invalid") { result in
             if case .failure(let error) = result {
                 XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
                 expectation.fulfill()
@@ -119,7 +119,7 @@ class ResponseValidatorTests: XCTestCase {
         let expectedResponse = makeResponse(cancellationDate: .test)
         
         let sut = makeSUT()
-        sut.validatePurchase(forProductId: "1", in: expectedResponse) { result in
+        sut.validatePurchase(in: expectedResponse, productId: "1") { result in
             if case .failure(let error) = result {
                 XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
                 expectation.fulfill()

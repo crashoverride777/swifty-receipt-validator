@@ -47,8 +47,8 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
                 switch result {
                 case .success(let response):
                     self?.responseValidator.validatePurchase(
-                        forProductId: request.productId,
                         in: response,
+                        productId: request.productId,
                         handler: handler
                     )
                 case .failure(let error):

@@ -24,8 +24,8 @@ final class MockResponseValidator {
 
 extension MockResponseValidator: ResponseValidatorType {
     
-    func validatePurchase(forProductId productId: String,
-                          in response: SRVReceiptResponse,
+    func validatePurchase(in response: SRVReceiptResponse,
+                          productId: String,
                           handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void) {
         let completion = stub.validatePurchaseResult(productId, response)
         handler(completion)

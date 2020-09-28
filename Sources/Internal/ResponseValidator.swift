@@ -9,8 +9,8 @@
 import Foundation
 
 protocol ResponseValidatorType: AnyObject {
-    func validatePurchase(forProductId productId: String,
-                          in response: SRVReceiptResponse,
+    func validatePurchase(in response: SRVReceiptResponse,
+                          productId: String,
                           handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void)
     func validateSubscriptions(in response: SRVReceiptResponse,
                                now: Date,
@@ -31,11 +31,11 @@ final class ResponseValidator {
 
 extension ResponseValidator: ResponseValidatorType {
   
-    func validatePurchase(forProductId productId: String,
-                          in response: SRVReceiptResponse,
+    func validatePurchase(in response: SRVReceiptResponse,
+                          productId: String,
                           handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void) {
         self.print("SVRResponseValidator validating purchase...")
-        runBasicValidation(for: response) { result in
+        basicValidation(for: response) { result in
             switch result {
             case .success:
                 guard let receiptInApp = response.receipt?.inApp.first(where: { $0.productId == productId }) else {
@@ -69,11 +69,11 @@ extension ResponseValidator: ResponseValidatorType {
                                now: Date,
                                handler: @escaping (Result<SRVSubscriptionValidationResponse, SRVError>) -> Void) {
         self.print("SVRResponseValidator validating subscriptions...")
-        runBasicValidation(for: response) { result in
+        basicValidation(for: response) { result in
             switch result {
             case .success:
                 guard response.status != .subscriptioniOS6StyleExpired else {
-                    self.print("SVRResponseValidator subscriptions validation subscriptionExpired error")
+                    self.print("SVRResponseValidator subscriptions validation iOS6 style expired")
                     handler(.failure(.subscriptioniOS6StyleExpired(response.status)))
                     return
                 }
@@ -97,7 +97,7 @@ extension ResponseValidator: ResponseValidatorType {
 
 private extension ResponseValidator {
     
-    func runBasicValidation(for response: SRVReceiptResponse, handler: (Result<Void, SRVError>) -> ()) {
+    func basicValidation(for response: SRVReceiptResponse, handler: (Result<Void, SRVError>) -> ()) {
         // Check receipt status code is valid
         guard response.status.isValid else {
             handler(.failure(.invalidStatusCode(response.status)))
@@ -120,9 +120,7 @@ private extension ResponseValidator {
     }
     
     func print(_ items: Any...) {
-        guard isLoggingEnabled else {
-            return
-        }
+        guard isLoggingEnabled else { return }
         Swift.print(items[0])
     }
 }
