@@ -7,14 +7,12 @@ private let packageName = "SwiftyReceiptValidator"
 
 let package = Package(
     name: packageName,
-    defaultLocalization: "en",
-    platforms: [.iOS(.v11), .tvOS(.v11)],
+    platforms: [.iOS(.v11), .tvOS(.v11), .macOS(.v10_15)],
     products: [.library(name: packageName, targets: [packageName])],
     targets: [
         .target(
             name: packageName,
-            path: "Sources",
-            resources: [.process("Resources")]
+            path: "Sources"
         ),
         .testTarget(
             name: packageName + "Tests",
