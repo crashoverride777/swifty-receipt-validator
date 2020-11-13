@@ -11,11 +11,11 @@ import StoreKit
 import Combine
 
 public protocol SwiftyReceiptValidatorType {
-    @available(iOS 13, *)
+    @available(iOS 13, tvOS 13, macOS 10.15, *)
     func validatePublisher(for request: SRVPurchaseValidationRequest) -> AnyPublisher<SRVReceiptResponse, SRVError>
     func validate(_ request: SRVPurchaseValidationRequest, handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void)
    
-    @available(iOS 13, *)
+    @available(iOS 13, tvOS 13, macOS 10.15, *)
     func validatePublisher(for request: SRVSubscriptionValidationRequest) -> AnyPublisher<SRVSubscriptionValidationResponse, SRVError>
     func validate(_ request: SRVSubscriptionValidationRequest, handler: @escaping (Result<SRVSubscriptionValidationResponse, SRVError>) -> Void)
 }
@@ -27,7 +27,7 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
     /// Validate app store purchase publisher
     ///
     /// - parameter request: The request configuration.
-    @available(iOS 13, *)
+    @available(iOS 13, tvOS 13, macOS 10.15, *)
     public func validatePublisher(for request: SRVPurchaseValidationRequest) -> AnyPublisher<SRVReceiptResponse, SRVError> {
         Future { [weak self] promise in
             self?.validate(request, handler: promise)
@@ -63,7 +63,7 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
     /// Validate app store subscription publisher
     ///
     /// - parameter request: The request configuration.
-    @available(iOS 13, *)
+    @available(iOS 13, tvOS 13, macOS 10.15, *)
     public func validatePublisher(for request: SRVSubscriptionValidationRequest) -> AnyPublisher<SRVSubscriptionValidationResponse, SRVError> {
         Future { [weak self] promise in
              self?.validate(request, handler: promise)
