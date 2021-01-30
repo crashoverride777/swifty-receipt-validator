@@ -151,7 +151,7 @@ case .purchased:
 
 In older versions of SwiftyReceiptValidator I was suggesting to also add this code to the `.restored` case which was incorrect.
 
-Note: There is also `Combine` support for this method if you are targeting iOS 13 and above
+Note: There is also `Combine` support for this method if you are targeting iOS 13 and above.
 
 ```swift
 let cancellable = receiptValidator
@@ -166,7 +166,7 @@ let cancellable = receiptValidator
 
 ### Validate Subscriptions
 
-- To validate your subscriptions (e.g on app launch), create a subscription validation request and validate it. This will search for all subscription receipts found on the device.
+- To validate your subscriptions (e.g. on app launch), create a subscription validation request and validate it. This will search for all subscription receipts found on the device.
 
 ```swift
 let validationRequest = SRVSubscriptionValidationRequest(
@@ -215,7 +215,7 @@ I would recommend to always set this flag to `false` for the following reasons.
 1. Creating a `SKReceiptRefreshRequest` will always show an iTunes password prompt which might not be wanted in your apps flow.
 2. When you call this at app launch you can handle the return `SRVError.noReceiptFoundInBundle` error discretly.
 3. Once a user made an in app purchase there should always be a receipt in your apps bundle.
-4. Users re-installing your app which have an existing subscription should use the restore functionality in your app which is a requirment when using in app purchases (https://developer.apple.com/documentation/storekit/skpaymentqueue/1506123-restorecompletedtransactions).
+4. Users re-installing your app which have an existing subscription should use the restore functionality in your app which is a requirement when using in app purchases (https://developer.apple.com/documentation/storekit/skpaymentqueue/1506123-restorecompletedtransactions).
 
 Note: There is also `Combine` support for this method if you are targeting iOS 13 and above
 
@@ -319,4 +319,4 @@ When you get to the purchase code and to the `.purchased` switch statement, Stor
 
 ## Final Note
 
-As per apples guidlines you should always first connect to apples production servers and than fall back on apples sandbox servers if needed. So keep this in mind when testing in sandbox mode, validation will take a bit longer due to this.
+As per apples guidlines you should always first connect to apples production servers and than fall back on apples sandbox servers if needed. So keep this in mind when testing in sandbox mode, validation may take a bit longer due to this.
