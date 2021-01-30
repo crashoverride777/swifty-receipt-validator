@@ -18,9 +18,14 @@ protocol ResponseValidatorType: AnyObject {
 }
 
 final class ResponseValidator {
+
+    // MARK: - Properties
+
     private let bundle: Bundle
     private let isLoggingEnabled: Bool
-    
+
+    // MARK: - Initialization
+
     init(bundle: Bundle, isLoggingEnabled: Bool) {
         self.bundle = bundle
         self.isLoggingEnabled = isLoggingEnabled

@@ -53,6 +53,7 @@ class ReceiptResponseTests: XCTestCase {
             .mock(expiresDate: Date.test.addingTimeInterval(-10)),
             .mock(expiresDate: Date.test.addingTimeInterval(10)),
         ]
+        
         let expectedResponse: SRVReceiptResponse = .mock(
             receipt: .mock(inApp: expectedReceiptsInApp),
             latestReceiptInfo: nil

@@ -41,7 +41,7 @@ final class ReceiptClient {
     private let sandboxURL: String
     private let isLoggingEnabled: Bool
     
-    // MARK: - Init
+    // MARK: - Initialization
     
     init(sessionManager: URLSessionManagerType,
          productionURL: String,
@@ -69,7 +69,7 @@ extension ReceiptClient: ReceiptClientType {
             )
 
             // Start URL request to production server first, if status code returns test environment receipt, try sandbox.
-            self.startSessionRequest(forURL: productionURL, parameters: parameters) { [weak self] result in
+            startSessionRequest(forURL: productionURL, parameters: parameters) { [weak self] result in
                 guard let self = self else { return }
                 switch result {
                 case .success(let receiptResponse):

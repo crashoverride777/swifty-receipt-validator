@@ -7,7 +7,6 @@
 //
 
 import Foundation
-
 import XCTest
 @testable import SwiftyReceiptValidator
 
@@ -21,13 +20,16 @@ class ConfigurationTests: XCTestCase {
     }
     
     func test_custom() {
+        let sessionConfiguration = URLSessionConfiguration()
+        sessionConfiguration.httpAdditionalHeaders = ["key": "value"]
+
         let sut = SRVConfiguration(
             productionURL: "production",
             sandboxURL: "sandbox",
-            sessionConfiguration: .default
+            sessionConfiguration: sessionConfiguration
         )
         XCTAssertEqual(sut.productionURL, "production")
         XCTAssertEqual(sut.sandboxURL, "sandbox")
-        XCTAssertEqual(sut.sessionConfiguration, .default)
+        XCTAssertEqual(sut.sessionConfiguration, sessionConfiguration)
     }
 }

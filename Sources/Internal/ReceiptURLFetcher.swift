@@ -31,7 +31,7 @@ final class ReceiptURLFetcher: NSObject {
         return fileManager.fileExists(atPath: path)
     }
     
-    // MARK: - Init
+    // MARK: - Initialization
     
     init(appStoreReceiptURL: @escaping () -> URL?, fileManager: FileManager) {
         self.appStoreReceiptURL = appStoreReceiptURL

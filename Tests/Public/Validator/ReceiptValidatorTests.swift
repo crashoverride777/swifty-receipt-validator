@@ -36,14 +36,6 @@ class ReceiptValidatorTests: XCTestCase {
     
     // MARK: - Tests
 
-    // MARK: Config
-    
-    func test_config() {
-        let expectedConfiguration: SRVConfiguration = .standard
-        let sut = makeSUT(configuration: expectedConfiguration)
-        XCTAssertEqual(sut.configuration, expectedConfiguration)
-    }
-    
     // MARK: Validate Purchase
     
     func test_validatePurchase_success_returnsCorrectData() {

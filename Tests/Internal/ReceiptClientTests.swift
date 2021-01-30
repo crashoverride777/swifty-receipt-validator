@@ -14,7 +14,9 @@ class ReceiptClientTests: XCTestCase {
     // MARK: - Properties
 
     private var sessionManager: MockSessionManager!
-    
+    private let productionURL = "production.com"
+    private let sandboxURL = "sandbox.com"
+
     // MARK: - Life Cycle
        
     override func setUp() {
@@ -31,10 +33,11 @@ class ReceiptClientTests: XCTestCase {
     
     // MARK: Parameters
     
-    func test_setsCorrectParameters_production() {
+    func test_setsCorrectParameters_production() throws {
         let expectation = self.expectation(description: "Finished")
         let receiptURL: URL = .test
-        let receiptData = try! Data(contentsOf: receiptURL)
+
+        let receiptData = try Data(contentsOf: receiptURL)
         let expectedParameters = ReceiptClient.Parameters(
             data: receiptData.base64EncodedString(options: Data.Base64EncodingOptions(rawValue: 0)),
             excludeOldTransactions: false,
@@ -88,7 +91,7 @@ class ReceiptClientTests: XCTestCase {
         let expectedDictionaryResponse: [String: Any] = SRVReceiptResponse.mock(.subscription)
         
         sessionManager.stub.start = { (url, _) in
-            XCTAssertEqual(url, "production.com")
+            XCTAssertEqual(url, self.productionURL)
             expectation.fulfill()
             return .success(expectedDictionaryResponse.asData)
         }
@@ -105,14 +108,14 @@ class ReceiptClientTests: XCTestCase {
         waitForExpectations(timeout: 0.1)
     }
     
-    func test_fetch_success_testReceipt_callsProductionURLThanSandboxURL() {
+    func test_fetch_success_testReceipt_callsProductionURL_thanSandboxURL() {
         let expectation = self.expectation(description: "Finished")
         expectation.expectedFulfillmentCount = 2
         let expectedDictionaryResponse: [String: Any] = SRVReceiptResponse.mock(.sandbox)
         
         var count = 0
         sessionManager.stub.start = { (url, _) in
-            XCTAssertEqual(url, count == 0 ? "production.com" : "sandbox.com")
+            XCTAssertEqual(url, count == 0 ? self.productionURL : self.sandboxURL)
             count += 1
             expectation.fulfill()
             return .success(expectedDictionaryResponse.asData)
