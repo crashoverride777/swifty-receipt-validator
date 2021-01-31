@@ -10,7 +10,7 @@ A swift helper to handle app store receipt validation.
 
 - Test, Test, Test
 
-Please test this properly, including production mode which will use apples production server URL. Use xcode release mode to test this to make sure everything is working. This is not something you want take lightly, triple check purchases are working when your app is in release mode.
+Please test this properly, including production mode which will use apples production server URL. Use Xcode`s release mode to test this to make sure everything is working. This is not something you want take lightly, triple check purchases are working when your app is in release mode.
 
 ## Requirements
 
@@ -81,9 +81,8 @@ class SomeClass {
 
 Your own webserver would than send the received response to apples servers for validation
 
-`https://buy.itunes.apple.com/verifyReceipt`
-
-`https://sandbox.itunes.apple.com/verifyReceipt`
+- `https://buy.itunes.apple.com/verifyReceipt`
+- `https://sandbox.itunes.apple.com/verifyReceipt`
 
 and handle the response
 
