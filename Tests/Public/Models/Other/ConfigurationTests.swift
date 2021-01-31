@@ -20,7 +20,7 @@ class ConfigurationTests: XCTestCase {
     }
     
     func test_custom() {
-        let sessionConfiguration = URLSessionConfiguration()
+        let sessionConfiguration = URLSessionConfiguration.background(withIdentifier: "identifier")
         sessionConfiguration.httpAdditionalHeaders = ["key": "value"]
 
         let sut = SRVConfiguration(
