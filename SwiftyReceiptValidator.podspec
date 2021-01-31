@@ -3,7 +3,7 @@ Pod::Spec.new do |s|
 s.name = 'SwiftyReceiptValidator'
 s.version = '6.1.8'
 s.license = 'MIT'
-s.summary = 'A swift helper for in app purchase receipt validation.'
+s.summary = 'A Swift helper for in app purchase receipt validation.'
 
 s.homepage = 'https://github.com/crashoverride777/swifty-receipt-validator'
 s.authors = { 'Dominik Ringler' => 'overrideinteractive@icloud.com' }
