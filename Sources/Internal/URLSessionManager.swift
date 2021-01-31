@@ -9,9 +9,11 @@
 import Foundation
 
 public protocol URLSessionManagerType: AnyObject {
-    func start<T: Encodable>(withURL urlString: String,
-                             parameters: T,
-                             handler: @escaping (Result<Data, Error>) -> Void)
+    func start<T: Encodable>(
+        withURL urlString: String,
+        parameters: T,
+        handler: @escaping (Result<Data, Error>) -> Void
+    )
 }
 
 final class URLSessionManager {
@@ -30,10 +32,9 @@ final class URLSessionManager {
     private let encoder: JSONEncoder
     private var urlSession: URLSession?
     
-    // MARK: - Init
+    // MARK: - Initialization
     
-    init(sessionConfiguration: URLSessionConfiguration = .default,
-         encoder: JSONEncoder = JSONEncoder()) {
+    init(sessionConfiguration: URLSessionConfiguration, encoder: JSONEncoder) {
         self.sessionConfiguration = sessionConfiguration
         self.encoder = encoder
     }
@@ -43,19 +44,27 @@ final class URLSessionManager {
 
 extension URLSessionManager: URLSessionManagerType {
  
-    func start<T: Encodable>(withURL urlString: String,
-                             parameters: T,
-                             handler: @escaping (Result<Data, Error>) -> Void) {
+    func start<T: Encodable>(
+        withURL urlString: String,
+        parameters: T,
+        handler: @escaping (Result<Data, Error>) -> Void
+    ) {
         // Create url
         guard let url = URL(string: urlString) else {
             handler(.failure(SessionError.url))
             return
         }
         
-        // Setup url request
+        // Create url request
         var urlRequest = URLRequest(url: url)
+
+        // Set url request cache policy to ignore cache data
         urlRequest.cachePolicy = .reloadIgnoringCacheData
+
+        // Set url request http method to POST
         urlRequest.httpMethod = "POST"
+
+        // Set url request parameters
         do {
             urlRequest.httpBody = try encoder.encode(parameters)
         } catch {

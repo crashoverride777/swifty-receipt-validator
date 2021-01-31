@@ -68,7 +68,8 @@ class ReceiptURLFetcherTests: XCTestCase {
         let expectation = self.expectation(description: "Finished")
         let expectedURL: URL = .test
         fileManager.stub.fileExists = false
-        
+        refreshRequest.stub.start = .success(())
+
         let sut = makeSUT(appStoreReceiptURL: expectedURL)
         sut.fetch(refreshRequest: refreshRequest) { result in
             if case .success(let url) = result {
@@ -83,6 +84,7 @@ class ReceiptURLFetcherTests: XCTestCase {
     func test_fetch_noReceiptOnFile_refreshRequestError_returnsCorrectError() {
         let expectation = self.expectation(description: "Finished")
         let expectedError = URLError(.notConnectedToInternet)
+        fileManager.stub.fileExists = false
         refreshRequest.stub.start = .failure(expectedError)
         
         let sut = makeSUT()
@@ -99,8 +101,9 @@ class ReceiptURLFetcherTests: XCTestCase {
     func test_fetch_noReceiptOnFile_refreshRequestSuccess_stillNoReceipt_returnsCorrectError() {
         let expectation = self.expectation(description: "Finished")
         let expectedError: SRVError = .noReceiptFoundInBundle
-        refreshRequest.stub.hasReceiptAfterRequest = false
+        fileManager.stub.fileExists = false
         refreshRequest.stub.start = .success(())
+        refreshRequest.stub.hasReceiptAfterRequest = false
         
         let sut = makeSUT()
         sut.fetch(refreshRequest: refreshRequest) { result in

@@ -54,7 +54,7 @@ class ResponseValidatorTests: XCTestCase {
         let expectedResponse = makeResponse(statusCode: .jsonNotReadable)
         
         let sut = makeSUT()
-        sut.validatePurchase(in: expectedResponse, productId: "1") { result in
+        sut.validatePurchase(in: expectedResponse, productId: "123") { result in
             if case .failure(let error) = result {
                 XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
                 expectation.fulfill()
@@ -70,7 +70,7 @@ class ResponseValidatorTests: XCTestCase {
         let expectedResponse = makeResponseWithNilReceipt()
         
         let sut = makeSUT()
-        sut.validatePurchase(in: expectedResponse, productId: "1") { result in
+        sut.validatePurchase(in: expectedResponse, productId: "123") { result in
             if case .failure(let error) = result {
                 XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
                 expectation.fulfill()
@@ -87,7 +87,7 @@ class ResponseValidatorTests: XCTestCase {
         let expectedResponse = makeResponse()
         
         let sut = makeSUT()
-        sut.validatePurchase(in: expectedResponse, productId: "1") { result in
+        sut.validatePurchase(in: expectedResponse, productId: "123") { result in
             if case .failure(let error) = result {
                 XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
                 expectation.fulfill()
@@ -119,7 +119,7 @@ class ResponseValidatorTests: XCTestCase {
         let expectedResponse = makeResponse(cancellationDate: .test)
         
         let sut = makeSUT()
-        sut.validatePurchase(in: expectedResponse, productId: "1") { result in
+        sut.validatePurchase(in: expectedResponse, productId: "123") { result in
             if case .failure(let error) = result {
                 XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
                 expectation.fulfill()
@@ -244,7 +244,7 @@ private extension ResponseValidatorTests {
     }
     
     func makeResponse(statusCode: SRVStatusCode = .valid,
-                      productId: String = "1",
+                      productId: String = "123",
                       cancellationDate: Date? = nil) -> SRVReceiptResponse {
         .mock(
             statusCode: statusCode,
