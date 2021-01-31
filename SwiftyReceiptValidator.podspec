@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
 s.name = 'SwiftyReceiptValidator'
-s.version = '6.1.8'
+s.version = '6.1.9'
 s.license = 'MIT'
 s.summary = 'A Swift helper for in app purchase receipt validation.'
 
