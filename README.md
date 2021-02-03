@@ -44,7 +44,7 @@ pod 'SwiftyReceiptValidator'
 
 ### Manually 
 
-Altenatively you can drag the `Sources` folder and its containing files into your project.
+Alternatively you can drag the `Sources` folder and its containing files into your project.
 
 ## Usage
 
