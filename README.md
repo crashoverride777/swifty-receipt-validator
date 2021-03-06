@@ -1,11 +1,20 @@
-# Swifty Receipt Validator
-
 [![Swift 5.0](https://img.shields.io/badge/swift-5.0-ED523F.svg?style=flat)](https://swift.org/download/)
 [![Platform](https://img.shields.io/cocoapods/p/SwiftyReceiptValidator.svg?style=flat)]()
 [![SPM supported](https://img.shields.io/badge/SPM-supported-DE5C43.svg?style=flat)](https://swift.org/package-manager)
 [![CocoaPods Compatible](https://img.shields.io/cocoapods/v/SwiftyReceiptValidator.svg)](https://img.shields.io/cocoapods/v/SwiftyReceiptValidator.svg)
 
-A swift helper to handle app store receipt validation.
+# Swifty Receipt Validator
+
+A Swift library to handle app store receipt validation.
+
+- [Before you go live](#before-you-go-live)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Unit Tests](#unit-tests)
+- [StoreKit Alert Controllers](#storeKit-alert-controllers)
+- [Final Note](#final-note)
+- [License](#license)
 
 ## Before you go live
 
@@ -320,3 +329,7 @@ When you get to the purchase code and to the `.purchased` switch statement, Stor
 ## Final Note
 
 As per apples guidlines you should always first connect to apples production servers and than fall back on apples sandbox servers if needed. So keep this in mind when testing in sandbox mode, validation may take a bit longer due to this.
+
+## License
+
+Swifty Receipt Validator is released under the MIT license. [See LICENSE](https://github.com/crashoverride777/swifty-receipt-validator/blob/master/LICENSE) for details.
