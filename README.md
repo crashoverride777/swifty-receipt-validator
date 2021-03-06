@@ -3,7 +3,7 @@
 [![SPM supported](https://img.shields.io/badge/SPM-supported-DE5C43.svg?style=flat)](https://swift.org/package-manager)
 [![CocoaPods Compatible](https://img.shields.io/cocoapods/v/SwiftyReceiptValidator.svg)](https://img.shields.io/cocoapods/v/SwiftyReceiptValidator.svg)
 
-# Swifty Receipt Validator
+# SwiftyReceiptValidator
 
 A Swift library to handle App Store receipt validation.
 
@@ -332,4 +332,4 @@ As per apples guidlines you should always first connect to apples production ser
 
 ## License
 
-Swifty Receipt Validator is released under the MIT license. [See LICENSE](https://github.com/crashoverride777/swifty-receipt-validator/blob/master/LICENSE) for details.
+SwiftyReceiptValidator is released under the MIT license. [See LICENSE](https://github.com/crashoverride777/swifty-receipt-validator/blob/master/LICENSE) for details.
