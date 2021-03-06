@@ -11,7 +11,7 @@ A Swift library to handle App Store receipt validation.
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Unit Tests](#unit-tests)
+- [Testing](#testing)
 - [StoreKit Alert Controllers](#storeKit-alert-controllers)
 - [Final Note](#final-note)
 - [License](#license)
@@ -282,9 +282,9 @@ receiptValidator.validate(validationRequest) { result in
 }
 ```
 
-## Unit Tests
+## Testing
 
-In order to unit tests your in app purchase class it is recommended to always inject the type protocol into your class instead of the concret implementation
+In order to test your in app purchase class it is recommended to always inject the type protocol into your class instead of the concret implementation
 
 - Not Recommended
 ```swift
