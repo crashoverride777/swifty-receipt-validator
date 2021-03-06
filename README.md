@@ -5,7 +5,7 @@
 
 # Swifty Receipt Validator
 
-A Swift library to handle app store receipt validation.
+A Swift library to handle App Store receipt validation.
 
 - [Before you go live](#before-you-go-live)
 - [Requirements](#requirements)
