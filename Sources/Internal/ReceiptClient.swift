@@ -61,9 +61,9 @@ extension ReceiptClient: ReceiptClientType {
     func perform(_ request: ReceiptClientRequest, handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void) {
         do {
             // Prepare url session parameters
-            let receiptData = try Data(contentsOf: request.receiptURL)
+            let receiptData = try Data(contentsOf: request.receiptURL, options: .alwaysMapped)
             let parameters = Parameters(
-                data: receiptData.base64EncodedString(options: Data.Base64EncodingOptions(rawValue: 0)),
+                data: receiptData.base64EncodedString(options: []),
                 excludeOldTransactions: request.excludeOldTransactions,
                 password: request.sharedSecret
             )
