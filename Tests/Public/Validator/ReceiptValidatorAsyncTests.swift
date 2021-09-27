@@ -1,5 +1,12 @@
+//
+//  ReceiptValidatorAsyncTests.swift
+//  SwiftyReceiptValidatorTests
+//
+//  Created by Dominik Ringler on 27/09/2021.
+//  Copyright © 2019 Dominik. All rights reserved.
+//
+
 import XCTest
-import Combine
 @testable import SwiftyReceiptValidator
 
 @available(iOS 15, tvOS 15, macOS 12, *)
@@ -24,7 +31,7 @@ class ReceiptValidatorAsyncTests: ReceiptValidatorTests {
         }
     }
     
-    func test_validPurchasePublisher_failure_receiptFetcher_returnsCorrectError() async throws {
+    func test_validPurchasePublisher_failure_whenReceiptFetcherError_returnsCorrectError() async throws {
         let expectedError = URLError(.notConnectedToInternet)
         receiptURLFetcher.stub.fetchResult = { _ in .failure(.other(expectedError)) }
         let request = SRVPurchaseValidationRequest(productId: "1", sharedSecret: nil)
@@ -37,7 +44,7 @@ class ReceiptValidatorAsyncTests: ReceiptValidatorTests {
         }
     }
     
-    func test_validPurchasePublisher_failure_receiptClient_returnsCorrectError() async throws {
+    func test_validPurchasePublisher_failure_whenReceiptClientError_returnsCorrectError() async throws {
         let expectedError = URLError(.notConnectedToInternet)
         receiptClient.stub.validateResult = { (_, _, _) in .failure(.other(expectedError)) }
         let request = SRVPurchaseValidationRequest(productId: "1", sharedSecret: nil)
@@ -50,7 +57,7 @@ class ReceiptValidatorAsyncTests: ReceiptValidatorTests {
         }
     }
     
-    func test_validPurchasePublisher_failure_responseValidator_returnsCorrectError() async throws {
+    func test_validPurchasePublisher_failure_whenResponseValidatorError_returnsCorrectError() async throws {
         let expectedError: SRVError = .productIdNotMatching(.unknown)
         responseValidator.stub.validatePurchaseResult = { (_, _) in .failure(expectedError) }
         let request = SRVPurchaseValidationRequest(productId: "1", sharedSecret: nil)
@@ -89,7 +96,7 @@ class ReceiptValidatorAsyncTests: ReceiptValidatorTests {
         }
     }
     
-    func test_validSubscriptionPublisher_failure_receiptFetcher_returnsCorrectError() async throws {
+    func test_validSubscriptionPublisher_failure_whenReceiptFetcherError_returnsCorrectError() async throws {
         let expectedError = URLError(.notConnectedToInternet)
         receiptURLFetcher.stub.fetchResult = { _ in .failure(.other(expectedError)) }
         let request = SRVSubscriptionValidationRequest(
@@ -107,7 +114,7 @@ class ReceiptValidatorAsyncTests: ReceiptValidatorTests {
         }
     }
     
-    func test_validSubscriptionPublisher_failure_receiptClient_returnsCorrectError() async throws {
+    func test_validSubscriptionPublisher_failure_whenReceiptClientError_returnsCorrectError() async throws {
         let expectedError = URLError(.notConnectedToInternet)
         receiptClient.stub.validateResult = { (_, _, _) in .failure(.other(expectedError)) }
         let request = SRVSubscriptionValidationRequest(
@@ -125,7 +132,7 @@ class ReceiptValidatorAsyncTests: ReceiptValidatorTests {
         }
     }
     
-    func test_validSubscriptionPublisher_failure_responseValidator_returnsCorrectError() async throws {
+    func test_validSubscriptionPublisher_failure_whenResponseValidatorError_returnsCorrectError() async throws {
         let expectedError = URLError(.notConnectedToInternet)
         responseValidator.stub.validateSubscriptionResult = { (_, _) in .failure(.other(expectedError)) }
         let request = SRVSubscriptionValidationRequest(

@@ -32,7 +32,7 @@ class ReceiptURLFetcherTests: XCTestCase {
     
     // MARK: - Tests
 
-    func test_fetch_hasReceiptOnFile_returnsCorrectData() {
+    func test_fetch_whenReceiptOnFile_returnsCorrectData() {
         let expectation = XCTestExpectation(description: "Finished")
         let expectedURL: URL = .test
         fileManager.stub.fileExists = true
@@ -48,7 +48,7 @@ class ReceiptURLFetcherTests: XCTestCase {
         wait(for: [expectation], timeout: 0.1)
     }
     
-    func test_fetch_noReceiptOnFile_noRefreshRequest_returnsCorrectError() {
+    func test_fetch_whenNoReceiptOnFile_andNoRefreshRequest_returnsCorrectError() {
         let expectation = XCTestExpectation(description: "Finished")
         fileManager.stub.fileExists = false
         let expectedError: SRVError = .noReceiptFoundInBundle
@@ -64,7 +64,7 @@ class ReceiptURLFetcherTests: XCTestCase {
         wait(for: [expectation], timeout: 0.1)
     }
     
-    func test_fetch_noReceiptOnFile_refreshRequestSuccess_returnsCorrectData() {
+    func test_fetch_whenNoReceiptOnFile_andRefreshRequestSuccess_returnsCorrectData() {
         let expectation = XCTestExpectation(description: "Finished")
         let expectedURL: URL = .test
         fileManager.stub.fileExists = false
@@ -81,7 +81,7 @@ class ReceiptURLFetcherTests: XCTestCase {
         wait(for: [expectation], timeout: 0.1)
     }
     
-    func test_fetch_noReceiptOnFile_refreshRequestError_returnsCorrectError() {
+    func test_fetch_whenNoReceiptOnFile_andRefreshRequestError_returnsCorrectError() {
         let expectation = XCTestExpectation(description: "Finished")
         let expectedError = URLError(.notConnectedToInternet)
         fileManager.stub.fileExists = false
@@ -98,7 +98,7 @@ class ReceiptURLFetcherTests: XCTestCase {
         wait(for: [expectation], timeout: 0.1)
     }
     
-    func test_fetch_noReceiptOnFile_refreshRequestSuccess_stillNoReceipt_returnsCorrectError() {
+    func test_fetch_whenNoReceiptOnFile_andRefreshRequestSuccess_andStillNoReceipt_returnsCorrectError() {
         let expectation = XCTestExpectation(description: "Finished")
         let expectedError: SRVError = .noReceiptFoundInBundle
         fileManager.stub.fileExists = false

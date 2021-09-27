@@ -33,7 +33,7 @@ class ReceiptClientTests: XCTestCase {
     
     // MARK: Parameters
     
-    func test_setsCorrectParameters_production() throws {
+    func test_setsCorrectParameters() throws {
         let expectation = XCTestExpectation(description: "Finished")
         let receiptURL: URL = .test
 
@@ -86,7 +86,30 @@ class ReceiptClientTests: XCTestCase {
         wait(for: [expectation], timeout: 0.1)
     }
     
-    func test_fetch_success_productionReceipt_callsProductionURL() {
+    func test_fetch_success_whenNoDownloadID_returnsCorrectResponse() {
+        let expectation = XCTestExpectation(description: "Finished")
+        let expectedDictionaryResponse: [String: Any] = SRVReceiptResponse.mock(.noDownloadID)
+        let expectedResponse: SRVReceiptResponse = .mock(from: expectedDictionaryResponse)
+        sessionManager.stub.start = { (_, _) in .success(expectedDictionaryResponse.asData) }
+        
+        let request = ReceiptClientRequest(
+            receiptURL: .test,
+            sharedSecret: "secret",
+            excludeOldTransactions: false
+        )
+        
+        let sut = makeSUT()
+        sut.perform(request) { result in
+            if case .success(let response) = result {
+                XCTAssertEqual(response, expectedResponse)
+                expectation.fulfill()
+            }
+        }
+        
+        wait(for: [expectation], timeout: 0.1)
+    }
+    
+    func test_fetch_success_whenProductionReceipt_callsProductionURL() {
         let expectation = XCTestExpectation(description: "Finished")
         let expectedDictionaryResponse: [String: Any] = SRVReceiptResponse.mock(.subscription)
         
@@ -108,7 +131,7 @@ class ReceiptClientTests: XCTestCase {
         wait(for: [expectation], timeout: 0.1)
     }
     
-    func test_fetch_success_testReceipt_callsProductionURL_thanSandboxURL() {
+    func test_fetch_success_whenTestReceipt_callsProductionURL_thenSandboxURL() {
         let expectation = XCTestExpectation(description: "Finished")
         expectation.expectedFulfillmentCount = 2
         let expectedDictionaryResponse: [String: Any] = SRVReceiptResponse.mock(.sandbox)
@@ -133,7 +156,7 @@ class ReceiptClientTests: XCTestCase {
         wait(for: [expectation], timeout: 0.1)
     }
     
-    func test_fetch_failure_returnsCorrectError() {
+    func test_fetch_failure_whenConnectionError_returnsCorrectError() {
         let expectation = XCTestExpectation(description: "Finished")
         let expectedError = URLError(.notConnectedToInternet)
         sessionManager.stub.start = { (_, _) in .failure(expectedError) }
@@ -148,6 +171,28 @@ class ReceiptClientTests: XCTestCase {
         sut.perform(request) { result in
             if case .failure(let error) = result {
                 XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
+                expectation.fulfill()
+            }
+        }
+        
+        wait(for: [expectation], timeout: 0.1)
+    }
+    
+    func test_fetch_failure_whenInvalidResponse_returnsCorrectError() {
+        let expectation = XCTestExpectation(description: "Finished")
+        let expectedDictionaryResponse: [String: Any] = SRVReceiptResponse.mock(.invalid)
+        sessionManager.stub.start = { (_, _) in .success(expectedDictionaryResponse.asData) }
+        
+        let request = ReceiptClientRequest(
+            receiptURL: .test,
+            sharedSecret: "secret",
+            excludeOldTransactions: false
+        )
+        
+        let sut = makeSUT()
+        sut.perform(request) { result in
+            if case .failure(let error) = result {
+                XCTAssertEqual(error.localizedDescription, "The data couldn’t be read because it is missing.")
                 expectation.fulfill()
             }
         }

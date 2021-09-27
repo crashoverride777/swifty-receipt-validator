@@ -54,7 +54,7 @@ class ReceiptValidatorPublisherTests: ReceiptValidatorTests {
         wait(for: [expectation], timeout: 0.1)
     }
     
-    func test_validPurchasePublisher_failure_receiptFetcher_publishesCorrectError() {
+    func test_validPurchasePublisher_failure_whenReceiptFetcherError_publishesCorrectError() {
         let expectation = XCTestExpectation(description: "Finished")
         let expectedError = URLError(.notConnectedToInternet)
         receiptURLFetcher.stub.fetchResult = { _ in .failure(.other(expectedError)) }
@@ -76,7 +76,7 @@ class ReceiptValidatorPublisherTests: ReceiptValidatorTests {
         wait(for: [expectation], timeout: 0.1)
     }
     
-    func test_validPurchasePublisher_failure_receiptClient_publishesCorrectError() {
+    func test_validPurchasePublisher_failure_whenReceiptClientError_publishesCorrectError() {
         let expectation = XCTestExpectation(description: "Finished")
         let expectedError = URLError(.notConnectedToInternet)
         receiptClient.stub.validateResult = { (_, _, _) in .failure(.other(expectedError)) }
@@ -98,7 +98,7 @@ class ReceiptValidatorPublisherTests: ReceiptValidatorTests {
         wait(for: [expectation], timeout: 0.1)
     }
     
-    func test_validPurchasePublisher_failure_responseValidator_publishesCorrectError() {
+    func test_validPurchasePublisher_failure_whenResponseValidatorError_publishesCorrectError() {
         let expectation = XCTestExpectation(description: "Finished")
         let expectedError: SRVError = .productIdNotMatching(.unknown)
         responseValidator.stub.validatePurchaseResult = { (_, _) in .failure(expectedError) }
@@ -152,7 +152,7 @@ class ReceiptValidatorPublisherTests: ReceiptValidatorTests {
         wait(for: [expectation], timeout: 0.1)
     }
     
-    func test_validSubscriptionPublisher_failure_receiptFetcher_publishesCorrectError() {
+    func test_validSubscriptionPublisher_failure_whenReceiptFetcherError_publishesCorrectError() {
         let expectation = XCTestExpectation(description: "Finished")
         let expectedError = URLError(.notConnectedToInternet)
         receiptURLFetcher.stub.fetchResult = { _ in .failure(.other(expectedError)) }
@@ -179,7 +179,7 @@ class ReceiptValidatorPublisherTests: ReceiptValidatorTests {
         wait(for: [expectation], timeout: 0.1)
     }
     
-    func test_validSubscriptionPublisher_failure_receiptClient_publishesCorrectError() {
+    func test_validSubscriptionPublisher_failure_whenReceiptClientError_publishesCorrectError() {
         let expectation = XCTestExpectation(description: "Finished")
         let expectedError = URLError(.notConnectedToInternet)
         receiptClient.stub.validateResult = { (_, _, _) in .failure(.other(expectedError)) }
@@ -206,7 +206,7 @@ class ReceiptValidatorPublisherTests: ReceiptValidatorTests {
         wait(for: [expectation], timeout: 0.1)
     }
     
-    func test_validSubscriptionPublisher_failure_responseValidator_publishesCorrectError() {
+    func test_validSubscriptionPublisher_failure_whenResponseValidatorError_publishesCorrectError() {
         let expectation = XCTestExpectation(description: "Finished")
         let expectedError = URLError(.notConnectedToInternet)
         responseValidator.stub.validateSubscriptionResult = { (_, _) in .failure(.other(expectedError)) }

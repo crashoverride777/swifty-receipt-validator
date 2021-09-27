@@ -11,28 +11,16 @@ import Foundation
 
 extension SRVReceiptResponse {
     
-    enum JSONType {
-        case invalid
-        case subscription
-        case subscriptionExpired
-        case sandbox
-        
-        var name: String {
-            switch self {
-            case .invalid:
-                return "ReceiptResponseInvalidFormat"
-            case .subscription:
-                return "ReceiptResponseValidSubscription"
-            case .subscriptionExpired:
-                return "ReceiptResponseSubscriptionExpired"
-            case .sandbox:
-                return "ReceiptResponseSandbox"
-            }
-        }
+    enum JSONType: String {
+        case invalid             = "ReceiptResponseInvalidFormat"
+        case subscription        = "ReceiptResponseValidSubscription"
+        case subscriptionExpired = "ReceiptResponseSubscriptionExpired"
+        case sandbox             = "ReceiptResponseSandbox"
+        case noDownloadID        = "ReceiptResponseMissingDownloadID"
     }
     
     static func mock(_ type: JSONType) -> [String: Any] {
-        guard let path = Bundle.module.path(forResource: type.name, ofType: "json") else {
+        guard let path = Bundle.module.path(forResource: type.rawValue, ofType: "json") else {
             fatalError("Invalid path to JSON file in bundle")
         }
         

@@ -48,7 +48,7 @@ class ResponseValidatorTests: XCTestCase {
         wait(for: [expectation], timeout: 0.1)
     }
     
-    func test_validatePurchase_failure_basicValidation_statusCode_returnsCorrectError() {
+    func test_validatePurchase_failure_whenInvalidStatusCode_returnsCorrectError() {
         let expectation = XCTestExpectation(description: "Finished")
         let expectedError: SRVError = .invalidStatusCode(.jsonNotReadable)
         let expectedResponse = makeResponse(statusCode: .jsonNotReadable)
@@ -64,7 +64,7 @@ class ResponseValidatorTests: XCTestCase {
         wait(for: [expectation], timeout: 0.1)
     }
     
-    func test_validatePurchase_failure_basicValidation_unwrap_returnsCorrectError() {
+    func test_validatePurchase_failure_whenNoReceiptFoundInResponse_returnsCorrectError() {
         let expectation = XCTestExpectation(description: "Finished")
         let expectedError: SRVError = .noReceiptFoundInResponse(.valid)
         let expectedResponse = makeResponseWithNilReceipt()
@@ -80,7 +80,7 @@ class ResponseValidatorTests: XCTestCase {
         wait(for: [expectation], timeout: 0.1)
     }
     
-    func test_validatePurchase_failure_basicValidation_bundleIdNotMatching_returnsCorrectError() {
+    func test_validatePurchase_failure_whenBundleIdNotMatching_returnsCorrectError() {
         let expectation = XCTestExpectation(description: "Finished")
         bundle.stub.bundleIdentifier = "invalid"
         let expectedError: SRVError = .bundleIdNotMatching(.valid)
@@ -97,7 +97,7 @@ class ResponseValidatorTests: XCTestCase {
         wait(for: [expectation], timeout: 0.1)
     }
     
-    func test_validatePurchase_failure_productIdNotMatching_returnsCorrectError() {
+    func test_validatePurchase_failure_whenProductIdNotMatching_returnsCorrectError() {
         let expectation = XCTestExpectation(description: "Finished")
         let expectedError: SRVError = .productIdNotMatching(.valid)
         let expectedResponse = makeResponse()
@@ -113,7 +113,7 @@ class ResponseValidatorTests: XCTestCase {
         wait(for: [expectation], timeout: 0.1)
     }
     
-    func test_validatePurchase_failure_purchaseCancelled_returnsCorrectError() {
+    func test_validatePurchase_failure_whenPurchaseCancelled_returnsCorrectError() {
         let expectation = XCTestExpectation(description: "Finished")
         let expectedError: SRVError = .purchaseCancelled(.valid)
         let expectedResponse = makeResponse(cancellationDate: .test)
@@ -150,7 +150,7 @@ class ResponseValidatorTests: XCTestCase {
         wait(for: [expectation], timeout: 0.1)
     }
     
-    func test_validateSubscription_success_noValidSubscriptionsFound_returnsCorrectResponse() {
+    func test_validateSubscription_success_whenNoValidSubscriptionsFound_returnsCorrectResponse() {
         let expectation = XCTestExpectation(description: "Finished")
         let expectedReceiptResponse = makeEmptyResponse()
         let expectedValidationResponse: SRVSubscriptionValidationResponse = .mock(
@@ -169,7 +169,7 @@ class ResponseValidatorTests: XCTestCase {
         wait(for: [expectation], timeout: 0.1)
     }
     
-    func test_validateSubscription_failure_basicValidation_statusCode_returnsCorrectError() {
+    func test_validateSubscription_failure_whenInvalidStatusCode_returnsCorrectError() {
         let expectation = XCTestExpectation(description: "Finished")
         let expectedError: SRVError = .invalidStatusCode(.jsonNotReadable)
         let expectedResponse = makeResponse(statusCode: .jsonNotReadable)
@@ -185,7 +185,7 @@ class ResponseValidatorTests: XCTestCase {
         wait(for: [expectation], timeout: 0.1)
     }
     
-    func test_validateSubscription_failure_basicValidation_unwrap_returnsCorrectError() {
+    func test_validateSubscription_failure_whenNoReceiptFoundInResponse_returnsCorrectError() {
         let expectation = XCTestExpectation(description: "Finished")
         let expectedError: SRVError = .noReceiptFoundInResponse(.jsonNotReadable)
         let expectedResponse = makeResponseWithNilReceipt()
@@ -201,7 +201,7 @@ class ResponseValidatorTests: XCTestCase {
         wait(for: [expectation], timeout: 0.1)
     }
     
-    func test_validateSubscription_failure_basicValidation_bundleIdNotMatching_returnsCorrectError() {
+    func test_validateSubscription_failure_whenBundleIdNotMatching_returnsCorrectError() {
         let expectation = XCTestExpectation(description: "Finished")
         bundle.stub.bundleIdentifier = "invalid"
         let expectedError: SRVError = .bundleIdNotMatching(.valid)
@@ -218,7 +218,7 @@ class ResponseValidatorTests: XCTestCase {
         wait(for: [expectation], timeout: 0.1)
     }
     
-    func test_validateSubscription_failure_statusCodeExpired_returnsCorrectError() {
+    func test_validateSubscription_failure_whenSubscriptioniOS6StyleExpired_returnsCorrectError() {
         let expectation = XCTestExpectation(description: "Finished")
         let expectedError: SRVError = .subscriptioniOS6StyleExpired(.subscriptioniOS6StyleExpired)
         let expectedResponse = makeResponse(statusCode: .subscriptioniOS6StyleExpired)
