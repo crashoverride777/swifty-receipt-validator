@@ -17,7 +17,7 @@ public extension SRVReceipt {
         bundleId: String = "test.com",
         applicationVersion: String = "1.0",
         originalApplicationVersion: String = "1.0",
-        downloadId: Int = 2,
+        downloadId: Int? = 2,
         versionExternalIdentifier: Int = 3,
         receiptCreationDate: Date = Date().addingTimeInterval(-20000),
         expirationDate: Date? = Date().addingTimeInterval(20000),

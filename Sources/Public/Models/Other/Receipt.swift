@@ -22,7 +22,7 @@ public struct SRVReceipt: Codable, Equatable {
     // The version of the app that was originally purchased. This corresponds to the value of CFBundleVersion (in iOS) or CFBundleShortVersionString (in OS X) in the Info.plist file when the purchase was originally made.
     public let originalApplicationVersion: String
     // The download id of the receipt
-    public let downloadId: Int
+    public let downloadId: Int?
     // An arbitrary number that uniquely identifies a revision of your application. This key is not present for receipts created in the test environment.
     public let versionExternalIdentifier: Int
     // The date when the receipt was created
