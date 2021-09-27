@@ -44,10 +44,10 @@ public protocol SwiftyReceiptValidatorType {
     @available(iOS 13, tvOS 13, macOS 10.15, *)
     func validatePublisher(for request: SRVSubscriptionValidationRequest) -> AnyPublisher<SRVSubscriptionValidationResponse, SRVError>
     
-    @available(iOS 15, tvOS 15, macOS 11, *)
+    @available(iOS 15, tvOS 15, macOS 12, *)
     func validate(_ request: SRVPurchaseValidationRequest) async throws -> SRVReceiptResponse
 
-    @available(iOS 15, tvOS 15, macOS 11, *)
+    @available(iOS 15, tvOS 15, macOS 12, *)
     func validate(_ request: SRVSubscriptionValidationRequest) async throws -> SRVSubscriptionValidationResponse
 }
 
@@ -129,7 +129,7 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
     ///
     /// - parameter request: The request configuration.
     /// - returns: The SRVReceiptResponse if no error thrown.
-    @available(iOS 15, tvOS 15, macOS 11, *)
+    @available(iOS 15, tvOS 15, macOS 12, *)
     public func validate(_ request: SRVPurchaseValidationRequest) async throws -> SRVReceiptResponse {
         try await withCheckedThrowingContinuation { [weak self] continuation in
             guard let self = self else { return }
@@ -186,7 +186,7 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
     ///
     /// - parameter request: The request configuration.
     /// - returns: The SRVSubscriptionValidationResponse if no error thrown.
-    @available(iOS 15, tvOS 15, macOS 11, *)
+    @available(iOS 15, tvOS 15, macOS 12, *)
     public func validate(_ request: SRVSubscriptionValidationRequest) async throws -> SRVSubscriptionValidationResponse {
         try await withCheckedThrowingContinuation { [weak self] continuation in
             guard let self = self else { return }
