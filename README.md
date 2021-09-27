@@ -57,7 +57,7 @@ Alternatively you can drag the `Sources` folder and its containing files into yo
 
 ## Usage
 
-### Add import (if using cocoaPods or SwiftPackageManager)
+### Add import (if using CocoaPods or SwiftPackageManager)
 
 - Add the import statement to your swift file(s) when you installed via SwiftPackageManager or CocoaPods
 
@@ -94,7 +94,7 @@ Your own webserver would than send the received response to apples servers for v
 - `https://buy.itunes.apple.com/verifyReceipt`
 - `https://sandbox.itunes.apple.com/verifyReceipt`
 
-and handle the response
+and handle the response and then send it back to the iOS app for final validation.
 
 - Standard Configuration (Not Recommended)
 
@@ -116,7 +116,6 @@ class SomeClass {
 
 ```swift
 extension SomeClass: SKPaymentTransactionObserver {
-
     func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
         transactions.forEach { transaction in
             switch transaction.transactionState {
@@ -177,7 +176,7 @@ Note: There is also `async/await` support for this method if you are targeting i
 
 ```swift
 do {
-    let receiptResponse = try await receiptValidator.validate(for: validationRequest)
+    let response = try await receiptValidator.validate(validationRequest)
     print(response)
 } catch {
     print(error)
@@ -208,7 +207,7 @@ receiptValidator.validate(validationRequest) { result in
         if response.validSubscriptionReceipts.isEmpty {
            // disable subscription features etc
         } else {
-           // Validate subscription receipts are sorted by latest expiry date
+           // Valid subscription receipts are sorted by latest expiry date
            // enable subscription features etc
         }
         
@@ -233,11 +232,11 @@ Setting `refreshLocalReceiptIfNeeded` to `true` will create a `SKReceiptRefreshR
 
 I would recommend to always set this flag to `false` for the following reasons.
 1. Creating a `SKReceiptRefreshRequest` will always show an iTunes password prompt which might not be wanted in your apps flow.
-2. When you call this at app launch you can handle the return `SRVError.noReceiptFoundInBundle` error discretly.
+2. When you call this at app launch you can handle the returned `SRVError.noReceiptFoundInBundle` error discretly.
 3. Once a user made an in app purchase there should always be a receipt in your apps bundle.
 4. Users re-installing your app which have an existing subscription should use the restore functionality in your app which is a requirement when using in app purchases (https://developer.apple.com/documentation/storekit/skpaymentqueue/1506123-restorecompletedtransactions).
 
-Note: There is also `Combine` support for this method if you are targeting iOS 13 and above
+Note: There is also `Combine` support for this method if you are targeting iOS 13 and above.
 
 ```swift
 let cancellable = receiptValidator
@@ -254,7 +253,7 @@ Note: There is also `async/await` support for this method if you are targeting i
 
 ```swift
 do {
-    let receiptResponse = try await receiptValidator.validate(for: validationRequest)
+    let response = try await receiptValidator.validate(validationRequest)
     print(response)
 } catch {
     print(error)
@@ -274,9 +273,9 @@ receiptValidator.validate(validationRequest) { result in
     
         let isAutoRenewOn: Bool
         if let pendingRenewalInfo = response.receiptResponse.pendingRenewalInfo, !pendingRenewalInfo.isEmpty {
-            isAutoRenewOn = pendingRenewalInfo.first { $0.autoRenewStatus == .on } != nil
+            isAutoRenewOn = pendingRenewalInfo.contains(where: { $0.autoRenewStatus == .on })
         } else {
-            isAutoRenewOn = response.validSubscriptionReceipts.first { $0.autoRenewStatus == .on } != nil
+            isAutoRenewOn = response.validSubscriptionReceipts.contains(where: { $0.autoRenewStatus == .on })
         }
     
     case .failure(let error):
@@ -311,7 +310,7 @@ In order to test your in app purchase class it is recommended to always inject t
 - Not Recommended
 ```swift
 class SomeClass {
-    let receiptValidator: SwiftyReceiptValidator
+    private let receiptValidator: SwiftyReceiptValidator
     init(receiptValidator: SwiftyReceiptValidator) { ... }
 }
 ```
@@ -319,7 +318,7 @@ class SomeClass {
 - Recommended
 ```swift
 class SomeClass {
-    let receiptValidator: SwiftyReceiptValidatorType
+    private let receiptValidator: SwiftyReceiptValidatorType
     init(receiptValidator: SwiftyReceiptValidatorType) { ... }
 }
 ```
@@ -327,10 +326,12 @@ class SomeClass {
 - UnitTest example
 ```swift
 class MockReceiptValidator { }
-extension MockReceiptValidator: SwiftyReceiptValidatorType { ... }
+extension MockReceiptValidator: SwiftyReceiptValidatorType { 
+    // implement SwiftyReceiptValidatorType protocol methods and return mocks/fake data (see Mocking Models below)
+ }
 
 class SomeClassTests {
-    func test() {
+    func testSomething() {
         let sut = SomeClass(receiptValidator: MockReceiptValidator())
     }
 }
