@@ -166,11 +166,22 @@ Note: There is also `Combine` support for this method if you are targeting iOS 1
 let cancellable = receiptValidator
     .validatePublisher(for: validationRequest)
     .map { response in
-        // handle response
+        print(response)
     }
     .mapError { error in
-        // handle error
+        print(error)
     }
+```
+
+Note: There is also `async/await` support for this method if you are targeting iOS 15 and above.
+
+```swift
+do {
+    let receiptResponse = try await receiptValidator.validate(for: validationRequest)
+    print(response)
+} catch {
+    print(error)
+}
 ```
 
 ### Validate Subscriptions
@@ -232,11 +243,22 @@ Note: There is also `Combine` support for this method if you are targeting iOS 1
 let cancellable = receiptValidator
     .validatePublisher(for: validationRequest)
     .map { response in
-        // handle response
+        print(response)
     }
     .mapError { error in
-        // handle error
+        print(error)
     }
+```
+
+Note: There is also `async/await` support for this method if you are targeting iOS 15 and above.
+
+```swift
+do {
+    let receiptResponse = try await receiptValidator.validate(for: validationRequest)
+    print(response)
+} catch {
+    print(error)
+}
 ```
 
 ### Check auto-renew status
