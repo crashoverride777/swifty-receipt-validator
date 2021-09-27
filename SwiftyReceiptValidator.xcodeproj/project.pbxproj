@@ -112,35 +112,19 @@
 			path = Responses;
 			sourceTree = "<group>";
 		};
-		6AD83A8223D4A5B500D3919C /* Errors */ = {
+		6ADEB8B62200859000370C71 /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				6ACC6253235136150085A42F /* Error.swift */,
-			);
-			path = Errors;
-			sourceTree = "<group>";
-		};
-		6AD83A8323D4A5C500D3919C /* Other */ = {
-			isa = PBXGroup;
-			children = (
 				6A53FC0523D36AAD00E7D814 /* Configuration.swift */,
 				6ACC6252235136150085A42F /* Receipt.swift */,
 				6ACC6255235136150085A42F /* ReceiptInApp.swift */,
 				6A53FBE023D321FD00E7D814 /* StatusCode.swift */,
 				6AD9353B2358FA7000E75ED5 /* AutoRenewStatus.swift */,
 				6ACC6254235136150085A42F /* PendingRenewalInfo.swift */,
-			);
-			path = Other;
-			sourceTree = "<group>";
-		};
-		6ADEB8B62200859000370C71 /* Models */ = {
-			isa = PBXGroup;
-			children = (
 				6A436B5E23EEDE9700D5F5EA /* Mocks */,
-				6AD83A8223D4A5B500D3919C /* Errors */,
 				6AD83A7723D4A16000D3919C /* Requests */,
 				6AD83A8123D4A5A200D3919C /* Responses */,
-				6AD83A8323D4A5C500D3919C /* Other */,
 			);
 			path = Models;
 			sourceTree = "<group>";
