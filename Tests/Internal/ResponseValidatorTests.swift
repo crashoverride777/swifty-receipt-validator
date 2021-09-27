@@ -33,7 +33,7 @@ class ResponseValidatorTests: XCTestCase {
     // MARK: Validate Purchase
 
     func test_validatePurchase_success_returnsCorrectData() {
-        let expectation = self.expectation(description: "Finished")
+        let expectation = XCTestExpectation(description: "Finished")
         let productId = "123"
         let expectedResponse = makeResponse(productId: productId)
         
@@ -45,11 +45,11 @@ class ResponseValidatorTests: XCTestCase {
             }
         }
         
-        waitForExpectations(timeout: 0.1)
+        wait(for: [expectation], timeout: 0.1)
     }
     
     func test_validatePurchase_failure_basicValidation_statusCode_returnsCorrectError() {
-        let expectation = self.expectation(description: "Finished")
+        let expectation = XCTestExpectation(description: "Finished")
         let expectedError: SRVError = .invalidStatusCode(.jsonNotReadable)
         let expectedResponse = makeResponse(statusCode: .jsonNotReadable)
         
@@ -61,11 +61,11 @@ class ResponseValidatorTests: XCTestCase {
             }
         }
         
-        waitForExpectations(timeout: 0.1)
+        wait(for: [expectation], timeout: 0.1)
     }
     
     func test_validatePurchase_failure_basicValidation_unwrap_returnsCorrectError() {
-        let expectation = self.expectation(description: "Finished")
+        let expectation = XCTestExpectation(description: "Finished")
         let expectedError: SRVError = .noReceiptFoundInResponse(.valid)
         let expectedResponse = makeResponseWithNilReceipt()
         
@@ -77,11 +77,11 @@ class ResponseValidatorTests: XCTestCase {
             }
         }
         
-        waitForExpectations(timeout: 0.1)
+        wait(for: [expectation], timeout: 0.1)
     }
     
     func test_validatePurchase_failure_basicValidation_bundleIdNotMatching_returnsCorrectError() {
-        let expectation = self.expectation(description: "Finished")
+        let expectation = XCTestExpectation(description: "Finished")
         bundle.stub.bundleIdentifier = "invalid"
         let expectedError: SRVError = .bundleIdNotMatching(.valid)
         let expectedResponse = makeResponse()
@@ -94,11 +94,11 @@ class ResponseValidatorTests: XCTestCase {
             }
         }
         
-        waitForExpectations(timeout: 0.1)
+        wait(for: [expectation], timeout: 0.1)
     }
     
     func test_validatePurchase_failure_productIdNotMatching_returnsCorrectError() {
-        let expectation = self.expectation(description: "Finished")
+        let expectation = XCTestExpectation(description: "Finished")
         let expectedError: SRVError = .productIdNotMatching(.valid)
         let expectedResponse = makeResponse()
         
@@ -110,11 +110,11 @@ class ResponseValidatorTests: XCTestCase {
             }
         }
         
-        waitForExpectations(timeout: 0.1)
+        wait(for: [expectation], timeout: 0.1)
     }
     
     func test_validatePurchase_failure_purchaseCancelled_returnsCorrectError() {
-        let expectation = self.expectation(description: "Finished")
+        let expectation = XCTestExpectation(description: "Finished")
         let expectedError: SRVError = .purchaseCancelled(.valid)
         let expectedResponse = makeResponse(cancellationDate: .test)
         
@@ -126,13 +126,13 @@ class ResponseValidatorTests: XCTestCase {
             }
         }
         
-        waitForExpectations(timeout: 0.1)
+        wait(for: [expectation], timeout: 0.1)
     }
     
     // MARK: Validate Subscription
 
     func test_validateSubscription_success_returnsCorrectData() {
-        let expectation = self.expectation(description: "Finished")
+        let expectation = XCTestExpectation(description: "Finished")
         let expectedReceiptResponse = makeResponse()
         let expectedValidationResponse: SRVSubscriptionValidationResponse = .mock(
             validReceipts: expectedReceiptResponse.validSubscriptionReceipts(now: .test),
@@ -147,11 +147,11 @@ class ResponseValidatorTests: XCTestCase {
             }
         }
         
-        waitForExpectations(timeout: 0.1)
+        wait(for: [expectation], timeout: 0.1)
     }
     
     func test_validateSubscription_success_noValidSubscriptionsFound_returnsCorrectResponse() {
-        let expectation = self.expectation(description: "Finished")
+        let expectation = XCTestExpectation(description: "Finished")
         let expectedReceiptResponse = makeEmptyResponse()
         let expectedValidationResponse: SRVSubscriptionValidationResponse = .mock(
             validReceipts: expectedReceiptResponse.validSubscriptionReceipts(now: .test),
@@ -166,11 +166,11 @@ class ResponseValidatorTests: XCTestCase {
             }
         }
           
-        waitForExpectations(timeout: 0.1)
+        wait(for: [expectation], timeout: 0.1)
     }
     
     func test_validateSubscription_failure_basicValidation_statusCode_returnsCorrectError() {
-        let expectation = self.expectation(description: "Finished")
+        let expectation = XCTestExpectation(description: "Finished")
         let expectedError: SRVError = .invalidStatusCode(.jsonNotReadable)
         let expectedResponse = makeResponse(statusCode: .jsonNotReadable)
         
@@ -182,11 +182,11 @@ class ResponseValidatorTests: XCTestCase {
             }
         }
         
-        waitForExpectations(timeout: 0.1)
+        wait(for: [expectation], timeout: 0.1)
     }
     
     func test_validateSubscription_failure_basicValidation_unwrap_returnsCorrectError() {
-        let expectation = self.expectation(description: "Finished")
+        let expectation = XCTestExpectation(description: "Finished")
         let expectedError: SRVError = .noReceiptFoundInResponse(.jsonNotReadable)
         let expectedResponse = makeResponseWithNilReceipt()
         
@@ -198,11 +198,11 @@ class ResponseValidatorTests: XCTestCase {
             }
         }
         
-        waitForExpectations(timeout: 0.1)
+        wait(for: [expectation], timeout: 0.1)
     }
     
     func test_validateSubscription_failure_basicValidation_bundleIdNotMatching_returnsCorrectError() {
-        let expectation = self.expectation(description: "Finished")
+        let expectation = XCTestExpectation(description: "Finished")
         bundle.stub.bundleIdentifier = "invalid"
         let expectedError: SRVError = .bundleIdNotMatching(.valid)
         let expectedResponse = makeResponse()
@@ -215,11 +215,11 @@ class ResponseValidatorTests: XCTestCase {
             }
         }
         
-        waitForExpectations(timeout: 0.1)
+        wait(for: [expectation], timeout: 0.1)
     }
     
     func test_validateSubscription_failure_statusCodeExpired_returnsCorrectError() {
-        let expectation = self.expectation(description: "Finished")
+        let expectation = XCTestExpectation(description: "Finished")
         let expectedError: SRVError = .subscriptioniOS6StyleExpired(.subscriptioniOS6StyleExpired)
         let expectedResponse = makeResponse(statusCode: .subscriptioniOS6StyleExpired)
         
@@ -231,7 +231,7 @@ class ResponseValidatorTests: XCTestCase {
             }
         }
         
-        waitForExpectations(timeout: 0.1)
+        wait(for: [expectation], timeout: 0.1)
     }
 }
 
