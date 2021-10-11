@@ -24,7 +24,7 @@ Please test this properly, including production mode which will use apples produ
 
 ## Requirements
 
-- iOS 11.4+
+- iOS 12.0+
 - Swift 5.0+
 
 ## Installation
