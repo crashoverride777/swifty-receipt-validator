@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B4507827281F4C2F0030B001"
-               BuildableName = "SwiftyReceiptValidator.framework"
-               BlueprintName = "SwiftyReceiptValidator tvOS"
+               BlueprintIdentifier = "B4D696FD281F514000DA13C0"
+               BuildableName = "SwiftyReceiptValidator_iOS.framework"
+               BlueprintName = "SwiftyReceiptValidator iOS"
                ReferencedContainer = "container:SwiftyReceiptValidator.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -50,9 +50,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "B4507827281F4C2F0030B001"
-            BuildableName = "SwiftyReceiptValidator.framework"
-            BlueprintName = "SwiftyReceiptValidator tvOS"
+            BlueprintIdentifier = "B4D696FD281F514000DA13C0"
+            BuildableName = "SwiftyReceiptValidator_iOS.framework"
+            BlueprintName = "SwiftyReceiptValidator iOS"
             ReferencedContainer = "container:SwiftyReceiptValidator.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

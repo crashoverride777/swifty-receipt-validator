@@ -1,19 +1,19 @@
 //
 //  SwiftyReceiptValidator_iOS.h
-//  SwiftyReceiptValidator
+//  SwiftyReceiptValidator iOS
 //
-//  Created by Dominik on 03/10/2016.
-//  Copyright © 2016 Dominik. All rights reserved.
+//  Created by Dominik on 02/05/2022.
+//  Copyright © 2022 Dominik. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
 //! Project version number for SwiftyReceiptValidator_iOS.
-FOUNDATION_EXPORT double SwiftyReceiptValidatorVersionNumber;
+FOUNDATION_EXPORT double SwiftyReceiptValidator_iOSVersionNumber;
 
 //! Project version string for SwiftyReceiptValidator_iOS.
-FOUNDATION_EXPORT const unsigned char SwiftyReceiptValidatorVersionString[];
+FOUNDATION_EXPORT const unsigned char SwiftyReceiptValidator_iOSVersionString[];
 
-// In this header, you should import all the public headers of your framework using statements like #import <SwiftyReceiptValidator/PublicHeader.h>
+// In this header, you should import all the public headers of your framework using statements like #import <SwiftyReceiptValidator_iOS/PublicHeader.h>
 
 
