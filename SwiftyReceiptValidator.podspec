@@ -8,9 +8,12 @@ s.summary = 'A Swift library for in app purchase receipt validation.'
 s.homepage = 'https://github.com/crashoverride777/swifty-receipt-validator'
 s.authors = { 'Dominik Ringler' => 'overrideinteractive@icloud.com' }
 
-s.swift_version = '5.0'
+s.ios.deployment_target = '12.4'
+s.tvos.deployment_target = '12.4'
+s.osx.deployment_target = '10.15'
+
+s.swift_versions = ['5.3', '5.4', '5.5', '5.6']
 s.requires_arc = true
-s.ios.deployment_target = '12.0'
 
 s.source = {
     :git => 'https://github.com/crashoverride777/swifty-receipt-validator.git',
