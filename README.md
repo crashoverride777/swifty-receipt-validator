@@ -57,7 +57,7 @@ Alternatively you can drag the `Sources` folder and its containing files into yo
 
 ## Usage
 
-### Add import (if using CocoaPods or SwiftPackageManager)
+### Add import (SwiftPackageManager or CocoaPods)
 
 - Add the import statement to your swift file(s) when you installed via SwiftPackageManager or CocoaPods
 
@@ -234,7 +234,7 @@ I would recommend to always set this flag to `false` for the following reasons.
 1. Creating a `SKReceiptRefreshRequest` will always show an iTunes password prompt which might not be wanted in your apps flow.
 2. When you call this at app launch you can handle the returned `SRVError.noReceiptFoundInBundle` error discretly.
 3. Once a user made an in app purchase there should always be a receipt in your apps bundle.
-4. Users re-installing your app which have an existing subscription should use the restore functionality in your app which is a requirement when using in app purchases. This will add the receipt(s) in your apps bundle and then subscriptions can be validated. (https://developer.apple.com/documentation/storekit/skpaymentqueue/1506123-restorecompletedtransactions).
+4. Users re-installing your app which have an existing subscription should use the restore functionality in your app which is a requirement when using in app purchases. This will add the receipt(s) in your apps bundle and then subscriptions can be validated afterwards. (https://developer.apple.com/documentation/storekit/skpaymentqueue/1506123-restorecompletedtransactions).
 
 Note: There is also `Combine` support for this method if you are targeting iOS 13 and above.
 
@@ -351,7 +351,8 @@ When you get to the purchase code and to the `.purchased` switch statement, Stor
 
 ## Final Note
 
-As per apples guidlines you should always first connect to apples production servers and than fall back on apples sandbox servers if needed. So keep this in mind when testing in sandbox mode, validation may take a bit longer due to this.
+As per Apples guidlines you should always first connect to apples production servers and than fall back on apples sandbox servers if needed.
+So keep this in mind when testing in sandbox mode, validation may take a bit longer due to this.
 
 ## License
 
