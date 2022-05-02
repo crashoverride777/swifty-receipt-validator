@@ -2,7 +2,7 @@
 //  SwiftyReceiptValidator_macOS.h
 //  SwiftyReceiptValidator
 //
-//  Created by Dominik on 02/05/2022.
+//  Created by Dominik Ringler on 02/05/2022.
 //  Copyright © 2022 Dominik. All rights reserved.
 //
 

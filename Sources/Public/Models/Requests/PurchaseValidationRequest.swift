@@ -1,11 +1,3 @@
-//
-//  PurchaseValidationRequest.swift
-//  SwiftyReceiptValidator
-//
-//  Created by Dominik Ringler on 19/01/2020.
-//  Copyright © 2020 Dominik. All rights reserved.
-//
-
 import Foundation
 
 public struct SRVPurchaseValidationRequest {

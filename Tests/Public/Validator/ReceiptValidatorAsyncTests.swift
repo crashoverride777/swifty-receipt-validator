@@ -1,11 +1,3 @@
-//
-//  ReceiptValidatorAsyncTests.swift
-//  SwiftyReceiptValidatorTests
-//
-//  Created by Dominik Ringler on 27/09/2021.
-//  Copyright © 2019 Dominik. All rights reserved.
-//
-
 import XCTest
 @testable import SwiftyReceiptValidator
 

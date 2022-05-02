@@ -1,11 +1,3 @@
-//
-//  ResponseValidator.swift
-//  SwiftyReceiptValidator
-//
-//  Created by Dominik Ringler on 14/04/2019.
-//  Copyright © 2019 Dominik. All rights reserved.
-//
-
 import Foundation
 
 protocol ResponseValidatorType: AnyObject {

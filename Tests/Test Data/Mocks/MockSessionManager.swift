@@ -1,11 +1,3 @@
-//
-//  MockSessionManager.swift
-//  SwiftyReceiptValidatorTests
-//
-//  Created by Dominik Ringler on 15/08/2019.
-//  Copyright © 2019 Dominik. All rights reserved.
-//
-
 import Foundation
 @testable import SwiftyReceiptValidator
 
