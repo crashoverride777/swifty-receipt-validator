@@ -16,7 +16,7 @@ A Swift library to handle App Store receipt validation.
 - [Final Note](#final-note)
 - [License](#license)
 
-## iOS 15 In App Purchase API
+## iOS 15
 
 Apple has released a new in app purchase API with iOS 15 which does not require receipt validation anymore. If your app supports iOS 15 and higher I would highly recommend to implement this new API.
 
