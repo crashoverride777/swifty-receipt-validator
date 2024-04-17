@@ -1,4 +1,4 @@
-[![Swift 5.0](https://img.shields.io/badge/swift-5.0-ED523F.svg?style=flat)](https://swift.org/download/)
+[![Swift 5.8](https://img.shields.io/badge/swift-5.8-ED523F.svg?style=flat)](https://swift.org/download/)
 [![Platform](https://img.shields.io/cocoapods/p/SwiftyReceiptValidator.svg?style=flat)]()
 [![SPM supported](https://img.shields.io/badge/SPM-supported-DE5C43.svg?style=flat)](https://swift.org/package-manager)
 [![CocoaPods Compatible](https://img.shields.io/cocoapods/v/SwiftyReceiptValidator.svg)](https://img.shields.io/cocoapods/v/SwiftyReceiptValidator.svg)
@@ -7,6 +7,7 @@
 
 A Swift library to handle App Store receipt validation.
 
+- [iOS 15](#iOS_15)
 - [Before you go live](#before-you-go-live)
 - [Requirements](#requirements)
 - [Installation](#installation)
@@ -18,7 +19,8 @@ A Swift library to handle App Store receipt validation.
 
 ## iOS 15
 
-Apple has released a new in app purchase API with iOS 15 which does not require receipt validation anymore. If your app supports iOS 15 and higher I would highly recommend to implement this new API.
+Apple has released a new in app purchase API with iOS 15 which includes receipt validation. 
+If your app supports iOS 15 or higher I would highly recommend to implement this new API.
 
 https://developer.apple.com/documentation/storekit/choosing_a_storekit_api_for_in-app_purchase
 
@@ -30,8 +32,8 @@ Please test this properly, including production mode which will use apples produ
 
 ## Requirements
 
-- iOS 12.0+
-- Swift 5.0+
+- iOS 13.0+
+- Swift 5.8+
 
 ## Installation
 
@@ -45,7 +47,7 @@ Than enter `https://github.com/crashoverride777/swifty-receipt-validator.git` as
 Alternatively if you have another swift package that requires `SwiftyReceiptValidator` as a dependency it is as easy as adding it to the dependencies value of your Package.swift.
 ```swift
 dependencies: [
-.package(url: "https://github.com/crashoverride777/swifty-receipt-validator.git", from: "6.1.0")
+.package(url: "https://github.com/crashoverride777/swifty-receipt-validator.git", from: "7.0.0")
 ]
 ```
 
@@ -57,13 +59,13 @@ Simply install the pod by adding the following line to your pod file
 pod 'SwiftyReceiptValidator'
 ```
 
-### Manually 
+### Manually
 
 Alternatively you can drag the `Sources` folder and its containing files into your project.
 
 ## Usage
 
-### Add import (SwiftPackageManager or CocoaPods)
+### Add import
 
 - Add the import statement to your swift file(s) when you installed via SwiftPackageManager or CocoaPods
 
@@ -118,7 +120,7 @@ class SomeClass {
 
 ### Validate Purchases
 
-- Go to the following delegate method in your in app purchase code, which you must implement.
+- Go to the following delegate method in your in app purchase code, which you must implement for in app purchases (old API).
 
 ```swift
 extension SomeClass: SKPaymentTransactionObserver {
@@ -138,10 +140,10 @@ and modify the `.purchased` case to look like this
 ```swift
 case .purchased:
     // Transaction is in queue, user has been charged.  Client should complete the transaction.
-    let productId = transaction.payment.productIdentifier
+    let productIdentifier = transaction.payment.productIdentifier
 
     let validationRequest = SRVPurchaseValidationRequest(
-        productId: productId,
+        productIdentifier: productIdentifier,
         sharedSecret: "your shared secret setup in iTunesConnect or nil when dealing with non-subscription purchases"
     )
         
@@ -163,9 +165,7 @@ case .purchased:
     }
 ```
 
-In older versions of SwiftyReceiptValidator I was suggesting to also add this code to the `.restored` case which was incorrect.
-
-Note: There is also `Combine` support for this method if you are targeting iOS 13 and above.
+Note: `Combine` support is also available.
 
 ```swift
 let cancellable = receiptValidator
@@ -178,7 +178,7 @@ let cancellable = receiptValidator
     }
 ```
 
-Note: There is also `async/await` support for this method if you are targeting iOS 15 and above.
+Note: `Async` support is also available.
 
 ```swift
 do {
@@ -218,7 +218,7 @@ receiptValidator.validate(validationRequest) { result in
         }
         
     case .failure(let error):
-        switch error {
+        switch error as? SRVError {
         case .noReceiptFoundInBundle:
              break
              // do nothing, see description below
@@ -242,7 +242,7 @@ I would recommend to always set this flag to `false` for the following reasons.
 3. Once a user made an in app purchase there should always be a receipt in your apps bundle.
 4. Users re-installing your app which have an existing subscription should use the restore functionality in your app which is a requirement when using in app purchases. This will add the receipt(s) in your apps bundle and then subscriptions can be validated afterwards. (https://developer.apple.com/documentation/storekit/skpaymentqueue/1506123-restorecompletedtransactions).
 
-Note: There is also `Combine` support for this method if you are targeting iOS 13 and above.
+Note: `Combine` support is also available.
 
 ```swift
 let cancellable = receiptValidator
@@ -255,7 +255,7 @@ let cancellable = receiptValidator
     }
 ```
 
-Note: There is also `async/await` support for this method if you are targeting iOS 15 and above.
+Note: `Async` support is also available.
 
 ```swift
 do {
@@ -331,14 +331,14 @@ class SomeClass {
 
 - UnitTest example
 ```swift
-class MockReceiptValidator { }
-extension MockReceiptValidator: SwiftyReceiptValidatorType { 
-    // implement SwiftyReceiptValidatorType protocol methods and return mocks/fake data (see Mocking Models below)
+class StubReceiptValidator { }
+extension StubReceiptValidator: SwiftyReceiptValidatorType { 
+    // implement SwiftyReceiptValidatorType protocol methods and return stub data (see Mocking Models below)
  }
 
 class SomeClassTests {
     func testSomething() {
-        let sut = SomeClass(receiptValidator: MockReceiptValidator())
+        let sut = SomeClass(receiptValidator: StubReceiptValidator())
     }
 }
 ```
@@ -353,12 +353,12 @@ SRVSubscriptionValidationResponse.mock()
 ```
 ## StoreKit Alert Controllers
 
-When you get to the purchase code and to the `.purchased` switch statement, StoreKit automatically shows an AlertController ("Thank you, purchase was succesfull"). This is the point receipt validation starts and you might want to display a custom loading/validation alert. I dont think you can disable showing the default alert.
+When you get to the purchase code and to the `.purchased` switch statement, StoreKit automatically shows an AlertController ("Thank you, purchase was succesfull"). This is the point receipt validation starts and you might want to display a custom loading/validation alert. I dont think you can disable showing this default alert.
 
 ## Final Note
 
-As per Apples guidlines you should always first connect to apples production servers and than fall back on apples sandbox servers if needed.
-So keep this in mind when testing in sandbox mode, validation may take a bit longer due to this.
+As per Apples guidlines you should always first connect to apples production servers and than fall back on Apples sandbox servers 
+if needed. So keep this in mind when testing in sandbox mode, validation may take a bit longer.
 
 ## License
 

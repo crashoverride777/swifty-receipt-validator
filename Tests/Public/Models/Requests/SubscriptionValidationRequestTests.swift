@@ -1,9 +1,9 @@
 import XCTest
 @testable import SwiftyReceiptValidator
 
-class SubscriptionValidationRequestTests: XCTestCase {
+final class SubscriptionValidationRequestTests: XCTestCase {
 
-    func test_init() {
+    func testInit() {
         let sharedSecret = "secret"
         let refreshLocalReceiptIfNeeded = true
         let excludeOldTransactions = false

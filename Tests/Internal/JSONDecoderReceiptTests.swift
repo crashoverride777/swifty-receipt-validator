@@ -1,11 +1,11 @@
 import XCTest
 @testable import SwiftyReceiptValidator
 
-class JSONDecoderReceiptTests: XCTestCase {
+final class JSONDecoderReceiptTests: XCTestCase {
 
     // MARK: - Tests
     
-    func test_dateDecodingStrategy() {
+    func testDateDecodingStrategy() {
         let sut: JSONDecoder = .receiptResponse
         switch sut.dateDecodingStrategy {
         case .formatted(let formatter):
@@ -17,7 +17,7 @@ class JSONDecoderReceiptTests: XCTestCase {
         }
     }
     
-    func test_keyDecodingStrategy() {
+    func testKeyDecodingStrategy() {
         let sut: JSONDecoder = .receiptResponse
         switch sut.keyDecodingStrategy {
         case .convertFromSnakeCase:

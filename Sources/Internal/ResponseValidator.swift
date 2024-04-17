@@ -1,15 +1,15 @@
 import Foundation
 
-protocol ResponseValidatorType: AnyObject {
+protocol ResponseValidator: AnyObject {
     func validatePurchase(in response: SRVReceiptResponse,
                           productId: String,
-                          handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void)
+                          completion: @escaping (Result<SRVReceiptResponse, Error>) -> Void)
     func validateSubscriptions(in response: SRVReceiptResponse,
                                now: Date,
-                               handler: @escaping (Result<SRVSubscriptionValidationResponse, SRVError>) -> Void)
+                               completion: @escaping (Result<SRVSubscriptionValidationResponse, Error>) -> Void)
 }
 
-final class ResponseValidator {
+final class DefaultResponseValidator {
 
     // MARK: - Properties
 
@@ -24,20 +24,19 @@ final class ResponseValidator {
     }
 }
 
-// MARK: - ResponseValidatorType
+// MARK: - ResponseValidator
 
-extension ResponseValidator: ResponseValidatorType {
-  
+extension DefaultResponseValidator: ResponseValidator {
     func validatePurchase(in response: SRVReceiptResponse,
                           productId: String,
-                          handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void) {
+                          completion: @escaping (Result<SRVReceiptResponse, Error>) -> Void) {
         self.print("SVRResponseValidator validating purchase...")
         basicValidation(for: response) { result in
             switch result {
             case .success:
                 guard let receiptInApp = response.receipt?.inApp.first(where: { $0.productId == productId }) else {
                     self.print("SVRResponseValidator purchase validation productIdNotMatching error")
-                    handler(.failure(.productIdNotMatching(response.status)))
+                    completion(.failure(SRVError.productIdNotMatching(response.status)))
                     return
                 }
                 
@@ -50,28 +49,28 @@ extension ResponseValidator: ResponseValidatorType {
                  */
                 guard receiptInApp.cancellationDate == nil else {
                     self.print("SVRResponseValidator purchase validation cancelled")
-                    handler(.failure(.purchaseCancelled(response.status)))
+                    completion(.failure(SRVError.purchaseCancelled(response.status)))
                     return
                 }
                 self.print("SVRResponseValidator purchase validation success")
-                handler(.success(response))
+                completion(.success(response))
             case .failure(let error):
                 self.print("SVRResponseValidator purchase validation basic error \(error)")
-                handler(.failure(error))
+                completion(.failure(error))
             }
         }
     }
     
     func validateSubscriptions(in response: SRVReceiptResponse,
                                now: Date,
-                               handler: @escaping (Result<SRVSubscriptionValidationResponse, SRVError>) -> Void) {
+                               completion: @escaping (Result<SRVSubscriptionValidationResponse, Error>) -> Void) {
         self.print("SVRResponseValidator validating subscriptions...")
         basicValidation(for: response) { result in
             switch result {
             case .success:
                 guard response.status != .subscriptioniOS6StyleExpired else {
                     self.print("SVRResponseValidator subscriptions validation iOS6 style expired")
-                    handler(.failure(.subscriptioniOS6StyleExpired(response.status)))
+                    completion(.failure(SRVError.subscriptioniOS6StyleExpired(response.status)))
                     return
                 }
                 
@@ -81,10 +80,10 @@ extension ResponseValidator: ResponseValidatorType {
                 )
                         
                 self.print("SVRResponseValidator subscriptions validation success")
-                handler(.success((validationResponse)))
+                completion(.success((validationResponse)))
             case .failure(let error):
                 self.print("SVRResponseValidator subscriptions validation basic error \(error)")
-                handler(.failure(error))
+                completion(.failure(error))
             }
         }
     }
@@ -92,28 +91,27 @@ extension ResponseValidator: ResponseValidatorType {
 
 // MARK: - Private Methods
 
-private extension ResponseValidator {
-    
-    func basicValidation(for response: SRVReceiptResponse, handler: (Result<Void, SRVError>) -> ()) {
+private extension DefaultResponseValidator {
+    func basicValidation(for response: SRVReceiptResponse, completion: (Result<Void, Error>) -> ()) {
         // Check receipt status code is valid
         guard response.status.isValid else {
-            handler(.failure(.invalidStatusCode(response.status)))
+            completion(.failure(SRVError.invalidStatusCode(response.status)))
             return
         }
        
         // Unwrap receipt
         guard let receipt = response.receipt else {
-            handler(.failure(.noReceiptFoundInResponse(response.status)))
+            completion(.failure(SRVError.noReceiptFoundInResponse(response.status)))
             return
         }
        
         // Check receipt contains correct bundle id
         guard receipt.bundleId == bundle.bundleIdentifier else {
-            handler(.failure(.bundleIdNotMatching(response.status)))
+            completion(.failure(SRVError.bundleIdNotMatching(response.status)))
             return
         }
         
-        handler(.success(()))
+        completion(.success(()))
     }
     
     func print(_ items: Any...) {

@@ -1,7 +1,6 @@
 import Foundation
 
 public extension SRVReceiptInApp {
-    
     static func mock(
         quantity: String = "1",
         productId: String = UUID().uuidString,

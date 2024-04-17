@@ -2,7 +2,6 @@ import XCTest
 import Combine
 @testable import SwiftyReceiptValidator
 
-@available(iOS 13, tvOS 13, macOS 10.15, *)
 class ReceiptValidatorPublisherTests: ReceiptValidatorTests {
     
     // MARK: - Properties
@@ -25,12 +24,12 @@ class ReceiptValidatorPublisherTests: ReceiptValidatorTests {
 
     // MARK: Validate Purchase
     
-    func test_validPurchasePublisher_success_publishesCorrectData() {
+    func testValidatePurchasePublisher_whenSuccess_publishesCorrectData() {
         let expectation = XCTestExpectation(description: "Finished")
         let expectedResponse: SRVReceiptResponse = .mock()
         receiptClient.stub.validateResult = { (_, _, _) in .success(expectedResponse) }
         responseValidator.stub.validatePurchaseResult = { (_, _) in .success(expectedResponse) }
-        let request = SRVPurchaseValidationRequest(productId: "1", sharedSecret: nil)
+        let request = SRVPurchaseValidationRequest(productIdentifier: "1", sharedSecret: nil)
         
         let sut = makeSUT()
         sut.validatePublisher(for: request)
@@ -46,11 +45,11 @@ class ReceiptValidatorPublisherTests: ReceiptValidatorTests {
         wait(for: [expectation], timeout: 0.1)
     }
     
-    func test_validPurchasePublisher_failure_whenReceiptFetcherError_publishesCorrectError() {
+    func testValidatePurchasePublisher_whenReceiptFetcherError_publishesCorrectError() {
         let expectation = XCTestExpectation(description: "Finished")
         let expectedError = URLError(.notConnectedToInternet)
         receiptURLFetcher.stub.fetchResult = { _ in .failure(.other(expectedError)) }
-        let request = SRVPurchaseValidationRequest(productId: "1", sharedSecret: nil)
+        let request = SRVPurchaseValidationRequest(productIdentifier: "1", sharedSecret: nil)
         
         let sut = makeSUT()
         sut.validatePublisher(for: request)
@@ -68,11 +67,11 @@ class ReceiptValidatorPublisherTests: ReceiptValidatorTests {
         wait(for: [expectation], timeout: 0.1)
     }
     
-    func test_validPurchasePublisher_failure_whenReceiptClientError_publishesCorrectError() {
+    func testValidatePurchasePublisher_whenReceiptClientError_publishesCorrectError() {
         let expectation = XCTestExpectation(description: "Finished")
         let expectedError = URLError(.notConnectedToInternet)
-        receiptClient.stub.validateResult = { (_, _, _) in .failure(.other(expectedError)) }
-        let request = SRVPurchaseValidationRequest(productId: "1", sharedSecret: nil)
+        receiptClient.stub.validateResult = { (_, _, _) in .failure(expectedError) }
+        let request = SRVPurchaseValidationRequest(productIdentifier: "1", sharedSecret: nil)
         
         let sut = makeSUT()
         sut.validatePublisher(for: request)
@@ -90,11 +89,11 @@ class ReceiptValidatorPublisherTests: ReceiptValidatorTests {
         wait(for: [expectation], timeout: 0.1)
     }
     
-    func test_validPurchasePublisher_failure_whenResponseValidatorError_publishesCorrectError() {
+    func testValidatePurchasePublisher_whenResponseValidatorError_publishesCorrectError() {
         let expectation = XCTestExpectation(description: "Finished")
         let expectedError: SRVError = .productIdNotMatching(.unknown)
         responseValidator.stub.validatePurchaseResult = { (_, _) in .failure(expectedError) }
-        let request = SRVPurchaseValidationRequest(productId: "1", sharedSecret: nil)
+        let request = SRVPurchaseValidationRequest(productIdentifier: "1", sharedSecret: nil)
         
         let sut = makeSUT()
         sut.validatePublisher(for: request)
@@ -114,7 +113,7 @@ class ReceiptValidatorPublisherTests: ReceiptValidatorTests {
     
     // MARK: Validate Subscription
     
-    func test_validSubscriptionPublisher_success_publishesCorrectData() {
+    func testValidateSubscriptionPublisher_whenSuccess_publishesCorrectData() {
         let expectation = XCTestExpectation(description: "Finished")
         let expectedReceiptResponse: SRVReceiptResponse = .mock()
         let expectedValidationResponse: SRVSubscriptionValidationResponse = .mock(
@@ -144,7 +143,7 @@ class ReceiptValidatorPublisherTests: ReceiptValidatorTests {
         wait(for: [expectation], timeout: 0.1)
     }
     
-    func test_validSubscriptionPublisher_failure_whenReceiptFetcherError_publishesCorrectError() {
+    func testValidateSubscriptionPublisher_whenReceiptFetcherError_publishesCorrectError() {
         let expectation = XCTestExpectation(description: "Finished")
         let expectedError = URLError(.notConnectedToInternet)
         receiptURLFetcher.stub.fetchResult = { _ in .failure(.other(expectedError)) }
@@ -171,10 +170,10 @@ class ReceiptValidatorPublisherTests: ReceiptValidatorTests {
         wait(for: [expectation], timeout: 0.1)
     }
     
-    func test_validSubscriptionPublisher_failure_whenReceiptClientError_publishesCorrectError() {
+    func testValidateSubscriptionPublisher_whenReceiptClientError_publishesCorrectError() {
         let expectation = XCTestExpectation(description: "Finished")
         let expectedError = URLError(.notConnectedToInternet)
-        receiptClient.stub.validateResult = { (_, _, _) in .failure(.other(expectedError)) }
+        receiptClient.stub.validateResult = { (_, _, _) in .failure(expectedError) }
         let request = SRVSubscriptionValidationRequest(
             sharedSecret: "secret",
             refreshLocalReceiptIfNeeded: false,
@@ -198,10 +197,10 @@ class ReceiptValidatorPublisherTests: ReceiptValidatorTests {
         wait(for: [expectation], timeout: 0.1)
     }
     
-    func test_validSubscriptionPublisher_failure_whenResponseValidatorError_publishesCorrectError() {
+    func testValidateSubscriptionPublisher_whenResponseValidatorError_publishesCorrectError() {
         let expectation = XCTestExpectation(description: "Finished")
         let expectedError = URLError(.notConnectedToInternet)
-        responseValidator.stub.validateSubscriptionResult = { (_, _) in .failure(.other(expectedError)) }
+        responseValidator.stub.validateSubscriptionResult = { (_, _) in .failure(expectedError) }
         let request = SRVSubscriptionValidationRequest(
             sharedSecret: "secret",
             refreshLocalReceiptIfNeeded: false,

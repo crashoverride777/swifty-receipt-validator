@@ -1,11 +1,11 @@
 import XCTest
 @testable import SwiftyReceiptValidator
 
-class ReceiptClientTests: XCTestCase {
+final class ReceiptClientTests: XCTestCase {
     
     // MARK: - Properties
 
-    private var sessionManager: MockSessionManager!
+    private var sessionManager: StubURLSessionManager!
     private let productionURL = "production.com"
     private let sandboxURL = "sandbox.com"
 
@@ -13,7 +13,7 @@ class ReceiptClientTests: XCTestCase {
        
     override func setUp() {
         super.setUp()
-        sessionManager = MockSessionManager()
+        sessionManager = StubURLSessionManager()
     }
 
     override func tearDown() {
@@ -25,12 +25,12 @@ class ReceiptClientTests: XCTestCase {
     
     // MARK: Parameters
     
-    func test_setsCorrectParameters() throws {
+    func testSetsCorrectParameters() throws {
         let expectation = XCTestExpectation(description: "Finished")
         let receiptURL: URL = .test
 
         let receiptData = try Data(contentsOf: receiptURL)
-        let expectedParameters = ReceiptClient.Parameters(
+        let expectedParameters = DefaultReceiptClient.Parameters(
             data: receiptData.base64EncodedString(options: Data.Base64EncodingOptions(rawValue: 0)),
             excludeOldTransactions: false,
             password: "secret"
@@ -55,7 +55,7 @@ class ReceiptClientTests: XCTestCase {
     
     // MARK: Fetch
   
-    func test_fetch_success_returnsCorrectResponse() {
+    func testFetch_whenSuccess_returnsCorrectResponse() {
         let expectation = XCTestExpectation(description: "Finished")
         let expectedDictionaryResponse: [String: Any] = SRVReceiptResponse.mock(.subscription)
         let expectedResponse: SRVReceiptResponse = .mock(from: expectedDictionaryResponse)
@@ -78,7 +78,7 @@ class ReceiptClientTests: XCTestCase {
         wait(for: [expectation], timeout: 0.1)
     }
     
-    func test_fetch_success_whenNoDownloadID_returnsCorrectResponse() {
+    func testFetch_whenNoDownloadID_returnsCorrectResponse() {
         let expectation = XCTestExpectation(description: "Finished")
         let expectedDictionaryResponse: [String: Any] = SRVReceiptResponse.mock(.noDownloadID)
         let expectedResponse: SRVReceiptResponse = .mock(from: expectedDictionaryResponse)
@@ -101,7 +101,7 @@ class ReceiptClientTests: XCTestCase {
         wait(for: [expectation], timeout: 0.1)
     }
     
-    func test_fetch_success_whenProductionReceipt_callsProductionURL() {
+    func testFetch_whenProductionReceipt_callsProductionURL() {
         let expectation = XCTestExpectation(description: "Finished")
         let expectedDictionaryResponse: [String: Any] = SRVReceiptResponse.mock(.subscription)
         
@@ -123,7 +123,7 @@ class ReceiptClientTests: XCTestCase {
         wait(for: [expectation], timeout: 0.1)
     }
     
-    func test_fetch_success_whenTestReceipt_callsProductionURL_thenSandboxURL() {
+    func testFetch_whenTestReceipt_callsProductionURL_thenSandboxURL() {
         let expectation = XCTestExpectation(description: "Finished")
         expectation.expectedFulfillmentCount = 2
         let expectedDictionaryResponse: [String: Any] = SRVReceiptResponse.mock(.sandbox)
@@ -148,7 +148,7 @@ class ReceiptClientTests: XCTestCase {
         wait(for: [expectation], timeout: 0.1)
     }
     
-    func test_fetch_failure_whenConnectionError_returnsCorrectError() {
+    func testFetch_whenConnectionError_returnsCorrectError() {
         let expectation = XCTestExpectation(description: "Finished")
         let expectedError = URLError(.notConnectedToInternet)
         sessionManager.stub.start = { (_, _) in .failure(expectedError) }
@@ -170,7 +170,7 @@ class ReceiptClientTests: XCTestCase {
         wait(for: [expectation], timeout: 0.1)
     }
     
-    func test_fetch_failure_whenInvalidResponse_returnsCorrectError() {
+    func testFetch_whenInvalidResponse_returnsCorrectError() {
         let expectation = XCTestExpectation(description: "Finished")
         let expectedDictionaryResponse: [String: Any] = SRVReceiptResponse.mock(.invalid)
         sessionManager.stub.start = { (_, _) in .success(expectedDictionaryResponse.asData) }
@@ -196,9 +196,8 @@ class ReceiptClientTests: XCTestCase {
 // MARK: - Private Methods
 
 private extension ReceiptClientTests {
-    
     func makeSUT() -> ReceiptClient {
-        ReceiptClient(
+        DefaultReceiptClient(
             sessionManager: sessionManager,
             productionURL: "production.com",
             sandboxURL: "sandbox.com",
@@ -210,7 +209,6 @@ private extension ReceiptClientTests {
 // MARK: - Private Extensions
 
 private extension Dictionary {
-    
     var asData: Data {
         do {
             return try JSONSerialization.data(withJSONObject: self, options: [])
@@ -222,7 +220,6 @@ private extension Dictionary {
 }
 
 private extension Encodable {
-    
     var asData: Data {
         do {
             return try JSONEncoder().encode(self)

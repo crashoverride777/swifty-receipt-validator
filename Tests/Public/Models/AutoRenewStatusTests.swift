@@ -1,9 +1,9 @@
 import XCTest
 @testable import SwiftyReceiptValidator
 
-class AutoRenewStatusTests: XCTestCase {
+final class AutoRenewStatusTests: XCTestCase {
     
-    func test_rawValue() {
+    func testRawValue() {
         XCTAssertEqual(SRVAutoRenewStatus.off.rawValue, "0")
         XCTAssertEqual(SRVAutoRenewStatus.on.rawValue, "1")
     }

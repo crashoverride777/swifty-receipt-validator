@@ -1,7 +1,6 @@
 import Foundation
 
 public extension SRVPendingRenewalInfo {
-    
     static func mock(
         productId: String? = UUID().uuidString,
         autoRenewProductId: String? = UUID().uuidString,

@@ -1,39 +1,39 @@
 import XCTest
 @testable import SwiftyReceiptValidator
 
-class ErrorTests: XCTestCase {
+final class ErrorTests: XCTestCase {
     
     // MARK: - Status Code
     
-    func test_statusCode_whenNoReceiptFoundInBundle() {
+    func testStatusCode_whenNoReceiptFoundInBundle() {
         XCTAssertEqual(SRVError.noReceiptFoundInBundle.statusCode, nil)
     }
     
-    func test_statusCode_whenInvalidStatusCode() {
+    func testStatusCode_whenInvalidStatusCode() {
         XCTAssertEqual(SRVError.invalidStatusCode(.valid).statusCode, .valid)
     }
     
-    func test_statusCode_whenNoReceiptFoundInResponse() {
+    func testStatusCode_whenNoReceiptFoundInResponse() {
         XCTAssertEqual(SRVError.noReceiptFoundInResponse(.valid).statusCode, .valid)
     }
     
-    func test_statusCode_whenBundleIdNotMatching() {
+    func testStatusCode_whenBundleIdNotMatching() {
         XCTAssertEqual(SRVError.bundleIdNotMatching(.valid).statusCode, .valid)
     }
     
-    func test_statusCode_whenProductIdNotMatching() {
+    func testStatusCode_whenProductIdNotMatching() {
         XCTAssertEqual(SRVError.productIdNotMatching(.valid).statusCode, .valid)
     }
     
-    func test_statusCode_whenNoValidSubscription() {
+    func testStatusCode_whenNoValidSubscription() {
         XCTAssertEqual(SRVError.subscriptioniOS6StyleExpired(.valid).statusCode, .valid)
     }
     
-    func test_statusCode_whenPurchaseCancelled() {
+    func testStatusCode_whenPurchaseCancelled() {
         XCTAssertEqual(SRVError.purchaseCancelled(.valid).statusCode, .valid)
     }
     
-    func test_statusCode_whenOtherError() {
+    func testStatusCode_whenOtherError() {
         let expectedError = URLError(.notConnectedToInternet)
         XCTAssertNil(SRVError.other(expectedError).statusCode)
     }

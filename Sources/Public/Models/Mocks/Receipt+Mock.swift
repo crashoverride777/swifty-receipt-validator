@@ -1,7 +1,6 @@
 import Foundation
 
 public extension SRVReceipt {
-    
     static func mock(
         receiptType: String = "subscription",
         adamId: Int = 1,

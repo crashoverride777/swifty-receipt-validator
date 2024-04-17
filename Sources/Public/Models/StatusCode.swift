@@ -23,7 +23,6 @@ public enum SRVStatusCode: Int, Codable {
 // MARK: - Computed
 
 public extension SRVStatusCode {
-    
     var isValid: Bool {
         switch self {
         case .valid, .subscriptioniOS6StyleExpired:
