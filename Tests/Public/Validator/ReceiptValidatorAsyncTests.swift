@@ -38,7 +38,7 @@ class ReceiptValidatorAsyncTests: ReceiptValidatorTests {
     
     func test_validPurchasePublisher_failure_whenReceiptClientError_returnsCorrectError() async throws {
         let expectedError = URLError(.notConnectedToInternet)
-        receiptClient.stub.validateResult = { (_, _, _) in .failure(.other(expectedError)) }
+        receiptClient.stub.validateResult = { (_, _, _) in .failure(expectedError) }
         let request = SRVPurchaseValidationRequest(productId: "1", sharedSecret: nil)
 
         let sut = makeSUT()
@@ -108,7 +108,7 @@ class ReceiptValidatorAsyncTests: ReceiptValidatorTests {
     
     func test_validSubscriptionPublisher_failure_whenReceiptClientError_returnsCorrectError() async throws {
         let expectedError = URLError(.notConnectedToInternet)
-        receiptClient.stub.validateResult = { (_, _, _) in .failure(.other(expectedError)) }
+        receiptClient.stub.validateResult = { (_, _, _) in .failure(expectedError) }
         let request = SRVSubscriptionValidationRequest(
             sharedSecret: "secret",
             refreshLocalReceiptIfNeeded: false,
@@ -126,7 +126,7 @@ class ReceiptValidatorAsyncTests: ReceiptValidatorTests {
     
     func test_validSubscriptionPublisher_failure_whenResponseValidatorError_returnsCorrectError() async throws {
         let expectedError = URLError(.notConnectedToInternet)
-        responseValidator.stub.validateSubscriptionResult = { (_, _) in .failure(.other(expectedError)) }
+        responseValidator.stub.validateSubscriptionResult = { (_, _) in .failure(expectedError) }
         let request = SRVSubscriptionValidationRequest(
             sharedSecret: "secret",
             refreshLocalReceiptIfNeeded: false,

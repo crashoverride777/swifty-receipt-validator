@@ -1,7 +1,7 @@
 import Foundation
 @testable import SwiftyReceiptValidator
 
-final class MockSessionManager {
+final class StubURLSessionManager {
     struct Stub {
         var start: (_ urlString: String, _ parameters: Data) -> (Result<Data, Error>) = {
             (_, _) in .success(Data([1, 2, 3]))
@@ -11,15 +11,12 @@ final class MockSessionManager {
     var stub = Stub()
 }
 
-extension MockSessionManager: URLSessionManagerType {
-    
-    func start<T: Encodable>(withURL urlString: String,
-                  parameters: T,
-                  handler: @escaping (Result<Data, Error>) -> Void) {
+extension StubURLSessionManager: URLSessionManager {
+    func start<T: Encodable>(withURL urlString: String, parameters: T, completion: @escaping (Result<Data, Error>) -> Void) {
         do {
             let parametersData = try JSONEncoder().encode(parameters)
-            let completion = stub.start(urlString, parametersData)
-            handler(completion)
+            let result = stub.start(urlString, parametersData)
+            completion(result)
         } catch {
             fatalError(error.localizedDescription)
         }

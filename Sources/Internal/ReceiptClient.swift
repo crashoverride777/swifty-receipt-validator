@@ -1,7 +1,7 @@
 import Foundation
 
-protocol ReceiptClientType {
-    func perform(_ request: ReceiptClientRequest, handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void)
+protocol ReceiptClient {
+    func perform(_ request: ReceiptClientRequest, completion: @escaping (Result<SRVReceiptResponse, Error>) -> Void)
 }
 
 struct ReceiptClientRequest {
@@ -10,7 +10,7 @@ struct ReceiptClientRequest {
     let excludeOldTransactions: Bool
 }
 
-final class ReceiptClient {
+final class DefaultReceiptClient {
     
     // MARK: - Types
     
@@ -28,14 +28,14 @@ final class ReceiptClient {
     
     // MARK: - Properties
     
-    private let sessionManager: URLSessionManagerType
+    private let sessionManager: URLSessionManager
     private let productionURL: String
     private let sandboxURL: String
     private let isLoggingEnabled: Bool
     
     // MARK: - Initialization
     
-    init(sessionManager: URLSessionManagerType,
+    init(sessionManager: URLSessionManager,
          productionURL: String,
          sandboxURL: String,
          isLoggingEnabled: Bool) {
@@ -46,11 +46,10 @@ final class ReceiptClient {
     }
 }
 
-// MARK: - ReceiptClientType
+// MARK: - ReceiptClient
 
-extension ReceiptClient: ReceiptClientType {
-    
-    func perform(_ request: ReceiptClientRequest, handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void) {
+extension DefaultReceiptClient: ReceiptClient {
+    func perform(_ request: ReceiptClientRequest, completion: @escaping (Result<SRVReceiptResponse, Error>) -> Void) {
         do {
             // Prepare url session parameters
             let receiptData = try Data(contentsOf: request.receiptURL, options: .alwaysMapped)
@@ -68,27 +67,26 @@ extension ReceiptClient: ReceiptClientType {
                     switch receiptResponse.status {
                     case .testReceipt:
                         self.print("SRVReceiptClient production success with test receipt, trying sandbox mode...")
-                        self.startSessionRequest(forURL: self.sandboxURL, parameters: parameters, handler: handler)
+                        self.startSessionRequest(forURL: self.sandboxURL, parameters: parameters, completion: completion)
                     default:
-                        handler(.success(receiptResponse))
+                        completion(.success(receiptResponse))
                     }
                 case .failure(let error):
-                    handler(.failure(.other(error)))
+                    completion(.failure(error))
                 }
             }
         } catch {
-            handler(.failure(.other(error)))
+            completion(.failure(error))
         }
     }
 }
 
 // MARK: - Private Methods
 
-private extension ReceiptClient {
-    
+private extension DefaultReceiptClient {
     func startSessionRequest(forURL urlString: String,
                              parameters: Parameters,
-                             handler: @escaping (Result<SRVReceiptResponse, SRVError>) -> Void) {
+                             completion: @escaping (Result<SRVReceiptResponse, Error>) -> Void) {
         sessionManager.start(withURL: urlString, parameters: parameters) { [weak self] result in
             guard let self = self else { return }
             switch result {
@@ -102,20 +100,18 @@ private extension ReceiptClient {
                 do {
                     let decoder: JSONDecoder = .receiptResponse
                     let receiptResponse = try decoder.decode(SRVReceiptResponse.self, from: data)
-                    handler(.success(receiptResponse))
+                    completion(.success(receiptResponse))
                 } catch {
-                    handler(.failure(.other(error)))
+                    completion(.failure(error))
                 }
             case .failure(let error):
-                handler(.failure(.other(error)))
+                completion(.failure(error))
             }
         }
     }
     
     func print(_ items: Any...) {
-        guard isLoggingEnabled else {
-            return
-        }
+        guard isLoggingEnabled else { return }
         Swift.print(items[0])
     }
 }

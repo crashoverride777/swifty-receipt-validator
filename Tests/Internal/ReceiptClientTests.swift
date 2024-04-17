@@ -5,7 +5,7 @@ class ReceiptClientTests: XCTestCase {
     
     // MARK: - Properties
 
-    private var sessionManager: MockSessionManager!
+    private var sessionManager: StubURLSessionManager!
     private let productionURL = "production.com"
     private let sandboxURL = "sandbox.com"
 
@@ -13,7 +13,7 @@ class ReceiptClientTests: XCTestCase {
        
     override func setUp() {
         super.setUp()
-        sessionManager = MockSessionManager()
+        sessionManager = StubURLSessionManager()
     }
 
     override func tearDown() {
@@ -30,7 +30,7 @@ class ReceiptClientTests: XCTestCase {
         let receiptURL: URL = .test
 
         let receiptData = try Data(contentsOf: receiptURL)
-        let expectedParameters = ReceiptClient.Parameters(
+        let expectedParameters = DefaultReceiptClient.Parameters(
             data: receiptData.base64EncodedString(options: Data.Base64EncodingOptions(rawValue: 0)),
             excludeOldTransactions: false,
             password: "secret"
@@ -196,9 +196,8 @@ class ReceiptClientTests: XCTestCase {
 // MARK: - Private Methods
 
 private extension ReceiptClientTests {
-    
     func makeSUT() -> ReceiptClient {
-        ReceiptClient(
+        DefaultReceiptClient(
             sessionManager: sessionManager,
             productionURL: "production.com",
             sandboxURL: "sandbox.com",
@@ -210,7 +209,6 @@ private extension ReceiptClientTests {
 // MARK: - Private Extensions
 
 private extension Dictionary {
-    
     var asData: Data {
         do {
             return try JSONSerialization.data(withJSONObject: self, options: [])
@@ -222,7 +220,6 @@ private extension Dictionary {
 }
 
 private extension Encodable {
-    
     var asData: Data {
         do {
             return try JSONEncoder().encode(self)

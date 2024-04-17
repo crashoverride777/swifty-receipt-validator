@@ -230,9 +230,8 @@ class ResponseValidatorTests: XCTestCase {
 // MARK: - Private Methods
 
 private extension ResponseValidatorTests {
-    
     func makeSUT() -> ResponseValidator {
-        ResponseValidator(bundle: bundle, isLoggingEnabled: false)
+        DefaultResponseValidator(bundle: bundle, isLoggingEnabled: false)
     }
     
     func makeResponse(statusCode: SRVStatusCode = .valid,

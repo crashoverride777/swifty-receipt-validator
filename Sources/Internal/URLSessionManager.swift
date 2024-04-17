@@ -1,14 +1,10 @@
 import Foundation
 
-public protocol URLSessionManagerType: AnyObject {
-    func start<T: Encodable>(
-        withURL urlString: String,
-        parameters: T,
-        handler: @escaping (Result<Data, Error>) -> Void
-    )
+public protocol URLSessionManager: AnyObject {
+    func start<T: Encodable>(withURL urlString: String, parameters: T, completion: @escaping (Result<Data, Error>) -> Void)
 }
 
-final class URLSessionManager {
+final class DefaultURLSessionManager {
     
     // MARK: - Types
     
@@ -32,18 +28,13 @@ final class URLSessionManager {
     }
 }
     
-// MARK: - URLSessionManagerType
+// MARK: - URLSessionManager
 
-extension URLSessionManager: URLSessionManagerType {
- 
-    func start<T: Encodable>(
-        withURL urlString: String,
-        parameters: T,
-        handler: @escaping (Result<Data, Error>) -> Void
-    ) {
+extension DefaultURLSessionManager: URLSessionManager {
+    func start<T: Encodable>(withURL urlString: String, parameters: T, completion: @escaping (Result<Data, Error>) -> Void) {
         // Create url
         guard let url = URL(string: urlString) else {
-            handler(.failure(SessionError.url))
+            completion(.failure(SessionError.url))
             return
         }
         
@@ -60,7 +51,7 @@ extension URLSessionManager: URLSessionManagerType {
         do {
             urlRequest.httpBody = try encoder.encode(parameters)
         } catch {
-            handler(.failure(SessionError.parameterEncoding))
+            completion(.failure(SessionError.parameterEncoding))
         }
         
         // Setup url session
@@ -76,18 +67,18 @@ extension URLSessionManager: URLSessionManagerType {
             
             // Check for error
             if let error = error {
-                handler(.failure(error))
+                completion(.failure(error))
                 return
             }
             
             // Unwrap data
             guard let data = data else {
-                handler(.failure(SessionError.data))
+                completion(.failure(SessionError.data))
                 return
             }
             
             // Return success handler with data
-            handler(.success(data))
+            completion(.success(data))
         }
         .resume()
     }

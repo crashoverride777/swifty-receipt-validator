@@ -5,17 +5,17 @@ class ReceiptValidatorTests: XCTestCase {
     
     // MARK: - Properties
     
-    private(set) var receiptURLFetcher: MockReceiptURLFetcher!
-    private(set) var receiptClient: MockReceiptClient!
-    private(set) var responseValidator: MockResponseValidator!
+    private(set) var receiptURLFetcher: StubReceiptURLFetcher!
+    private(set) var receiptClient: StubReceiptClient!
+    private(set) var responseValidator: StubResponseValidator!
     
     // MARK: - Life Cycle
     
     override func setUp() {
         super.setUp()
-        receiptURLFetcher = MockReceiptURLFetcher()
-        receiptClient = MockReceiptClient()
-        responseValidator = MockResponseValidator()
+        receiptURLFetcher = StubReceiptURLFetcher()
+        receiptClient = StubReceiptClient()
+        responseValidator = StubResponseValidator()
     }
 
     override func tearDown() {
@@ -73,7 +73,7 @@ class ReceiptValidatorTests: XCTestCase {
     func test_validatePurchase_failure_whenReceiptClientError_returnsCorrectError() {
         let expectation = XCTestExpectation(description: "Finished")
         let expectedError = URLError(.notConnectedToInternet)
-        receiptClient.stub.validateResult = { (_, _, _) in .failure(.other(expectedError)) }
+        receiptClient.stub.validateResult = { (_, _, _) in .failure(expectedError) }
         let request = SRVPurchaseValidationRequest(
             productId: "123",
             sharedSecret: "secret"
@@ -164,7 +164,7 @@ class ReceiptValidatorTests: XCTestCase {
     func test_validateSubscription_failure_whenReceiptClientError_returnsCorrectError() {
         let expectation = XCTestExpectation(description: "Finished")
         let expectedError = URLError(.notConnectedToInternet)
-        receiptClient.stub.validateResult = { (_, _, _) in .failure(.other(expectedError)) }
+        receiptClient.stub.validateResult = { (_, _, _) in .failure(expectedError) }
         let request = SRVSubscriptionValidationRequest(
             sharedSecret: "secret",
             refreshLocalReceiptIfNeeded: false,
@@ -186,7 +186,7 @@ class ReceiptValidatorTests: XCTestCase {
     func test_validateSubscription_failure_whenResponseValidatorError_returnsCorrectError() {
         let expectation = XCTestExpectation(description: "Finished")
         let expectedError = URLError(.notConnectedToInternet)
-        responseValidator.stub.validateSubscriptionResult = { (_, _) in .failure(.other(expectedError)) }
+        responseValidator.stub.validateSubscriptionResult = { (_, _) in .failure(expectedError) }
         let request = SRVSubscriptionValidationRequest(
             sharedSecret: "secret",
             refreshLocalReceiptIfNeeded: false,

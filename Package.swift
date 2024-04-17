@@ -7,7 +7,7 @@ private let packageName = "SwiftyReceiptValidator"
 
 let package = Package(
     name: packageName,
-    platforms: [.iOS(.v12), .tvOS(.v12), .macOS(.v10_15)],
+    platforms: [.iOS(.v13), .tvOS(.v13), .macOS(.v10_15)],
     products: [.library(name: packageName, targets: [packageName])],
     targets: [
         .target(
