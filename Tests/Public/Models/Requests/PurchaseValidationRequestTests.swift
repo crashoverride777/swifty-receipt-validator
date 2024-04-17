@@ -1,18 +1,11 @@
 import XCTest
 @testable import SwiftyReceiptValidator
 
-class PurchaseValidationRequestTests: XCTestCase {
+final class PurchaseValidationRequestTests: XCTestCase {
 
-    func test_init() {
-        let productId = "123"
-        let sharedSecret = "secret"
-       
-        let sut = SRVPurchaseValidationRequest(
-            productId: productId,
-            sharedSecret: sharedSecret
-        )
-        
-        XCTAssertEqual(sut.productId, productId)
-        XCTAssertEqual(sut.sharedSecret, sharedSecret)
+    func testInit() {
+        let sut = SRVPurchaseValidationRequest(productIdentifier: "123", sharedSecret: "sharedSecret")
+        XCTAssertEqual(sut.productIdentifier, "123")
+        XCTAssertEqual(sut.sharedSecret, "sharedSecret")
     }
 }

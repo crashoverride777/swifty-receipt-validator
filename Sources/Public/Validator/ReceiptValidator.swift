@@ -1,6 +1,6 @@
 //    The MIT License (MIT)
 //
-//    Copyright (c) 2016-2022 Dominik Ringler
+//    Copyright (c) 2016-2024 Dominik Ringler
 //
 //    Permission is hereby granted, free of charge, to any person obtaining a copy
 //    of this software and associated documentation files (the "Software"), to deal
@@ -31,13 +31,8 @@ public protocol SwiftyReceiptValidatorType {
     func validatePublisher(for request: SRVPurchaseValidationRequest) -> AnyPublisher<SRVReceiptResponse, Error>
     func validatePublisher(for request: SRVSubscriptionValidationRequest) -> AnyPublisher<SRVSubscriptionValidationResponse, Error>
     
-    #if os(iOS) || os(tvOS) // macOS currently does not support API to convert closures to async/await.
-    @available(iOS 15, tvOS 15, *)
     func validate(_ request: SRVPurchaseValidationRequest) async throws -> SRVReceiptResponse
-
-    @available(iOS 15, tvOS 15, *)
     func validate(_ request: SRVSubscriptionValidationRequest) async throws -> SRVSubscriptionValidationResponse
-    #endif
 }
 
 /*
@@ -113,12 +108,10 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
         }.eraseToAnyPublisher()
     }
     
-    #if os(iOS) || os(tvOS)
     /// Validate app store purchase (async/await)
     ///
     /// - parameter request: The request configuration.
     /// - returns: The SRVReceiptResponse if no error thrown.
-    @available(iOS 15, tvOS 15, *)
     public func validate(_ request: SRVPurchaseValidationRequest) async throws -> SRVReceiptResponse {
         try await withCheckedThrowingContinuation { [weak self] continuation in
             self?.validate(request) { result in
@@ -126,7 +119,6 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
             }
         }
     }
-    #endif
     
     /// Validate app store purchase
     ///
@@ -142,7 +134,7 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
                 case .success(let response):
                     self?.responseValidator.validatePurchase(
                         in: response,
-                        productId: request.productId,
+                        productId: request.productIdentifier,
                         completion: completion
                     )
                 case .failure(let error):
@@ -165,12 +157,10 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
         }.eraseToAnyPublisher()
      }
     
-    #if os(iOS) || os(tvOS)
     /// Validate app store subscription (async/await)
     ///
     /// - parameter request: The request configuration.
     /// - returns: The SRVSubscriptionValidationResponse if no error thrown.
-    @available(iOS 15, tvOS 15, *)
     public func validate(_ request: SRVSubscriptionValidationRequest) async throws -> SRVSubscriptionValidationResponse {
         try await withCheckedThrowingContinuation { [weak self] continuation in
             self?.validate(request) { result in
@@ -178,7 +168,6 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
             }
         }
     }
-    #endif
     
     /// Validate app store subscription
     ///

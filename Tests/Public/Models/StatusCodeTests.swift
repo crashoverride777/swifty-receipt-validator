@@ -1,11 +1,11 @@
 import XCTest
 @testable import SwiftyReceiptValidator
 
-class StatusCodeTests: XCTestCase {
+final class StatusCodeTests: XCTestCase {
         
     // MARK: Raw Value
     
-    func test_rawValue() {
+    func testRawValue() {
         XCTAssertEqual(SRVStatusCode.unknown.rawValue, -1)
         XCTAssertEqual(SRVStatusCode.valid.rawValue, 0)
         XCTAssertEqual(SRVStatusCode.jsonNotReadable.rawValue, 21000)
@@ -22,62 +22,62 @@ class StatusCodeTests: XCTestCase {
     
     // MARK: Is Valid
     
-    func test_isValid_unknown_returnsFalse() {
+    func testIsValid_whenUnknown_returnsFalse() {
         let sut: SRVStatusCode = .unknown
         XCTAssertFalse(sut.isValid)
     }
     
-    func test_isValid_validStatusCode_returnsTrue() {
+    func testIsValid_whenValidStatusCode_returnsTrue() {
         let sut: SRVStatusCode = .valid
         XCTAssertTrue(sut.isValid)
     }
     
-    func test_isValid_jsonNotReadable_returnsFalse() {
+    func testIsValid_whenJSONNotReadable_returnsFalse() {
         let sut: SRVStatusCode = .jsonNotReadable
         XCTAssertFalse(sut.isValid)
     }
     
-    func test_isValid_malformedOrMissingData_returnsFalse() {
+    func testIsValid_whenMalformedOrMissingData_returnsFalse() {
         let sut: SRVStatusCode = .malformedOrMissingData
         XCTAssertFalse(sut.isValid)
     }
     
-    func test_isValid_receiptCouldNotBeAuthenticated_returnsFalse() {
+    func testIsValid_whenReceiptCouldNotBeAuthenticated_returnsFalse() {
         let sut: SRVStatusCode = .receiptCouldNotBeAuthenticated
         XCTAssertFalse(sut.isValid)
     }
     
-    func test_isValid_sharedSecretNotMatching_returnsFalse() {
+    func testIsValid_whenSharedSecretNotMatching_returnsFalse() {
         let sut: SRVStatusCode = .sharedSecretNotMatching
         XCTAssertFalse(sut.isValid)
     }
     
-    func test_isValid_receiptServerUnavailable_returnsFalse() {
+    func testIsValid_whenReceiptServerUnavailable_returnsFalse() {
         let sut: SRVStatusCode = .receiptServerUnavailable
         XCTAssertFalse(sut.isValid)
     }
     
-    func test_isValid_subscriptionExpired_returnsTrue() {
+    func testIsValid_whenSubscriptionExpired_returnsTrue() {
         let sut: SRVStatusCode = .subscriptioniOS6StyleExpired
         XCTAssertTrue(sut.isValid)
     }
     
-    func test_isValid_testReceipt_returnsFalse() {
+    func testIsValid_whenTestReceipt_returnsFalse() {
         let sut: SRVStatusCode = .testReceipt
         XCTAssertFalse(sut.isValid)
     }
     
-    func test_isValid_productionEnvironment_returnsFalse() {
+    func testIsValid_whenProductionEnvironment_returnsFalse() {
         let sut: SRVStatusCode = .productionEnvironment
         XCTAssertFalse(sut.isValid)
     }
     
-    func test_isValid_receiptCouldNotBeAuthorized_returnsFalse() {
+    func testIsValid_whenReceiptCouldNotBeAuthorized_returnsFalse() {
         let sut: SRVStatusCode = .receiptCouldNotBeAuthorized
         XCTAssertFalse(sut.isValid)
     }
     
-    func test_isValid_internalDataAccessError_returnsFalse() {
+    func testIsValid_whenInternalDataAccessError_returnsFalse() {
         let sut: SRVStatusCode = .internalDataAccessError
         XCTAssertFalse(sut.isValid)
     }
