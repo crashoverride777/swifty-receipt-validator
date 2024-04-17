@@ -1,7 +1,6 @@
 import Foundation
 
 public extension SRVReceiptResponse {
-    
     static func mock(
         statusCode: SRVStatusCode = .valid,
         receipt: SRVReceipt? = .mock(),

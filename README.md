@@ -47,7 +47,7 @@ Than enter `https://github.com/crashoverride777/swifty-receipt-validator.git` as
 Alternatively if you have another swift package that requires `SwiftyReceiptValidator` as a dependency it is as easy as adding it to the dependencies value of your Package.swift.
 ```swift
 dependencies: [
-.package(url: "https://github.com/crashoverride777/swifty-receipt-validator.git", from: "6.1.0")
+.package(url: "https://github.com/crashoverride777/swifty-receipt-validator.git", from: "7.0.0")
 ]
 ```
 
@@ -59,13 +59,13 @@ Simply install the pod by adding the following line to your pod file
 pod 'SwiftyReceiptValidator'
 ```
 
-### Manually 
+### Manually
 
 Alternatively you can drag the `Sources` folder and its containing files into your project.
 
 ## Usage
 
-### Add import (SwiftPackageManager or CocoaPods)
+### Add import
 
 - Add the import statement to your swift file(s) when you installed via SwiftPackageManager or CocoaPods
 
@@ -120,7 +120,7 @@ class SomeClass {
 
 ### Validate Purchases
 
-- Go to the following delegate method in your in app purchase code, which you must implement.
+- Go to the following delegate method in your in app purchase code, which you must implement for in app purchases (old API).
 
 ```swift
 extension SomeClass: SKPaymentTransactionObserver {
@@ -331,14 +331,14 @@ class SomeClass {
 
 - UnitTest example
 ```swift
-class MockReceiptValidator { }
-extension MockReceiptValidator: SwiftyReceiptValidatorType { 
-    // implement SwiftyReceiptValidatorType protocol methods and return mocks/fake data (see Mocking Models below)
+class StubReceiptValidator { }
+extension StubReceiptValidator: SwiftyReceiptValidatorType { 
+    // implement SwiftyReceiptValidatorType protocol methods and return stub data (see Mocking Models below)
  }
 
 class SomeClassTests {
     func testSomething() {
-        let sut = SomeClass(receiptValidator: MockReceiptValidator())
+        let sut = SomeClass(receiptValidator: StubReceiptValidator())
     }
 }
 ```
@@ -353,12 +353,12 @@ SRVSubscriptionValidationResponse.mock()
 ```
 ## StoreKit Alert Controllers
 
-When you get to the purchase code and to the `.purchased` switch statement, StoreKit automatically shows an AlertController ("Thank you, purchase was succesfull"). This is the point receipt validation starts and you might want to display a custom loading/validation alert. I dont think you can disable showing the default alert.
+When you get to the purchase code and to the `.purchased` switch statement, StoreKit automatically shows an AlertController ("Thank you, purchase was succesfull"). This is the point receipt validation starts and you might want to display a custom loading/validation alert. I dont think you can disable showing this default alert.
 
 ## Final Note
 
-As per Apples guidlines you should always first connect to apples production servers and than fall back on apples sandbox servers if needed.
-So keep this in mind when testing in sandbox mode, validation may take a bit longer due to this.
+As per Apples guidlines you should always first connect to apples production servers and than fall back on Apples sandbox servers 
+if needed. So keep this in mind when testing in sandbox mode, validation may take a bit longer.
 
 ## License
 

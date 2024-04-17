@@ -101,7 +101,6 @@ public struct SRVReceiptInApp: Codable, Equatable {
 // MARK: - Types
 
 public extension SRVReceiptInApp {
-    
     enum ExpirationIntent: String, Codable {
         // Customer canceled their subscription
         case cancelled = "1"
@@ -141,7 +140,6 @@ public extension SRVReceiptInApp {
 // MARK: - Computed
 
 public extension SRVReceiptInApp {
-    
     /*
     If a previous subscription period in the receipt has the value “true”
     for either the is_trial_period or the is_in_intro_offer_period key,
