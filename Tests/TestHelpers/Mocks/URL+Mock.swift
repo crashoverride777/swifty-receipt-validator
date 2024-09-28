@@ -1,8 +1,7 @@
 import Foundation
 
 extension URL {
-    
-    static let test: URL = {
+    static let mock: URL = {
         guard let url = URL(string: "https://www.example.com") else {
             fatalError("Invalid test url")
         }

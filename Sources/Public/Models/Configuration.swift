@@ -1,6 +1,6 @@
 import Foundation
 
-public struct SRVConfiguration: Equatable {
+public struct SRVConfiguration: Equatable, Sendable {
     let productionURL: String
     let sandboxURL: String
     let sessionConfiguration: URLSessionConfiguration

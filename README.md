@@ -20,7 +20,8 @@ A Swift library to handle App Store receipt validation.
 ## iOS 15
 
 Apple has released a new in app purchase API with iOS 15 which includes receipt validation. 
-If your app supports iOS 15 or higher I would highly recommend to implement this new API.
+If your app supports iOS 15 or higher I would highly recommend to implement this new API. 
+As of iOS 18 Apple has deprecated the old API and this library will eventually be deprecated as well.
 
 https://developer.apple.com/documentation/storekit/choosing_a_storekit_api_for_in-app_purchase
 
@@ -165,19 +166,6 @@ case .purchased:
     }
 ```
 
-Note: `Combine` support is also available.
-
-```swift
-let cancellable = receiptValidator
-    .validatePublisher(for: validationRequest)
-    .map { response in
-        print(response)
-    }
-    .mapError { error in
-        print(error)
-    }
-```
-
 Note: `Async` support is also available.
 
 ```swift
@@ -241,19 +229,6 @@ I would recommend to always set this flag to `false` for the following reasons.
 2. When you call this at app launch you can handle the returned `SRVError.noReceiptFoundInBundle` error discretly.
 3. Once a user made an in app purchase there should always be a receipt in your apps bundle.
 4. Users re-installing your app which have an existing subscription should use the restore functionality in your app which is a requirement when using in app purchases. This will add the receipt(s) in your apps bundle and then subscriptions can be validated afterwards. (https://developer.apple.com/documentation/storekit/skpaymentqueue/1506123-restorecompletedtransactions).
-
-Note: `Combine` support is also available.
-
-```swift
-let cancellable = receiptValidator
-    .validatePublisher(for: validationRequest)
-    .map { response in
-        print(response)
-    }
-    .mapError { error in
-        print(error)
-    }
-```
 
 Note: `Async` support is also available.
 

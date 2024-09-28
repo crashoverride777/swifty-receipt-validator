@@ -1,6 +1,6 @@
 import Foundation
 
-public enum SRVStatusCode: Int, Codable {
+public enum SRVStatusCode: Int, Equatable, Codable, Sendable {
     case unknown = -1
     case valid = 0
     case jsonNotReadable = 21000

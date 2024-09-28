@@ -1,17 +1,17 @@
 import Foundation
-import XCTest
+import Testing
 @testable import SwiftyReceiptValidator
 
-final class ConfigurationTests: XCTestCase {
+struct ConfigurationTests {
     
-    func testStandard() {
+    @Test func standard() {
         let sut: SRVConfiguration = .standard
-        XCTAssertEqual(sut.productionURL, "https://buy.itunes.apple.com/verifyReceipt")
-        XCTAssertEqual(sut.sandboxURL, "https://sandbox.itunes.apple.com/verifyReceipt")
-        XCTAssertEqual(sut.sessionConfiguration, .default)
+        #expect(sut.productionURL == "https://buy.itunes.apple.com/verifyReceipt")
+        #expect(sut.sandboxURL == "https://sandbox.itunes.apple.com/verifyReceipt")
+        #expect(sut.sessionConfiguration == .default)
     }
     
-    func testCustom() {
+    @Test func custom() {
         let sessionConfiguration = URLSessionConfiguration.background(withIdentifier: "identifier")
         sessionConfiguration.httpAdditionalHeaders = ["key": "value"]
 
@@ -20,8 +20,8 @@ final class ConfigurationTests: XCTestCase {
             sandboxURL: "sandbox",
             sessionConfiguration: sessionConfiguration
         )
-        XCTAssertEqual(sut.productionURL, "production")
-        XCTAssertEqual(sut.sandboxURL, "sandbox")
-        XCTAssertEqual(sut.sessionConfiguration, sessionConfiguration)
+        #expect(sut.productionURL == "production")
+        #expect(sut.sandboxURL == "sandbox")
+        #expect(sut.sessionConfiguration == sessionConfiguration)
     }
 }

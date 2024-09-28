@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
 s.name = 'SwiftyReceiptValidator'
-s.version = '7.0.0'
+s.version = '8.0'
 s.license = 'MIT'
 s.summary = 'A Swift library for in app purchase receipt validation.'
 
@@ -12,7 +12,7 @@ s.ios.deployment_target = '13.0'
 s.tvos.deployment_target = '13.0'
 s.osx.deployment_target = '10.15'
 
-s.swift_versions = ['5.8', '5.9', '5.10']
+s.swift_versions = ['5.8', '5.9', '5.10', '6.0']
 s.requires_arc = true
 
 s.source = {

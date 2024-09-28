@@ -1,8 +1,8 @@
 import Foundation
 
-public struct SRVPurchaseValidationRequest {
-    let productIdentifier: String
-    let sharedSecret: String?
+public struct SRVPurchaseValidationRequest: Equatable, Sendable {
+    public let productIdentifier: String
+    public let sharedSecret: String?
     
     /// SRVPurchaseValidationRequest
     ///

@@ -1,7 +1,6 @@
 import Foundation
 
 extension JSONDecoder {
-    
     static let receiptResponse: JSONDecoder = {
         let dateFormatter = DateFormatter()
         dateFormatter.calendar = Calendar(identifier: .iso8601)

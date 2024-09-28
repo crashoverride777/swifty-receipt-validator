@@ -1,6 +1,6 @@
 import Foundation
 
-public struct SRVReceiptInApp: Codable, Equatable {
+public struct SRVReceiptInApp: Codable, Equatable, Sendable {
     // The number of items purchased.
     // This value corresponds to the quantity property of the SKPayment object stored in the transaction’s payment property.
     public let quantity: String
@@ -101,7 +101,7 @@ public struct SRVReceiptInApp: Codable, Equatable {
 // MARK: - Types
 
 public extension SRVReceiptInApp {
-    enum ExpirationIntent: String, Codable {
+    enum ExpirationIntent: String, Codable, Sendable {
         // Customer canceled their subscription
         case cancelled = "1"
         // Billing error; for example customer’s payment information was no longer valid
@@ -114,21 +114,21 @@ public extension SRVReceiptInApp {
         case unknown = "5"
     }
     
-    enum ExpirationRetry: String, Codable {
+    enum ExpirationRetry: String, Codable, Sendable {
         // App Store has stopped attempting to renew the subscription
         case stoppedTryingToRenew = "0"
         // App Store is still attempting to renew the subscription
         case stillTryingToRenew = "1"
     }
     
-    enum CancellationReason: String, Codable {
+    enum CancellationReason: String, Codable, Sendable {
         // Transaction was canceled for another reason, for example, if the customer made the purchase accidentally.
         case cancelledForOtherReason = "0"
         // Customer canceled their transaction due to an actual or perceived issue within your app
         case customerCancelledDueToErrorInApp = "1"
     }
 
-    enum PriceConsentStatus: String, Codable {
+    enum PriceConsentStatus: String, Codable, Sendable {
         // Customer has not taken action regarding the increased price.
         // Subscription expires if the customer takes no action before the renewal date.
         case notTakenActionForIncreasedPrice = "0"
