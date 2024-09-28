@@ -1,10 +1,11 @@
-import XCTest
+import Foundation
+import Testing
 @testable import SwiftyReceiptValidator
 
-final class AutoRenewStatusTests: XCTestCase {
+struct AutoRenewStatusTests {
     
-    func testRawValue() {
-        XCTAssertEqual(SRVAutoRenewStatus.off.rawValue, "0")
-        XCTAssertEqual(SRVAutoRenewStatus.on.rawValue, "1")
+    @Test func rawValue() {
+        #expect(SRVAutoRenewStatus.off.rawValue == "0")
+        #expect(SRVAutoRenewStatus.on.rawValue == "1")
     }
 }

@@ -20,7 +20,8 @@ A Swift library to handle App Store receipt validation.
 ## iOS 15
 
 Apple has released a new in app purchase API with iOS 15 which includes receipt validation. 
-If your app supports iOS 15 or higher I would highly recommend to implement this new API.
+If your app supports iOS 15 or higher I would highly recommend to implement this new API. 
+As of iOS 18 Apple has deprecated the old API and this library will eventually be deprecated as well.
 
 https://developer.apple.com/documentation/storekit/choosing_a_storekit_api_for_in-app_purchase
 
@@ -140,53 +141,21 @@ and modify the `.purchased` case to look like this
 ```swift
 case .purchased:
     // Transaction is in queue, user has been charged.  Client should complete the transaction.
-    let productIdentifier = transaction.payment.productIdentifier
-
-    let validationRequest = SRVPurchaseValidationRequest(
-        productIdentifier: productIdentifier,
-        sharedSecret: "your shared secret setup in iTunesConnect or nil when dealing with non-subscription purchases"
-    )
+    Task {
+        let productIdentifier = transaction.payment.productIdentifier
+        let validationRequest = SRVPurchaseValidationRequest(
+            productIdentifier: productIdentifier,
+            sharedSecret: "your shared secret setup in iTunesConnect or nil when dealing with non-subscription purchases"
+        )
+        let response = try await receiptValidator.validate(validationRequest)
+        print("Receipt validation was successfull with receipt response \(response)")
+        // Unlock products and/or do additional checks
         
-    receiptValidator.validate(validationRequest) { result in
-        switch result {
-        case .success(let response):
-            defer {
-                // IMPORTANT: Finish the transaction ONLY after validation was successful
-                // if validation error e.g due to internet, the transaction will stay in pending state
-                // and than can/will be resumed on next app launch
-                queue.finishTransaction(transaction)
-            }
-            print("Receipt validation was successfull with receipt response \(response)")
-            // Unlock products and/or do additional checks
-        case .failure(let error):
-            print("Receipt validation failed with error \(error.localizedDescription)")  
-            // Inform user of error
-        }
+        // IMPORTANT: Finish the transaction ONLY after validation was successful
+        // if validation error e.g due to internet, the transaction will stay in pending state
+        // and than can/will be resumed on next app launch
+        queue.finishTransaction(transaction)
     }
-```
-
-Note: `Combine` support is also available.
-
-```swift
-let cancellable = receiptValidator
-    .validatePublisher(for: validationRequest)
-    .map { response in
-        print(response)
-    }
-    .mapError { error in
-        print(error)
-    }
-```
-
-Note: `Async` support is also available.
-
-```swift
-do {
-    let response = try await receiptValidator.validate(validationRequest)
-    print(response)
-} catch {
-    print(error)
-}
 ```
 
 ### Validate Subscriptions
@@ -198,40 +167,31 @@ let validationRequest = SRVSubscriptionValidationRequest(
     sharedSecret: "your shared secret setup in iTunesConnect",
     refreshLocalReceiptIfNeeded: false,
     excludeOldTransactions: false,
-    now: Date()
+    now: .now
 )
-receiptValidator.validate(validationRequest) { result in
-    switch result {
-    
-    case .success(let response):
-        print(response.receiptResponse) // full receipt response
-        print(response.validSubscriptionReceipts) // convenience array for active subscription receipts
-
-        // Check the validSubscriptionReceipts and unlock products accordingly 
-        // or disable features if no active subscriptions are found e.g.
-        
-        if response.validSubscriptionReceipts.isEmpty {
-           // disable subscription features etc
-        } else {
-           // Valid subscription receipts are sorted by latest expiry date
-           // enable subscription features etc
-        }
-        
-    case .failure(let error):
-        switch error as? SRVError {
-        case .noReceiptFoundInBundle:
-             break
-             // do nothing, see description below
-        case .subscriptioniOS6StyleExpired(let statusCode):
-            // Only returned for iOS 6 style transaction receipts for auto-renewable subscriptions.
-            // This receipt is valid but the subscription has expired. 
-            
-            // disable subscription features 
-        default:
-            // do nothing or inform user of error during validation e.g UIAlertController
-        }
+do {
+    let response = try await receiptValidator.validate(validationRequest)
+    print(response.receiptResponse) // full receipt response
+    print(response.validSubscriptionReceipts) // convenience array for active subscription receipts
+    if response.validSubscriptionReceipts.isEmpty {
+       // disable subscription features etc
+    } else {
+       // Valid subscription receipts are sorted by latest expiry date
+       // enable subscription features etc
     }
-}
+ } catch {
+    switch error as? SRVError {
+    case .noReceiptFoundInBundle:
+         break
+         // do nothing, see description below
+    case .subscriptioniOS6StyleExpired(let statusCode):
+        // Only returned for iOS 6 style transaction receipts for auto-renewable subscriptions.
+        // This receipt is valid but the subscription has expired. 
+        // disable subscription features 
+    default:
+        // do nothing or inform user of error during validation e.g UIAlertController
+    }
+ }
 ```
 
 Setting `refreshLocalReceiptIfNeeded` to `true` will create a `SKReceiptRefreshRequest` if no receipt is found in your apps bundle.
@@ -241,30 +201,6 @@ I would recommend to always set this flag to `false` for the following reasons.
 2. When you call this at app launch you can handle the returned `SRVError.noReceiptFoundInBundle` error discretly.
 3. Once a user made an in app purchase there should always be a receipt in your apps bundle.
 4. Users re-installing your app which have an existing subscription should use the restore functionality in your app which is a requirement when using in app purchases. This will add the receipt(s) in your apps bundle and then subscriptions can be validated afterwards. (https://developer.apple.com/documentation/storekit/skpaymentqueue/1506123-restorecompletedtransactions).
-
-Note: `Combine` support is also available.
-
-```swift
-let cancellable = receiptValidator
-    .validatePublisher(for: validationRequest)
-    .map { response in
-        print(response)
-    }
-    .mapError { error in
-        print(error)
-    }
-```
-
-Note: `Async` support is also available.
-
-```swift
-do {
-    let response = try await receiptValidator.validate(validationRequest)
-    print(response)
-} catch {
-    print(error)
-}
-```
 
 ### Check auto-renew status
 
@@ -298,14 +234,9 @@ the user is not eligible for a free trial or introductory price within that subs
 
 ```swift
 let validationRequest = SRVSubscriptionValidationRequest(...)
-receiptValidator.validate(validationRequest) { result in
-    switch result {
-    case .success(let response):
-        response.validSubscriptionReceipts.forEach { receipt in
-            print(receipt.canShowIntroductoryPrice)
-        }
-    case .failure(let error):
-    ...
+let response = try await receiptValidator.validate(validationRequest)
+response.validSubscriptionReceipts.forEach { receipt in
+    print(receipt.canShowIntroductoryPrice)
 }
 ```
 

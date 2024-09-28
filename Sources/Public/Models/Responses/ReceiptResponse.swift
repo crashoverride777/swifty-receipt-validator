@@ -1,6 +1,6 @@
 import Foundation
 
-public struct SRVReceiptResponse: Codable, Equatable {
+public struct SRVReceiptResponse: Codable, Equatable, Sendable {
     // For iOS 6 style transaction receipts, the status code reflects the status of the specific transaction’s receipt.
     // For iOS 7 style app receipts, the status code is reflects the status of the app receipt as a whole. For example, if you send a valid app receipt that contains an expired subscription, the response is 0 because the receipt as a whole is valid.
     public let status: SRVStatusCode
@@ -20,10 +20,9 @@ public struct SRVReceiptResponse: Codable, Equatable {
     public let environment: String?
 }
 
-// MARK: - Computed
+// MARK: - Public Methods
 
 extension SRVReceiptResponse {
-    
     /// All subscriptions that are currently active, sorted by expiry dates
     func validSubscriptionReceipts(now: Date) -> [SRVReceiptInApp] {
         guard let receipts = latestReceiptInfo ?? receipt?.inApp else {

@@ -3,29 +3,23 @@ import Foundation
 
 final class StubResponseValidator {
     struct Stub {
-        var validatePurchaseResult: (_ id: String, _ response: SRVReceiptResponse) -> (Result<SRVReceiptResponse, Error>) = { (_, _) in
-            .success(.mock())
-        }
-        var validateSubscriptionResult: (_ response: SRVReceiptResponse, _ now: Date) -> (Result<SRVSubscriptionValidationResponse, Error>) = { (_, _) in
-            .success(.mock())
-        }
+        var validatePurchaseError: Error?
+        var validatePurchaseResponse: SRVReceiptResponse = .mock()
+        var validateSubscriptionError: Error?
+        var validateSubscriptionResponse: SRVSubscriptionValidationResponse = .mock()
     }
     
     var stub = Stub()
 }
 
 extension StubResponseValidator: ResponseValidator {
-    func validatePurchase(in response: SRVReceiptResponse,
-                          productId: String,
-                          completion: @escaping (Result<SRVReceiptResponse, Error>) -> Void) {
-        let validationResult = stub.validatePurchaseResult(productId, response)
-        completion(validationResult)
+    func validatePurchase(for response: SRVReceiptResponse, productID: String) async throws -> SRVReceiptResponse {
+        if let error = stub.validatePurchaseError { throw error }
+        return stub.validatePurchaseResponse
     }
     
-    func validateSubscriptions(in response: SRVReceiptResponse,
-                               now: Date,
-                               completion: @escaping (Result<SRVSubscriptionValidationResponse, Error>) -> Void) {
-        let validationResult = stub.validateSubscriptionResult(response, now)
-        completion(validationResult)
+    func validateSubscriptions(for response: SRVReceiptResponse, now: Date) async throws -> SRVSubscriptionValidationResponse {
+        if let error = stub.validateSubscriptionError { throw error }
+        return stub.validateSubscriptionResponse
     }
 }

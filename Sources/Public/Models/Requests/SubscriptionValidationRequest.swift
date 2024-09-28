@@ -1,10 +1,10 @@
 import Foundation
 
-public struct SRVSubscriptionValidationRequest {
-    let sharedSecret: String?
-    let refreshLocalReceiptIfNeeded: Bool
-    let excludeOldTransactions: Bool
-    let now: Date
+public struct SRVSubscriptionValidationRequest: Equatable, Sendable {
+    public let sharedSecret: String?
+    public let refreshLocalReceiptIfNeeded: Bool
+    public let excludeOldTransactions: Bool
+    public let now: Date
     
     /// SRVSubscriptionValidationRequest
     ///

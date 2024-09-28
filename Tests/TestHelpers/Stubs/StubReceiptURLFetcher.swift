@@ -3,7 +3,8 @@ import Foundation
 
 final class StubReceiptURLFetcher {
     struct Stub {
-        var fetchResult: (ReceiptURLFetcherRefreshRequest?) -> (Result<URL, SRVError>) = { _ in .success(.test) }
+        var refreshRequests: [ReceiptURLFetcherRefreshRequest] = []
+        var fetchResult: (ReceiptURLFetcherRefreshRequest?) -> (Result<URL, Error>) = { _ in .success(.test) }
     }
     
     var stub = Stub()

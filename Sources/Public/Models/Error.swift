@@ -1,6 +1,6 @@
 import Foundation
 
-public enum SRVError: Error {
+public enum SRVError: Error, Equatable, Sendable {
     case noReceiptFoundInBundle
     case invalidStatusCode(SRVStatusCode)
     case noReceiptFoundInResponse(SRVStatusCode)
@@ -8,7 +8,6 @@ public enum SRVError: Error {
     case productIdNotMatching(SRVStatusCode)
     case subscriptioniOS6StyleExpired(SRVStatusCode?)
     case purchaseCancelled(SRVStatusCode)
-    case other(Error)
     
     public var statusCode: SRVStatusCode? {
         switch self {
@@ -26,15 +25,9 @@ public enum SRVError: Error {
             return statusCode
         case .purchaseCancelled(let statusCode):
             return statusCode
-        case .other:
-            return nil
         }
     }
-}
-
-// MARK: - LocalizedError
-
-extension SRVError: LocalizedError {
+    
     public var errorDescription: String? {
         switch self {
         case .noReceiptFoundInBundle:
@@ -51,8 +44,6 @@ extension SRVError: LocalizedError {
             return "iOS 6 style subscription expired."
         case .purchaseCancelled:
             return "Purchase has been cancelled."
-        case .other(let error):
-            return error.localizedDescription
         }
     }
 }

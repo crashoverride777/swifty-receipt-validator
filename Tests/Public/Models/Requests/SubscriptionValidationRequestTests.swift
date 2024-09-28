@@ -1,9 +1,10 @@
-import XCTest
+import Foundation
+import Testing
 @testable import SwiftyReceiptValidator
 
-final class SubscriptionValidationRequestTests: XCTestCase {
+struct SubscriptionValidationRequestTests {
 
-    func testInit() {
+    @Test func initialization() {
         let sharedSecret = "secret"
         let refreshLocalReceiptIfNeeded = true
         let excludeOldTransactions = false
@@ -16,9 +17,9 @@ final class SubscriptionValidationRequestTests: XCTestCase {
             now: now
         )
         
-        XCTAssertEqual(sut.sharedSecret, sharedSecret)
-        XCTAssertEqual(sut.refreshLocalReceiptIfNeeded, refreshLocalReceiptIfNeeded)
-        XCTAssertEqual(sut.excludeOldTransactions, excludeOldTransactions)
-        XCTAssertEqual(sut.now, now)
+        #expect(sut.sharedSecret == sharedSecret)
+        #expect(sut.refreshLocalReceiptIfNeeded == refreshLocalReceiptIfNeeded)
+        #expect(sut.excludeOldTransactions == excludeOldTransactions)
+        #expect(sut.now == now)
     }
 }

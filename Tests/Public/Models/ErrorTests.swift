@@ -1,40 +1,16 @@
-import XCTest
+import Foundation
+import Testing
 @testable import SwiftyReceiptValidator
 
-final class ErrorTests: XCTestCase {
+struct ErrorTests {
     
-    // MARK: - Status Code
-    
-    func testStatusCode_whenNoReceiptFoundInBundle() {
-        XCTAssertEqual(SRVError.noReceiptFoundInBundle.statusCode, nil)
-    }
-    
-    func testStatusCode_whenInvalidStatusCode() {
-        XCTAssertEqual(SRVError.invalidStatusCode(.valid).statusCode, .valid)
-    }
-    
-    func testStatusCode_whenNoReceiptFoundInResponse() {
-        XCTAssertEqual(SRVError.noReceiptFoundInResponse(.valid).statusCode, .valid)
-    }
-    
-    func testStatusCode_whenBundleIdNotMatching() {
-        XCTAssertEqual(SRVError.bundleIdNotMatching(.valid).statusCode, .valid)
-    }
-    
-    func testStatusCode_whenProductIdNotMatching() {
-        XCTAssertEqual(SRVError.productIdNotMatching(.valid).statusCode, .valid)
-    }
-    
-    func testStatusCode_whenNoValidSubscription() {
-        XCTAssertEqual(SRVError.subscriptioniOS6StyleExpired(.valid).statusCode, .valid)
-    }
-    
-    func testStatusCode_whenPurchaseCancelled() {
-        XCTAssertEqual(SRVError.purchaseCancelled(.valid).statusCode, .valid)
-    }
-    
-    func testStatusCode_whenOtherError() {
-        let expectedError = URLError(.notConnectedToInternet)
-        XCTAssertNil(SRVError.other(expectedError).statusCode)
+    @Test func statusCode() {
+        #expect(SRVError.noReceiptFoundInBundle.statusCode == nil)
+        #expect(SRVError.invalidStatusCode(.valid).statusCode == .valid)
+        #expect(SRVError.noReceiptFoundInResponse(.valid).statusCode == .valid)
+        #expect(SRVError.bundleIdNotMatching(.valid).statusCode == .valid)
+        #expect(SRVError.productIdNotMatching(.valid).statusCode == .valid)
+        #expect(SRVError.subscriptioniOS6StyleExpired(.valid).statusCode == .valid)
+        #expect(SRVError.purchaseCancelled(.valid).statusCode == .valid)
     }
 }

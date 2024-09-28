@@ -1,7 +1,8 @@
-import XCTest
+import Foundation
+import Testing
 @testable import SwiftyReceiptValidator
 
-final class ResponseValidatorTests: XCTestCase {
+final class ResponseValidatorTests {
     
     // MARK: - Properties
     
@@ -9,141 +10,82 @@ final class ResponseValidatorTests: XCTestCase {
 
     // MARK: - Life Cycle
        
-    override func setUp() {
-        super.setUp()
+    init() {
         bundle = MockBundle()
         bundle.stub.bundleIdentifier = "test.com"
     }
 
-    override func tearDown() {
+    deinit {
         bundle = nil
-        super.tearDown()
     }
     
     // MARK: - Tests
     
     // MARK: Validate Purchase
 
-    func testValidatePurchase_whenSuccess_returnsCorrectData() {
-        let expectation = XCTestExpectation(description: "Finished")
-        let productId = "123"
-        let expectedResponse = makeResponse(productId: productId)
-        
+    @Test func validatePurchase_whenSuccess_returnsCorrectData() async throws {
+        let productID = "123"
+        let expectedResponse = makeResponse(productId: productID)
         let sut = makeSUT()
-        sut.validatePurchase(in: expectedResponse, productId: productId) { result in
-            if case .success(let response) = result {
-                XCTAssertEqual(response, expectedResponse)
-                expectation.fulfill()
-            }
-        }
-        
-        wait(for: [expectation], timeout: 0.1)
+        let response = try await sut.validatePurchase(for: expectedResponse, productID: productID)
+        #expect(response == expectedResponse)
     }
     
-    func testValidatePurchase_whenInvalidStatusCode_returnsCorrectError() {
-        let expectation = XCTestExpectation(description: "Finished")
-        let expectedError: SRVError = .invalidStatusCode(.jsonNotReadable)
+    @Test func validatePurchase_whenInvalidStatusCode_returnsCorrectError() async {
         let expectedResponse = makeResponse(statusCode: .jsonNotReadable)
-        
         let sut = makeSUT()
-        sut.validatePurchase(in: expectedResponse, productId: "123") { result in
-            if case .failure(let error) = result {
-                XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
-                expectation.fulfill()
-            }
+        await #expect(throws: SRVError.invalidStatusCode(.jsonNotReadable)) {
+            try await sut.validatePurchase(for: expectedResponse, productID: "123")
         }
-        
-        wait(for: [expectation], timeout: 0.1)
     }
     
-    func testValidatePurchase_whenNoReceiptFoundInResponse_returnsCorrectError() {
-        let expectation = XCTestExpectation(description: "Finished")
-        let expectedError: SRVError = .noReceiptFoundInResponse(.valid)
+    @Test func validatePurchase_whenNoReceiptFoundInResponse_returnsCorrectError() async {
         let expectedResponse = makeResponseWithNilReceipt()
-        
         let sut = makeSUT()
-        sut.validatePurchase(in: expectedResponse, productId: "123") { result in
-            if case .failure(let error) = result {
-                XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
-                expectation.fulfill()
-            }
+        await #expect(throws: SRVError.noReceiptFoundInResponse(.valid)) {
+            try await sut.validatePurchase(for: expectedResponse, productID: "123")
         }
-        
-        wait(for: [expectation], timeout: 0.1)
     }
     
-    func testValidatePurchase_whenBundleIDNotMatching_returnsCorrectError() {
-        let expectation = XCTestExpectation(description: "Finished")
+    @Test func validatePurchase_whenBundleIDNotMatching_returnsCorrectError() async {
         bundle.stub.bundleIdentifier = "invalid"
-        let expectedError: SRVError = .bundleIdNotMatching(.valid)
         let expectedResponse = makeResponse()
-        
         let sut = makeSUT()
-        sut.validatePurchase(in: expectedResponse, productId: "123") { result in
-            if case .failure(let error) = result {
-                XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
-                expectation.fulfill()
-            }
+        await #expect(throws: SRVError.bundleIdNotMatching(.valid)) {
+            try await sut.validatePurchase(for: expectedResponse, productID: "123")
         }
-        
-        wait(for: [expectation], timeout: 0.1)
     }
     
-    func testValidatePurchase_whenProductIdNotMatching_returnsCorrectError() {
-        let expectation = XCTestExpectation(description: "Finished")
-        let expectedError: SRVError = .productIdNotMatching(.valid)
+    @Test func validatePurchase_whenProductIdNotMatching_returnsCorrectError() async {
         let expectedResponse = makeResponse()
-        
         let sut = makeSUT()
-        sut.validatePurchase(in: expectedResponse, productId: "invalid") { result in
-            if case .failure(let error) = result {
-                XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
-                expectation.fulfill()
-            }
+        await #expect(throws: SRVError.productIdNotMatching(.valid)) {
+            try await sut.validatePurchase(for: expectedResponse, productID: "invalid")
         }
-        
-        wait(for: [expectation], timeout: 0.1)
     }
     
-    func testValidatePurchase_whenPurchaseCancelled_returnsCorrectError() {
-        let expectation = XCTestExpectation(description: "Finished")
-        let expectedError: SRVError = .purchaseCancelled(.valid)
+    @Test func validatePurchase_whenPurchaseCancelled_returnsCorrectError() async {
         let expectedResponse = makeResponse(cancellationDate: .test)
-        
         let sut = makeSUT()
-        sut.validatePurchase(in: expectedResponse, productId: "123") { result in
-            if case .failure(let error) = result {
-                XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
-                expectation.fulfill()
-            }
+        await #expect(throws: SRVError.purchaseCancelled(.valid)) {
+            try await sut.validatePurchase(for: expectedResponse, productID: "123")
         }
-        
-        wait(for: [expectation], timeout: 0.1)
     }
     
     // MARK: Validate Subscription
 
-    func testValidateSubscription_whenSuccess_returnsCorrectData() {
-        let expectation = XCTestExpectation(description: "Finished")
+    @Test func validateSubscription_whenSuccess_returnsCorrectData() async throws {
         let expectedReceiptResponse = makeResponse()
         let expectedValidationResponse: SRVSubscriptionValidationResponse = .mock(
             validReceipts: expectedReceiptResponse.validSubscriptionReceipts(now: .test),
             receiptResponse: expectedReceiptResponse
         )
-        
         let sut = makeSUT()
-        sut.validateSubscriptions(in: expectedReceiptResponse, now: .test) { result in
-            if case .success(let response) = result {
-                XCTAssertEqual(response, expectedValidationResponse)
-                expectation.fulfill()
-            }
-        }
-        
-        wait(for: [expectation], timeout: 0.1)
+        let response = try await sut.validateSubscriptions(for: expectedReceiptResponse, now: .test)
+        #expect(response == expectedValidationResponse)
     }
     
-    func testValidateSubscription_whenNoValidSubscriptionsFound_returnsCorrectResponse() {
-        let expectation = XCTestExpectation(description: "Finished")
+    @Test func validateSubscription_whenNoValidSubscriptionsFound_returnsCorrectResponse() async throws {
         let expectedReceiptResponse = makeEmptyResponse()
         let expectedValidationResponse: SRVSubscriptionValidationResponse = .mock(
             validReceipts: expectedReceiptResponse.validSubscriptionReceipts(now: .test),
@@ -151,79 +93,41 @@ final class ResponseValidatorTests: XCTestCase {
         )
         
         let sut = makeSUT()
-        sut.validateSubscriptions(in: expectedReceiptResponse, now: .test) { result in
-            if case .success(let response) = result {
-                XCTAssertEqual(response, expectedValidationResponse)
-                expectation.fulfill()
-            }
-        }
-          
-        wait(for: [expectation], timeout: 0.1)
+        let response = try await sut.validateSubscriptions(for: expectedReceiptResponse, now: .test)
+        #expect(response == expectedValidationResponse)
     }
     
-    func testValidateSubscription_whenInvalidStatusCode_returnsCorrectError() {
-        let expectation = XCTestExpectation(description: "Finished")
-        let expectedError: SRVError = .invalidStatusCode(.jsonNotReadable)
+    @Test func validateSubscription_whenInvalidStatusCode_returnsCorrectError() async {
         let expectedResponse = makeResponse(statusCode: .jsonNotReadable)
-        
         let sut = makeSUT()
-        sut.validateSubscriptions(in: expectedResponse, now: .test) { result in
-            if case .failure(let error) = result {
-                XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
-                expectation.fulfill()
-            }
+        await #expect(throws: SRVError.invalidStatusCode(.jsonNotReadable)) {
+            try await sut.validateSubscriptions(for: expectedResponse, now: .test)
         }
-        
-        wait(for: [expectation], timeout: 0.1)
     }
     
-    func testValidateSubscription_whenNoReceiptFoundInResponse_returnsCorrectError() {
-        let expectation = XCTestExpectation(description: "Finished")
-        let expectedError: SRVError = .noReceiptFoundInResponse(.jsonNotReadable)
+    @Test func validateSubscription_whenNoReceiptFoundInResponse_returnsCorrectError() async {
         let expectedResponse = makeResponseWithNilReceipt()
-        
         let sut = makeSUT()
-        sut.validateSubscriptions(in: expectedResponse, now: .test) { result in
-            if case .failure(let error) = result {
-                XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
-                expectation.fulfill()
-            }
+        await #expect(throws: SRVError.noReceiptFoundInResponse(.valid)) {
+            try await sut.validateSubscriptions(for: expectedResponse, now: .test)
         }
-        
-        wait(for: [expectation], timeout: 0.1)
     }
     
-    func testValidateSubscription_whenBundleIdNotMatching_returnsCorrectError() {
-        let expectation = XCTestExpectation(description: "Finished")
+    @Test func validateSubscription_whenBundleIdNotMatching_returnsCorrectError() async {
         bundle.stub.bundleIdentifier = "invalid"
-        let expectedError: SRVError = .bundleIdNotMatching(.valid)
         let expectedResponse = makeResponse()
-        
         let sut = makeSUT()
-        sut.validateSubscriptions(in: expectedResponse, now: .test) { result in
-            if case .failure(let error) = result {
-                XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
-                expectation.fulfill()
-            }
+        await #expect(throws: SRVError.bundleIdNotMatching(.valid)) {
+            try await sut.validateSubscriptions(for: expectedResponse, now: .test)
         }
-        
-        wait(for: [expectation], timeout: 0.1)
     }
     
-    func testValidateSubscription_whenSubscriptioniOS6StyleExpired_returnsCorrectError() {
-        let expectation = XCTestExpectation(description: "Finished")
-        let expectedError: SRVError = .subscriptioniOS6StyleExpired(.subscriptioniOS6StyleExpired)
+    @Test func validateSubscription_whenSubscriptioniOS6StyleExpired_returnsCorrectError() async {
         let expectedResponse = makeResponse(statusCode: .subscriptioniOS6StyleExpired)
-        
         let sut = makeSUT()
-        sut.validateSubscriptions(in: expectedResponse, now: .test) { result in
-            if case .failure(let error) = result {
-                XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
-                expectation.fulfill()
-            }
+        await #expect(throws: SRVError.subscriptioniOS6StyleExpired(.subscriptioniOS6StyleExpired)) {
+            try await sut.validateSubscriptions(for: expectedResponse, now: .test)
         }
-        
-        wait(for: [expectation], timeout: 0.1)
     }
 }
 
