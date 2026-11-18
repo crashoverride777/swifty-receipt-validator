@@ -21,17 +21,14 @@
 //    SOFTWARE.
 
 import Foundation
-import Combine
 import StoreKit
 
 public protocol SwiftyReceiptValidatorType {
     func validate(_ request: SRVPurchaseValidationRequest, completion: @escaping (Result<SRVReceiptResponse, Error>) -> Void)
     func validate(_ request: SRVPurchaseValidationRequest) async throws -> SRVReceiptResponse
-    func validatePublisher(for request: SRVPurchaseValidationRequest) -> AnyPublisher<SRVReceiptResponse, Error>
     
     func validate(_ request: SRVSubscriptionValidationRequest, completion: @escaping (Result<SRVSubscriptionValidationResponse, Error>) -> Void)
     func validate(_ request: SRVSubscriptionValidationRequest) async throws -> SRVSubscriptionValidationResponse
-    func validatePublisher(for request: SRVSubscriptionValidationRequest) -> AnyPublisher<SRVSubscriptionValidationResponse, Error>
 }
 
 /*
@@ -132,17 +129,6 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
         }
     }
     
-    /// Validate app store purchase publisher.
-    ///
-    /// - parameter request: The validation request configuration.
-    public func validatePublisher(for request: SRVPurchaseValidationRequest) -> AnyPublisher<SRVReceiptResponse, Error> {
-        Deferred {
-            Future { [weak self] promise in
-                self?.validate(request, completion: promise)
-            }
-        }.eraseToAnyPublisher()
-    }
-    
     // MARK: Subscription
     
     /// Validate app store subscription.
@@ -179,17 +165,6 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
                 continuation.resume(with: result)
             }
         }
-    }
-    
-    /// Validate app store subscription publisher.
-    ///
-    /// - parameter request: The request configuration.
-    public func validatePublisher(for request: SRVSubscriptionValidationRequest) -> AnyPublisher<SRVSubscriptionValidationResponse, Error> {
-        Deferred {
-            Future { [weak self] promise in
-                self?.validate(request, completion: promise)
-            }
-        }.eraseToAnyPublisher()
     }
 }
 

@@ -51,18 +51,6 @@ dependencies: [
 ]
 ```
 
-### Cocoa Pods
-
-[CocoaPods](https://developers.google.com/admob/ios/quick-start#streamlined_using_cocoapods) is a dependency manager for Cocoa projects. 
-Simply install the pod by adding the following line to your pod file
-```swift
-pod 'SwiftyReceiptValidator'
-```
-
-### Manually
-
-Alternatively you can drag the `Sources` folder and its containing files into your project.
-
 ## Usage
 
 ### Add import
