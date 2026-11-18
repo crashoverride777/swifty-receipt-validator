@@ -1,196 +1,127 @@
-import XCTest
+import Foundation
+import Testing
 @testable import SwiftyReceiptValidator
 
-class ReceiptValidatorTests: XCTestCase {
+struct ReceiptValidatorTests {
     
     // MARK: - Properties
     
-    private(set) var receiptURLFetcher: StubReceiptURLFetcher!
-    private(set) var receiptClient: StubReceiptClient!
-    private(set) var responseValidator: StubResponseValidator!
-    
-    // MARK: - Life Cycle
-    
-    override func setUp() {
-        super.setUp()
-        receiptURLFetcher = StubReceiptURLFetcher()
-        receiptClient = StubReceiptClient()
-        responseValidator = StubResponseValidator()
-    }
-
-    override func tearDown() {
-        receiptURLFetcher = nil
-        receiptClient = nil
-        responseValidator = nil
-        super.tearDown()
-    }
+    private let receiptURLFetcher = StubReceiptURLFetcher()
+    private let receiptClient = StubReceiptClient()
+    private let responseValidator = StubResponseValidator()
     
     // MARK: - Tests
 
     // MARK: Validate Purchase
     
-    func testValidatePurchase_whenSuccess_returnsCorrectData() {
-        let expectation = XCTestExpectation(description: "Finished")
+    @Test func testValidatePurchase_whenSuccess_returnsCorrectData() async throws {
         let expectedResponse: SRVReceiptResponse = .mock()
-        receiptClient.stub.validateResult = { (_, _, _) in .success(expectedResponse) }
-        responseValidator.stub.validatePurchaseResult = { (_, _) in .success(expectedResponse) }
-        let request = SRVPurchaseValidationRequest(productIdentifier: "123", sharedSecret: "secret")
+        receiptClient.stub.validationResponse = expectedResponse
+        responseValidator.stub.validatePurchaseResponse = expectedResponse
+        let request = SRVPurchaseValidationRequest(productIdentifier: "1", sharedSecret: nil)
         let sut = makeSUT()
-        sut.validate(request) { result in
-            if case .success(let response) = result {
-                XCTAssertEqual(response, expectedResponse)
-                expectation.fulfill()
-            }
-        }
-        
-        wait(for: [expectation], timeout: 0.1)
+        let response = try await sut.validate(request)
+        #expect(response == expectedResponse)
     }
     
-    func testValidatePurchase_whenReceiptFetcherError_returnsCorrectError() {
-        let expectation = XCTestExpectation(description: "Finished")
+    @Test func testValidatePurchase_whenReceiptFetcherError_returnsCorrectError() async {
         let expectedError = URLError(.notConnectedToInternet)
-        receiptURLFetcher.stub.fetchResult = { _ in .failure(.other(expectedError)) }
-        let request = SRVPurchaseValidationRequest(productIdentifier: "123", sharedSecret: "secret")
+        receiptURLFetcher.stub.fetchError = expectedError
+        let request = SRVPurchaseValidationRequest(productIdentifier: "1", sharedSecret: nil)
         let sut = makeSUT()
-        sut.validate(request) { result in
-            if case .failure(let error) = result {
-                XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
-                expectation.fulfill()
-            }
+        await #expect(throws: expectedError) {
+            try await sut.validate(request)
         }
-        
-        wait(for: [expectation], timeout: 0.1)
     }
     
-    func testValidatePurchase_whenReceiptClientError_returnsCorrectError() {
-        let expectation = XCTestExpectation(description: "Finished")
+    @Test func testValidatePurchase_whenReceiptClientError_returnsCorrectError() async {
         let expectedError = URLError(.notConnectedToInternet)
-        receiptClient.stub.validateResult = { (_, _, _) in .failure(expectedError) }
-        let request = SRVPurchaseValidationRequest(productIdentifier: "123", sharedSecret: "secret")
+        receiptClient.stub.validationError = expectedError
+        let request = SRVPurchaseValidationRequest(productIdentifier: "1", sharedSecret: nil)
         let sut = makeSUT()
-        sut.validate(request) { result in
-            if case .failure(let error) = result {
-                XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
-                expectation.fulfill()
-            }
+        await #expect(throws: expectedError) {
+            try await sut.validate(request)
         }
-        
-        wait(for: [expectation], timeout: 0.1)
     }
     
-    func testValidatePurchase_whenResponseValidatorError_returnsCorrectError() {
-        let expectation = XCTestExpectation(description: "Finished")
+    @Test func testValidatePurchase_whenResponseValidatorError_returnsCorrectError() async {
         let expectedError: SRVError = .productIdNotMatching(.unknown)
-        responseValidator.stub.validatePurchaseResult = { (_, _) in .failure(expectedError) }
-        let request = SRVPurchaseValidationRequest(productIdentifier: "123", sharedSecret: "secret")
+        responseValidator.stub.validatePurchaseError = expectedError
+        let request = SRVPurchaseValidationRequest(productIdentifier: "1", sharedSecret: nil)
         let sut = makeSUT()
-        sut.validate(request) { result in
-            if case .failure(let error) = result {
-                XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
-                expectation.fulfill()
-            }
+        await #expect(throws: SRVError.other(expectedError)) {
+            try await sut.validate(request)
         }
-        
-        wait(for: [expectation], timeout: 0.1)
     }
     
     // MARK: Validate Subscription
     
-    func testValidateSubscription_whenSuccess_returnsCorrectData() {
-        let expectation = XCTestExpectation(description: "Finished")
+    @Test func testValidateSubscription_whenSuccess_returnsCorrectData() async throws {
         let expectedReceiptResponse: SRVReceiptResponse = .mock()
         let expectedValidationResponse: SRVSubscriptionValidationResponse = .mock(
             validReceipts: expectedReceiptResponse.validSubscriptionReceipts(now: .test),
             receiptResponse: expectedReceiptResponse
         )
-        receiptClient.stub.validateResult = { (_, _, _) in .success(expectedReceiptResponse) }
-        responseValidator.stub.validateSubscriptionResult = { (_, _) in .success(expectedValidationResponse) }
+        receiptClient.stub.validationResponse = expectedReceiptResponse
+        responseValidator.stub.validateSubscriptionResponse = expectedValidationResponse
         let request = SRVSubscriptionValidationRequest(
             sharedSecret: "secret",
             refreshLocalReceiptIfNeeded: false,
             excludeOldTransactions: false,
             now: .test
         )
-        
         let sut = makeSUT()
-        sut.validate(request) { result in
-            if case .success(let response) = result {
-                XCTAssertEqual(response, expectedValidationResponse)
-                expectation.fulfill()
-            }
-        }
-        
-        wait(for: [expectation], timeout: 0.1)
+        let response = try await sut.validate(request)
+        #expect(response == expectedValidationResponse)
     }
     
-    func testValidateSubscription_whenReceiptFetcherError_returnsCorrectError() {
-        let expectation = XCTestExpectation(description: "Finished")
+    @Test func testValidateSubscription_whenReceiptFetcherError_returnsCorrectError() async {
         let expectedError = URLError(.notConnectedToInternet)
-        receiptURLFetcher.stub.fetchResult = { _ in .failure(.other(expectedError)) }
+        receiptURLFetcher.stub.fetchError = expectedError
         let request = SRVSubscriptionValidationRequest(
             sharedSecret: "secret",
             refreshLocalReceiptIfNeeded: false,
             excludeOldTransactions: false,
             now: .test
         )
-        
         let sut = makeSUT()
-        sut.validate(request) { result in
-            if case .failure(let error) = result {
-                XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
-                expectation.fulfill()
-            }
+        await #expect(throws: expectedError) {
+            try await sut.validate(request)
         }
-        
-        wait(for: [expectation], timeout: 0.1)
     }
     
-    func testValidateSubscription_whenReceiptClientError_returnsCorrectError() {
-        let expectation = XCTestExpectation(description: "Finished")
+    @Test func testValidateSubscription_whenReceiptClientError_returnsCorrectError() async {
         let expectedError = URLError(.notConnectedToInternet)
-        receiptClient.stub.validateResult = { (_, _, _) in .failure(expectedError) }
+        receiptClient.stub.validationError = expectedError
         let request = SRVSubscriptionValidationRequest(
             sharedSecret: "secret",
             refreshLocalReceiptIfNeeded: false,
             excludeOldTransactions: false,
             now: .test
         )
-        
         let sut = makeSUT()
-        sut.validate(request) { result in
-            if case .failure(let error) = result {
-                XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
-                expectation.fulfill()
-            }
+        await #expect(throws: expectedError) {
+            try await sut.validate(request)
         }
-        
-        wait(for: [expectation], timeout: 0.1)
     }
     
-    func testValidateSubscription_whenResponseValidatorError_returnsCorrectError() {
-        let expectation = XCTestExpectation(description: "Finished")
+    @Test func testValidSubscription_whenResponseValidatorError_returnsCorrectError() async {
         let expectedError = URLError(.notConnectedToInternet)
-        responseValidator.stub.validateSubscriptionResult = { (_, _) in .failure(expectedError) }
+        responseValidator.stub.validateSubscriptionError = expectedError
         let request = SRVSubscriptionValidationRequest(
             sharedSecret: "secret",
             refreshLocalReceiptIfNeeded: false,
             excludeOldTransactions: false,
             now: .test
         )
-        
         let sut = makeSUT()
-        sut.validate(request) { result in
-            if case .failure(let error) = result {
-                XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
-                expectation.fulfill()
-            }
+        await #expect(throws: expectedError) {
+            try await sut.validate(request)
         }
-        
-        wait(for: [expectation], timeout: 0.1)
     }
 }
 
-// MARK: - Internal Methods
+// MARK: - Helpers
 
 extension ReceiptValidatorTests {
     func makeSUT(configuration: SRVConfiguration = .standard) -> SwiftyReceiptValidator {

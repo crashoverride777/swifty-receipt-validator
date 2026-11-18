@@ -1,31 +1,20 @@
-import XCTest
+import Foundation
+import Testing
 @testable import SwiftyReceiptValidator
 
-final class ReceiptClientTests: XCTestCase {
+struct ReceiptClientTests {
     
     // MARK: - Properties
 
-    private var sessionManager: StubURLSessionManager!
+    private let sessionManager = StubURLSessionManager()
     private let productionURL = "production.com"
     private let sandboxURL = "sandbox.com"
-
-    // MARK: - Life Cycle
-       
-    override func setUp() {
-        super.setUp()
-        sessionManager = StubURLSessionManager()
-    }
-
-    override func tearDown() {
-        sessionManager = nil
-        super.tearDown()
-    }
     
     // MARK: - Tests
     
     // MARK: Parameters
     
-    func testSetsCorrectParameters() throws {
+    @Test func testSetsCorrectParameters() throws {
         let expectation = XCTestExpectation(description: "Finished")
         let receiptURL: URL = .test
 
@@ -55,11 +44,10 @@ final class ReceiptClientTests: XCTestCase {
     
     // MARK: Fetch
   
-    func testFetch_whenSuccess_returnsCorrectResponse() {
-        let expectation = XCTestExpectation(description: "Finished")
+    @Test func testFetch_whenSuccess_returnsCorrectResponse() async throws {
         let expectedDictionaryResponse: [String: Any] = SRVReceiptResponse.mock(.subscription)
         let expectedResponse: SRVReceiptResponse = .mock(from: expectedDictionaryResponse)
-        sessionManager.stub.start = { (_, _) in .success(expectedDictionaryResponse.asData) }
+        sessionManager.stub.startResponse = expectedDictionaryResponse.asData
         
         let request = ReceiptClientRequest(
             receiptURL: .test,
@@ -68,17 +56,11 @@ final class ReceiptClientTests: XCTestCase {
         )
         
         let sut = makeSUT()
-        sut.perform(request) { result in
-            if case .success(let response) = result {
-                XCTAssertEqual(response, expectedResponse)
-                expectation.fulfill()
-            }
-        }
-        
-        wait(for: [expectation], timeout: 0.1)
+        let response = try await sut.perform(request)
+        #expect(response == expectedResponse)
     }
     
-    func testFetch_whenNoDownloadID_returnsCorrectResponse() {
+    @Test func testFetch_whenNoDownloadID_returnsCorrectResponse() {
         let expectation = XCTestExpectation(description: "Finished")
         let expectedDictionaryResponse: [String: Any] = SRVReceiptResponse.mock(.noDownloadID)
         let expectedResponse: SRVReceiptResponse = .mock(from: expectedDictionaryResponse)
@@ -101,7 +83,7 @@ final class ReceiptClientTests: XCTestCase {
         wait(for: [expectation], timeout: 0.1)
     }
     
-    func testFetch_whenProductionReceipt_callsProductionURL() {
+    @Test func testFetch_whenProductionReceipt_callsProductionURL() {
         let expectation = XCTestExpectation(description: "Finished")
         let expectedDictionaryResponse: [String: Any] = SRVReceiptResponse.mock(.subscription)
         
@@ -123,7 +105,7 @@ final class ReceiptClientTests: XCTestCase {
         wait(for: [expectation], timeout: 0.1)
     }
     
-    func testFetch_whenTestReceipt_callsProductionURL_thenSandboxURL() {
+    @Test func testFetch_whenTestReceipt_callsProductionURL_thenSandboxURL() {
         let expectation = XCTestExpectation(description: "Finished")
         expectation.expectedFulfillmentCount = 2
         let expectedDictionaryResponse: [String: Any] = SRVReceiptResponse.mock(.sandbox)
@@ -148,7 +130,7 @@ final class ReceiptClientTests: XCTestCase {
         wait(for: [expectation], timeout: 0.1)
     }
     
-    func testFetch_whenConnectionError_returnsCorrectError() {
+    @Test func testFetch_whenConnectionError_returnsCorrectError() {
         let expectation = XCTestExpectation(description: "Finished")
         let expectedError = URLError(.notConnectedToInternet)
         sessionManager.stub.start = { (_, _) in .failure(expectedError) }
@@ -170,7 +152,7 @@ final class ReceiptClientTests: XCTestCase {
         wait(for: [expectation], timeout: 0.1)
     }
     
-    func testFetch_whenInvalidResponse_returnsCorrectError() {
+    @Test func testFetch_whenInvalidResponse_returnsCorrectError() {
         let expectation = XCTestExpectation(description: "Finished")
         let expectedDictionaryResponse: [String: Any] = SRVReceiptResponse.mock(.invalid)
         sessionManager.stub.start = { (_, _) in .success(expectedDictionaryResponse.asData) }
@@ -213,7 +195,7 @@ private extension Dictionary {
         do {
             return try JSONSerialization.data(withJSONObject: self, options: [])
         } catch {
-            XCTFail("Could not encode codable to data")
+            Issue.record("Could not encode codable to data")
             return Data()
         }
     }
@@ -224,7 +206,7 @@ private extension Encodable {
         do {
             return try JSONEncoder().encode(self)
         } catch {
-            XCTFail("Could not encode codable to data")
+            Issue.record("Could not encode codable to data")
             return Data()
         }
     }

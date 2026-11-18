@@ -1,111 +1,64 @@
-import XCTest
+import Foundation
+import Testing
 @testable import SwiftyReceiptValidator
 
-final class ReceiptURLFetcherTests: XCTestCase {
+struct ReceiptURLFetcherTests {
     
     // MARK: - Properties
     
-    private var fileManager: MockFileManager!
-    private var refreshRequest: MockSKReceiptRefreshRequest!
+    private let fileManager = MockFileManager()
+    private let refreshRequest: MockSKReceiptRefreshRequest
     
-    // MARK: - Life Cycle
-       
-    override func setUp() {
-        super.setUp()
-        fileManager = MockFileManager()
+    init() {
         refreshRequest = MockSKReceiptRefreshRequest(fileManager: fileManager)
-    }
-
-    override func tearDown() {
-        fileManager = nil
-        refreshRequest = nil
-        super.tearDown()
     }
     
     // MARK: - Tests
 
-    func testFetch_whenReceiptOnFile_returnsCorrectData() {
-        let expectation = XCTestExpectation(description: "Finished")
+    @Test func testFetch_whenReceiptOnFile_returnsCorrectData() async throws {
         let expectedURL: URL = .test
         fileManager.stub.fileExists = true
-        
         let sut = makeSUT(appStoreReceiptURL: expectedURL)
-        sut.fetch(refreshRequest: nil) { result in
-            if case .success(let url) = result {
-                XCTAssertEqual(url, expectedURL)
-                expectation.fulfill()
-            }
-        }
-        
-        wait(for: [expectation], timeout: 0.1)
+        let url = try await sut.fetch(refreshRequest: nil)
+        #expect(url == expectedURL)
     }
     
-    func testFetch_whenNoReceiptOnFile_andNoRefreshRequest_returnsCorrectError() {
-        let expectation = XCTestExpectation(description: "Finished")
+    @Test func testFetch_whenNoReceiptOnFile_andNoRefreshRequest_returnsCorrectError() async {
         fileManager.stub.fileExists = false
-        let expectedError: SRVError = .noReceiptFoundInBundle
-        
         let sut = makeSUT()
-        sut.fetch(refreshRequest: nil) { result in
-            if case .failure(let error) = result {
-                XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
-                expectation.fulfill()
-            }
+        await #expect(throws: SRVError.noReceiptFoundInBundle) {
+            try await sut.fetch(refreshRequest: nil)
         }
-        
-        wait(for: [expectation], timeout: 0.1)
     }
     
-    func testFetch_whenNoReceiptOnFile_andRefreshRequestSuccess_returnsCorrectData() {
-        let expectation = XCTestExpectation(description: "Finished")
+    @Test func testFetch_whenNoReceiptOnFile_andRefreshRequestSuccess_returnsCorrectData() async throws {
         let expectedURL: URL = .test
         fileManager.stub.fileExists = false
         refreshRequest.stub.start = .success(())
-
         let sut = makeSUT(appStoreReceiptURL: expectedURL)
-        sut.fetch(refreshRequest: refreshRequest) { result in
-            if case .success(let url) = result {
-                XCTAssertEqual(url, expectedURL)
-                expectation.fulfill()
-            }
-        }
-        
-        wait(for: [expectation], timeout: 0.1)
+        let url = try await sut.fetch(refreshRequest: refreshRequest)
+        #expect(url == expectedURL)
     }
     
-    func testFetch_whenNoReceiptOnFile_andRefreshRequestError_returnsCorrectError() {
-        let expectation = XCTestExpectation(description: "Finished")
+    @Test func testFetch_whenNoReceiptOnFile_andRefreshRequestError_returnsCorrectError() async {
         let expectedError = URLError(.notConnectedToInternet)
         fileManager.stub.fileExists = false
         refreshRequest.stub.start = .failure(expectedError)
-        
         let sut = makeSUT()
-        sut.fetch(refreshRequest: refreshRequest) { result in
-            if case .failure(let error) = result {
-                XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
-                expectation.fulfill()
-            }
+        await #expect(throws: SRVError.other(expectedError)) {
+            try await sut.fetch(refreshRequest: refreshRequest)
         }
-
-        wait(for: [expectation], timeout: 0.1)
     }
     
-    func testFetch_whenNoReceiptOnFile_andRefreshRequestSuccess_andStillNoReceipt_returnsCorrectError() {
-        let expectation = XCTestExpectation(description: "Finished")
+    @Test func testFetch_whenNoReceiptOnFile_andRefreshRequestSuccess_andStillNoReceipt_returnsCorrectError() async {
         let expectedError: SRVError = .noReceiptFoundInBundle
         fileManager.stub.fileExists = false
         refreshRequest.stub.start = .success(())
         refreshRequest.stub.hasReceiptAfterRequest = false
-        
         let sut = makeSUT()
-        sut.fetch(refreshRequest: refreshRequest) { result in
-            if case .failure(let error) = result {
-                XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
-                expectation.fulfill()
-            }
+        await #expect(throws: expectedError) {
+            try await sut.fetch(refreshRequest: refreshRequest)
         }
-
-        wait(for: [expectation], timeout: 0.1)
     }
 }
 
@@ -113,9 +66,6 @@ final class ReceiptURLFetcherTests: XCTestCase {
 
 private extension ReceiptURLFetcherTests {
     func makeSUT(appStoreReceiptURL: URL = .test) -> ReceiptURLFetcher {
-        DefaultReceiptURLFetcher(
-            appStoreReceiptURL: { appStoreReceiptURL },
-            fileManager: fileManager
-        )
+        DefaultReceiptURLFetcher(appStoreReceiptURL: { appStoreReceiptURL }, fileManager: fileManager)
     }
 }

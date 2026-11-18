@@ -8,7 +8,7 @@ public enum SRVError: Error {
     case productIdNotMatching(SRVStatusCode)
     case subscriptioniOS6StyleExpired(SRVStatusCode?)
     case purchaseCancelled(SRVStatusCode)
-    case other(Error)
+    case other(any Error)
     
     public var statusCode: SRVStatusCode? {
         switch self {
@@ -55,4 +55,10 @@ extension SRVError: LocalizedError {
             return error.localizedDescription
         }
     }
+}
+
+extension SRVError: Equatable {
+    public static func == (lhs: borrowing SRVError, rhs: borrowing SRVError) -> Bool {
+        lhs.localizedDescription == rhs.localizedDescription
+    }    
 }

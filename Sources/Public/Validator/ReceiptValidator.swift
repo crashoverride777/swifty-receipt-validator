@@ -23,11 +23,8 @@
 import Foundation
 import StoreKit
 
-public protocol SwiftyReceiptValidatorType {
-    func validate(_ request: SRVPurchaseValidationRequest, completion: @escaping (Result<SRVReceiptResponse, Error>) -> Void)
+public protocol SwiftyReceiptValidatorType: Sendable {
     func validate(_ request: SRVPurchaseValidationRequest) async throws -> SRVReceiptResponse
-    
-    func validate(_ request: SRVSubscriptionValidationRequest, completion: @escaping (Result<SRVSubscriptionValidationResponse, Error>) -> Void)
     func validate(_ request: SRVSubscriptionValidationRequest) async throws -> SRVSubscriptionValidationResponse
 }
 
@@ -36,7 +33,7 @@ public protocol SwiftyReceiptValidatorType {
  
  A concrete implementation of SwiftyReceiptValidatorType to manage in app purchase receipt validation
  */
-public final class SwiftyReceiptValidator {
+public struct SwiftyReceiptValidator {
     
     // MARK: - Properties
     
@@ -96,75 +93,29 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
     /// Validate app store purchase.
     ///
     /// - parameter request: The validation request configuration.
-    /// - parameter completion: Completion handler called when the validation has completed.
-    public func validate(_ request: SRVPurchaseValidationRequest, completion: @escaping (Result<SRVReceiptResponse, Error>) -> Void) {
-        fetchReceipt(
-            sharedSecret: request.sharedSecret,
-            refreshLocalReceiptIfNeeded: true,
-            excludeOldTransactions: false,
-            completion: ({ [weak self] result in
-                switch result {
-                case .success(let response):
-                    self?.responseValidator.validatePurchase(
-                        in: response,
-                        productId: request.productIdentifier,
-                        completion: completion
-                    )
-                case .failure(let error):
-                    completion(.failure(error))
-                }
-            })
-        )
-    }
-    
-    /// Validate app store purchase.
-    ///
-    /// - parameter request: The validation request configuration.
     /// - returns: The SRVReceiptResponse if no error is thrown.
     public func validate(_ request: SRVPurchaseValidationRequest) async throws -> SRVReceiptResponse {
-        try await withCheckedThrowingContinuation { [weak self] continuation in
-            self?.validate(request) { result in
-                continuation.resume(with: result)
-            }
-        }
+        let response = try await fetchReceipt(
+            sharedSecret: request.sharedSecret,
+            refreshLocalReceiptIfNeeded: true,
+            excludeOldTransactions: false
+        )
+        return try await responseValidator.validatePurchase(in: response, productId: request.productIdentifier)
     }
     
     // MARK: Subscription
     
     /// Validate app store subscription.
     ///
-    /// - parameter request: The request configuration.
-    /// - parameter completion: Completion handler called when the validation has completed.
-    public func validate(_ request: SRVSubscriptionValidationRequest, completion: @escaping (Result<SRVSubscriptionValidationResponse, Error>) -> Void) {
-        fetchReceipt(
-            sharedSecret: request.sharedSecret,
-            refreshLocalReceiptIfNeeded: request.refreshLocalReceiptIfNeeded,
-            excludeOldTransactions: request.excludeOldTransactions,
-            completion: ({ [weak self] result in
-                switch result {
-                case .success(let response):
-                    self?.responseValidator.validateSubscriptions(
-                        in: response,
-                        now: request.now,
-                        completion: completion
-                    )
-                case .failure(let error):
-                    completion(.failure(error))
-                }
-            })
-        )
-    }
-    
-    /// Validate app store subscription.
-    ///
     /// - parameter request: The validation request configuration.
     /// - returns: The SRVSubscriptionValidationResponse if no error thrown.
     public func validate(_ request: SRVSubscriptionValidationRequest) async throws -> SRVSubscriptionValidationResponse {
-        try await withCheckedThrowingContinuation { [weak self] continuation in
-            self?.validate(request) { result in
-                continuation.resume(with: result)
-            }
-        }
+        let response = try await fetchReceipt(
+            sharedSecret: request.sharedSecret,
+            refreshLocalReceiptIfNeeded: request.refreshLocalReceiptIfNeeded,
+            excludeOldTransactions: request.excludeOldTransactions
+        )
+        return try await responseValidator.validateSubscriptions(in: response, now: request.now)
     }
 }
 
@@ -173,22 +124,14 @@ extension SwiftyReceiptValidator: SwiftyReceiptValidatorType {
 private extension SwiftyReceiptValidator {
     func fetchReceipt(sharedSecret: String?,
                       refreshLocalReceiptIfNeeded: Bool,
-                      excludeOldTransactions: Bool,
-                      completion: @escaping (Result<SRVReceiptResponse, Error>) -> Void) {
+                      excludeOldTransactions: Bool) async throws -> SRVReceiptResponse {
         let refreshRequest = refreshLocalReceiptIfNeeded ? SKReceiptRefreshRequest(receiptProperties: nil) : nil
-        receiptURLFetcher.fetch(refreshRequest: refreshRequest) { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let receiptURL):
-                let clientRequest = ReceiptClientRequest(
-                    receiptURL: receiptURL,
-                    sharedSecret: sharedSecret,
-                    excludeOldTransactions: excludeOldTransactions
-                )
-                self.receiptClient.perform(clientRequest, completion: completion)
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
+        let receiptURL = try await receiptURLFetcher.fetch(refreshRequest: refreshRequest)
+        let clientRequest = ReceiptClientRequest(
+            receiptURL: receiptURL,
+            sharedSecret: sharedSecret,
+            excludeOldTransactions: excludeOldTransactions
+        )
+        return try await receiptClient.perform(clientRequest)
     }
 }
